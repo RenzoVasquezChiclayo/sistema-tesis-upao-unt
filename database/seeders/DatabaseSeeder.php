@@ -15,15 +15,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(UsuarioSeeder::class);
         $this->call(FacultadSeeder::class);
         $this->call(SedeSeeder::class);
         $this->call(EscuelaSeeder::class);
-        //$this->call(AsesorSeeder::class);
         $this->call(TipoReferenciaSeeder::class);
         $this->call(TipoInvestigacionSeeder::class);
         $this->call(PresupuestoSeeder::class);
-        $this->call(EgresadoSeeder::class);
+
+        User::factory(1)->create(['name'=>'admin','rol'=>'administrador']);
 
         User::factory(1)->create(['name'=>'jmiranda','rol'=>'director']);
 

@@ -13,8 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-
-        Schema::connection('mysql')->create('asesor_curso', function (Blueprint $table) {
+        Schema::create('asesor_curso', function (Blueprint $table) {
             $table->char('cod_docente',4)->primary();
             $table->string('nombres',50);
             $table->string('grado_academico',30);
@@ -33,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::connection('mysql')->dropIfExists('asesor_curso');
+        Schema::dropIfExists('asesor_curso');
     }
 };

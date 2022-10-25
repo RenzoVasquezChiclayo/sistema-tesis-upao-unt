@@ -28,69 +28,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [LoginController::class,'index'])
         ->name('indexlogin')->middleware('guest');
 
-//Ruta no disponible
-Route::get('inicio/{id}', [TesisController::class,'dashboard'])
-        ->name('dashboard')->middleware('auth');
 
-Route::get('/formTesis', [TesisController::class,'index'])
-        ->name('index')->middleware('auth');
 
-Route::post('guardarTesis/', [TesisController::class,'guardar'])
-        ->name('guardarDoc');
-Route::post('downloadProyecto',[EgresadoController::class,'descargaProyecto'])->name('proyecto.descargar');
-
-Route::get('/registroegresado', [EgresadoController::class,'index'])
-        ->name('egresadoindex')->middleware('auth');
-
-Route::post('guardarEgresado/', [EgresadoController::class,'guardar'])
-        ->name('guardarEgresado');
-//Ruta para descargar formato de titulo
-Route::post('/downloadFormato',[EgresadoController::class,'downloadFormato'])->name('formato.descarga');
-
-Route::get('/verHistorial',[EgresadoController::class,'verRegistroHistorial'])
-        ->name('verRegistroHistorial')->middleware('auth');
-
-Route::get('/information',[EgresadoController::class,'information'])
+Route::get('/information',[AdminCursoController::class,'information'])
         ->name('user_information')->middleware('auth');
 
-Route::post('guardarInformacion/',[EgresadoController::class,'saveUser'])
+Route::post('guardarInformacion/',[AdminCursoController::class,'saveUser'])
         ->name('save_user');
-Route::get('showCorrection/{id}',[EgresadoController::class,'showCorrection'])
-        ->name('egresado.showCorrection')->middleware('auth');
 
-//Rutas para el director
-Route::get('formatos-titulo',[TesisController::class,'index_formato'])
-        ->name('director.formatos')->middleware('auth');
-Route::get('showFormato/{id}',[EgresadoController::class,'showFormato'])
-        ->name('director.showFormato')->middleware('auth');
-Route::post('saveFormato',[EgresadoController::class,'continuarFormato'])
-        ->name('director.continueFormat');
-
-//Rutas para el asesor
-Route::get('proyectos-tesis',[TesisController::class,'index_proyectos'])
-        ->name('asesor.proyectos')->middleware('auth');
-Route::get('showProyecto/{id}',[TesisController::class,'showProyecto'])
-        ->name('asesor.showProyecto')->middleware('auth');
-Route::post('saveObservaciones',[TesisController::class,'guardarObservaciones'])
-        ->name('asesor.continueProyect');
-Route::post('aprobarProy',[TesisController::class,'aprobarProy'])
-        ->name('asesor.aprobarProy');
-Route::post('desaprobarProy',[TesisController::class,'desaprobarProy'])
-        ->name('asesor.desaprobarProy');
-
-Route::get('/historial-observaciones',[AsesorController::class,'historial_observacion'])
-        ->name('asesor.historial_observaciones')->middleware('auth');
-Route::get('/historial-observaciones/{cod_historialObs}',[AsesorController::class,'showObservaciones'])->name('asesor.showObservaciones')->middleware('auth');
-
-
-Route::post('/downloadObservacion',[AsesorController::class,'downloadObservacion'])->name('asesor.downloadObservacion');
-
-
-//Rutas para el Docente
-Route::get('ver-silabos',[DocenteController::class,'index_silabos'])
-        ->name('docente.showSilabos')->middleware('auth');
-Route::get('agregar-silabo',[DocenteController::class,'crear_silabo'])
-        ->name('docente.crearSilabo')->middleware('auth');
 
 //Modified
 Route::post('/verificate-login',[LoginController::class,'validateLogin'])
