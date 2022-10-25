@@ -1,0 +1,49 @@
+textarea{
+    height: 150px;
+    resize: none;
+}
+
+.title-p{
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+.split-title{
+    border: 1 px black;
+    width: 70%;
+}
+
+.chip{
+    display:flex;
+    background-color: #CCCCCC;
+    border-radius: 15px;
+    padding: 10px 15px;
+    justify-content: space-between;
+    vertical-align: center;
+}
+
+.chip > button {
+    border: none;
+    background: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+}
+
+.chip > button:hover{
+    background-color: white;
+}
+
+.chip > div{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#chips{
+    padding-left: 20px;
+    gap: 10px;
+}
+
+
+
