@@ -920,7 +920,7 @@
 @endsection
 @section('js')
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="./js/script-tesis-2022.js"></script>
+    <script src="./js/asesor-tesis-2022.js"></script>
     <script type="text/javascript">
         let array_chk = new Array(24);
         array_chk.fill(0,0);
@@ -1046,7 +1046,5 @@
                 document.getElementById('ta'+check.id).value = "";
             }
         }
-
-
     </script>
 @endsection

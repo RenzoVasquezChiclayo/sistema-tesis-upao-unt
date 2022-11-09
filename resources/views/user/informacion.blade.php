@@ -32,16 +32,16 @@
                                         </div>
                                         <div class="col-10 col-md-6" style="text-align: left; margin-bottom:15px;">
                                             <h5>Nombres</h5>
-                                            <input type="text" class="form-control" value="{{$estudiante->nombres}}" name="txtnewnombres" id="txtnewnombres" required>
+                                            <p>{{$estudiante->nombres}}</p>
                                         </div>
                                         <div class="col-10 col-md-6" style="text-align: left; margin-bottom:15px;">
                                             <h5>Apellidos</h5>
-                                            <input type="text" class="form-control" value="{{$estudiante->apellidos}}" name="txtnewapellidos" id="txtnewapellidos" required>
+                                            <p>{{$estudiante->apellidos}}</p>
                                         </div>
                                     @elseif (auth()->user()->rol == 'a-CTesis2022-1')
                                         <div class="col-10 col-md-10" style="text-align: left; margin-bottom:15px;">
                                             <h5>Nombres</h5>
-                                            <input type="text" class="form-control" value="{{$asesor->nombres}}" name="txtnewnombres" id="txtnewnombres" required>
+                                            <p>{{$asesor->nombres}}</p>
                                         </div>
                                         <div class="col-10 col-md-6" style="text-align: left; margin-bottom:15px;">
                                             <h5>Condicion</h5>
@@ -49,15 +49,15 @@
                                         </div>
                                         <div class="col-10 col-md-6" style="text-align: left; margin-bottom:15px;">
                                             <h5>Escuela</h5>
-                                            <input type="text" class="form-control" value="{{$asesor->titulo_profesional}}" name="txtnewtitulo" id="txtnewtitulo" required>
+                                            <p>{{$asesor->titulo_profesional}}</p>
                                         </div>
                                         <div class="col-10 col-md-6" style="text-align: left; margin-bottom:15px;">
                                             <h5>Direccion</h5>
-                                            <input type="text" class="form-control" value="{{$asesor->direccion}}" name="txtnewdireccion" id="txtnewdireccion" required>
+                                            <p>{{$asesor->direccion}}</p>
                                         </div>
                                     @endif
                                     <div class="col-12" style="text-align: left;">
-                                        <h4>Actualizar Contraseña</h4>
+                                        <h4>Modificaciones</h4>
                                         <hr style="width:100%; border: 0.3px solid black;"/>
                                         <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                                             data-bs-target="#mActualizarContra">Actualizar Contraseña</button>
