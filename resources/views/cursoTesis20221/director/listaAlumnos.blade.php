@@ -50,15 +50,18 @@
                                             <a href="#" class="btn btn-warning" onclick="this.closest('#form-alumno').submit();"><i class='bx bx-sm bx-edit-alt'></i></a>
                                         </form>
                                     </td>
-                                    {{-- <td>
-                                        <form id="formAlumnoDelete" name="formAlumnoDelete" method="" action="">
-                                            @method('DELETE')
-                                            @csrf
+                                    @if (auth()->user()->rol == 'administrador')
+                                        <td>
+                                            <form id="formAlumnoDelete" name="formAlumnoDelete" method="" action="">
+                                                @method('DELETE')
+                                                @csrf
 
-                                            <input type="hidden" name="auxidDelete" value="{{$est->cod_matricula}}">
-                                            <a href="#" class="btn btn-danger btn-eliminar" onclick="alertaConfirmacion(this);"><i class="fas fa-minus-circle"></i></a>
-                                        </form>
-                                    </td> --}}
+                                                <input type="hidden" name="auxidDelete" value="{{$est->cod_matricula}}">
+                                                <a href="#" class="btn btn-danger btn-eliminar" onclick="alertaConfirmacion(this);"><i class='bx bx-message-square-x' ></i></a>
+                                            </form>
+                                        </td>
+                                    @endif
+
                                 </tr>
                                 @php
                                     $cont++;

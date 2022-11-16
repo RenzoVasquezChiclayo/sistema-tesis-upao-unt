@@ -41,28 +41,6 @@ class LoginController extends Controller
             }
         }
 
-        // Auth::shouldUse('webCurso');
-        // if($usuario!=null){
-        //     if(md5($request->password) == $usuario->password){
-        //         // dd($guard);
-        //         try {
-        //             //auth()->guard('webCurso')->login($usuario);
-        //             Auth::login($usuario);
-        //             // Auth::login($usuario);
-        //             $request->session()->regenerate();
-        //             return redirect()->intended(route('user_information'));
-        //         } catch (\Throwable $th) {
-        //             dd($th);
-        //         }
-
-        //     }
-        // }
-        /*Este metodo lo podemos utilizar tambien de la misma forma que la de arriba*/
-        // if(Auth::attempt($data,$remember)){
-        //     $request->session()->regenerate();
-        //     return redirect()->intended(route('user_information'));
-        // }
-
         throw ValidationException::withMessages([
             'message'=>'El usuario o la contraseña es incorrecto.'
             //'message'=>__('auth.failed')

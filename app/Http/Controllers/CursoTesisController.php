@@ -32,9 +32,9 @@ class CursoTesisController extends Controller
 {
 
     // Administrador
-
+    const PAGINATION = 10;
     public function listarUsuario(){
-        $usuarios = User::where('rol','!=','administrador')->get();
+        $usuarios = User::where('rol','!=','administrador')->paginate($this::PAGINATION);;
         return view('cursoTesis20221.administrador.listarUsuarios',['usuarios'=>$usuarios]);
     }
 
