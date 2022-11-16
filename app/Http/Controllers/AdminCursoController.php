@@ -65,10 +65,24 @@ class AdminCursoController extends Controller
         return view('user.informacion',['usuario'=>$usuario,'img'=>$img,'estudiante'=>$estudiante,'asesor'=>$asesor]);
     }
 
+    public function updateInformation(Request $request){
+        $id = auth()->user()->name;
+        $asesor = DB::table('asesor_curso as A')->where('A.username',$id)->first();
+        try {
+            $findAsesor = AsesorCurso::find($asesor->cod_docente);
+            $findAsesor->direccion = $request->txtnewdireccion;
+            $findAsesor->save();
+            return redirect()->route('user_information')->with('datos','okUpdate');
+        } catch (\Throwable $th) {
+            return redirect()->route('user_information')->with('datos','oknotUpdate');
+        }
+
+
+    }
+
     public function saveUser(Request $request){
 
         $usuario = User::where('name','=',$request->txtCodUsuario)->first();
-        //$usuario = Usuario::find($request->txtCodUsuario);
         try {
             $usuario->password = md5($request->txtNuevaContra);
             $usuario->save();

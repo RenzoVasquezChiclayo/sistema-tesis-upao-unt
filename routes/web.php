@@ -36,6 +36,8 @@ Route::get('/information',[AdminCursoController::class,'information'])
 Route::post('guardarInformacion/',[AdminCursoController::class,'saveUser'])
         ->name('save_user');
 
+Route::post('updateInformacion/',[AdminCursoController::class,'updateInformation'])
+        ->name('update_user');
 
 //Modified
 Route::post('/verificate-login',[LoginController::class,'validateLogin'])

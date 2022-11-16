@@ -62,7 +62,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{-- {{$estudiantes->links()}} --}}
+                    {{$usuarios->links()}}
                 </div>
 
             </div>

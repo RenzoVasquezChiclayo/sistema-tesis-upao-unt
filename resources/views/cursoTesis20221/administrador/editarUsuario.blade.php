@@ -28,7 +28,7 @@
                 </div>
                 <input type="hidden" name="auxiduser" value="{{$find_user->id}}">
                 <div class="col-6">
-                    <label for="dni">Dni</label>
+                    <label for="dni">ROL</label>
                     <select class="form-control" name="rol_user" id="rol_user" required>
                         <option value="d-CTesis2022-1"
                         @if ($find_user->rol == 'd-CTesis2022-1')
