@@ -139,9 +139,8 @@
             <span class="tooltip">Alumno</span>
         </li>
         <li>
-            <div>
-                <hr style="border: 1px white solid; width:100%;">
-                <h5 style="color: white;">Asignar Asesor</h5>
+            <div class="links_name" style="border: solid white; border-width: 1px 0px 0px 0px; margin-left:15px;">
+                <p style="color: white;">Asignar Asesor</p>
             </div>
         </li>
         <li>

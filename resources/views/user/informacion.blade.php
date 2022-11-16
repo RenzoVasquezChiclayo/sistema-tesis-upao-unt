@@ -43,9 +43,24 @@
                                     <div class="row">
                                         <div class="col-10 col-md-7" style="text-align: left; margin-bottom:15px;">
                                             <h5>Nombres</h5>
+<<<<<<< HEAD
                                             <p>{{$asesor->nombres}}</p>
                                         </div>
                                         <div class="col-10 col-md-5" style="text-align: left; margin-bottom:15px;">
+=======
+                                            <p>{{$estudiante->nombres}}</p>
+                                        </div>
+                                        <div class="col-10 col-md-6" style="text-align: left; margin-bottom:15px;">
+                                            <h5>Apellidos</h5>
+                                            <p>{{$estudiante->apellidos}}</p>
+                                        </div>
+                                    @elseif (auth()->user()->rol == 'a-CTesis2022-1')
+                                        <div class="col-10 col-md-10" style="text-align: left; margin-bottom:15px;">
+                                            <h5>Nombres</h5>
+                                            <p>{{$asesor->nombres}}</p>
+                                        </div>
+                                        <div class="col-10 col-md-6" style="text-align: left; margin-bottom:15px;">
+>>>>>>> bb11ba0b7df9a3f750879383a0152a82105f7dd9
                                             <h5>Condicion</h5>
                                             <p>{{$asesor->grado_academico}}</p>
                                         </div>
@@ -57,7 +72,7 @@
                                         </div>
                                         <div class="col-10 col-md-7" style="text-align: left; margin-bottom:15px;">
                                             <h5>Direccion</h5>
-                                            <input type="text" class="form-control" value="{{$asesor->direccion}}" name="txtnewdireccion" id="txtnewdireccion" required>
+                                            <p>{{$asesor->direccion}}</p>
                                         </div>
                                     </div>
 
@@ -72,8 +87,12 @@
                                 @csrf
                                 <div class="row">
                                     <div class="col-12" style="text-align: left;">
+<<<<<<< HEAD
                                         <h4>Actualizar Contraseña</h4>
                                         <input type="hidden" id="txtCodUsuario" name="txtCodUsuario" value="{{auth()->user()->name}}" >
+=======
+                                        <h4>Modificaciones</h4>
+>>>>>>> bb11ba0b7df9a3f750879383a0152a82105f7dd9
                                         <hr style="width:100%; border: 0.3px solid black;"/>
                                         <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                                             data-bs-target="#mActualizarContra">Actualizar Contraseña</button>

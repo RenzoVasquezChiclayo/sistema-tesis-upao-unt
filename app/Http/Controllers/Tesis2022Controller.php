@@ -700,6 +700,12 @@ class Tesis2022Controller extends Controller
             }
         }
 
+        /*Recoger imagenes de resultados*/
+        $resultadosImg = Detalle_Archivo::join('archivos_proy_tesis as at','at.cod_archivos','=','detalle_archivos.cod_archivos')->select('detalle_archivos.*')->where('at.cod_proyinvestigacion',$Tesis[0]->cod_tesis)->where('tipo','resultados')->orderBy('grupo', 'ASC')->get();
+
+        /*Recoger imagenes de anexos*/
+        $anexosImg = Detalle_Archivo::join('archivos_proy_tesis as at','at.cod_archivos','=','detalle_archivos.cod_archivos')->select('detalle_archivos.*')->where('at.cod_proyinvestigacion',$Tesis[0]->cod_tesis)->where('tipo','anexos')->orderBy('grupo', 'ASC')->get();
+
         $keywords = TDetalleKeyword::join('t_keyword','t_keyword.id_keyword','=','t_detalle_keyword.id_keyword')->select('t_detalle_keyword.*')->where('t_keyword.cod_tesis',$Tesis[0]->cod_tesis)->get();
 
         $observaciones = TObservacion::select('t_observacion.*')->where('t_observacion.cod_tesis',$Tesis[0]->cod_tesis)->get();
@@ -707,7 +713,7 @@ class Tesis2022Controller extends Controller
         $objetivos = TObjetivo::where('cod_tesis','=',$Tesis[0]->cod_tesis)->get();
 
         $referencias = TReferencias::where('cod_tesis','=',$Tesis[0]->cod_tesis)->get();
-        return view('cursoTesis20221.asesor.tesis.progreso-estudiante',['Tesis'=>$Tesis,'keywords'=>$keywords,'objetivos'=>$objetivos,'$observaciones' => $observaciones,'isFinal'=>$isFinal,'referencias'=>$referencias]);
+        return view('cursoTesis20221.asesor.tesis.progreso-estudiante',['Tesis'=>$Tesis,'keywords'=>$keywords,'objetivos'=>$objetivos,'$observaciones' => $observaciones,'isFinal'=>$isFinal,'referencias'=>$referencias, 'resultadosImg'=>$resultadosImg, 'anexosImg'=>$anexosImg]);
 
     }
 
