@@ -17,13 +17,9 @@ class EstudianteCT2022 extends Model
         'cod_matricula',
         'dni',
         'apellidos',
-        'nombres',
-        'cod_docente'
+        'nombres'
     ];
-
-    public function asesor(){
-        return $this->hasOne(AsesorCurso::class);
-    }
+    /*Delete cod docente*/
 
     public $timestamps = false;
 }

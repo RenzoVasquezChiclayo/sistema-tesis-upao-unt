@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::connection('mysql')->create('campos_estudiante', function (Blueprint $table) {
 
-            $$table->integer('cod_proyectotesis');
+            $table->integer('cod_campoestudiante')->autoIncrement();
+            $table->integer('cod_proyectotesis');
             $table->foreign('cod_proyectotesis')
                     ->references('cod_proyectotesis')
                     ->on('proyecto_tesis')

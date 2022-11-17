@@ -34,6 +34,11 @@ class TReferencias extends Model
         'name_editor '    ,
         'cod_tesis' ,
         ];
-
+    public function tipoReferencia(){
+        return $this->hasOne(TipoReferencia::class);
+    }
+    public function tesis(){
+        return $this->hasOne(Tesis_2022::class);
+    }
     public $timestamps = false;
 }

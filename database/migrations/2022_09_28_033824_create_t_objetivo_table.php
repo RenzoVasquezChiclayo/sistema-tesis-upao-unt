@@ -18,6 +18,10 @@ return new class extends Migration
             $table->string('tipo',25);
             $table->text('descripcion');
             $table->integer('cod_tesis');
+            $table->foreign('cod_tesis')
+                    ->references('cod_tesis')
+                    ->on('tesis_2022')
+                    ->onDelete('cascade');
         });
     }
 

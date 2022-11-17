@@ -17,16 +17,18 @@ return new class extends Migration
             $table->integer('cod_presProyecto')->autoIncrement();
             $table->float('precio');
             $table->integer('cod_presupuesto');
+            $table->foreign('cod_presupuesto')
+                    ->references('cod_presupuesto')
+                    ->on('presupuesto')
+                    ->onDelete('cascade');
+
             $table->integer('cod_proyectotesis');
             $table->foreign('cod_proyectotesis')
                     ->references('cod_proyectotesis')
                     ->on('proyecto_tesis')
                     ->onDelete('cascade');
 
-            $table->foreign('cod_presupuesto')
-                    ->references('cod_presupuesto')
-                    ->on('presupuesto')
-                    ->onDelete('cascade');
+
         });
 
 

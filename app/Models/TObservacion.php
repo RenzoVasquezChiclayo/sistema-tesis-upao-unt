@@ -12,8 +12,7 @@ class TObservacion extends Model
     protected $primaryKey = 'id_observacion';
 
     protected $fillable = [
-        'cod_tesis',
-        'cod_hisotrial_obs',
+        'cod_historial_observacion',
         'presentacion',
         'resumen',
         'keyword',
@@ -49,7 +48,9 @@ class TObservacion extends Model
         'fecha_create',
         'fecha_update',
     ];
-
+    public function historialObservacion(){
+        return $this->hasOne(THistorialObservaciones::class);
+    }
     public $timestamps = false;
 
 }

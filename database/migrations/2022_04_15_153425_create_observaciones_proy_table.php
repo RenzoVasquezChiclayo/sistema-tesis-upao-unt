@@ -34,9 +34,6 @@ return new class extends Migration
 
             $table->text('recursos')->nullable();
 
-            // $table->text('presupuesto')->nullable();
-            // $table->text('financiamiento')->nullable();
-
             $table->text('real_problematica')->nullable();
             $table->text('antecedentes')->nullable();
             $table->text('justificacion')->nullable();
@@ -56,20 +53,11 @@ return new class extends Migration
 
             $table->text('tecnicas_instrum')->nullable();
             $table->text('instrumentacion')->nullable();
-
-
-            $table->tinyInteger('estado');
-
             $table->text('estg_metodologicas')->nullable();
-
+            $table->tinyInteger('estado');
             $table->text('variables')->nullable();
 
             $table->text('referencias')->nullable();
-
-            // $table->foreign('cod_historialObs')
-            //         ->references('cod_historialObs')
-            //         ->on('historial_observaciones')
-            //         ->onDelete('cascade');
 
         });
 

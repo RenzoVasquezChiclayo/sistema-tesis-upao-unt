@@ -11,7 +11,9 @@ class TObjetivo extends Model
     public $table = 't_objetivo';
     protected $primaryKey = 'cod_objetivo';
     protected $fillable = ['tipo','descripcion','cod_tesis'];
-
+    public function tesis(){
+        return $this->hasOne(Tesis_2022::class);
+    }
 
     public $timestamps = false;
 }

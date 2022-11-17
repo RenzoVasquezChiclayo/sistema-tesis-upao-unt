@@ -9,18 +9,16 @@ class TesisCT2022 extends Model
 {
     protected $connection = 'mysql';
     use HasFactory;
-    public $table = 'tesis_ct2022';
+    public $table = 'proyecto_tesis';
 
-    protected $primaryKey = 'cod_cursoTesis';
+    protected $primaryKey = 'cod_proyectotesis';
     protected $fillable = [
+        'cod_proyectotesis',
         'titulo',
         'cod_matricula',
-        'nombres',
 
-        'nombre_asesor',
-        'grado_asesor',
-        'titulo_asesor',
-        'direccion_asesor',
+        'cod_docente',
+        /*Delete info de asesor y nombre de alumno*/
 
         'tipo_investigacion',
         'ti_finpersigue',
@@ -34,21 +32,11 @@ class TesisCT2022 extends Model
         't_AnalisisDatos',
         't_ElaboracionInfo',
 
-        'rec_personal',
-        'rec_b_consumo',
-        'rec_b_inversion',
-        'rec_servicios',
-        'titulo_presup',
-        'nombre_recurso',
-        'cantidad_rec',
-        'costo_rec',
         'financiamiento',
         'real_problematica',
         'antecedentes',
         'justificacion',
         'formulacion_prob',
-        'obj_generales',
-        'obj_especificos',
         'marco_teorico',
         'marco_conceptual',
         'marco_legal',
@@ -60,7 +48,6 @@ class TesisCT2022 extends Model
         'tecnicas_instrum',
         'instrumentacion',
         'estg_metodologicas',
-        'referencias',
         'fecha',
         'estado',
         'condicion'
@@ -85,5 +72,15 @@ class TesisCT2022 extends Model
     public function observaciones(){
         return $this->hasMany(ObservacionesProy::class);
     }
+    public function estudiante(){
+        return $this->hasOne(EstudianteCT2022::class);
+    }
+    public function asesor(){
+        return $this->hasOne(AsesorCurso::class);
+    }
+    public function tipoInvestigacion(){
+        return $this->hasOne(TipoInvestigacion::class);
+    }
+
     public $timestamps = false;
 }

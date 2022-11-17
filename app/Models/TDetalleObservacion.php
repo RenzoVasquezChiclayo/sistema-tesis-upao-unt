@@ -12,10 +12,13 @@ class TDetalleObservacion extends Model
 
     protected $primaryKey = 'id_detalle_observacion';
     protected $fillable = [
-        'cod_historial_obs',
+        'id_observacion',
         'tema_referido',
         'correccion',
     ];
+    public function observacion(){
+        return $this->hasOne(TObservacion::class);
+    }
     public $timestamps = false;
 
 }

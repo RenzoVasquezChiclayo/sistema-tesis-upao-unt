@@ -16,6 +16,10 @@ return new class extends Migration
         Schema::create('t_keyword', function (Blueprint $table) {
             $table->integer('id_keyword')->autoIncrement();
             $table->integer('cod_tesis')->nullable(false);
+            $table->foreign('cod_tesis')
+                    ->references('cod_tesis')
+                    ->on('tesis_2022')
+                    ->onDelete('cascade');
             $table->date('fecha_update')->nullable(true);
         });
     }

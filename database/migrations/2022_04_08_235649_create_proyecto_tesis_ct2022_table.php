@@ -24,18 +24,13 @@ return new class extends Migration
                     ->references('cod_matricula')
                     ->on('estudiante_ct2022')
                     ->onDelete('cascade');
-            $table->string('nombres',60);
 
             /*Agregado*/
-            $table->string('cod_docente',80)->nullable();
+            $table->char('cod_docente',4)->nullable();
             $table->foreign('cod_docente')
                     ->references('cod_docente')
                     ->on('asesor_curso')
                     ->onDelete('cascade');
-            $table->string('nombre_asesor',80)->nullable(); //Eliminar estos atributos, y vincular al asesor
-            $table->string('grado_asesor',50)->nullable();
-            $table->string('titulo_asesor',50)->nullable();
-            $table->string('direccion_asesor',50)->nullable();
 
             $table->char('cod_tinvestigacion',4)->nullable(); //Vinculo con tabla tipoinvestigacion
             $table->foreign('cod_tinvestigacion')
@@ -72,11 +67,9 @@ return new class extends Migration
 
             $table->text('tecnicas_instrum')->nullable();
             $table->text('instrumentacion')->nullable();
-
+            $table->text('estg_metodologicas')->nullable();
             $table->date('fecha')->nullable();
             $table->tinyInteger('estado')->default('0');
-
-            $table->text('estg_metodologicas')->nullable();
 
             $table->string('condicion',20)->nullable();
         });

@@ -11,9 +11,14 @@ class Detalle_Observaciones extends Model
     protected $table = 'detalle_observaciones';
     protected $primaryKey = 'cod_detalleObs';
     protected $fillable = [
-        'cod_historialObs',
+        'cod_observaciones',
         'tema_referido',
         'correccion'
     ];
+
+    public function observacion(){
+        return $this->hasOne(ObservacionesProy::class);
+    }
+
     public $timestamps = false;
 }

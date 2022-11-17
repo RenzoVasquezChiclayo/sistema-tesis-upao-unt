@@ -20,6 +20,8 @@ class Tesis_2022 extends Model
         'presentacion',
         'resumen',
         'introduccion',
+        'dedicatoria',
+        'agradecimiento',
 
         'real_problematica',
         'antecedentes',
@@ -52,6 +54,13 @@ class Tesis_2022 extends Model
         'estado',
         'condicion'
     ];
+
+    public function estudiante(){
+        return $this->hasOne(EstudianteCT2022::class);
+    }
+    public function asesor(){
+        return $this->hasOne(AsesorCurso::class);
+    }
 
     public $timestamps = false;
 

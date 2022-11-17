@@ -23,13 +23,17 @@ return new class extends Migration
                     ->references('cod_matricula')
                     ->on('estudiante_ct2022')
                     ->onDelete('cascade');
-            $table->string('cod_docente',80)->nullable();
+            $table->char('cod_docente',4)->nullable();
+            $table->foreign('cod_docente')
+                    ->references('cod_docente')
+                    ->on('asesor_curso')
+                    ->onDelete('cascade');
 
-            $table->text('dedicatoria')->nullable();
-            $table->text('agradecimiento')->nullable();
             $table->text('presentacion')->nullable();
             $table->text('resumen')->nullable();
             $table->text('introduccion')->nullable();
+            $table->text('dedicatoria')->nullable();
+            $table->text('agradecimiento')->nullable();
 
             $table->text('real_problematica')->nullable();
             $table->text('antecedentes')->nullable();

@@ -22,11 +22,6 @@ return new class extends Migration
                     ->onDelete('cascade');
             $table->date('fecha')->nullable();
             $table->tinyInteger('estado')->default(0);
-            // $table->string('observacionNum',20)->nullable();
-            // $table->foreign('cod_proyinvestigacion')
-            //         ->references('cod_proyinvestigacion')
-            //         ->on('proyinvestigacion')
-            //         ->onDelete('cascade');
         });
 
     }

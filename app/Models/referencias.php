@@ -11,6 +11,7 @@ class referencias extends Model
     public $table = 'referencias';
     protected $primaryKey = 'cod_referencias';
     protected $fillable = [
+        'cod_tiporeferencia',
         'autor',
         'fPublicacion',
         'titulo',
@@ -31,10 +32,13 @@ class referencias extends Model
         /*Informe-Reporte*/
         'subtitle'        ,
         'name_editor '    ,
-        'cod_proyinvestigacion' ,
+        'cod_proyectotesis' ,
         ];
-        public function proyInvestigacion(){
-            return $this->hasOne(Tesis::class);
+        public function proyectoTesis(){
+            return $this->hasOne(TesisCT2022::class);
+        }
+        public function tipoReferencia(){
+            return $this->hasOne(TipoReferencia::class);
         }
 
     public $timestamps = false;

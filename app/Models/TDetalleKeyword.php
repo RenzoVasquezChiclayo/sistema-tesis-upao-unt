@@ -15,5 +15,9 @@ class TDetalleKeyword extends Model
         'id_keyword',
         'keyword'
     ];
+    public function keyword(){
+        return $this->hasOne(TKeyword::class);
+    }
+
     public $timestamps = false;
 }

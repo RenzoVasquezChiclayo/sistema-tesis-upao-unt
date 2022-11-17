@@ -16,6 +16,10 @@ return new class extends Migration
         Schema::create('matriz_operacional', function (Blueprint $table) {
             $table->integer('cod_matriz_ope')->autoIncrement();
             $table->integer('cod_tesis');
+            $table->foreign('cod_tesis')
+                    ->references('cod_tesis')
+                    ->on('tesis_2022')
+                    ->onDelete('cascade');
             $table->text('variable_I')->nullable();
             $table->text('def_conceptual_I')->nullable();
             $table->text('def_operacional_I')->nullable();

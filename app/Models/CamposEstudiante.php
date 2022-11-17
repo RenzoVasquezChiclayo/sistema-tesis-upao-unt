@@ -9,9 +9,9 @@ class CamposEstudiante extends Model
 {
     use HasFactory;
     public $table ='campos_estudiante';
-    protected $primaryKey = 'cod_matricula';
+    protected $primaryKey = 'cod_campoestudiante';
     protected $fillable =[
-        'cod_docente',
+        'cod_proyectotesis',
         'titulo',
         'tipo_investigacion',
         'localidad_institucion',
@@ -28,6 +28,11 @@ class CamposEstudiante extends Model
         'referencias_b'
 
     ];
+
+    public function proyectoTesis(){
+        return $this->hasOne(TesisCT2022::class);
+    }
+
     public $timestamps = false;
 
 }

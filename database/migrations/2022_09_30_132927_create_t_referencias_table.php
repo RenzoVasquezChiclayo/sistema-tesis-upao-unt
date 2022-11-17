@@ -16,6 +16,10 @@ return new class extends Migration
         Schema::create('t_referencias', function (Blueprint $table) {
             $table->integer('cod_referencias')->autoIncrement();
             $table->integer('cod_tiporeferencia');
+            $table->foreign('cod_tiporeferencia')
+                    ->references('cod_tiporeferencia')
+                    ->on('tiporeferencia')
+                    ->onDelete('cascade');
 
             $table->text('autor')->nullable();
             $table->string('fPublicacion',30)->nullable();
@@ -39,10 +43,9 @@ return new class extends Migration
             $table->string('name_editor',60)->nullable();
 
             $table->integer('cod_tesis')->nullable();
-
-            $table->foreign('cod_tiporeferencia')
-                    ->references('cod_tiporeferencia')
-                    ->on('tiporeferencia')
+            $table->foreign('cod_tesis')
+                    ->references('cod_tesis')
+                    ->on('tesis_2022')
                     ->onDelete('cascade');
         });
     }

@@ -16,6 +16,10 @@ return new class extends Migration
         Schema::create('t_detalle_keyword', function (Blueprint $table) {
             $table->integer('id_detalle_keyword')->autoIncrement();
             $table->integer('id_keyword')->nullable(false);
+            $table->foreign('id_keyword')
+                    ->references('id_keyword')
+                    ->on('t_keyword')
+                    ->onDelete('cascade');
             $table->string('keyword')->nullable(false);
 
         });

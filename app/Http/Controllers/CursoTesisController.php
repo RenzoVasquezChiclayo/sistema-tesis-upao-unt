@@ -84,7 +84,7 @@ class CursoTesisController extends Controller
 
         $tesis = TesisCT2022::where('cod_matricula','=',$autor->cod_matricula)->get(); //Encontramos la tesis
 
-        $asesor = AsesorCurso::find($autor->cod_docente); //Encontramos al asesor
+        $asesor = AsesorCurso::find($tesis->cod_docente); //Encontramos al asesor
         /* Traemos informacion de las tablas*/
         $tinvestigacion = TipoInvestigacion::all();
         $presupuestos = Presupuesto::all();
@@ -1321,13 +1321,13 @@ class CursoTesisController extends Controller
         if($buscarAlumno!=""){
             if (is_numeric($buscarAlumno)) {
 
-                $estudiantes = DB::table('estudiante_ct2022')->select('estudiante_ct2022.*')->where('estudiante_ct2022.cod_matricula','like','%'.$buscarAlumno.'%')->paginate($this::PAGINATION3);
+                $estudiantes = DB::table('estudiante_ct2022 as e')->leftJoin('proyecto_tesis as p','p.cod_matricula','=','e.cod_matricula')->select('e.*','p.cod_docente')->where('estudiante_ct2022.cod_matricula','like','%'.$buscarAlumno.'%')->paginate($this::PAGINATION3);
             } else {
-                $estudiantes = DB::table('estudiante_ct2022')->select('estudiante_ct2022.*')->where('estudiante_ct2022.apellidos','like','%'.$buscarAlumno.'%')->paginate($this::PAGINATION3);
+                $estudiantes = DB::table('estudiante_ct2022 as e')->leftJoin('proyecto_tesis as p','p.cod_matricula','=','e.cod_matricula')->select('e.*','p.cod_docente')->where('estudiante_ct2022.apellidos','like','%'.$buscarAlumno.'%')->paginate($this::PAGINATION3);
             }
         }else{
 
-            $estudiantes = DB::table('estudiante_ct2022')->select('estudiante_ct2022.*')->paginate($this::PAGINATION3);
+            $estudiantes = DB::table('estudiante_ct2022 as e')->leftJoin('proyecto_tesis as p','p.cod_matricula','=','e.cod_matricula')->select('e.*','p.cod_docente')->paginate($this::PAGINATION3);
         }
         // $estudiantes = DB::table('estudiante_ct2022')->where('cod_matricula','!=',null)->paginate($this::PAGINATION3);
         $asesores = AsesorCurso::all();
@@ -1343,26 +1343,32 @@ class CursoTesisController extends Controller
 
     public function saveAsesorAsignado(Request $request){
 
-        $asesorAsig = $request->saveAsesor;
+        $asesorAsignado = $request->saveAsesor;
 
-            $posicion = explode(',',$asesorAsig);
-
-            $i = 0;
-            do {
-                if ($posicion[$i]!=null) {
-                    $datos = explode('_',$posicion[$i]);
-
-                    $estudiante = EstudianteCT2022::find($datos[0]);
-
-                    $estudiante->cod_docente = $datos[1];
-                    $estudiante->save();
+        $posicion = explode(',',$asesorAsignado);
+        $i = 0;
+        do {
+            if ($posicion[$i]!=null) {
+                $datos = explode('_',$posicion[$i]);
+                $estudiante = EstudianteCT2022::find($datos[0]);
+                if($estudiante!=null){
+                    $proyectoTesis = TesisCT2022::where('cod_matricula',$estudiante->cod_matricula)->first();
+                    if ($proyectoTesis==null){
+                        $proyectoTesis = new TesisCT2022();
+                        $proyectoTesis->cod_matricula = $estudiante->cod_matricula;
+                    }
+                    $proyectoTesis->cod_docente = $datos[1];
+                    $proyectoTesis->save();
+                    $proyectoTesis = TesisCT2022::where('cod_matricula',$estudiante->cod_matricula)->first();
                     $campo = new CamposEstudiante();
-                    $campo->cod_matricula = $datos[0];
-                    $campo->cod_docente = $datos[1];
+                    $campo->cod_proyectotesis = $proyectoTesis->cod_proyectotesis;
                     $campo->save();
+                }else{
+                    return redirect()->route('director.asignar')->with('datos','error');
                 }
-                $i++;
-            } while ($i<count($posicion));
+            }
+            $i++;
+        } while ($i<count($posicion));
 
         return redirect()->route('director.asignar')->with('datos','ok');
     }
@@ -1378,12 +1384,14 @@ class CursoTesisController extends Controller
                     $datos = explode('_',$posicion[$i]);
 
                     $estudiante = EstudianteCT2022::find($datos[0]);
+                    if($estudiante!=null){
+                        $proyectoTesis = TesisCT2022::where('cod_matricula',$estudiante->cod_matricula)->first();
+                        $proyectoTesis->cod_docente = $datos[1];
+                        $proyectoTesis->save();
+                    }else{
+                        return redirect()->route('director.editarAsignacion')->with('datos','error');
+                    }
 
-                    $estudiante->cod_docente = $datos[1];
-                    $estudiante->save();
-                    $campo = CamposEstudiante::find($datos[0]);
-                    $campo->cod_docente = $datos[1];
-                    $campo->save();
                 }
                 $i++;
             } while ($i<count($posicion));

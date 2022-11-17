@@ -11,11 +11,14 @@ class THistorialObservaciones extends Model
     protected $table = 't_historial_observaciones';
     protected $primaryKey = 'cod_historial_observacion';
     protected $fillable = [
-        'cod_Tesis',
+        'cod_tesis',
         'fecha',
         'estado',
         // 'observacionNum'
     ];
+    public function tesis(){
+        return $this->hasOne(TesisCT2022::class);
+    }
 
     public $timestamps = false;
 }

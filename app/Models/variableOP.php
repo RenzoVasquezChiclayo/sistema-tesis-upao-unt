@@ -10,10 +10,10 @@ class variableOP extends Model
     use HasFactory;
     public $table = 'variableop';
     protected $primaryKey = 'cod_variable';
-    protected $fillable = ['descripcion','cod_proyinvestigacion'];
+    protected $fillable = ['descripcion','cod_proyectotesis'];
 
-    public function proyInvestigacion(){
-        return $this->hasOne(Tesis::class);
+    public function proyectoTesis(){
+        return $this->hasOne(TesisCT2022::class);
     }
     public $timestamps = false;
 }

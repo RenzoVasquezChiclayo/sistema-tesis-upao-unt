@@ -47,11 +47,6 @@ return new class extends Migration
                     ->references('cod_proyectotesis')
                     ->on('proyecto_tesis')
                     ->onDelete('cascade');
-
-            $table->foreign('cod_tiporeferencia')
-                    ->references('cod_tiporeferencia')
-                    ->on('tiporeferencia')
-                    ->onDelete('cascade');
             // $table->foreign('cod_proyinvestigacion')
             //         ->references('cod_proyinvestigacion')
             //         ->on('proyinvestigacion')

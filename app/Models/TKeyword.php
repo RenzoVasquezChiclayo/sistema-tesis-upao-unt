@@ -15,6 +15,11 @@ class TKeyword extends Model
         'cod_tesis',
         'fecha_update'
     ];
+
+    public function tesis(){
+        return $this->hasOne(Tesis_2022::class);
+    }
+
     public $timestamps = false;
 
 }

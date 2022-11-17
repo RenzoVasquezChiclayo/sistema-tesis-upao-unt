@@ -10,10 +10,15 @@ class recursos extends Model
     use HasFactory;
     public $table = 'recursos';
     protected $primaryKey = 'cod_recurso';
-    protected $fillable = ['tipo','subtipo','descripcion','cod_proyinvestigacion'];
+    protected $fillable = [
+        'tipo',
+        'subtipo',
+        'descripcion',
+        'cod_proyectotesis'
+    ];
 
-    public function proyInvestigacion(){
-        return $this->hasOne(Tesis::class);
+    public function proyectoTesis(){
+        return $this->hasOne(TesisCT2022::class);
     }
 
     public $timestamps = false;

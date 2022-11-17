@@ -13,13 +13,15 @@ class Presupuesto_Proyecto extends Model
     protected $fillable =[
         'precio',
         'cod_presupuesto',
-        'cod_proyinvestigacion'
+        'cod_proyectotesis'
     ];
 
     public function presupuesto(){
         return $this->hasOne(Presupuesto::class);
     }
-
+    public function proyectoTesis(){
+        return $this->hasOne(TesisCT2022::class);
+    }
 
     public $timestamps = false;
 }

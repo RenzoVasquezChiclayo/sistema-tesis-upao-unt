@@ -12,7 +12,7 @@ class ObservacionesProy extends Model
 
     protected $primaryKey = 'cod_observaciones';
     protected $fillable = [
-        'cod_proyinvestigacion',
+        'cod_historialObs',
         'observacionNum',
         'fecha',
         'titulo',
@@ -21,17 +21,10 @@ class ObservacionesProy extends Model
         'meses_ejecucion',
 
         'recursos',
-
-        // 'titulo_presup',
-        // 'nombre_recurso',
-        // 'cantidad_rec',
-        // 'costo_rec',
-        // 'financiamiento',
         'real_problematica',
         'antecedentes',
         'justificacion',
         'formulacion_prob',
-
         'objetivos',
 
         'marco_teorico',
@@ -44,17 +37,16 @@ class ObservacionesProy extends Model
         'metodos',
         'tecnicas_instrum',
         'instrumentacion',
-        'estrategias',
+        'estg_metodologicas',
 
         'variables',
         'referencias',
 
         'estado'
-
     ];
 
-    public function proyInvestigacion(){
-        return $this->hasOne(Tesis::class);
+    public function historialObservacion(){
+        return $this->hasOne(Historial_Observaciones::class);
     }
 
     public $timestamps = false;

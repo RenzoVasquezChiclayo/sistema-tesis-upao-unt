@@ -15,8 +15,11 @@ return new class extends Migration
     {
         Schema::create('t_observacion', function (Blueprint $table) {
             $table->integer('id_observacion')->autoIncrement();
-            $table->integer('cod_tesis')->nullable(false);
-            $table->integer('cod_historial_obs');
+            $table->integer('cod_historial_observacion');
+            $table->foreign('cod_historial_observacion')
+                    ->references('cod_historial_observacion')
+                    ->on('t_historial_observaciones')
+                    ->onDelete('cascade');
             $table->text('presentacion')->nullable();
             $table->text('resumen')->nullable();
             $table->text('keyword')->nullable();

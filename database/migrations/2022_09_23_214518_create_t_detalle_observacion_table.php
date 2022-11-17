@@ -15,7 +15,11 @@ return new class extends Migration
     {
         Schema::create('t_detalle_observacion', function (Blueprint $table) {
             $table->integer('id_detalle_observacion')->autoIncrement();
-            $table->integer('cod_historial_obs')->nullable(false);
+            $table->integer('id_observacion')->nullable(false);
+            $table->foreign('id_observacion')
+            ->references('id_observacion')
+            ->on('t_observacion')
+            ->onDelete('cascade');
             $table->string('tema_referido',80)->nullable(false);
             $table->text('correccion')->nullable();
         });
