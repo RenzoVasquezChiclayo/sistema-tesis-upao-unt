@@ -800,7 +800,7 @@
 
                             <!-- INICIO -->
                             <!-- Aqui empieza la logica de las imagenes que se iran agregando y cuando cargue la pag. -->
-                            <input type="hidden" id="getImg1" value="{{ $detalle_tipo }}">
+                            {{-- <input type="hidden" id="getImg1" value="{{ $detalle_tipo }}">
                             <input type="hidden" id="getAtribute1" value="{{ $tesis[0]->real_problematica }}">
                             <input type="button" value="-" id="botonauxiliar" onclick="funcionAuxiliar();">
                             <div class="col-12" hidden>
@@ -823,7 +823,7 @@
                                     <input class="btn btn-success" type="button" value="Continuar"
                                         onclick="btnContinuarTxt(0);">
                                 </div>
-                            </div>
+                            </div> --}}
                             <!-- FINAL -->
                             @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
                                 @if ($correciones[0]->real_problematica != null)
@@ -1833,7 +1833,7 @@
                                         <th scope="col">DEFINICION OPERACIONAL</th>
                                         <th scope="col">DIMENSIONES</th>
                                         <th scope="col">INDICADORES</th>
-                                        <th scope="col">Escala</th>
+                                        <th scope="col">ESCALA</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -1857,7 +1857,7 @@
                                                 <td><textarea class="form-control" name="d_esc" rows="3" cols="8">@if ($matriz[0]->escala_D!=null){{$matriz[0]->escala_D}}@endif</textarea></td>
                                             </tr>
                                         @else
-                                            <tr>No existen datos.</tr>
+                                            <tr><td colspan="6"><em>No existen datos</em></td></tr>
                                         @endif
                                     </tbody>
                                 </table>
@@ -1922,107 +1922,109 @@
                                     </div>
                                 @endif
                             </div>
-                            <div class="row border-box">
-                                <div class="item-card2">
-                                    <div class="col-12">
-                                        <label for="txtAutorAPA" class="form-label">Autor</label>
-                                        <div class="row">
-                                            <div class="col-6 col-xl-7">
-                                                <input class="form-control" name="txtAutorAPA" id="txtAutorAPA"
-                                                    type="text" value="" placeholder="Nombre del autor">
-                                            </div>
-                                            <div class="col-4 col-xl-3" id="btnVariosAutores" hidden>
-                                                <input type="button" class="btn btn-success" id="btnAgregaAutores"
-                                                    onclick="addAutor();" value="Agregar"
-                                                    style="width:70px; font-size:1.2vh;">
-                                            </div>
-                                            <div class="col-2">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value=""
-                                                        id="chkMasAutor" onclick="setVariosAutores();">
-                                                    <label class="form-check-label" for="chkMasAutor">
-                                                        Varios
-                                                    </label>
+                            <div class="col-12">
+                                <div class="row border-box">
+                                    <div class="item-card2">
+                                        <div class="col-12">
+                                            <label for="txtAutorAPA" class="form-label">Autor</label>
+                                            <div class="row">
+                                                <div class="col-6 col-xl-7">
+                                                    <input class="form-control" name="txtAutorAPA" id="txtAutorAPA"
+                                                        type="text" value="" placeholder="Nombre del autor">
                                                 </div>
+                                                <div class="col-4 col-xl-3" id="btnVariosAutores" hidden>
+                                                    <input type="button" class="btn btn-success" id="btnAgregaAutores"
+                                                        onclick="addAutor();" value="Agregar"
+                                                        style="width:70px; font-size:1.2vh;">
+                                                </div>
+                                                <div class="col-2">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value=""
+                                                            id="chkMasAutor" onclick="setVariosAutores();">
+                                                        <label class="form-check-label" for="chkMasAutor">
+                                                            Varios
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" id="array_autores">
                                             </div>
-                                            <input type="hidden" id="array_autores">
                                         </div>
-                                    </div>
-                                    <div class="col-12" style="padding-top:5px;" id="rowVariosAutores" hidden>
-                                        <div class="row" id="rowAddAutor"
-                                            style="display: grid; grid-template-columns: repeat(auto-fill,minmax(9em,1fr)); grid-gap: 2px; ">
+                                        <div class="col-12" style="padding-top:5px;" id="rowVariosAutores" hidden>
+                                            <div class="row" id="rowAddAutor"
+                                                style="display: grid; grid-template-columns: repeat(auto-fill,minmax(9em,1fr)); grid-gap: 2px; ">
 
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="item-card2">
-                                    <label for="txtFechaPublicacion" class="form-label">Fecha de Publicacion</label>
-                                    <input class="form-control" name="txtFechaPublicacion" id="txtFechaPublicacion"
-                                        type="text" value="" placeholder="Fecha de publicacion">
-                                </div>
-                                <div class="item-card2">
-                                    <label for="txtTituloTrabajo" class="form-label">Titulo del Trabajo</label>
-                                    <input class="form-control" name="txtTituloTrabajo" id="txtTituloTrabajo"
-                                        type="text" value="" placeholder="Titulo del trabajo">
-                                </div>
-                                <div class="item-card2">
-                                    <label for="txtFuente" class="form-label">Fuente</label>
-                                    <input class="form-control" name="txtFuente" id="txtFuente" type="text"
-                                        value="" placeholder="Fuente para recuperacion">
-                                </div>
-                                <div class="item-card2" id="div-editorial" hidden>
-                                    <label for="txtEditorial" class="form-label">Editorial</label>
-                                    <input class="form-control" name="txtEditorial" id="txtEditorial" type="text"
-                                        value="" placeholder="Editorial">
-                                </div>
-                                <div class="item-card2" id="div-titlecap" hidden>
-                                    <label for="txtTitleCap" class="form-label">Titulo del Capitulo</label>
-                                    <input class="form-control" name="txtTitleCap" id="txtTitleCap" type="text"
-                                        value="" placeholder="Titulo del capitulo">
-                                </div>
-                                <div class="item-card2" id="div-numcap" hidden>
-                                    <label for="txtNumCapitulo" class="form-label"># Capitulos</label>
-                                    <input class="form-control" name="txtNumCapitulo" id="txtNumCapitulo"
-                                        type="text" value="" placeholder="Numero del capitulo">
-                                </div>
-                                <div class="item-card2" id="div-titlerev" hidden>
-                                    <label for="txtTitleRev" class="form-label">Titulo de Revista</label>
-                                    <input class="form-control" name="txtTitleRev" id="txtTitleRev" type="text"
-                                        value="" placeholder="Titulo de revista">
-                                </div>
-                                <div class="item-card2" id="div-volumen" hidden>
-                                    <label for="txtVolumen" class="form-label">Volumen</label>
-                                    <input class="form-control" name="txtVolumen" id="txtVolumen" type="text"
-                                        value="" placeholder="Volumen">
-                                </div>
-                                <div class="item-card2" id="div-nameweb" hidden>
-                                    <label for="txtNameWeb" class="form-label">Nombre de la Web</label>
-                                    <input class="form-control" name="txtNameWeb" id="txtNameWeb" type="text"
-                                        value="" placeholder="Nombre de la web">
-                                </div>
-                                <div class="item-card2" id="div-nameperiodista" hidden>
-                                    <label for="txtNamePeriodista" class="form-label">Nombre del Periodista</label>
-                                    <input class="form-control" name="txtNamePeriodista" id="txtNamePeriodista"
-                                        type="text" value="" placeholder="Nombre del periodista">
-                                </div>
-                                <div class="item-card2" id="div-nameinsti" hidden>
-                                    <label for="txtNameInsti" class="form-label">Nombre de la Institucion</label>
-                                    <input class="form-control" name="txtNameInsti" id="txtNameInsti" type="text"
-                                        value="" placeholder="Nombre de la institucion">
-                                </div>
-                                <div class="item-card2" id="div-subtitle" hidden>
-                                    <label for="txtSubtitle" class="form-label">Sub titulo</label>
-                                    <input class="form-control" name="txtSubtitle" id="txtSubtitle" type="text"
-                                        value="" placeholder="Subtitulo">
-                                </div>
-                                <div class="item-card2" id="div-nameeditor" hidden>
-                                    <label for="txtNameEditor" class="form-label">Nombre del editor</label>
-                                    <input class="form-control" name="txtNameEditor" id="txtNameEditor"
-                                        type="text" value="" placeholder="Nombre del Editor">
+                                    <div class="item-card2">
+                                        <label for="txtFechaPublicacion" class="form-label">Fecha de Publicacion</label>
+                                        <input class="form-control" name="txtFechaPublicacion" id="txtFechaPublicacion"
+                                            type="text" value="" placeholder="Fecha de publicacion">
+                                    </div>
+                                    <div class="item-card2">
+                                        <label for="txtTituloTrabajo" class="form-label">Titulo del Trabajo</label>
+                                        <input class="form-control" name="txtTituloTrabajo" id="txtTituloTrabajo"
+                                            type="text" value="" placeholder="Titulo del trabajo">
+                                    </div>
+                                    <div class="item-card2">
+                                        <label for="txtFuente" class="form-label">Fuente</label>
+                                        <input class="form-control" name="txtFuente" id="txtFuente" type="text"
+                                            value="" placeholder="Fuente para recuperacion">
+                                    </div>
+                                    <div class="item-card2" id="div-editorial" hidden>
+                                        <label for="txtEditorial" class="form-label">Editorial</label>
+                                        <input class="form-control" name="txtEditorial" id="txtEditorial" type="text"
+                                            value="" placeholder="Editorial">
+                                    </div>
+                                    <div class="item-card2" id="div-titlecap" hidden>
+                                        <label for="txtTitleCap" class="form-label">Titulo del Capitulo</label>
+                                        <input class="form-control" name="txtTitleCap" id="txtTitleCap" type="text"
+                                            value="" placeholder="Titulo del capitulo">
+                                    </div>
+                                    <div class="item-card2" id="div-numcap" hidden>
+                                        <label for="txtNumCapitulo" class="form-label"># Capitulos</label>
+                                        <input class="form-control" name="txtNumCapitulo" id="txtNumCapitulo"
+                                            type="text" value="" placeholder="Numero del capitulo">
+                                    </div>
+                                    <div class="item-card2" id="div-titlerev" hidden>
+                                        <label for="txtTitleRev" class="form-label">Titulo de Revista</label>
+                                        <input class="form-control" name="txtTitleRev" id="txtTitleRev" type="text"
+                                            value="" placeholder="Titulo de revista">
+                                    </div>
+                                    <div class="item-card2" id="div-volumen" hidden>
+                                        <label for="txtVolumen" class="form-label">Volumen</label>
+                                        <input class="form-control" name="txtVolumen" id="txtVolumen" type="text"
+                                            value="" placeholder="Volumen">
+                                    </div>
+                                    <div class="item-card2" id="div-nameweb" hidden>
+                                        <label for="txtNameWeb" class="form-label">Nombre de la Web</label>
+                                        <input class="form-control" name="txtNameWeb" id="txtNameWeb" type="text"
+                                            value="" placeholder="Nombre de la web">
+                                    </div>
+                                    <div class="item-card2" id="div-nameperiodista" hidden>
+                                        <label for="txtNamePeriodista" class="form-label">Nombre del Periodista</label>
+                                        <input class="form-control" name="txtNamePeriodista" id="txtNamePeriodista"
+                                            type="text" value="" placeholder="Nombre del periodista">
+                                    </div>
+                                    <div class="item-card2" id="div-nameinsti" hidden>
+                                        <label for="txtNameInsti" class="form-label">Nombre de la Institucion</label>
+                                        <input class="form-control" name="txtNameInsti" id="txtNameInsti" type="text"
+                                            value="" placeholder="Nombre de la institucion">
+                                    </div>
+                                    <div class="item-card2" id="div-subtitle" hidden>
+                                        <label for="txtSubtitle" class="form-label">Sub titulo</label>
+                                        <input class="form-control" name="txtSubtitle" id="txtSubtitle" type="text"
+                                            value="" placeholder="Subtitulo">
+                                    </div>
+                                    <div class="item-card2" id="div-nameeditor" hidden>
+                                        <label for="txtNameEditor" class="form-label">Nombre del editor</label>
+                                        <input class="form-control" name="txtNameEditor" id="txtNameEditor"
+                                            type="text" value="" placeholder="Nombre del Editor">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-2">
+                            <div class="row mt-3">
+                                <div class="col">
                                     <span id="fullReference" name="fullReference" style="color: red"></span>
                                     <input type="button" class="btn btn-outline-primary" value="Agregar referencia"
                                         onclick="agregarReferenciaB();">
@@ -2084,20 +2086,16 @@
                         </div>
                     </div>
                     <div class="row" style=" margin-bottom:20px;">
-                        @if ($tesis[0]->estado == 0 || $tesis[0]->estado == 2 || $tesis[0]->estado == 9)
-                            <div class="col-4 col-md-2 ">
-                                <input type="button" class="btn btn-outline-success" value="Guardar"
-                                    onclick="guardarCopia();">
-                            </div>
-                        @endif
-                        <div class="col-8 col-md-9" style="align-items:flex-start;">
-
+                        <div class="d-grid gap-2 d-md-block">
                             @if ($tesis[0]->estado == 0 || $tesis[0]->estado == 2 || $tesis[0]->estado == 9)
-                                <input class="btn btn-success" type="button" value="Enviar"
-                                    onclick="registerProject();">
+                                <input type="button" class="btn btn-secondary" value="Guardar"
+                                        onclick="guardarCopia();">
                             @endif
-                            <a href="{{ route('user_information') }}" type="button" class="btn btn-danger"
-                                style="margin-left:20px;">
+                            @if ($tesis[0]->estado == 0 || $tesis[0]->estado == 2 || $tesis[0]->estado == 9)
+                                    <input class="btn btn-primary" type="button" value="Enviar"
+                                        onclick="registerProject();">
+                            @endif
+                            <a href="{{ route('user_information') }}" type="button" class="btn btn-outline-danger ms-3">
                                 @if ($tesis[0]->estado == 0 || $tesis[0]->estado == 2)
                                     Cancelar
                                 @else

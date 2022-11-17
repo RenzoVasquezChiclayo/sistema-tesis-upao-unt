@@ -864,13 +864,12 @@
                             <table class="table" id="table-matriz" style="border: 5px;">
                                 <thead>
                                     <tr>
-                                    <th scope="col"></th>
                                     <th scope="col">VARIABLES</th>
                                     <th scope="col">DEFINICION CONCEPTUAL</th>
                                     <th scope="col">DEFINICION OPERACIONAL</th>
                                     <th scope="col">DIMENSIONES</th>
                                     <th scope="col">INDICADORES</th>
-                                    <th scope="col">Escala</th>
+                                    <th scope="col">ESCALA</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -894,7 +893,7 @@
                                             <td><textarea class="form-control" name="d_esc" rows="3" cols="8" readonly>@if ($matriz[0]->escala_D!=null){{$matriz[0]->escala_D}}@endif</textarea></td>
                                         </tr>
                                     @else
-                                        <tr>No existen</tr>
+                                        <tr><td colspan="6"><em class="class="fst-italic"">No existen datos</em></td></tr>
                                     @endif
                                 </tbody>
                                 </table>
@@ -971,6 +970,9 @@
                                         @if($cursoTesis[0]->estado == 1)
                                             <input class="btn btn-secondary" type="button" value="Sin observaciones" onclick="saveWithoutErrors();">
                                             <input class="btn btn-primary" type="button" value="Guardar Observaciones" onclick="uploadProyecto();">
+                                        @endif
+                                        @if($cursoTesis[0]->estado == 2)
+                                            <input class="btn btn-warning" type="button" value="Editar campos" onclick="editCamposEstudiante();">
                                         @endif
                                         <a href="{{route('asesor.showEstudiantes')}}" type="button" class="btn btn-outline-danger">Cancelar</a>
                                     </div>
@@ -1165,6 +1167,12 @@
                 }
             }
 
+        }
+
+        function editCamposEstudiante(){
+            document.formProyecto.action = "{{route('asesor.asignarTemas')}}";
+            document.formProyecto.method = "POST";
+            document.formProyecto.submit();
         }
 
         function chkCorregir(check){

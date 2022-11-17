@@ -1458,8 +1458,10 @@ class CursoTesisController extends Controller
     public function asignarTemas(Request $request){
         $id = $request->cod_matricula_hidden;
         $tesis = TesisCT2022::where('cod_matricula',$id)->first();
-        $tesis->estado = 2;
-        $tesis->save();
+        if($tesis->estado !=2){
+            $tesis->estado = 2;
+            $tesis->save();
+        }
         $estudiante = DB::table('campos_estudiante as ce')
                             ->join('proyecto_tesis as p','p.cod_proyectotesis','=','ce.cod_proyectotesis')
                             ->join('estudiante_ct2022 as e','e.cod_matricula','=','p.cod_matricula')
@@ -1469,58 +1471,24 @@ class CursoTesisController extends Controller
     }
 
     public function guardarTemas(Request $request){
-
-
-        $temas = CamposEstudiante::find($request->cod_matriculaAux);
-
-
-            if($request->chkTInvestigacion != null){
-
-                $temas->tipo_investigacion = 1;
-            }
-            if($request->chkLocalidad != null){
-
-                $temas->localidad_institucion = 1;
-            }
-            if($request->chkDuracion != null){
-                $temas->duracion_proyecto = 1;
-            }
-            if($request->chkRecursos != null){
-                $temas->recursos = 1;
-            }
-            if($request->chkPresupuesto != null){
-                $temas->presupuesto = 1;
-            }
-            if($request->chkFinanciamiento != null){
-                $temas->financiamiento = 1;
-            }
-            if($request->chkRealProb != null){
-                $temas->rp_antecedente_justificacion = 1;
-            }
-            if($request->chkProblema != null){
-                $temas->formulacion_problema = 1;
-            }
-            if($request->chkObjetivos != null){
-                $temas->objetivos = 1;
-            }
-            if($request->chkMarcos != null){
-                $temas->marcos = 1;
-            }
-            if($request->chkHipotesis != null){
-                $temas->formulacion_hipotesis = 1;
-            }
-            if($request->chkDiseno != null){
-                $temas->diseño_investigacion = 1;
-            }
-            if($request->chkReferencias != null){
-                $temas->referencias_b = 1;
-            }
-
-        //}
+        $tesis = TesisCT2022::where('cod_matricula',$request->cod_matriculaAux)->first();
+        $temas = CamposEstudiante::where('cod_proyectotesis',$tesis->cod_proyectotesis)->first();
+        if($request->chkTInvestigacion != null) $temas->tipo_investigacion = 1;
+        if($request->chkLocalidad != null)      $temas->localidad_institucion = 1;
+        if($request->chkDuracion != null)       $temas->duracion_proyecto = 1;
+        if($request->chkRecursos != null)       $temas->recursos = 1;
+        if($request->chkPresupuesto != null)    $temas->presupuesto = 1;
+        if($request->chkFinanciamiento != null) $temas->financiamiento = 1;
+        if($request->chkRealProb != null)       $temas->rp_antecedente_justificacion = 1;
+        if($request->chkProblema != null)       $temas->formulacion_problema = 1;
+        if($request->chkObjetivos != null)      $temas->objetivos = 1;
+        if($request->chkMarcos != null)         $temas->marcos = 1;
+        if($request->chkHipotesis != null)      $temas->formulacion_hipotesis = 1;
+        if($request->chkDiseno != null)         $temas->diseño_investigacion = 1;
+        if($request->chkReferencias != null)    $temas->referencias_b = 1;
 
         $temas->save();
         return redirect()->route('asesor.showEstudiantes')->with('datos','ok');
-
     }
 
     public function revisarTemas(Request $request){
