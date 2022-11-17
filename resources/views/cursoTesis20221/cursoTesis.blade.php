@@ -1837,24 +1837,28 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr id="table-matriz-tr">
-                                            <td>VI</td>
-                                            <td><textarea class="form-control" name="i_varI" rows="3" cols="8">@if ($matriz[0]->variable_I!=null){{$matriz[0]->variable_I}}@endif</textarea></td>
-                                            <td><textarea class="form-control" name="i_dc" rows="3" cols="8">@if ($matriz[0]->def_conceptual_I!=null){{$matriz[0]->def_conceptual_I}}@endif</textarea></td>
-                                            <td><textarea class="form-control" name="i_do" rows="3" cols="8">@if ($matriz[0]->def_operacional_I!=null){{$matriz[0]->def_operacional_I}}@endif</textarea></td>
-                                            <td><textarea class="form-control" name="i_dim" rows="3" cols="8">@if ($matriz[0]->dimensiones_I!=null){{$matriz[0]->dimensiones_I}}@endif</textarea></td>
-                                            <td><textarea class="form-control" name="i_ind" rows="3" cols="8">@if ($matriz[0]->indicadores_I!=null){{$matriz[0]->indicadores_I}}@endif</textarea></td>
-                                            <td><textarea class="form-control" name="i_esc" rows="3" cols="8">@if ($matriz[0]->escala_I!=null){{$matriz[0]->escala_I}} @endif</textarea></td>
-                                        </tr>
-                                        <tr>
-                                            <td>VD</td>
-                                            <td><textarea class="form-control" name="d_varD" rows="3" cols="8">@if ($matriz[0]->variable_D!=null){{$matriz[0]->variable_D}}@endif</textarea></td>
-                                            <td><textarea class="form-control" name="d_dc" rows="3" cols="8">@if ($matriz[0]->def_conceptual_D!=null){{$matriz[0]->def_conceptual_D}}@endif</textarea></td>
-                                            <td><textarea class="form-control" name="d_do" rows="3" cols="8">@if ($matriz[0]->def_operacional_D!=null){{$matriz[0]->def_operacional_D}}@endif</textarea></td>
-                                            <td><textarea class="form-control" name="d_dim" rows="3" cols="8">@if ($matriz[0]->dimensiones_D!=null){{$matriz[0]->dimensiones_D}}@endif</textarea></td>
-                                            <td><textarea class="form-control" name="d_ind" rows="3" cols="8">@if ($matriz[0]->indicadores_D!=null){{$matriz[0]->indicadores_D}}@endif</textarea></td>
-                                            <td><textarea class="form-control" name="d_esc" rows="3" cols="8">@if ($matriz[0]->escala_D!=null){{$matriz[0]->escala_D}}@endif</textarea></td>
-                                        </tr>
+                                        @if($matriz->count()>0)
+                                            <tr id="table-matriz-tr">
+                                                <td>VI</td>
+                                                <td><textarea class="form-control" name="i_varI" rows="3" cols="8">@if ($matriz[0]->variable_I!=null){{$matriz[0]->variable_I}}@endif</textarea></td>
+                                                <td><textarea class="form-control" name="i_dc" rows="3" cols="8">@if ($matriz[0]->def_conceptual_I!=null){{$matriz[0]->def_conceptual_I}}@endif</textarea></td>
+                                                <td><textarea class="form-control" name="i_do" rows="3" cols="8">@if ($matriz[0]->def_operacional_I!=null){{$matriz[0]->def_operacional_I}}@endif</textarea></td>
+                                                <td><textarea class="form-control" name="i_dim" rows="3" cols="8">@if ($matriz[0]->dimensiones_I!=null){{$matriz[0]->dimensiones_I}}@endif</textarea></td>
+                                                <td><textarea class="form-control" name="i_ind" rows="3" cols="8">@if ($matriz[0]->indicadores_I!=null){{$matriz[0]->indicadores_I}}@endif</textarea></td>
+                                                <td><textarea class="form-control" name="i_esc" rows="3" cols="8">@if ($matriz[0]->escala_I!=null){{$matriz[0]->escala_I}} @endif</textarea></td>
+                                            </tr>
+                                            <tr>
+                                                <td>VD</td>
+                                                <td><textarea class="form-control" name="d_varD" rows="3" cols="8">@if ($matriz[0]->variable_D!=null){{$matriz[0]->variable_D}}@endif</textarea></td>
+                                                <td><textarea class="form-control" name="d_dc" rows="3" cols="8">@if ($matriz[0]->def_conceptual_D!=null){{$matriz[0]->def_conceptual_D}}@endif</textarea></td>
+                                                <td><textarea class="form-control" name="d_do" rows="3" cols="8">@if ($matriz[0]->def_operacional_D!=null){{$matriz[0]->def_operacional_D}}@endif</textarea></td>
+                                                <td><textarea class="form-control" name="d_dim" rows="3" cols="8">@if ($matriz[0]->dimensiones_D!=null){{$matriz[0]->dimensiones_D}}@endif</textarea></td>
+                                                <td><textarea class="form-control" name="d_ind" rows="3" cols="8">@if ($matriz[0]->indicadores_D!=null){{$matriz[0]->indicadores_D}}@endif</textarea></td>
+                                                <td><textarea class="form-control" name="d_esc" rows="3" cols="8">@if ($matriz[0]->escala_D!=null){{$matriz[0]->escala_D}}@endif</textarea></td>
+                                            </tr>
+                                        @else
+                                            <tr>No existen datos.</tr>
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>

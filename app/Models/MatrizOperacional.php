@@ -10,9 +10,9 @@ class MatrizOperacional extends Model
     use HasFactory;
     public $table = 'matriz_operacional';
     protected $primaryKey = 'cod_matriz_ope';
-    protected $fillable = ['cod_tesis','tipo','variable_I','def_conceptual_I','def_operacional_I','dimensiones_I','indicadores_I','escala_I','variable_D','def_conceptual_D','def_operacional_D','dimensiones_D','indicadores_D','escala_D'];
-    public function tesis(){
-        return $this->hasOne(Tesis_2022::class);
+    protected $fillable = ['cod_proyectotesis','tipo','variable_I','def_conceptual_I','def_operacional_I','dimensiones_I','indicadores_I','escala_I','variable_D','def_conceptual_D','def_operacional_D','dimensiones_D','indicadores_D','escala_D'];
+    public function proyectoTesis(){
+        return $this->hasOne(TesisCT2022::class);
     }
 
     public $timestamps = false;

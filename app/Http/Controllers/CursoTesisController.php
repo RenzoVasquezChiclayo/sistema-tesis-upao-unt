@@ -80,41 +80,41 @@ class CursoTesisController extends Controller
         $aux = explode('-',$id);
         $id = $aux[0];
 
-        $autor = EstudianteCT2022::find($id); //Encontramos al autor
+        $autor = EstudianteCT2022::leftJoin('proyecto_tesis as p','p.cod_matricula','=','estudiante_ct2022.cod_matricula')->select('estudiante_ct2022.*','p.cod_docente')->where('estudiante_ct2022.cod_matricula',$id)->first(); //Encontramos al autor
 
         $tesis = TesisCT2022::where('cod_matricula','=',$autor->cod_matricula)->get(); //Encontramos la tesis
 
-        $asesor = AsesorCurso::find($tesis->cod_docente); //Encontramos al asesor
+        $asesor = AsesorCurso::find($tesis[0]->cod_docente); //Encontramos al asesor
         /* Traemos informacion de las tablas*/
         $tinvestigacion = TipoInvestigacion::all();
         $presupuestos = Presupuesto::all();
         $tiporeferencia = TipoReferencia::all();
-        $referencias = referencias::where('cod_proyinvestigacion','=',$tesis[0]->cod_cursoTesis)->get(); //Por si existen referencias
+        $referencias = referencias::where('cod_proyectotesis','=',$tesis[0]->cod_proyectotesis)->get(); //Por si existen referencias
 
         //Verificaremos que se hayan dado las observaciones y las enviaremos
         $correciones = ObservacionesProy::join('historial_observaciones','observaciones_proy.cod_historialObs','=','historial_observaciones.cod_historialObs')
-                        ->select('observaciones_proy.*')->where('historial_observaciones.cod_proyinvestigacion',$tesis[0]->cod_cursoTesis)
+                        ->select('observaciones_proy.*')->where('historial_observaciones.cod_proyectotesis',$tesis[0]->cod_proyectotesis)
                         ->where('observaciones_proy.estado',1)->get();
         $detalles = [];
         if(sizeof($correciones)>0){
             $detalles = Detalle_Observaciones::where('cod_observaciones',$correciones[0]->cod_observaciones)->get();
         }
 
-        $presupuestoProy = Presupuesto_Proyecto::where('cod_proyinvestigacion','=',$tesis[0]->cod_cursoTesis)->get();
+        $presupuestoProy = Presupuesto_Proyecto::where('cod_proyectotesis','=',$tesis[0]->cod_proyectotesis)->get();
 
-        $recursos = recursos::where('cod_proyinvestigacion','=',$tesis[0]->cod_cursoTesis)->get();
+        $recursos = recursos::where('cod_proyectotesis','=',$tesis[0]->cod_proyectotesis)->get();
 
-        $objetivos = Objetivo::where('cod_proyinvestigacion','=',$tesis[0]->cod_cursoTesis)->get();
+        $objetivos = Objetivo::where('cod_proyectotesis','=',$tesis[0]->cod_proyectotesis)->get();
 
-        $variableop = variableOP::where('cod_proyinvestigacion','=',$tesis[0]->cod_cursoTesis)->get();
+        $variableop = variableOP::where('cod_proyectotesis','=',$tesis[0]->cod_proyectotesis)->get();
 
-        $campos = CamposEstudiante::where('cod_matricula',$id)->get();
+        $campos = CamposEstudiante::where('cod_proyectotesis',$tesis[0]->cod_proyectotesis)->get();
 
-        $matriz = MatrizOperacional::where('cod_tesis','=',$tesis[0]->cod_cursoTesis)->get();
+        $matriz = MatrizOperacional::where('cod_proyectotesis','=',$tesis[0]->cod_proyectotesis)->get();
 
         //Obtener los archivos e imagenes que tuviese guardado.
         $detalleHistorial = [];
-        // $historialArchivos = Archivo_Tesis_ct2022::where('cod_cursoTesis','=',$tesis[0]->cod_cursoTesis)->get();
+        // $historialArchivos = Archivo_Tesis_ct2022::where('cod_proyectotesis','=',$tesis[0]->cod_proyectotesis)->get();
 
         // if ($historialArchivos->count()>0) {
         //     $detalleHistorial = Detalle_Archivo::where('cod_archivos','=',$historialArchivos[0]->cod_archivos)->get();
@@ -152,7 +152,7 @@ class CursoTesisController extends Controller
         $tesis = TesisCT2022::where('cod_matricula','=',$estudiante->cod_matricula)->first();
 
         $observacionX = ObservacionesProy::join('historial_observaciones','observaciones_proy.cod_historialObs','=','historial_observaciones.cod_historialObs')
-                    ->select('observaciones_proy.*')->where('historial_observaciones.cod_proyinvestigacion',$tesis->cod_cursoTesis)
+                    ->select('observaciones_proy.*')->where('historial_observaciones.cod_proyectotesis',$tesis->cod_proyectotesis)
                     ->where('observaciones_proy.estado',1)->get();
 
         if(sizeof($observacionX)>0){
@@ -176,7 +176,7 @@ class CursoTesisController extends Controller
                     $detalleEEG->save();
                 }
 
-                $historialX = Historial_Observaciones::where('cod_proyinvestigacion','=',$tesis->cod_cursoTesis)->get();
+                $historialX = Historial_Observaciones::where('cod_proyectotesis','=',$tesis->cod_proyectotesis)->get();
                 $historialX[0]->fecha = now();
                 $historialX[0]->save();
 
@@ -203,12 +203,6 @@ class CursoTesisController extends Controller
                     Objetivo::find($deleteObjetivos[$i])->delete();
                 }
             }
-
-             /*Datos del Asesor*/
-            $tesis->nombre_asesor = $request->txtNombreAsesor;
-            $tesis->grado_asesor = $request->txtGrAcademicoAsesor;
-            $tesis->titulo_asesor = $request->txtTProfesional;
-            $tesis->direccion_asesor = $request->txtDireccionAsesor;
 
             /*Proyecto de Investigacion y/o Tesis*/
             if($request->txttitulo!=""){$tesis->titulo = $request->txttitulo;}
@@ -259,16 +253,16 @@ class CursoTesisController extends Controller
             }
 
             //Guardar los grupos $request->gruposFotosRP
-            // $historialArchivosT = Archivo_Tesis_ct2022::where('cod_cursoTesis','=',$tesis->cod_cursoTesis)->get();
+            // $historialArchivosT = Archivo_Tesis_ct2022::where('cod_proyectotesis','=',$tesis->cod_proyectotesis)->get();
 
             // if (sizeof($historialArchivosT)==0) {
             //     $historialArchivos = new Archivo_Tesis_ct2022();
-            //     $historialArchivos->cod_cursoTesis = $tesis->cod_cursoTesis;
+            //     $historialArchivos->cod_proyectotesis = $tesis->cod_proyectotesis;
             //     $historialArchivos->save();
             // }
 
             // // COEMNTADO PARA PRESENTACION AL PROFESOR, LUEGO DESCOMENTAR.
-            // $historialArchivosX = Archivo_Tesis_ct2022::where('cod_cursoTesis',$tesis->cod_cursoTesis)->get();
+            // $historialArchivosX = Archivo_Tesis_ct2022::where('cod_proyectotesis',$tesis->cod_proyectotesis)->get();
 
             // //Guardar archivos de Realidad Problematica
             // $unirtxtAreaRP = $this->getText_saveImg($request,$request->txtAreaRP,$estudiante->cod_matricula,
@@ -350,7 +344,7 @@ class CursoTesisController extends Controller
 
                         $cadena = $cadena.$arregloTipo[$i].", ".$arreglosubTipo[$i].", ".$arregloDescipcion[$i].". ";
 
-                        $recurso->cod_proyinvestigacion = $tesis->cod_cursoTesis;
+                        $recurso->cod_proyectotesis = $tesis->cod_proyectotesis;
 
                         $recurso->save();
 
@@ -374,7 +368,7 @@ class CursoTesisController extends Controller
                 $preciosP = explode("_",$preciosP);
 
                 $arregloPresupuesto = Presupuesto::all();
-                $existPresupuesto = Presupuesto_Proyecto::where('cod_proyinvestigacion',$tesis->cod_cursoTesis)->get();
+                $existPresupuesto = Presupuesto_Proyecto::where('cod_proyectotesis',$tesis->cod_proyectotesis)->get();
                 $x=0;
                 if($existPresupuesto->count()==0){
 
@@ -384,7 +378,7 @@ class CursoTesisController extends Controller
                         $preProyect = new Presupuesto_Proyecto();
                         $preProyect->cod_presupuesto = $presupuesto->cod_presupuesto;
                         $preProyect->precio = floatval($preciosP[$x]);
-                        $preProyect->cod_proyinvestigacion = $tesis->cod_cursoTesis;
+                        $preProyect->cod_proyectotesis = $tesis->cod_proyectotesis;
                         $preProyect->save();
 
                         $x +=1;
@@ -420,7 +414,7 @@ class CursoTesisController extends Controller
                         $objetivo->tipo = $arregloTipoObj[$i];
                         $objetivo->descripcion = $arreglodescripcionObj[$i];
                         $cadena = $arregloTipoObj[$i].", ".$arreglodescripcionObj[$i].". ";
-                        $objetivo->cod_proyinvestigacion = $tesis->cod_cursoTesis;
+                        $objetivo->cod_proyectotesis = $tesis->cod_proyectotesis;
                         $objetivo->save();
                     }
                     if(sizeof($observacionX)>0){
@@ -450,7 +444,7 @@ class CursoTesisController extends Controller
                         $variable = new variableOP();
                         $variable->descripcion = $arreglodescripcionVar[$i];
                         $cadena = $cadena.$arreglodescripcionVar[$i].". ";
-                        $variable->cod_proyinvestigacion = $tesis->cod_cursoTesis;
+                        $variable->cod_proyectotesis = $tesis->cod_proyectotesis;
                         $variable->save();
                     }
                     if(sizeof($observacionX)>0){
@@ -689,7 +683,7 @@ class CursoTesisController extends Controller
                         }
                         $aux6++;
                     }
-                    $referencias->cod_proyinvestigacion = $tesis->cod_cursoTesis;
+                    $referencias->cod_proyectotesis = $tesis->cod_proyectotesis;
                     $referencias->save();
 
                 }
@@ -697,7 +691,7 @@ class CursoTesisController extends Controller
 
             // Guardar la matriz
 
-            $col_matriz = MatrizOperacional::where('cod_tesis','=',$tesis->cod_cursoTesis)->get();
+            $col_matriz = MatrizOperacional::where('cod_tesis','=',$tesis->cod_proyectotesis)->get();
 
 
             $col_matriz[0]->variable_I = $request->i_varI;
@@ -784,12 +778,12 @@ class CursoTesisController extends Controller
     /*FUNCION PARA DESCARGAR EL WORD DE LA TESIS*/
     public function descargaTesis(Request $request){
 
-        $cod_cursoTesis = $request->cod_cursoTesis;
+        $cod_cursoTesis = $request->cod_proyectotesis;
 
-        $tesis = TesisCT2022::where('cod_cursoTesis',$cod_cursoTesis)->get();
+        $tesis = TesisCT2022::where('cod_proyectotesis',$cod_cursoTesis)->get();
 
             /*Datos del Autor*/
-            $nombres =$tesis[0]->nombres;
+            $nombres =$tesis[0]->estudiante()->nombres;
             /* $tesis->grado_academico = $request->cboGrAcademicoAutor; */
 
             /*Datos del Asesor*/
@@ -1014,7 +1008,7 @@ class CursoTesisController extends Controller
 
             /* Recursos */
 
-            $recursos = recursos::where('cod_proyinvestigacion','=',$tesis[0]->cod_cursoTesis)->latest('cod_recurso')->get();
+            $recursos = recursos::where('cod_proyectotesis','=',$tesis[0]->cod_proyectotesis)->latest('cod_recurso')->get();
 
             $arregloRecursos = [];
 
@@ -1062,7 +1056,7 @@ class CursoTesisController extends Controller
             /* Presupuesto */
             $presupues = DB::table('presupuesto_proyecto')->join('presupuesto','presupuesto_proyecto.cod_presupuesto','=','presupuesto.cod_presupuesto')
                                                             ->select('precio','presupuesto.codeUniversal','presupuesto.denominacion')
-                                                            ->where('cod_proyinvestigacion','=',$tesis[0]->cod_cursoTesis)->latest('cod_presProyecto')->get();
+                                                            ->where('cod_proyectotesis','=',$tesis[0]->cod_proyectotesis)->latest('cod_presProyecto')->get();
 
             $presupuestoTable = $nuevaSesion->addTable($tableStyle);
 
@@ -1110,7 +1104,7 @@ class CursoTesisController extends Controller
             $nuevaSesion->addText($formulacion_prob,null,$styleContenido);
 
             /* Objetivos */
-            $objetivos = Objetivo::where('cod_proyinvestigacion','=',$tesis[0]->cod_cursoTesis)->latest('cod_objetivo')->get();
+            $objetivos = Objetivo::where('cod_proyectotesis','=',$tesis[0]->cod_proyectotesis)->latest('cod_objetivo')->get();
 
             $nuevaSesion->addListItem("5. OBJETIVOS",0.5,$titulos,[\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER],$styleContenido);
             if($objetivos->count()!=0){
@@ -1178,7 +1172,7 @@ class CursoTesisController extends Controller
             $nuevaSesion->addText($estg_metodologicas,null,$styleContenido);
 
             /* Variables */
-            $variables = variableOP::where('cod_proyinvestigacion','=',$tesis[0]->cod_cursoTesis)->latest('cod_variable')->get();
+            $variables = variableOP::where('cod_proyectotesis','=',$tesis[0]->cod_proyectotesis)->latest('cod_variable')->get();
             $nuevaSesion->addListItem("10.8. OPERACIONALIZACION DE VARIABLES Y MATRIZ DE CONSISTENCIA",1,$titulos,[\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER],$styleContenido);
 
             if($variables->count()!=0){
@@ -1203,7 +1197,7 @@ class CursoTesisController extends Controller
 
             /* Regerencias Bibliograficas */
 
-            $referencia = referencias::where('cod_proyinvestigacion','=',$tesis[0]->cod_cursoTesis)->latest('cod_referencias')->get();
+            $referencia = referencias::where('cod_proyectotesis','=',$tesis[0]->cod_proyectotesis)->latest('cod_referencias')->get();
 
             $arregloRefTipo = [];
             $arregloRefA = [];
@@ -1273,7 +1267,7 @@ class CursoTesisController extends Controller
 
             $nuevaSesion->addText("MATRIZ DE OPERACIONALIZACION",null,$titulos);
 
-            $matriz = DB::table('matriz_operacional')->select('matriz_operacional.*')->where('cod_tesis','=',$tesis[0]->cod_cursoTesis)->get();
+            $matriz = DB::table('matriz_operacional')->select('matriz_operacional.*')->where('cod_tesis','=',$tesis[0]->cod_proyectotesis)->get();
 
             $matrizTable = $nuevaSesion->addTable($tableStyle);
             $matrizTable->addRow();
@@ -1400,10 +1394,10 @@ class CursoTesisController extends Controller
     }
 
     public function showEstudiantes(){
-
-        $estudiantes = DB::table('estudiante_ct2022')->join('asesor_curso','estudiante_ct2022.cod_docente','=','asesor_curso.cod_docente')
-                            ->join('tesis_ct2022','estudiante_ct2022.cod_matricula','=','tesis_ct2022.cod_matricula')
-                            ->select('estudiante_ct2022.*','tesis_ct2022.estado','tesis_ct2022.cod_cursoTesis')->where('asesor_curso.username','=',auth()->user()->name)->get();
+        $asesor = AsesorCurso::where('username',auth()->user()->name)->get();
+        $estudiantes = DB::table('estudiante_ct2022')
+                            ->join('proyecto_tesis','estudiante_ct2022.cod_matricula','=','proyecto_tesis.cod_matricula')
+                            ->select('estudiante_ct2022.*','proyecto_tesis.cod_docente','proyecto_tesis.estado','proyecto_tesis.cod_proyectotesis')->where('proyecto_tesis.cod_docente',$asesor[0]->cod_docente)->get();
 
         return view('cursoTesis20221.asesor.showEstudiantes',['estudiantes'=>$estudiantes]);
     }
@@ -1466,10 +1460,11 @@ class CursoTesisController extends Controller
         $tesis = TesisCT2022::where('cod_matricula',$id)->first();
         $tesis->estado = 2;
         $tesis->save();
-        $estudiante = DB::table('campos_estudiante')
-                            ->join('estudiante_ct2022','estudiante_ct2022.cod_matricula','=','campos_estudiante.cod_matricula')
-                            ->join('asesor_curso','estudiante_ct2022.cod_docente','=','asesor_curso.cod_docente')
-                            ->select('campos_estudiante.*','campos_estudiante.cod_matricula','estudiante_ct2022.nombres','estudiante_ct2022.apellidos')->where('estudiante_ct2022.cod_matricula',$id)->get();
+        $estudiante = DB::table('campos_estudiante as ce')
+                            ->join('proyecto_tesis as p','p.cod_proyectotesis','=','ce.cod_proyectotesis')
+                            ->join('estudiante_ct2022 as e','e.cod_matricula','=','p.cod_matricula')
+                            ->select('ce.*','e.nombres as estudiante_nombres','e.apellidos as estudiante_apellidos','e.cod_matricula')
+                            ->where('ce.cod_proyectotesis',$tesis->cod_proyectotesis)->get();
         return view('cursoTesis20221.asesor.camposEstudiante',['estudiante'=>$estudiante]);
     }
 
@@ -1537,10 +1532,11 @@ class CursoTesisController extends Controller
         $camposFull = 'false';
 
         $cod_matricula = $request->cod_matricula;
-        $cursoTesis = DB::table('tesis_ct2022')
-                            ->join('estudiante_ct2022','estudiante_ct2022.cod_matricula','=','tesis_ct2022.cod_matricula')
-                            ->join('asesor_curso','estudiante_ct2022.cod_docente','=','asesor_curso.cod_docente')
-                            ->select('tesis_ct2022.*','estudiante_ct2022.nombres as nombresAutor','estudiante_ct2022.apellidos as apellidosAutor')->where('estudiante_ct2022.cod_matricula',$cod_matricula)->get();
+        $cursoTesis = DB::table('proyecto_tesis as p')
+                            ->join('estudiante_ct2022 as e','e.cod_matricula','=','p.cod_matricula')
+                            ->join('asesor_curso as ac','ac.cod_docente','=','p.cod_docente')
+                            ->select('p.*','e.nombres as nombresAutor','e.apellidos as apellidosAutor','ac.nombres as nombre_asesor','ac.*')
+                            ->where('e.cod_matricula',$cod_matricula)->get();
 
 
         foreach ($cursoTesis[0] as $curso) {
@@ -1557,10 +1553,10 @@ class CursoTesisController extends Controller
         }
 
         $observaciones = ObservacionesProy::join('historial_observaciones','observaciones_proy.cod_historialObs','=','historial_observaciones.cod_historialObs')
-                            ->select('observaciones_proy.*')->where('historial_observaciones.cod_proyinvestigacion',$cursoTesis[0]->cod_cursoTesis)
+                            ->select('observaciones_proy.*')->where('historial_observaciones.cod_proyectotesis',$cursoTesis[0]->cod_proyectotesis)
                             ->get();
 
-        $campos = DB::table('campos_estudiante')->select('campos_estudiante.*')->where('cod_matricula',$cod_matricula)->get();
+        $campos = DB::table('campos_estudiante')->select('campos_estudiante.*')->where('cod_proyectotesis',$cursoTesis[0]->cod_proyectotesis)->get();
         // $campos = CamposEstudiante::where('cod_matricula',$cursoTesis[0]->cod_matricula)->get();
 
         foreach ($campos[0] as $camposC){
@@ -1577,16 +1573,18 @@ class CursoTesisController extends Controller
             }
         }
 
-        $recursos = recursos::where('cod_proyinvestigacion','=',$cursoTesis[0]->cod_cursoTesis)->get();
+        $recursos = recursos::where('cod_proyectotesis','=',$cursoTesis[0]->cod_proyectotesis)->get();
         $tipoinvestigacion = TipoInvestigacion::where('cod_tinvestigacion','=',$cursoTesis[0]->cod_tinvestigacion)->get();
         //dd($tipoinvestigacion);
-        $presupuesto = Presupuesto_Proyecto::join('presupuesto','presupuesto.cod_presupuesto','=','presupuesto_proyecto.cod_presupuesto')->select('presupuesto_proyecto.*','presupuesto.codeUniversal','presupuesto.denominacion')->where('presupuesto_proyecto.cod_proyinvestigacion','=',$cursoTesis[0]->cod_cursoTesis)->get();
+        $presupuesto = Presupuesto_Proyecto::join('presupuesto','presupuesto.cod_presupuesto','=','presupuesto_proyecto.cod_presupuesto')
+        ->select('presupuesto_proyecto.*','presupuesto.codeUniversal','presupuesto.denominacion')
+        ->where('presupuesto_proyecto.cod_proyectotesis','=',$cursoTesis[0]->cod_proyectotesis)->get();
 
-        $objetivos = Objetivo::where('cod_proyinvestigacion','=',$cursoTesis[0]->cod_cursoTesis)->get();
-        $variableop = variableOP::where('cod_proyinvestigacion','=',$cursoTesis[0]->cod_cursoTesis)->get();
-        $referencias = referencias::where('cod_proyinvestigacion','=',$cursoTesis[0]->cod_cursoTesis)->get();
+        $objetivos = Objetivo::where('cod_proyectotesis','=',$cursoTesis[0]->cod_proyectotesis)->get();
+        $variableop = variableOP::where('cod_proyectotesis','=',$cursoTesis[0]->cod_proyectotesis)->get();
+        $referencias = referencias::where('cod_proyectotesis','=',$cursoTesis[0]->cod_proyectotesis)->get();
 
-        $matriz = MatrizOperacional::where('cod_tesis','=',$cursoTesis[0]->cod_cursoTesis)->get();
+        $matriz = MatrizOperacional::where('cod_proyectotesis','=',$cursoTesis[0]->cod_proyectotesis)->get();
 
 
         return view('cursoTesis20221.asesor.progresoEstudiante',['presupuesto'=>$presupuesto,
@@ -1601,22 +1599,22 @@ class CursoTesisController extends Controller
     public function guardarObservaciones(Request $request){
 
 
-        $cursoTesis = DB::table('tesis_ct2022')
-                       ->join('estudiante_ct2022','estudiante_ct2022.cod_matricula','=','tesis_ct2022.cod_matricula')
+        $cursoTesis = DB::table('proyecto_tesis')
+                       ->join('estudiante_ct2022','estudiante_ct2022.cod_matricula','=','proyecto_tesis.cod_matricula')
                        ->join('asesor_curso','estudiante_ct2022.cod_docente','=','asesor_curso.cod_docente')
-                       ->select('tesis_ct2022.*','estudiante_ct2022.nombres as nombresAutor','estudiante_ct2022.apellidos as apellidosAutor')->where('asesor_curso.username','=',auth()->user()->name)->where('estudiante_ct2022.cod_matricula',$request->cod_matricula_hidden)->get();
+                       ->select('proyecto_tesis.*','estudiante_ct2022.nombres as nombresAutor','estudiante_ct2022.apellidos as apellidosAutor')->where('asesor_curso.username','=',auth()->user()->name)->where('estudiante_ct2022.cod_matricula',$request->cod_matricula_hidden)->get();
 
-        $existHisto = Historial_Observaciones::where('cod_proyinvestigacion',$cursoTesis[0]->cod_cursoTesis)->get();
+        $existHisto = Historial_Observaciones::where('cod_proyectotesis',$cursoTesis[0]->cod_proyectotesis)->get();
         if($existHisto->count()==0){
             $existHisto = new Historial_Observaciones();
-            $existHisto->cod_proyinvestigacion = $cursoTesis[0]->cod_cursoTesis;
+            $existHisto->cod_proyectotesis = $cursoTesis[0]->cod_proyectotesis;
             $existHisto->fecha=now();
             $existHisto->estado=1;
             $existHisto->save();
         }
-        $existHisto = Historial_Observaciones::where('cod_proyinvestigacion',$cursoTesis[0]->cod_cursoTesis)->get();
+        $existHisto = Historial_Observaciones::where('cod_proyectotesis',$cursoTesis[0]->cod_proyectotesis)->get();
 
-        $tesis = TesisCT2022::find($cursoTesis[0]->cod_cursoTesis);
+        $tesis = TesisCT2022::find($cursoTesis[0]->cod_proyectotesis);
 
         $cantidadObservaciones = ObservacionesProy::where('cod_historialObs',$existHisto[0]->cod_historialObs)->get();
         $posicion_obs = sizeof($cantidadObservaciones) + 1;
@@ -1733,7 +1731,7 @@ class CursoTesisController extends Controller
             $th;
         }
 
-        //$historialLastest = Historial_Observaciones::where('cod_proyinvestigacion',$tesis->cod_cursoTesis)->get();
+        //$historialLastest = Historial_Observaciones::where('cod_proyectotesis',$tesis->cod_proyectotesis)->get();
         $latestCorrecion = ObservacionesProy::where('cod_historialObs',$existHisto[0]->cod_historialObs)->where('estado',1)->get();
         for($i = 0; $i<sizeof($arrayThemes);$i++){
             $detalleObs = new Detalle_Observaciones();
@@ -1752,12 +1750,12 @@ class CursoTesisController extends Controller
 
             /* CODIGO PARA GENERAR EL WORD DE LAS CORRECCIONES */
             $correccion = ObservacionesProy::where('cod_observaciones','=',$request->cod_observaciones)->get();
-            $tesis = TesisCT2022::join('historial_observaciones','tesis_ct2022.cod_cursoTesis','=','historial_observaciones.cod_proyinvestigacion')->where('historial_observaciones.cod_historialObs',$correccion[0]->cod_historialObs)->first();
+            $tesis = TesisCT2022::join('historial_observaciones','proyecto_tesis.cod_proyectotesis','=','historial_observaciones.cod_proyectotesis')->where('historial_observaciones.cod_historialObs',$correccion[0]->cod_historialObs)->first();
 
-            $recursosProy = recursos::where('cod_proyinvestigacion','=',$tesis->cod_cursoTesis)->get();
+            $recursosProy = recursos::where('cod_proyectotesis','=',$tesis->cod_proyectotesis)->get();
 
-            $objetivosProy = Objetivo::where('cod_proyinvestigacion','=',$tesis->cod_cursoTesis)->get();
-            $variableopProy = variableOP::where('cod_proyinvestigacion','=',$tesis->cod_cursoTesis)->get();
+            $objetivosProy = Objetivo::where('cod_proyectotesis','=',$tesis->cod_proyectotesis)->get();
+            $variableopProy = variableOP::where('cod_proyectotesis','=',$tesis->cod_proyectotesis)->get();
 
 
             //dd('here');
@@ -1770,7 +1768,7 @@ class CursoTesisController extends Controller
             }
 
             $cod_matricula = $tesis->cod_matricula;
-            $nombreEgresado = $tesis->nombres;
+            $nombreEgresado = $tesis->estudiante()->nombres;
             $escuelaEgresado = "Contabilidad y Finanzas";
             $nombreAsesor = $tesis->nombre_asesor;
             $numObservacion = $correccion[$cantObserva]->observacionNum;

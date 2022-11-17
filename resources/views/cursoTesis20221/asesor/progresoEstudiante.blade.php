@@ -53,7 +53,7 @@
         <div class="row">
             <form id="formProyecto" name="formProyecto" action="" method="">
                 @csrf
-                <input type="hidden" name="textcod" value="{{$cursoTesis[0]->cod_cursoTesis}}">
+                <input type="hidden" name="textcod" value="{{$cursoTesis[0]->cod_proyectotesis}}">
                 <input type="hidden" name="cod_matricula_hidden" value="{{$cursoTesis[0]->cod_matricula}}">
                 <div class="col-12">
                     <h4 >GENERALIDADES</h4>
@@ -127,15 +127,15 @@
                         </div>
                         <div class="item-card">
                             <label for="cboGrAcademicoAsesor" class="form-label">Grado Academico</label>
-                            <input class="form-control" name="txtGrAcademicoAsesor" id="txtGrAcademicoAsesor" type="text" value="{{$cursoTesis[0]->grado_asesor}}" readonly>
+                            <input class="form-control" name="txtGrAcademicoAsesor" id="txtGrAcademicoAsesor" type="text" value="{{$cursoTesis[0]->grado_academico}}" readonly>
                         </div>
                         <div class="item-card">
                             <label for="txtTProfesional" class="form-label">Titulo Profesional</label>
-                            <input class="form-control" name="txtTProfesional" id="txtTProfesional" type="text" value="{{$cursoTesis[0]->titulo_asesor}}" readonly>
+                            <input class="form-control" name="txtTProfesional" id="txtTProfesional" type="text" value="{{$cursoTesis[0]->titulo_profesional}}" readonly>
                         </div>
                         <div class="item-card">
                             <label for="txtDireccionAsesor" class="form-label">Dirección laboral y/o domiciliaria</label>
-                            <input class="form-control" name="txtDireccionAsesor" id="txtDireccionAsesor" type="text" value="{{$cursoTesis[0]->direccion_asesor}}" readonly>
+                            <input class="form-control" name="txtDireccionAsesor" id="txtDireccionAsesor" type="text" value="{{$cursoTesis[0]->direccion}}" readonly>
                         </div>
                     </div>
                 </div>
@@ -874,24 +874,28 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr id="table-matriz-tr">
-                                        <td>VI</td>
-                                        <td><textarea class="form-control" name="i_varI" rows="3" cols="8" readonly>@if ($matriz[0]->variable_I!=null){{$matriz[0]->variable_I}}@endif</textarea></td>
-                                        <td><textarea class="form-control" name="i_dc" rows="3" cols="8" readonly>@if ($matriz[0]->def_conceptual_I!=null){{$matriz[0]->def_conceptual_I}}@endif</textarea></td>
-                                        <td><textarea class="form-control" name="i_do" rows="3" cols="8" readonly>@if ($matriz[0]->def_operacional_I!=null){{$matriz[0]->def_operacional_I}}@endif</textarea></td>
-                                        <td><textarea class="form-control" name="i_dim" rows="3" cols="8" readonly>@if ($matriz[0]->dimensiones_I!=null){{$matriz[0]->dimensiones_I}}@endif</textarea></td>
-                                        <td><textarea class="form-control" name="i_ind" rows="3" cols="8" readonly>@if ($matriz[0]->indicadores_I!=null){{$matriz[0]->indicadores_I}}@endif</textarea></td>
-                                        <td><textarea class="form-control" name="i_esc" rows="3" cols="8" readonly>@if ($matriz[0]->escala_I!=null){{$matriz[0]->escala_I}} @endif</textarea></td>
-                                    </tr>
-                                    <tr>
-                                        <td>VD</td>
-                                        <td><textarea class="form-control" name="d_varD" rows="3" cols="8" readonly>@if ($matriz[0]->variable_D!=null){{$matriz[0]->variable_D}}@endif</textarea></td>
-                                        <td><textarea class="form-control" name="d_dc" rows="3" cols="8" readonly>@if ($matriz[0]->def_conceptual_D!=null){{$matriz[0]->def_conceptual_D}}@endif</textarea></td>
-                                        <td><textarea class="form-control" name="d_do" rows="3" cols="8" readonly>@if ($matriz[0]->def_operacional_D!=null){{$matriz[0]->def_operacional_D}}@endif</textarea></td>
-                                        <td><textarea class="form-control" name="d_dim" rows="3" cols="8" readonly>@if ($matriz[0]->dimensiones_D!=null){{$matriz[0]->dimensiones_D}}@endif</textarea></td>
-                                        <td><textarea class="form-control" name="d_ind" rows="3" cols="8" readonly>@if ($matriz[0]->indicadores_D!=null){{$matriz[0]->indicadores_D}}@endif</textarea></td>
-                                        <td><textarea class="form-control" name="d_esc" rows="3" cols="8" readonly>@if ($matriz[0]->escala_D!=null){{$matriz[0]->escala_D}}@endif</textarea></td>
-                                    </tr>
+                                    @if($matriz->count()>0)
+                                        <tr id="table-matriz-tr">
+                                            <td>VI</td>
+                                            <td><textarea class="form-control" name="i_varI" rows="3" cols="8" readonly>@if ($matriz[0]->variable_I!=null){{$matriz[0]->variable_I}}@endif</textarea></td>
+                                            <td><textarea class="form-control" name="i_dc" rows="3" cols="8" readonly>@if ($matriz[0]->def_conceptual_I!=null){{$matriz[0]->def_conceptual_I}}@endif</textarea></td>
+                                            <td><textarea class="form-control" name="i_do" rows="3" cols="8" readonly>@if ($matriz[0]->def_operacional_I!=null){{$matriz[0]->def_operacional_I}}@endif</textarea></td>
+                                            <td><textarea class="form-control" name="i_dim" rows="3" cols="8" readonly>@if ($matriz[0]->dimensiones_I!=null){{$matriz[0]->dimensiones_I}}@endif</textarea></td>
+                                            <td><textarea class="form-control" name="i_ind" rows="3" cols="8" readonly>@if ($matriz[0]->indicadores_I!=null){{$matriz[0]->indicadores_I}}@endif</textarea></td>
+                                            <td><textarea class="form-control" name="i_esc" rows="3" cols="8" readonly>@if ($matriz[0]->escala_I!=null){{$matriz[0]->escala_I}} @endif</textarea></td>
+                                        </tr>
+                                        <tr>
+                                            <td>VD</td>
+                                            <td><textarea class="form-control" name="d_varD" rows="3" cols="8" readonly>@if ($matriz[0]->variable_D!=null){{$matriz[0]->variable_D}}@endif</textarea></td>
+                                            <td><textarea class="form-control" name="d_dc" rows="3" cols="8" readonly>@if ($matriz[0]->def_conceptual_D!=null){{$matriz[0]->def_conceptual_D}}@endif</textarea></td>
+                                            <td><textarea class="form-control" name="d_do" rows="3" cols="8" readonly>@if ($matriz[0]->def_operacional_D!=null){{$matriz[0]->def_operacional_D}}@endif</textarea></td>
+                                            <td><textarea class="form-control" name="d_dim" rows="3" cols="8" readonly>@if ($matriz[0]->dimensiones_D!=null){{$matriz[0]->dimensiones_D}}@endif</textarea></td>
+                                            <td><textarea class="form-control" name="d_ind" rows="3" cols="8" readonly>@if ($matriz[0]->indicadores_D!=null){{$matriz[0]->indicadores_D}}@endif</textarea></td>
+                                            <td><textarea class="form-control" name="d_esc" rows="3" cols="8" readonly>@if ($matriz[0]->escala_D!=null){{$matriz[0]->escala_D}}@endif</textarea></td>
+                                        </tr>
+                                    @else
+                                        <tr>No existen</tr>
+                                    @endif
                                 </tbody>
                                 </table>
                             </div>
@@ -950,26 +954,37 @@
                     <div class="col-12">
                         <div class="row" style="text-align:left; ">
                             <div class="row" id="grupoAproDesa" hidden>
-                                <div class="col-3 col-md-3">
+                                <div class="d-grid gap-2 d-md-block">
+                                    <input class="btn btn-success" type="button" value="APROBAR PROYECTO" onclick="aprobarProy();" style="margin-right:20px;">
+                                    <input class="btn btn-danger" type="button" value="DESAPROBAR PROYECTO" onclick="desaprobarProy();" style="margin-right:20px;">
+                                </div>
+                                {{-- <div class="col-3 col-md-3">
                                     <input class="btn btn-success" type="button" value="APROBAR PROYECTO" onclick="aprobarProy();" style="margin-right:20px;">
                                 </div>
                                 <div class="col-3 col-md-3">
                                     <input class="btn btn-danger" type="button" value="DESAPROBAR PROYECTO" onclick="desaprobarProy();" style="margin-right:20px;">
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="row" id="grupoObservaciones">
-                                @if($cursoTesis[0]->estado == 1)
-                                    <div class="col-3 col-md-3">
+
+                                    <div class="d-grid gap-2 d-md-block">
+                                        @if($cursoTesis[0]->estado == 1)
+                                            <input class="btn btn-secondary" type="button" value="Sin observaciones" onclick="saveWithoutErrors();">
+                                            <input class="btn btn-primary" type="button" value="Guardar Observaciones" onclick="uploadProyecto();">
+                                        @endif
+                                        <a href="{{route('asesor.showEstudiantes')}}" type="button" class="btn btn-outline-danger">Cancelar</a>
+                                    </div>
+                                    {{-- <div class="col-3 col-md-3">
                                         <input class="btn btn-success" type="button" value="Sin observaciones" onclick="saveWithoutErrors();" style="margin-right:20px;">
                                     </div>
                                     <div class="col-3 col-md-3">
                                         <input class="btn btn-danger" type="button" value="Guardar Observaciones" onclick="uploadProyecto();" style="margin-right:20px;">
-                                    </div>
-                                @endif
+                                    </div> --}}
+
                             </div>
-                            <div class="col-3 col-md-3">
+                            {{-- <div class="col-3 col-md-3">
                                 <a href="{{route('asesor.showEstudiantes')}}" type="button" class="btn btn-outline-danger">Cancelar</a>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
