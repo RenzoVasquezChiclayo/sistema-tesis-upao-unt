@@ -16,6 +16,10 @@ return new class extends Migration
         Schema::connection('mysql')->create('detalle_observaciones', function (Blueprint $table) {
             $table->integer('cod_detalleObs')->autoIncrement();
             $table->integer('cod_observaciones');
+            $table->foreign('cod_observaciones')
+                    ->references('cod_observaciones')
+                    ->on('observaciones_proy')
+                    ->onDelete('cascade');
             $table->string('tema_referido',60);
             $table->text('correccion')->nullable();
             // $table->foreign('cod_historialObs')

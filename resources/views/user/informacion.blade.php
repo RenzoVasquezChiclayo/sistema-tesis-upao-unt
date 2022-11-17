@@ -8,9 +8,8 @@
         <div class="col-7 col-md-10" style="margin:0px auto;margin-top:50px; border: 0.5px solid rgba(0, 0, 0, 0.2); border-radius:18px;">
             <div class="row" style="padding: 10px;">
                 <div class="col-12" style="text-align: left;">
-                    <h4>Informacion del propietario</h4>
+                    <h4>Informacion del usuario</h4>
                     <hr style="width:100%; border: 0.3px solid black;"/>
-
                 </div>
                 <div class="col-12">
                     <div class="row">
@@ -18,36 +17,21 @@
                             <img class="img-fluid" src="/img/{{$img}}" alt="imagen de perfil" style="width:300px;">
                         </div>
                         <div class="col-12 col-md-8">
-
-                            <form id="formUsuarioUpdate" action="{{ route('update_user')}}" method="POST">
+                            <form action="{{route('save_user')}}" method="post">
                                 @csrf
-                                <div class="col-10 col-md-6" style="text-align: left">
-                                    <h5>Usuario</h5>
-                                    <p>{{auth()->user()->name}}</p>
-                                    <input type="hidden" id="txtCodUsuario" name="txtCodUsuario" value="{{auth()->user()->name}}" >
-                                </div>
-                                @if (auth()->user()->rol == 'CTesis2022-1')
-                                    <div class="col-10 col-md-6" style="text-align: left; margin-bottom:15px;">
-                                        <h5>DNI</h5>
-                                        <p>{{$estudiante->dni}}</p>
+                                <div class="row">
+                                    <div class="col-10 col-md-6" style="text-align: left">
+                                        <h5>Usuario</h5>
+                                        <p>{{auth()->user()->name}}</p>
+                                        <input type="hidden" id="txtCodUsuario" name="txtCodUsuario" value="{{auth()->user()->name}}" >
                                     </div>
-                                    <div class="col-10 col-md-6" style="text-align: left; margin-bottom:15px;">
-                                        <h5>Nombres</h5>
-                                        <p>{{$estudiante->nombres}}</p>
-                                    </div>
-                                    <div class="col-10 col-md-6" style="text-align: left; margin-bottom:15px;">
-                                        <h5>Apellidos</h5>
-                                        <p>{{$estudiante->apellidos}}</p>
-                                    </div>
-                                @elseif (auth()->user()->rol == 'a-CTesis2022-1')
-                                    <div class="row">
-                                        <div class="col-10 col-md-7" style="text-align: left; margin-bottom:15px;">
-                                            <h5>Nombres</h5>
-<<<<<<< HEAD
-                                            <p>{{$asesor->nombres}}</p>
+                                    @if (auth()->user()->rol == 'CTesis2022-1')
+                                        <div class="col-10 col-md-6" style="text-align: left; margin-bottom:15px;">
+                                            <h5>DNI</h5>
+                                            <p>{{$estudiante->dni}}</p>
                                         </div>
-                                        <div class="col-10 col-md-5" style="text-align: left; margin-bottom:15px;">
-=======
+                                        <div class="col-10 col-md-6" style="text-align: left; margin-bottom:15px;">
+                                            <h5>Nombres</h5>
                                             <p>{{$estudiante->nombres}}</p>
                                         </div>
                                         <div class="col-10 col-md-6" style="text-align: left; margin-bottom:15px;">
@@ -60,43 +44,25 @@
                                             <p>{{$asesor->nombres}}</p>
                                         </div>
                                         <div class="col-10 col-md-6" style="text-align: left; margin-bottom:15px;">
->>>>>>> bb11ba0b7df9a3f750879383a0152a82105f7dd9
                                             <h5>Condicion</h5>
                                             <p>{{$asesor->grado_academico}}</p>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-10 col-md-5" style="text-align: left; margin-bottom:15px;">
+                                        <div class="col-10 col-md-6" style="text-align: left; margin-bottom:15px;">
                                             <h5>Escuela</h5>
                                             <p>{{$asesor->titulo_profesional}}</p>
                                         </div>
-                                        <div class="col-10 col-md-7" style="text-align: left; margin-bottom:15px;">
+                                        <div class="col-10 col-md-6" style="text-align: left; margin-bottom:15px;">
                                             <h5>Direccion</h5>
                                             <p>{{$asesor->direccion}}</p>
                                         </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <button type="submit" class="btn btn-success">Guardar edicion</button>
-                                        </div>
-                                    </div>
-                                @endif
-                            </form>
-                            <form action="{{route('save_user')}}" method="post">
-                                @csrf
-                                <div class="row">
+                                    @endif
                                     <div class="col-12" style="text-align: left;">
-<<<<<<< HEAD
-                                        <h4>Actualizar Contraseña</h4>
-                                        <input type="hidden" id="txtCodUsuario" name="txtCodUsuario" value="{{auth()->user()->name}}" >
-=======
                                         <h4>Modificaciones</h4>
->>>>>>> bb11ba0b7df9a3f750879383a0152a82105f7dd9
                                         <hr style="width:100%; border: 0.3px solid black;"/>
                                         <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                                             data-bs-target="#mActualizarContra">Actualizar Contraseña</button>
                                     </div>
+
                                     {{-- Modal para Actualizar Contraseña --}}
                                     <div class="modal" id="mActualizarContra">
                                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -190,7 +156,7 @@
                 Swal.fire({
                 position: 'center',
                 icon: 'success',
-                title: 'Contraseña actualizada correctamente',
+                title: 'Contraseña actulizada correctamente',
                 showConfirmButton: false,
                 timer: 1200
                 })
@@ -200,27 +166,7 @@
                 Swal.fire({
                 position: 'center',
                 icon: 'error',
-                title: 'Error al actualizar contraseña',
-                showConfirmButton: false,
-                timer: 1200
-                })
-            </script>
-    @elseif (session('datos') == 'okUpdate')
-            <script>
-                Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: 'Actualizado correctamente',
-                showConfirmButton: false,
-                timer: 1200
-                })
-            </script>
-    @elseif (session('datos') == 'oknotUpdate')
-            <script>
-                Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Error al actulizar',
+                title: 'Error al actulizar contraseña',
                 showConfirmButton: false,
                 timer: 1200
                 })
@@ -265,8 +211,6 @@
                 document.getElementById('btnEnvioPassword').disabled = false;
             }
         }
-
     </script>
-
 @endsection
 

@@ -17,6 +17,10 @@ return new class extends Migration
             $table->integer('cod_observaciones')->autoIncrement();
 
             $table->integer('cod_historialObs');
+            $table->foreign('cod_historialObs')
+                    ->references('cod_historialObs')
+                    ->on('historial_observaciones')
+                    ->onDelete('cascade');
 
             $table->string('observacionNum',20);
 

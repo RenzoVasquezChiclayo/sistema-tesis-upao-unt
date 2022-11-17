@@ -15,8 +15,11 @@ return new class extends Migration
     {
         Schema::connection('mysql')->create('campos_estudiante', function (Blueprint $table) {
 
-            $table->char('cod_matricula',10)->primary();
-            $table->char('cod_docente',4);
+            $$table->integer('cod_proyectotesis');
+            $table->foreign('cod_proyectotesis')
+                    ->references('cod_proyectotesis')
+                    ->on('proyecto_tesis')
+                    ->onDelete('cascade');
 
             $table->boolean('titulo')->default(1);
             $table->boolean('tipo_investigacion')->default(0);
@@ -32,10 +35,6 @@ return new class extends Migration
             $table->boolean('formulacion_hipotesis')->default(0);
             $table->boolean('diseño_investigacion')->default(0);
             $table->boolean('referencias_b')->default(0);
-
-            $table->foreign('cod_matricula')
-                    ->references('cod_matricula')
-                    ->on('estudiante_ct2022');
 
         });
 

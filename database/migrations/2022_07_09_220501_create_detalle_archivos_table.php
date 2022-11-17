@@ -16,6 +16,10 @@ return new class extends Migration
         Schema::create('detalle_archivos', function (Blueprint $table) {
             $table->integer('id')->autoIncrement();
             $table->integer('cod_archivos');
+            $table->foreign('cod_archivos')
+                    ->references('cod_archivos')
+                    ->on('archivos_proy_tesis')
+                    ->onDelete('cascade');
             $table->string('tipo')->nullable();
             $table->integer('grupo')->nullable();
             $table->integer('orden')->nullable();

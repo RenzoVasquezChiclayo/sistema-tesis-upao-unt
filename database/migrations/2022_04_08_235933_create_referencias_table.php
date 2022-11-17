@@ -16,6 +16,11 @@ return new class extends Migration
         Schema::connection('mysql')->create('referencias', function (Blueprint $table) {
             $table->integer('cod_referencias')->autoIncrement();
             $table->integer('cod_tiporeferencia');
+            $table->foreign('cod_tiporeferencia')
+                    ->references('cod_tiporeferencia')
+                    ->on('tiporeferencia')
+                    ->onDelete('cascade');
+
 
             $table->text('autor')->nullable();
             $table->string('fPublicacion',30)->nullable();
@@ -37,8 +42,11 @@ return new class extends Migration
 
             $table->string('subtitle',25)->nullable();
             $table->string('name_editor',25)->nullable();
-
-            $table->integer('cod_proyinvestigacion')->nullable();
+            $table->integer('cod_proyectotesis');
+            $table->foreign('cod_proyectotesis')
+                    ->references('cod_proyectotesis')
+                    ->on('proyecto_tesis')
+                    ->onDelete('cascade');
 
             $table->foreign('cod_tiporeferencia')
                     ->references('cod_tiporeferencia')

@@ -19,7 +19,10 @@ return new class extends Migration
             $table->text('titulo')->nullable();
 
             $table->char('cod_matricula',10);
-
+            $table->foreign('cod_matricula')
+                    ->references('cod_matricula')
+                    ->on('estudiante_ct2022')
+                    ->onDelete('cascade');
             $table->string('cod_docente',80)->nullable();
 
             $table->text('dedicatoria')->nullable();

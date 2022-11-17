@@ -14,20 +14,34 @@ return new class extends Migration
     public function up()
     {
 
-        Schema::connection('mysql')->create('tesis_ct2022', function (Blueprint $table) {
-            $table->integer('cod_cursoTesis')->autoIncrement();
+        Schema::connection('mysql')->create('proyecto_tesis', function (Blueprint $table) {
+            $table->integer('cod_proyectotesis')->autoIncrement(); //Modificacion de nombre de tabla y codigo
 
             $table->text('titulo')->nullable();
 
-            $table->char('cod_matricula',10);
+            $table->char('cod_matricula',10); //Vincular con estudiante
+            $table->foreign('cod_matricula')
+                    ->references('cod_matricula')
+                    ->on('estudiante_ct2022')
+                    ->onDelete('cascade');
             $table->string('nombres',60);
 
-            $table->string('nombre_asesor',80)->nullable();
+            /*Agregado*/
+            $table->string('cod_docente',80)->nullable();
+            $table->foreign('cod_docente')
+                    ->references('cod_docente')
+                    ->on('asesor_curso')
+                    ->onDelete('cascade');
+            $table->string('nombre_asesor',80)->nullable(); //Eliminar estos atributos, y vincular al asesor
             $table->string('grado_asesor',50)->nullable();
             $table->string('titulo_asesor',50)->nullable();
             $table->string('direccion_asesor',50)->nullable();
 
-            $table->char('cod_tinvestigacion',4)->nullable();
+            $table->char('cod_tinvestigacion',4)->nullable(); //Vinculo con tabla tipoinvestigacion
+            $table->foreign('cod_tinvestigacion')
+                    ->references('cod_tinvestigacion')
+                    ->on('tipoinvestigacion')
+                    ->onDelete('cascade');
             $table->string('ti_finpersigue',15)->nullable();
             $table->string('ti_disinvestigacion',15)->nullable();
             $table->string('localidad',30)->nullable();

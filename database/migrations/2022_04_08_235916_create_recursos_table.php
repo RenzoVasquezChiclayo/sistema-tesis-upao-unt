@@ -18,7 +18,12 @@ return new class extends Migration
             $table->string('tipo',40);
             $table->string('subtipo',25)->nullable();
             $table->string('descripcion',80);
-            $table->integer('cod_proyinvestigacion');
+            $table->integer('cod_proyectotesis');
+            $table->foreign('cod_proyectotesis')
+                    ->references('cod_proyectotesis')
+                    ->on('proyecto_tesis')
+                    ->onDelete('cascade');
+
 
             // $table->foreign('cod_proyinvestigacion')
             //         ->references('cod_proyinvestigacion')

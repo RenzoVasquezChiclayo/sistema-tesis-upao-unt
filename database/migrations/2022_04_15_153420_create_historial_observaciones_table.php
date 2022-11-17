@@ -15,7 +15,11 @@ return new class extends Migration
     {
         Schema::connection('mysql')->create('historial_observaciones', function (Blueprint $table) {
             $table->integer('cod_historialObs')->autoIncrement();
-            $table->integer('cod_proyinvestigacion');
+            $table->integer('cod_proyectotesis');
+            $table->foreign('cod_proyectotesis')
+                    ->references('cod_proyectotesis')
+                    ->on('proyecto_tesis')
+                    ->onDelete('cascade');
             $table->date('fecha')->nullable();
             $table->tinyInteger('estado')->default(0);
             // $table->string('observacionNum',20)->nullable();

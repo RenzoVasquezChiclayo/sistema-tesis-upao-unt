@@ -16,7 +16,12 @@ return new class extends Migration
         Schema::connection('mysql')->create('variableop', function (Blueprint $table) {
             $table->integer('cod_variable')->autoIncrement();
             $table->string('descripcion',80);
-            $table->integer('cod_proyinvestigacion');
+            $table->integer('cod_proyectotesis');
+            $table->foreign('cod_proyectotesis')
+                    ->references('cod_proyectotesis')
+                    ->on('proyecto_tesis')
+                    ->onDelete('cascade');
+
 
             // $table->foreign('cod_proyinvestigacion')
             //         ->references('cod_proyinvestigacion')
