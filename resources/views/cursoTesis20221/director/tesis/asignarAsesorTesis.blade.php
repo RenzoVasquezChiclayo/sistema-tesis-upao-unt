@@ -25,25 +25,19 @@
         <form action="{{route('director.saveAsignarAsesorTesis')}}" method="post">
             @csrf
             <div class="row mb-3" style="text-align:left; justify-content:flex-start">
-                <div class="flex-container m-2" style="display:flex;">
-                    <div>
-                        <a href="{{route('director.editAsignacionAsesorTesis')}}" class="btn btn-modificaciones">Editar Asignacion</a>
-                    </div>
-                </div>
-                <div class="col-6 col-md-4 col-lg-2">
-                </div>
-                {{--  --}}
-                <div class="col-6 col-md-4 col-lg-2">
+                <div class="flex-container my-2">
+                    <a href="{{route('director.editAsignacionAsesorTesis')}}" class="btn btn-modificaciones">Editar Asignación</a>
                 </div>
             </div>
             <div class="table-responsive">
                 <table id="table-proyecto" class="table table-striped table-responsive-md">
                     <thead>
                         <tr>
-                            <td>Numero Matricula</td>
+                            <td>Número Matrícula</td>
                             <td>DNI</td>
                             <td>Nombre</td>
                             <td>Asignar</td>
+                            <td>Acción</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -72,8 +66,14 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <input  class="btn btn-success" id="btnAsesor_{{$cont}}" type="button" value="+" onclick="guardarAsesor({{$cont}});" hidden>
-                                    <input type="button" class="btn" style="color:white; background-color: rgb(219, 98, 98)" value="-" id="btnDeleteAsignar_{{$cont}}" onclick="deleteAsignacion({{$cont}});" hidden>
+                                    <div class="row">
+                                        <div class="col-12 col-lg-6 py-1 py-lg-0">
+                                            <input  class="btn btn-success w-100" id="btnAsesor_{{$cont}}" type="button" value="+" onclick="guardarAsesor({{$cont}});" hidden>
+                                        </div>
+                                        <div class="col-12 col-lg-6 py-1 py-lg-0">
+                                            <input type="button" class="btn btn-danger w-100" value="-" id="btnDeleteAsignar_{{$cont}}" onclick="deleteAsignacion({{$cont}});" hidden>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                             <input type="hidden" id="codEst_{{$cont}}" value="{{$est->cod_matricula}}">
