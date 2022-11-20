@@ -1330,7 +1330,7 @@ class CursoTesisController extends Controller
 
     public function showAlumnosAsignados(){
 
-        $estudiantes = DB::table('estudiante_ct2022')->where('cod_docente','!=',null)->paginate($this::PAGINATION3);
+        $estudiantes = DB::table('estudiante_ct2022 as e')->leftJoin('proyecto_tesis as p','p.cod_matricula','=','e.cod_matricula')->select('e.*','p.cod_docente')->where('cod_docente','!=',null)->paginate($this::PAGINATION3);
         $asesores = AsesorCurso::all();
         return view('cursoTesis20221.director.editarAsignacion',['estudiantes'=>$estudiantes,'asesores'=>$asesores]);
     }

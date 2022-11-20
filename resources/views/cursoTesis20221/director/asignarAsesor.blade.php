@@ -5,18 +5,23 @@
 @section('contenido')
 <div class="row" style="display:flex; align-items:center;">
     <div class="col-12">
-            <div class="row" style="display:flex; align-items:right; justify-content:right; margin-bottom:10px; margin-top:10px;">
-                <div class="col col-sm-8 col-md-6 col-lg-4 col-xl-3">
-                    <form id="listAlumno" name="listAlumno" method="get">
-                        <div class="row">
-                            <div class="input-group">
-                                <input type="text" class="form-control" name="buscarAlumno" placeholder="Codigo de matricula o Apellidos" value="{{$buscarAlumno}}" aria-describedby="btn-search">
-                                <button class="btn btn-outline-primary" type="submit" id="btn-search">Buscar</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+        <div class="row">
+            <div class="col text-center">
+                <h1 class="p-3">Asignar asesor para proyecto de tesis</h1>
             </div>
+        </div>
+        <div class="row" style="display:flex; align-items:right; justify-content:right; margin-bottom:10px; margin-top:10px;">
+            <div class="col col-sm-8 col-md-6 col-lg-4 col-xl-3">
+                <form id="listAlumno" name="listAlumno" method="get">
+                    <div class="row">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="buscarAlumno" placeholder="Codigo de matricula o Apellidos" value="{{$buscarAlumno}}" aria-describedby="btn-search">
+                            <button class="btn btn-outline-primary" type="submit" id="btn-search">Buscar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
         <form action="{{route('director.saveAsesor')}}" method="post">
             @csrf
             <div class="row mb-3" style="text-align:left; justify-content:flex-start">
