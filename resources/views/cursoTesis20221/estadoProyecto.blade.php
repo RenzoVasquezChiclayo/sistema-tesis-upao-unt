@@ -58,7 +58,7 @@
                                                     @if($hTesis[0]->estado!=0)
                                                         <form id="proyecto-download" action="{{route('curso.descargaTesis')}}" method="POST">
                                                             @csrf
-                                                            <input type="hidden" name="cod_cursoTesis" value="{{$hTesis[0]->cod_cursoTesis}}">
+                                                            <input type="hidden" name="cod_cursoTesis" value="{{$hTesis[0]->cod_proyectotesis}}">
                                                             <a href="#" onclick="this.closest('#proyecto-download').submit()" @if($hTesis[0]->estado == 0) hidden @endif><i class='bx bx-sm bx-download'></i></a>
                                                         </form>
                                                     @endif

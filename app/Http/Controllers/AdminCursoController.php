@@ -38,7 +38,7 @@ class AdminCursoController extends Controller
                 $tesis = TesisCT2022::where('cod_matricula','=',$estudiante->cod_matricula)->get();
 
                 $matriz = new MatrizOperacional();
-                $matriz->cod_tesis = $tesis[0]->cod_cursoTesis;
+                $matriz->cod_tesis = $tesis[0]->cod_proyectotesis;
                 $matriz->save();
 
 
@@ -219,11 +219,11 @@ class AdminCursoController extends Controller
         $id = auth()->user()->name;
         $asesor = AsesorCurso::where('username',$id)->get();
         if (is_numeric($buscarObservaciones)) {
-            $estudiantes = DB::connection('mysql')->table('estudiante_ct2022')->join('tesis_ct2022','estudiante_ct2022.cod_matricula','=','tesis_ct2022.cod_matricula')->join('historial_observaciones','tesis_ct2022.cod_cod_cursoTesis','=','historial_observaciones.cod_proyinvestigacion')
-                            ->select('estudiante_ct2022.*','tesis_ct2022.escuela','historial_observaciones.fecha','historial_observaciones.cod_historialObs')->where('tesis_ct2022.cod_matricula','like','%'.$buscarObservaciones.'%')->where('estudiante_ct2022.cod_docente',$asesor[0]->cod_docente)->paginate($this::PAGINATION);
+            $estudiantes = DB::connection('mysql')->table('estudiante_ct2022')->join('proyecto_tesis','estudiante_ct2022.cod_matricula','=','proyecto_tesis.cod_matricula')->join('historial_observaciones','proyecto_tesis.cod_proyectotesis','=','historial_observaciones.cod_proyectotesis')
+                            ->select('estudiante_ct2022.*','proyecto_tesis.escuela','historial_observaciones.fecha','historial_observaciones.cod_historialObs')->where('proyecto_tesis.cod_matricula','like','%'.$buscarObservaciones.'%')->where('proyecto_tesis.cod_docente',$asesor[0]->cod_docente)->paginate($this::PAGINATION);
         } else {
-            $estudiantes = DB::connection('mysql')->table('estudiante_ct2022')->join('tesis_ct2022','estudiante_ct2022.cod_matricula','=','tesis_ct2022.cod_matricula')->join('historial_observaciones','tesis_ct2022.cod_cursoTesis','=','historial_observaciones.cod_proyinvestigacion')
-                            ->select('estudiante_ct2022.*','historial_observaciones.fecha','historial_observaciones.cod_historialObs')->where('estudiante_ct2022.apellidos','like','%'.$buscarObservaciones.'%')->where('estudiante_ct2022.cod_docente',$asesor[0]->cod_docente)->paginate($this::PAGINATION);
+            $estudiantes = DB::connection('mysql')->table('estudiante_ct2022')->join('proyecto_tesis','estudiante_ct2022.cod_matricula','=','proyecto_tesis.cod_matricula')->join('historial_observaciones','proyecto_tesis.cod_proyectotesis','=','historial_observaciones.cod_proyectotesis')
+                            ->select('estudiante_ct2022.*','historial_observaciones.fecha','historial_observaciones.cod_historialObs')->where('estudiante_ct2022.apellidos','like','%'.$buscarObservaciones.'%')->where('proyecto_tesis.cod_docente',$asesor[0]->cod_docente)->paginate($this::PAGINATION);
         }
 
         if(empty($estudiantes)){
@@ -236,7 +236,7 @@ class AdminCursoController extends Controller
 
     public function verObsEstudiante($cod_historialObs){
         $observaciones = ObservacionesProy::where('cod_historialObs',$cod_historialObs)->get();
-        $estudiante = TesisCT2022::join('historial_observaciones','tesis_ct2022.cod_cursoTesis','=','historial_observaciones.cod_proyinvestigacion')->select('tesis_ct2022.*')->where('historial_observaciones.cod_historialObs',$cod_historialObs)->get();
+        $estudiante = TesisCT2022::join('historial_observaciones','proyecto_tesis.cod_proyectotesis','=','historial_observaciones.cod_proyectotesis')->select('proyecto_tesis.*')->where('historial_observaciones.cod_historialObs',$cod_historialObs)->get();
         return view('cursoTesis20221.asesor.verObservacionEstudiante',['observaciones'=>$observaciones,'estudiante'=>$estudiante]);
     }
 

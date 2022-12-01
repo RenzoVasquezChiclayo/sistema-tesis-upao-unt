@@ -134,7 +134,7 @@ class CursoTesisController extends Controller
         $aux = explode('-',$id);
         $id = $aux[0];
         $estudiante = EstudianteCT2022::find($id);
-        $hTesis = TesisCT2022::where('cod_matricula','=',$estudiante->cod_matricula)->get();
+        $hTesis = TesisCT2022::join('asesor_curso as ac','ac.cod_docente','=','proyecto_tesis.cod_docente')->select('ac.nombres as nombre_asesor','proyecto_tesis.*')->where('cod_matricula','=',$estudiante->cod_matricula)->get();
 
         return view('cursoTesis20221.estadoProyecto',['hTesis'=>$hTesis]);
     }
@@ -778,19 +778,24 @@ class CursoTesisController extends Controller
     /*FUNCION PARA DESCARGAR EL WORD DE LA TESIS*/
     public function descargaTesis(Request $request){
 
-        $cod_cursoTesis = $request->cod_proyectotesis;
+        $cod_cursoTesis = $request->cod_cursoTesis;
 
         $tesis = TesisCT2022::where('cod_proyectotesis',$cod_cursoTesis)->get();
-
+        $estudiante = EstudianteCT2022::find($tesis[0]->cod_matricula);
+        $asesor = AsesorCurso::find($tesis[0]->cod_docente);
             /*Datos del Autor*/
-            $nombres =$tesis[0]->estudiante()->nombres;
+            $nombres =$estudiante->nombres.' '.$estudiante->apellidos;
             /* $tesis->grado_academico = $request->cboGrAcademicoAutor; */
-
+            /*'cod_docente',
+        'nombres',
+        'grado_academico',
+        'titulo_profesional',
+        'direccion',*/
             /*Datos del Asesor*/
-            $nombre_asesor = $tesis[0]->nombre_asesor;
-            $grado_asesor = $tesis[0]->grado_asesor;
-            $titulo_asesor = $tesis[0]->titulo_asesor;
-            $direccion_asesor =$tesis[0]->direccion_asesor;
+            $nombre_asesor = $asesor->nombres;
+            $grado_asesor = $asesor->grado_academico;
+            $titulo_asesor = $asesor->titulo_profesional;
+            $direccion_asesor =$asesor->direccion;
 
             /*Proyecto de Investigacion y/o Tesis*/
             $titulo = $tesis[0]->titulo;
@@ -1267,7 +1272,7 @@ class CursoTesisController extends Controller
 
             $nuevaSesion->addText("MATRIZ DE OPERACIONALIZACION",null,$titulos);
 
-            $matriz = DB::table('matriz_operacional')->select('matriz_operacional.*')->where('cod_tesis','=',$tesis[0]->cod_proyectotesis)->get();
+            $matriz = DB::table('matriz_operacional')->select('matriz_operacional.*')->where('cod_proyectotesis','=',$tesis[0]->cod_proyectotesis)->get();
 
             $matrizTable = $nuevaSesion->addTable($tableStyle);
             $matrizTable->addRow();
@@ -1719,7 +1724,8 @@ class CursoTesisController extends Controller
             /* CODIGO PARA GENERAR EL WORD DE LAS CORRECCIONES */
             $correccion = ObservacionesProy::where('cod_observaciones','=',$request->cod_observaciones)->get();
             $tesis = TesisCT2022::join('historial_observaciones','proyecto_tesis.cod_proyectotesis','=','historial_observaciones.cod_proyectotesis')->where('historial_observaciones.cod_historialObs',$correccion[0]->cod_historialObs)->first();
-
+            $estudiante = EstudianteCT2022::find($tesis->cod_matricula);
+            $asesor = AsesorCurso::find($tesis->cod_docente);
             $recursosProy = recursos::where('cod_proyectotesis','=',$tesis->cod_proyectotesis)->get();
 
             $objetivosProy = Objetivo::where('cod_proyectotesis','=',$tesis->cod_proyectotesis)->get();
@@ -1736,9 +1742,9 @@ class CursoTesisController extends Controller
             }
 
             $cod_matricula = $tesis->cod_matricula;
-            $nombreEgresado = $tesis->estudiante()->nombres;
+            $nombreEgresado = $estudiante->nombres.' '.$estudiante->apellidos;
             $escuelaEgresado = "Contabilidad y Finanzas";
-            $nombreAsesor = $tesis->nombre_asesor;
+            $nombreAsesor = $asesor->nombres;
             $numObservacion = $correccion[$cantObserva]->observacionNum;
             $fecha = $correccion[$cantObserva]->fecha;
             $titulo = $correccion[$cantObserva]->titulo;
