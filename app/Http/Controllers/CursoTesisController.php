@@ -691,7 +691,7 @@ class CursoTesisController extends Controller
 
             // Guardar la matriz
 
-            $col_matriz = MatrizOperacional::where('cod_tesis','=',$tesis->cod_proyectotesis)->get();
+            $col_matriz = MatrizOperacional::where('cod_proyectotesis','=',$tesis->cod_proyectotesis)->get();
 
 
             $col_matriz[0]->variable_I = $request->i_varI;

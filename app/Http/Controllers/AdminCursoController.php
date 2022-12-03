@@ -32,17 +32,22 @@ class AdminCursoController extends Controller
             if($existTesis->count()==0){
                 $newTesis = new TesisCT2022();
                 $newTesis->cod_matricula = $estudiante->cod_matricula;
-                $newTesis->nombres = $estudiante->nombres.' '.$estudiante->apellidos;
                 $newTesis->save();
 
-                $tesis = TesisCT2022::where('cod_matricula','=',$estudiante->cod_matricula)->get();
+                $proytesis = TesisCT2022::where('cod_matricula','=',$estudiante->cod_matricula)->get();
 
                 $matriz = new MatrizOperacional();
-                $matriz->cod_tesis = $tesis[0]->cod_proyectotesis;
+                $matriz->cod_tesis = $proytesis->cod_proyectotesis;
                 $matriz->save();
 
+            }else{
+                $MatrizxTesisFind = MatrizOperacional::where('cod_proyectotesis',$existTesis[0]->cod_proyectotesis)->get();
 
-
+                if ($MatrizxTesisFind->count()==0) {
+                    $matriz = new MatrizOperacional();
+                    $matriz->cod_proyectotesis = $existTesis[0]->cod_proyectotesis;
+                    $matriz->save();
+                }
             }
             if ($existTesisII->count()==0) {
                 $newTesisII = new Tesis_2022();
