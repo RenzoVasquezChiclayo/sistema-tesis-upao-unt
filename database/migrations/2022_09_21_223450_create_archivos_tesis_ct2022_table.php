@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('archivos_proy_tesis', function (Blueprint $table) {
             $table->integer('cod_archivos')->autoIncrement();
-            $table->integer('cod_proyectotesis');
-            $table->foreign('cod_proyectotesis')
-                    ->references('cod_proyectotesis')
-                    ->on('proyecto_tesis')
+            $table->integer('cod_tesis');
+            $table->foreign('cod_tesis')
+                    ->references('cod_tesis')
+                    ->on('tesis_2022')
                     ->onDelete('cascade');
         });
     }

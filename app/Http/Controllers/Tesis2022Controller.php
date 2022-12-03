@@ -34,23 +34,23 @@ class Tesis2022Controller extends Controller
         $id = $aux[0];
 
         $estudiante = EstudianteCT2022::find($id);
-        $asesor = AsesorCurso::find($estudiante->cod_docente);
         $tesis = Tesis_2022::where('cod_matricula',$id)->first();
+        $asesor = AsesorCurso::find($tesis->cod_docente);
 
-        $correciones = TObservacion::join('t_historial_observaciones','t_observacion.cod_historial_obs','=','t_historial_observaciones.cod_historial_observacion')
-                        ->select('t_observacion.*')->where('t_historial_observaciones.cod_Tesis',$tesis->cod_tesis)
+        $correciones = TObservacion::join('t_historial_observaciones','t_observacion.cod_historial_observacion','=','t_historial_observaciones.cod_historial_observacion')
+                        ->select('t_observacion.*')->where('t_historial_observaciones.cod_tesis',$tesis->cod_tesis)
                         ->where('t_observacion.estado',1)->get();
 
         $detalles = [];
         if(sizeof($correciones)>0){
-            $detalles = TDetalleObservacion::where('cod_historial_obs',$correciones[0]->cod_historial_obs)->get();
+            $detalles = TDetalleObservacion::where('cod_historial_observacion',$correciones[0]->cod_historial_observacion)->get();
         }
         $objetivos = TObjetivo::where('cod_tesis','=',$tesis->cod_tesis)->get();
         $tiporeferencia = TipoReferencia::all();
         $keywords = TDetalleKeyword::join('t_keyword','t_keyword.id_keyword','=','t_detalle_keyword.id_keyword')->select('t_detalle_keyword.*')->where('t_keyword.cod_tesis',$tesis->cod_tesis)->get();
 
-        $resultadosImg = Detalle_Archivo::join('archivos_proy_tesis as at','at.cod_archivos','=','detalle_archivos.cod_archivos')->select('detalle_archivos.*')->where('at.cod_proyinvestigacion',$tesis->cod_tesis)->where('tipo','resultados')->orderBy('grupo', 'ASC')->get();
-        $anexosImg = Detalle_Archivo::join('archivos_proy_tesis as at','at.cod_archivos','=','detalle_archivos.cod_archivos')->select('detalle_archivos.*')->where('at.cod_proyinvestigacion',$tesis->cod_tesis)->where('tipo','anexos')->orderBy('grupo', 'ASC')->get();
+        $resultadosImg = Detalle_Archivo::join('archivos_proy_tesis as at','at.cod_archivos','=','detalle_archivos.cod_archivos')->select('detalle_archivos.*')->where('at.cod_tesis',$tesis->cod_tesis)->where('tipo','resultados')->orderBy('grupo', 'ASC')->get();
+        $anexosImg = Detalle_Archivo::join('archivos_proy_tesis as at','at.cod_archivos','=','detalle_archivos.cod_archivos')->select('detalle_archivos.*')->where('at.cod_tesis',$tesis->cod_tesis)->where('tipo','anexos')->orderBy('grupo', 'ASC')->get();
         $referencias = TReferencias::where('cod_tesis',$tesis->cod_tesis)->get();
         return view('cursoTesis20221.estudiante.tesis.tesis',['estudiante'=>$estudiante,'objetivos'=>$objetivos,
         'correciones' => $correciones,'detalles'=>$detalles,'asesor'=>$asesor,'tesis'=>$tesis,
@@ -63,15 +63,8 @@ class Tesis2022Controller extends Controller
         $aux = explode('-',$id);
         $id = $aux[0];
         $estudiante = EstudianteCT2022::find($id);
-        if ($estudiante->cod_docente != null) {
-            $asesor = AsesorCurso::select('nombres')->where('cod_docente','=',$estudiante->cod_docente)->get();
-        }else{
-            $asesor = "";
-        }
-
-        // $hTesis = Tesis_2022::join('asesor_curso','asesor_curso.cod_docente','tesis_2022.cod_docente')->select('tesis_2022.*','asesor_curso.nombres')->where('tesis_2022.cod_matricula','=',$estudiante->cod_matricula)->get();
         $hTesis = Tesis_2022::where('cod_matricula','=',$estudiante->cod_matricula)->get();
-
+        $asesor = AsesorCurso::find($hTesis[0]->cod_docente);
         return view('cursoTesis20221.estudiante.tesis.estadoTesis',['hTesis'=>$hTesis,'asesor'=>$asesor]);
     }
 
@@ -80,12 +73,12 @@ class Tesis2022Controller extends Controller
 
         $tesis = Tesis_2022::find($request->txtcod_tesis);
 
-        $observacionX = TObservacion::join('t_historial_observaciones','t_observacion.cod_historial_obs','=','t_historial_observaciones.cod_historial_observacion')
+        $observacionX = TObservacion::join('t_historial_observaciones','t_observacion.cod_historial_observacion','=','t_historial_observaciones.cod_historial_observacion')
                 ->select('t_observacion.*')->where('t_historial_observaciones.cod_Tesis',$tesis->cod_tesis)
                 ->where('t_observacion.estado',1)->get();
 
         if(sizeof($observacionX)>0){
-            $detalles = TDetalleObservacion::where('cod_historial_obs',$observacionX[0]->cod_historial_obs)->get();
+            $detalles = TDetalleObservacion::where('cod_historial_observacion',$observacionX[0]->cod_historial_observacion)->get();
         }
 
         try{
@@ -215,12 +208,12 @@ class Tesis2022Controller extends Controller
             if($request->resultados_sendRow != ""){
                 $list_row = [];
                 $tamRow = strlen($request->resultados_sendRow);
-                $historialArchivos = Archivo_Tesis_ct2022::where('cod_proyinvestigacion',$tesis->cod_tesis)->first();
+                $historialArchivos = Archivo_Tesis_ct2022::where('cod_tesis',$tesis->cod_tesis)->first();
                 if($historialArchivos == null){
                     $historialArchivos = new Archivo_Tesis_ct2022();
-                    $historialArchivos->cod_proyinvestigacion = $tesis->cod_tesis;
+                    $historialArchivos->cod_tesis = $tesis->cod_tesis;
                     $historialArchivos->save();
-                    $historialArchivos = Archivo_Tesis_ct2022::where('cod_proyinvestigacion',$tesis->cod_tesis)->first();
+                    $historialArchivos = Archivo_Tesis_ct2022::where('cod_tesis',$tesis->cod_tesis)->first();
                 }
                 if($tamRow>1){
                     $sendRow = explode(",",$request->resultados_sendRow);
@@ -282,12 +275,12 @@ class Tesis2022Controller extends Controller
             if($request->anexos_sendRow != ""){
                 $list_row = [];
                 $tamRow = strlen($request->anexos_sendRow);
-                $historialArchivos = Archivo_Tesis_ct2022::where('cod_proyinvestigacion',$tesis->cod_tesis)->first();
+                $historialArchivos = Archivo_Tesis_ct2022::where('cod_tesis',$tesis->cod_tesis)->first();
                 if($historialArchivos == null){
                     $historialArchivos = new Archivo_Tesis_ct2022();
-                    $historialArchivos->cod_proyinvestigacion = $tesis->cod_tesis;
+                    $historialArchivos->cod_tesis = $tesis->cod_tesis;
                     $historialArchivos->save();
-                    $historialArchivos = Archivo_Tesis_ct2022::where('cod_proyinvestigacion',$tesis->cod_tesis)->first();
+                    $historialArchivos = Archivo_Tesis_ct2022::where('cod_tesis',$tesis->cod_tesis)->first();
                 }
                 if($tamRow>1){
                     $sendRow = explode(",",$request->anexos_sendRow);
@@ -668,9 +661,9 @@ class Tesis2022Controller extends Controller
 
     public function showEstudiantesTesis(){
 
-        $estudiantes = DB::table('estudiante_ct2022')->join('asesor_curso','estudiante_ct2022.cod_docente','=','asesor_curso.cod_docente')
-                            ->join('tesis_2022','estudiante_ct2022.cod_matricula','=','tesis_2022.cod_matricula')
-                            ->select('estudiante_ct2022.*','tesis_2022.estado','tesis_2022.cod_Tesis')->where('asesor_curso.username','=',auth()->user()->name)->get();
+        $estudiantes = DB::table('estudiante_ct2022')->join('tesis_2022 as t','estudiante_ct2022.cod_matricula','=','t.cod_matricula')
+                            ->join('asesor_curso as ac','t.cod_docente','=','ac.cod_docente')
+                            ->select('estudiante_ct2022.*','t.estado','t.cod_tesis')->where('ac.username','=',auth()->user()->name)->get();
 
         return view('cursoTesis20221.asesor.tesis.lista-estudiantes-tesis',['estudiantes'=>$estudiantes]);
     }
@@ -684,10 +677,10 @@ class Tesis2022Controller extends Controller
         $camposFull = 'false';
 
         $cod_matricula = $request->cod_matricula;
-        $Tesis = DB::table('tesis_2022')
-                            ->join('estudiante_ct2022','estudiante_ct2022.cod_matricula','=','tesis_2022.cod_matricula')
-                            ->join('asesor_curso','estudiante_ct2022.cod_docente','=','asesor_curso.cod_docente')
-                            ->select('tesis_2022.*','estudiante_ct2022.nombres as nombresAutor','estudiante_ct2022.apellidos as apellidosAutor','asesor_curso.*')->where('estudiante_ct2022.cod_matricula',$cod_matricula)->get();
+        $Tesis = DB::table('tesis_2022 as t')
+                            ->join('estudiante_ct2022 as et','et.cod_matricula','=','t.cod_matricula')
+                            ->join('asesor_curso as ac','t.cod_docente','=','ac.cod_docente')
+                            ->select('t.*','et.nombres as nombresAutor','et.apellidos as apellidosAutor','ac.*')->where('et.cod_matricula',$cod_matricula)->get();
 
         $validaTesis = DB::table('tesis_2022')->join('estudiante_ct2022','estudiante_ct2022.cod_matricula','=','tesis_2022.cod_matricula')->select('tesis_2022.*')->where('estudiante_ct2022.cod_matricula',$cod_matricula)->get();
 
@@ -705,14 +698,14 @@ class Tesis2022Controller extends Controller
         }
 
         /*Recoger imagenes de resultados*/
-        $resultadosImg = Detalle_Archivo::join('archivos_proy_tesis as at','at.cod_archivos','=','detalle_archivos.cod_archivos')->select('detalle_archivos.*')->where('at.cod_proyinvestigacion',$Tesis[0]->cod_tesis)->where('tipo','resultados')->orderBy('grupo', 'ASC')->get();
+        $resultadosImg = Detalle_Archivo::join('archivos_proy_tesis as at','at.cod_archivos','=','detalle_archivos.cod_archivos')->select('detalle_archivos.*')->where('at.cod_tesis',$Tesis[0]->cod_tesis)->where('tipo','resultados')->orderBy('grupo', 'ASC')->get();
 
         /*Recoger imagenes de anexos*/
-        $anexosImg = Detalle_Archivo::join('archivos_proy_tesis as at','at.cod_archivos','=','detalle_archivos.cod_archivos')->select('detalle_archivos.*')->where('at.cod_proyinvestigacion',$Tesis[0]->cod_tesis)->where('tipo','anexos')->orderBy('grupo', 'ASC')->get();
+        $anexosImg = Detalle_Archivo::join('archivos_proy_tesis as at','at.cod_archivos','=','detalle_archivos.cod_archivos')->select('detalle_archivos.*')->where('at.cod_tesis',$Tesis[0]->cod_tesis)->where('tipo','anexos')->orderBy('grupo', 'ASC')->get();
 
         $keywords = TDetalleKeyword::join('t_keyword','t_keyword.id_keyword','=','t_detalle_keyword.id_keyword')->select('t_detalle_keyword.*')->where('t_keyword.cod_tesis',$Tesis[0]->cod_tesis)->get();
 
-        $observaciones = TObservacion::select('t_observacion.*')->where('t_observacion.cod_tesis',$Tesis[0]->cod_tesis)->get();
+        $observaciones = TObservacion::join('t_historial_observaciones as ho','ho.cod_historial_observacion','=','t_observacion.cod_historial_observacion')->select('t_observacion.*')->where('ho.cod_tesis',$Tesis[0]->cod_tesis)->get();
 
         $objetivos = TObjetivo::where('cod_tesis','=',$Tesis[0]->cod_tesis)->get();
 
@@ -724,10 +717,10 @@ class Tesis2022Controller extends Controller
     public function guardarSinObservaciones(Request $request){
         $idTesis = $request->textcod;
 
-        $Tesis = DB::table('tesis_2022')
-                       ->join('estudiante_ct2022','estudiante_ct2022.cod_matricula','=','tesis_2022.cod_matricula')
-                       ->join('asesor_curso','estudiante_ct2022.cod_docente','=','asesor_curso.cod_docente')
-                       ->select('tesis_2022.*','estudiante_ct2022.nombres as nombresAutor','estudiante_ct2022.apellidos as apellidosAutor')->where('asesor_curso.username','=',auth()->user()->name)->where('estudiante_ct2022.cod_matricula',$request->cod_matricula_hidden)->get();
+        $Tesis = DB::table('tesis_2022 as t')
+                       ->join('estudiante_ct2022','estudiante_ct2022.cod_matricula','=','t.cod_matricula')
+                       ->join('asesor_curso','t.cod_docente','=','asesor_curso.cod_docente')
+                       ->select('t.*','estudiante_ct2022.nombres as nombresAutor','estudiante_ct2022.apellidos as apellidosAutor')->where('asesor_curso.username','=',auth()->user()->name)->where('estudiante_ct2022.cod_matricula',$request->cod_matricula_hidden)->get();
 
 
 
@@ -747,7 +740,7 @@ class Tesis2022Controller extends Controller
 
             $observaciones = new TObservacion();
             $observaciones->cod_tesis = $Tesis[0]->cod_tesis;
-            $observaciones->cod_historial_obs = $existHisto[0]->cod_historial_observacion;
+            $observaciones->cod_historial_observacion = $existHisto[0]->cod_historial_observacion;
             $observaciones->fecha_create = now();
 
 
@@ -769,10 +762,10 @@ class Tesis2022Controller extends Controller
     public function guardarConObservaciones(Request $request){
         $idTesis = $request->textcod;
 
-        $Tesis = DB::table('tesis_2022')
-                       ->join('estudiante_ct2022','estudiante_ct2022.cod_matricula','=','tesis_2022.cod_matricula')
-                       ->join('asesor_curso','estudiante_ct2022.cod_docente','=','asesor_curso.cod_docente')
-                       ->select('tesis_2022.*','estudiante_ct2022.nombres as nombresAutor','estudiante_ct2022.apellidos as apellidosAutor')->where('asesor_curso.username','=',auth()->user()->name)->where('estudiante_ct2022.cod_matricula',$request->cod_matricula_hidden)->get();
+        $Tesis = DB::table('tesis_2022 as t')
+                       ->join('estudiante_ct2022','estudiante_ct2022.cod_matricula','=','t.cod_matricula')
+                       ->join('asesor_curso','t.cod_docente','=','asesor_curso.cod_docente')
+                       ->select('t.*','estudiante_ct2022.nombres as nombresAutor','estudiante_ct2022.apellidos as apellidosAutor')->where('asesor_curso.username','=',auth()->user()->name)->where('estudiante_ct2022.cod_matricula',$request->cod_matricula_hidden)->get();
 
 
 
@@ -791,7 +784,7 @@ class Tesis2022Controller extends Controller
         try {
             $observaciones = new TObservacion();
             $observaciones->cod_tesis = $Tesis[0]->cod_tesis;
-            $observaciones->cod_historial_obs = $existHisto[0]->cod_historial_observacion;
+            $observaciones->cod_historial_observacion = $existHisto[0]->cod_historial_observacion;
             $observaciones->fecha_create = now();
 
             // if($request->tachkCorregir22!=""){
@@ -919,10 +912,10 @@ class Tesis2022Controller extends Controller
             dd($th);
         }
 
-        $latestCorrecion = TObservacion::where('cod_historial_obs',$existHisto[0]->cod_historial_observacion)->where('estado',1)->get();
+        $latestCorrecion = TObservacion::where('cod_historial_observacion',$existHisto[0]->cod_historial_observacion)->where('estado',1)->get();
         for($i = 0; $i<sizeof($arrayThemes);$i++){
             $detalleObs = new TDetalleObservacion();
-            $detalleObs->cod_historial_obs=$latestCorrecion[0]->cod_historial_obs;
+            $detalleObs->cod_historial_observacion=$latestCorrecion[0]->cod_historial_observacion;
             $detalleObs->tema_referido = $arrayThemes[$i];
             $detalleObs->correccion = null;
             $detalleObs->save();
@@ -933,11 +926,11 @@ class Tesis2022Controller extends Controller
     }
 
 
-    public function listaObsEstudianteTesis($cod_historial_obs){
-        $observaciones = TObservacion::where('cod_historial_obs',$cod_historial_obs)->get();
+    public function listaObsEstudianteTesis($cod_historial_observacion){
+        $observaciones = TObservacion::where('cod_historial_observacion',$cod_historial_observacion)->get();
         $estudiante = Tesis_2022::join('t_historial_observaciones','tesis_2022.cod_tesis','=','t_historial_observaciones.cod_Tesis')
                                 ->join('estudiante_ct2022','estudiante_ct2022.cod_matricula','tesis_2022.cod_matricula')
-                                ->select('tesis_2022.*','estudiante_ct2022.*')->where('t_historial_observaciones.cod_historial_observacion',$cod_historial_obs)->get();
+                                ->select('tesis_2022.*','estudiante_ct2022.*')->where('t_historial_observaciones.cod_historial_observacion',$cod_historial_observacion)->get();
 
         return view('cursoTesis20221.asesor.tesis.lista-obs-estudiante',['observaciones'=>$observaciones,'estudiante'=>$estudiante]);
     }
@@ -947,11 +940,11 @@ class Tesis2022Controller extends Controller
         $id = auth()->user()->name;
         $asesor = AsesorCurso::where('username',$id)->get();
         if (is_numeric($buscarObservaciones)) {
-            $estudiantes = DB::connection('mysql')->table('estudiante_ct2022')->join('tesis_2022','estudiante_ct2022.cod_matricula','=','tesis_2022.cod_matricula')->join('t_historial_observaciones','tesis_2022.cod_cod_tesis','=','t_historial_observaciones.cod_Tesis')
-                            ->select('estudiante_ct2022.*','t_historial_observaciones.fecha','t_historial_observaciones.cod_historial_observacion')->where('tesis_2022.cod_matricula','like','%'.$buscarObservaciones.'%')->where('estudiante_ct2022.cod_docente',$asesor[0]->cod_docente)->paginate($this::PAGINATION);
+            $estudiantes = DB::connection('mysql')->table('estudiante_ct2022')->join('tesis_2022','estudiante_ct2022.cod_matricula','=','tesis_2022.cod_matricula')->join('t_historial_observaciones','tesis_2022.cod_tesis','=','t_historial_observaciones.cod_tesis')
+                            ->select('estudiante_ct2022.*','t_historial_observaciones.fecha','t_historial_observaciones.cod_historial_observacion')->where('tesis_2022.cod_matricula','like','%'.$buscarObservaciones.'%')->where('tesis_2022.cod_docente',$asesor[0]->cod_docente)->paginate($this::PAGINATION);
         } else {
             $estudiantes = DB::connection('mysql')->table('estudiante_ct2022')->join('tesis_2022','estudiante_ct2022.cod_matricula','=','tesis_2022.cod_matricula')->join('t_historial_observaciones','tesis_2022.cod_tesis','=','t_historial_observaciones.cod_Tesis')
-                            ->select('estudiante_ct2022.*','t_historial_observaciones.fecha','t_historial_observaciones.cod_historial_observacion')->where('estudiante_ct2022.apellidos','like','%'.$buscarObservaciones.'%')->where('estudiante_ct2022.cod_docente',$asesor[0]->cod_docente)->paginate($this::PAGINATION);
+                            ->select('estudiante_ct2022.*','t_historial_observaciones.fecha','t_historial_observaciones.cod_historial_observacion')->where('estudiante_ct2022.apellidos','like','%'.$buscarObservaciones.'%')->where('tesis_2022.cod_docente',$asesor[0]->cod_docente)->paginate($this::PAGINATION);
         }
 
         if(empty($estudiantes)){
@@ -1247,7 +1240,7 @@ class Tesis2022Controller extends Controller
             // Resultados
 
             $img_resultado = DB::table('detalle_archivos as DA')->join('archivos_proy_tesis as AP','DA.cod_archivos','=','AP.cod_archivos')
-                                                ->where('AP.cod_proyinvestigacion','=',$tesis[0]->cod_tesis)->where('DA.tipo','=','resultados')->get();
+                                                ->where('AP.cod_tesis','=',$tesis[0]->cod_tesis)->where('DA.tipo','=','resultados')->get();
             // dd($img_resultado);
             $nuevaSesion->addListItem("11. RESULTADOS",0.5,$titulos,[\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER],$styleContenido);
 
@@ -1350,7 +1343,7 @@ class Tesis2022Controller extends Controller
             // Anexos
 
             $img_anexos = DB::table('detalle_archivos as DA')->join('archivos_proy_tesis as AP','DA.cod_archivos','=','AP.cod_archivos')
-                                                ->where('AP.cod_proyinvestigacion','=',$tesis[0]->cod_tesis)->where('DA.tipo','=','anexos')->get();
+                                                ->where('AP.cod_tesis','=',$tesis[0]->cod_tesis)->where('DA.tipo','=','anexos')->get();
             // dd($img_resultado);
             $nuevaSesion->addListItem("16. ANEXOS",0.5,$titulos,[\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER],$styleContenido);
 
@@ -1388,9 +1381,9 @@ class Tesis2022Controller extends Controller
         $correccion = TObservacion::where('id_observacion','=',$request->cod_observaciones)->get();
         $tesis = Tesis_2022::join('t_historial_observaciones','tesis_2022.cod_tesis','=','t_historial_observaciones.cod_Tesis')
                                 ->join('estudiante_ct2022','tesis_2022.cod_matricula','=','estudiante_ct2022.cod_matricula')
-                                ->join('asesor_curso','tesis_2022.cod_docente','=','estudiante_ct2022.cod_docente')
+                                ->join('asesor_curso','tesis_2022.cod_docente','=','asesor_curso.cod_docente')
                                 ->select('tesis_2022.*','asesor_curso.nombres','estudiante_ct2022.nombres as nombresAutor','estudiante_ct2022.apellidos as apellidosAutor','t_historial_observaciones.*')
-                                ->where('t_historial_observaciones.cod_historial_observacion',$correccion[0]->cod_historial_obs)->first();
+                                ->where('t_historial_observaciones.cod_historial_observacion',$correccion[0]->cod_historial_observacion)->first();
 
         $objetivosTesis = TObjetivo::where('cod_tesis','=',$tesis->cod_tesis)->get();
 

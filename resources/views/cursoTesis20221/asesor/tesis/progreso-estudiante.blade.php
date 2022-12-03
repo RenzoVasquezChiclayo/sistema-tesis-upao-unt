@@ -899,7 +899,7 @@
                                 @endif
                             </div>
                             <div class="col-3 col-md-3">
-                                <a href="{{route('asesor.showEstudiantes')}}" type="button" class="btn btn-outline-danger">Cancelar</a>
+                                <a href="{{route('asesor.estudiantes-tesis')}}" type="button" class="btn btn-outline-danger">Cancelar</a>
                             </div>
                         </div>
                     </div>

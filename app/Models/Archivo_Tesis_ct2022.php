@@ -13,11 +13,11 @@ class Archivo_Tesis_ct2022 extends Model
     protected $primaryKey = 'cod_archivos';
 
     protected $fillable = [
-        'cod_proyectotesis'
+        'cod_tesis'
     ];
 
-    public function proyectoTesis(){
-        return $this->hasOne(TesisCT2022::class);
+    public function tesis(){
+        return $this->hasOne(Tesis_2022::class);
     }
 
     public $timestamps = false;

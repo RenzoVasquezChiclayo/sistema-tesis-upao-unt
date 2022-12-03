@@ -105,7 +105,7 @@
             width:90px;
         }
     </style>
-    @if ($estudiante->cod_docente == null)
+    @if ($tesis->cod_docente == null)
         <div class="row d-flex" style="align-items:center; justify-content: center;">
             <div class="col-8 border-box mt-3">
                 <div class="row">
@@ -113,7 +113,6 @@
                         <h4 style="color:red;">Aviso!</h4>
                         <hr style="border: 1px solid black;" />
                     </div>
-
                     <div class="col">
                         <p>Esta vista estara habilitada cuando se te designe algun asesor para el curso.
                             Si existe algun inconveniente y/o queja envia un correo a <a href="#">
@@ -254,7 +253,7 @@
                             <div class="row">
                                 <div style="width:auto;">
                                     <input class="form-control" name="txtCodDocente" id="txtCodDocente" type="text"
-                                        value="{{$estudiante->cod_docente}}" placeholder="Codigo del Docente" readonly>
+                                        value="{{$tesis->cod_docente}}" placeholder="Codigo del Docente" readonly>
                                 </div>
                             </div>
                         </div>

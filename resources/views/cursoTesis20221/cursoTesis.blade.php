@@ -462,11 +462,11 @@
                                                 <input class="form-control" name="txtmeses_ejecucion"
                                                     id="txtmeses_ejecucion" type="number"
                                                     onkeypress="return isNumberKey(this);"
-                                                    value="@if ($tesis[0]->meses_ejecucion != '') {{ $tesis[0]->meses_ejecucion }} @endif"
+                                                    value="@if($tesis[0]->meses_ejecucion != ''){{$tesis[0]->meses_ejecucion}}@endif"
                                                     placeholder="00" min="0"
                                                     @if (sizeof($correciones) != 0 && $correciones[0]->meses_ejecucion == null) readonly @endif required>
                                                 <input type="hidden" id="valuesMesesPart"
-                                                    value="@if ($tesis[0]->meses_ejecucion != '') {{ $tesis[0]->t_ReparacionInstrum }},{{ $tesis[0]->t_RecoleccionDatos }},{{ $tesis[0]->t_AnalisisDatos }},{{ $tesis[0]->t_ElaboracionInfo }} @endif">
+                                                    value="@if ($tesis[0]->meses_ejecucion != '') {{$tesis[0]->t_ReparacionInstrum}},{{$tesis[0]->t_RecoleccionDatos}},{{$tesis[0]->t_AnalisisDatos}},{{$tesis[0]->t_ElaboracionInfo}} @endif">
                                             </div>
 
                                         </div>
@@ -790,11 +790,7 @@
                                 <div class="form-floating">
                                     <textarea class="form-control" name="txtreal_problematica" id="txtreal_problematica"
                                         style="height: 100px; resize:none" @if ((sizeof($correciones) > 0 && $correciones[0]->real_problematica == null) ||
-                                            $tesis[0]->real_problematica != '') readonly @endif required>
-                                        @if ($tesis[0]->real_problematica != '')
-                                        {{ $tesis[0]->real_problematica }}
-                                        @endif
-                                    </textarea>
+                                            $tesis[0]->real_problematica != '') readonly @endif required>@if ($tesis[0]->real_problematica != ''){{ $tesis[0]->real_problematica }}@endif</textarea>
                                 </div>
                             </div>
 
@@ -872,11 +868,7 @@
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
                                     <textarea class="form-control" name="txtantecedentes" id="txtantecedentes" style="height: 100px; resize:none"
-                                        @if (sizeof($correciones) != 0 && $tesis[0]->antecedentes != '' && $correciones[0]->antecedentes == null) readonly @endif required>
-                                        @if ($tesis[0]->antecedentes != '')
-                                        {{ $tesis[0]->antecedentes }}
-                                        @endif
-                                    </textarea>
+                                        @if (sizeof($correciones) != 0 && $tesis[0]->antecedentes != '' && $correciones[0]->antecedentes == null) readonly @endif required>@if ($tesis[0]->antecedentes != ''){{ $tesis[0]->antecedentes }}@endif</textarea>
                                 </div>
                             </div>
 
@@ -927,11 +919,7 @@
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
                                     <textarea class="form-control" name="txtjustificacion" id="txtjustificacion" style="height: 100px; resize:none"
-                                        @if (sizeof($correciones) != 0 && $tesis[0]->justificacion != '' && $correciones[0]->justificacion == null) readonly @endif required>
-                                        @if ($tesis[0]->justificacion != '')
-                                        {{ $tesis[0]->justificacion }}
-                                        @endif
-                                    </textarea>
+                                        @if (sizeof($correciones) != 0 && $tesis[0]->justificacion != '' && $correciones[0]->justificacion == null) readonly @endif required>@if ($tesis[0]->justificacion != ''){{ $tesis[0]->justificacion }}@endif</textarea>
                                 </div>
                             </div>
 
@@ -983,11 +971,7 @@
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
                                     <textarea class="form-control" name="txtformulacion_prob" id="txtformulacion_prob"
-                                        style="height: 100px; resize:none" @if (sizeof($correciones) != 0 && $tesis[0]->formulacion_prob != '' && $correciones[0]->formulacion_prob == null) readonly @endif>
-                                        @if ($tesis[0]->formulacion_prob != '')
-                                        {{ $tesis[0]->formulacion_prob }}
-                                        @endif
-                                    </textarea>
+                                        style="height: 100px; resize:none" @if (sizeof($correciones) != 0 && $tesis[0]->formulacion_prob != '' && $correciones[0]->formulacion_prob == null) readonly @endif>@if ($tesis[0]->formulacion_prob != ''){{ $tesis[0]->formulacion_prob }}@endif</textarea>
                                 </div>
                             </div>
 
@@ -1141,11 +1125,7 @@
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
                                     <textarea class="form-control" name="txtmarco_teorico" id="txtmarco_teorico" style="height: 100px; resize:none"
-                                        @if (sizeof($correciones) != 0 && $tesis[0]->marco_teorico != '' && $correciones[0]->marco_teorico == null) readonly @endif required>
-                                        @if ($tesis[0]->marco_teorico != '')
-                                        {{ $tesis[0]->marco_teorico }}
-                                        @endif
-                                    </textarea>
+                                        @if (sizeof($correciones) != 0 && $tesis[0]->marco_teorico != '' && $correciones[0]->marco_teorico == null) readonly @endif required>@if ($tesis[0]->marco_teorico != ''){{ $tesis[0]->marco_teorico }}@endif</textarea>
                                 </div>
                             </div>
 
@@ -1194,11 +1174,7 @@
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
                                     <textarea class="form-control" name="txtmarco_conceptual" id="txtmarco_conceptual"
-                                        style="height: 100px; resize:none" @if (sizeof($correciones) != 0 && $tesis[0]->marco_conceptual != '' && $correciones[0]->marco_conceptual == null) readonly @endif required>
-                                        @if ($tesis[0]->marco_conceptual != '')
-                                        {{ $tesis[0]->marco_conceptual }}
-                                        @endif
-                                    </textarea>
+                                        style="height: 100px; resize:none" @if (sizeof($correciones) != 0 && $tesis[0]->marco_conceptual != '' && $correciones[0]->marco_conceptual == null) readonly @endif required>@if ($tesis[0]->marco_conceptual != ''){{ $tesis[0]->marco_conceptual }}@endif</textarea>
                                 </div>
                             </div>
 
@@ -1244,11 +1220,7 @@
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
                                     <textarea class="form-control" name="txtmarco_legal" id="txtmarco_legal" style="height: 100px; resize:none"
-                                        @if (sizeof($correciones) != 0 && $tesis[0]->marco_legal != '' && $correciones[0]->marco_legal == null) readonly @endif required>
-                                        @if ($tesis[0]->marco_legal != '')
-                                        {{ $tesis[0]->marco_legal }}
-                                        @endif
-                                    </textarea>
+                                        @if (sizeof($correciones) != 0 && $tesis[0]->marco_legal != '' && $correciones[0]->marco_legal == null) readonly @endif required>@if ($tesis[0]->marco_legal != ''){{ $tesis[0]->marco_legal }}@endif</textarea>
                                 </div>
                             </div>
 
@@ -1299,11 +1271,7 @@
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
                                     <textarea class="form-control" name="txtform_hipotesis" id="txtform_hipotesis" style="height: 100px; resize:none"
-                                        @if (sizeof($correciones) != 0 && $tesis[0]->form_hipotesis != '' && $correciones[0]->form_hipotesis == null) readonly @endif required>
-                                        @if ($tesis[0]->form_hipotesis != '')
-                                        {{ $tesis[0]->form_hipotesis }}
-                                        @endif
-                                    </textarea>
+                                        @if (sizeof($correciones) != 0 && $tesis[0]->form_hipotesis != '' && $correciones[0]->form_hipotesis == null) readonly @endif required>@if ($tesis[0]->form_hipotesis != ''){{ $tesis[0]->form_hipotesis }}@endif</textarea>
                                 </div>
                             </div>
 
@@ -1360,11 +1328,7 @@
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
                                     <textarea class="form-control" name="txtobjeto_estudio" id="txtobjeto_estudio" style="height: 100px; resize:none"
-                                        @if (sizeof($correciones) != 0 && $tesis[0]->objeto_estudio != '' && $correciones[0]->objeto_estudio == null) readonly @endif required>
-                                        @if ($tesis[0]->objeto_estudio != '')
-                                        {{ $tesis[0]->objeto_estudio }}
-                                        @endif
-                                    </textarea>
+                                        @if (sizeof($correciones) != 0 && $tesis[0]->objeto_estudio != '' && $correciones[0]->objeto_estudio == null) readonly @endif required>@if ($tesis[0]->objeto_estudio != ''){{ $tesis[0]->objeto_estudio }}@endif</textarea>
 
                                 </div>
                             </div>
@@ -1413,11 +1377,7 @@
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
                                     <textarea class="form-control" name="txtpoblacion" id="txtpoblacion" style="height: 100px; resize:none"
-                                        @if (sizeof($correciones) != 0 && $tesis[0]->poblacion != '' && $correciones[0]->poblacion == null) readonly @endif required>
-                                        @if ($tesis[0]->poblacion != '')
-                                        {{ $tesis[0]->poblacion }}
-                                        @endif
-                                    </textarea>
+                                        @if (sizeof($correciones) != 0 && $tesis[0]->poblacion != '' && $correciones[0]->poblacion == null) readonly @endif required>@if ($tesis[0]->poblacion != ''){{ $tesis[0]->poblacion }}@endif</textarea>
 
                                 </div>
                             </div>
@@ -1466,11 +1426,7 @@
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
                                     <textarea class="form-control" name="txtmuestra" id="txtmuestra" style="height: 100px; resize:none"
-                                        @if (sizeof($correciones) != 0 && $tesis[0]->muestra != '' && $correciones[0]->muestra == null) readonly @endif>
-                                        @if ($tesis[0]->muestra != '')
-                                        {{ $tesis[0]->muestra }}
-                                        @endif
-                                    </textarea>
+                                        @if (sizeof($correciones) != 0 && $tesis[0]->muestra != '' && $correciones[0]->muestra == null) readonly @endif>@if ($tesis[0]->muestra != ''){{ $tesis[0]->muestra }}@endif</textarea>
                                 </div>
                             </div>
 
@@ -1518,11 +1474,7 @@
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
                                     <textarea class="form-control" name="txtmetodos" id="txtmetodos" style="height: 100px; resize:none"
-                                        @if (sizeof($correciones) != 0 && $tesis[0]->metodos != '' && $correciones[0]->metodos == null) readonly @endif>
-                                        @if ($tesis[0]->metodos != '')
-                                        {{ $tesis[0]->metodos }}
-                                        @endif
-                                    </textarea>
+                                        @if (sizeof($correciones) != 0 && $tesis[0]->metodos != '' && $correciones[0]->metodos == null) readonly @endif>@if ($tesis[0]->metodos != ''){{ $tesis[0]->metodos }}@endif</textarea>
 
                                 </div>
                             </div>
@@ -1572,11 +1524,7 @@
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
                                     <textarea class="form-control" name="txttecnicas_instrum" id="txttecnicas_instrum" type="text"
-                                        value="" style="height: 100px; resize:none" @if (sizeof($correciones) != 0 && $tesis[0]->tecnicas_instrum != '' && $correciones[0]->tecnicas_instrum == null) readonly @endif required>
-                                        @if ($tesis[0]->tecnicas_instrum != '')
-                                        {{ $tesis[0]->tecnicas_instrum }}
-                                        @endif
-                                    </textarea>
+                                        value="" style="height: 100px; resize:none" @if (sizeof($correciones) != 0 && $tesis[0]->tecnicas_instrum != '' && $correciones[0]->tecnicas_instrum == null) readonly @endif required>@if ($tesis[0]->tecnicas_instrum != ''){{ $tesis[0]->tecnicas_instrum }}@endif</textarea>
                                 </div>
                             </div>
                             @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
@@ -1623,11 +1571,7 @@
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
                                     <textarea class="form-control" name="txtinstrumentacion" id="txtinstrumentacion" type="text" value=""
-                                        style="height: 100px; resize:none" @if (sizeof($correciones) != 0 && $tesis[0]->instrumentacion != '' && $correciones[0]->instrumentacion == null) readonly @endif>
-                                        @if ($tesis[0]->instrumentacion != '')
-                                        {{ $tesis[0]->instrumentacion }}
-                                        @endif
-                                    </textarea>
+                                        style="height: 100px; resize:none" @if (sizeof($correciones) != 0 && $tesis[0]->instrumentacion != '' && $correciones[0]->instrumentacion == null) readonly @endif>@if ($tesis[0]->instrumentacion != ''){{ $tesis[0]->instrumentacion }}@endif</textarea>
                                 </div>
                             </div>
                             @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
@@ -1677,11 +1621,7 @@
                                     <textarea class="form-control" name="txtestg_metodologicas" id="txtestg_metodologicas"
                                         style="height: 100px; resize:none" @if (sizeof($correciones) != 0 &&
                                             $tesis[0]->estg_metodologicas != '' &&
-                                            $correciones[0]->estg_metodologicas == null) readonly @endif required>
-                                        @if ($tesis[0]->estg_metodologicas != '')
-                                        {{ $tesis[0]->estg_metodologicas }}
-                                        @endif
-                                    </textarea>
+                                            $correciones[0]->estg_metodologicas == null) readonly @endif required>@if ($tesis[0]->estg_metodologicas != ''){{ $tesis[0]->estg_metodologicas }}@endif</textarea>
                                 </div>
                             </div>
                             @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
@@ -2241,6 +2181,7 @@
         var existMes = false;
         if (document.getElementById('txtmeses_ejecucion').value != "") {
             setMeses();
+
         }
         const valueMesPart = document.getElementById('valuesMesesPart').value;
 

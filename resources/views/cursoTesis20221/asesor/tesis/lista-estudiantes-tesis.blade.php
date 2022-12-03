@@ -40,7 +40,7 @@
                                     <td style="text-align: center;">
                                         <form id="proyecto-download" action="{{route('curso.descargar-tesis')}}" method="POST">
                                             @csrf
-                                            <input type="hidden" name="cod_Tesis" value="{{$estu->cod_Tesis}}">
+                                            <input type="hidden" name="cod_Tesis" value="{{$estu->cod_tesis}}">
                                             <a href="#" onclick="this.closest('#proyecto-download').submit()"><i class='bx bx-sm bx-download'></i></a>
                                         </form>
                                     </td>
