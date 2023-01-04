@@ -33,6 +33,9 @@ Route::get('/', [LoginController::class,'index'])
 Route::get('/information',[AdminCursoController::class,'information'])
         ->name('user_information')->middleware('auth');
 
+Route::get('/reports',[AdminCursoController::class,'reports'])
+        ->name('user_reports')->middleware('auth');
+
 Route::post('guardarInformacion/',[AdminCursoController::class,'saveUser'])
         ->name('save_user');
 

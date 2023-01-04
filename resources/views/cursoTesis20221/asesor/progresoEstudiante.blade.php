@@ -1139,9 +1139,12 @@
         }
 
         function saveWithoutErrors(){
+
             var validacionCampos = document.getElementById('validacionCampos').value;
             var validacionTesis = document.getElementById('validacionTesis').value;
+
             if (validacionCampos == 'false'){
+
                 Swal.fire({
                 title: 'Estas seguro(a)?',
                 text: "No se guardaran observaciones!",

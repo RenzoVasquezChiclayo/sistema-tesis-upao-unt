@@ -1511,12 +1511,11 @@ class CursoTesisController extends Controller
                             ->select('p.*','e.nombres as nombresAutor','e.apellidos as apellidosAutor','ac.nombres as nombre_asesor','ac.*')
                             ->where('e.cod_matricula',$cod_matricula)->get();
 
-
         foreach ($cursoTesis[0] as $curso) {
             $arregloAux[$aux] = $curso;
             $aux++;
         }
-        for ($i=0; $i < sizeof($arregloAux)-3; $i++) {
+        for ($i=0; $i < sizeof($arregloAux)-11; $i++) {
             if ($arregloAux[$i]!=null) {
                 $isFinal = 'true';
             }else{
@@ -1574,9 +1573,10 @@ class CursoTesisController extends Controller
 
         $cursoTesis = DB::table('proyecto_tesis')
                        ->join('estudiante_ct2022','estudiante_ct2022.cod_matricula','=','proyecto_tesis.cod_matricula')
-                       ->join('asesor_curso','estudiante_ct2022.cod_docente','=','asesor_curso.cod_docente')
+                       ->join('asesor_curso','proyecto_tesis.cod_docente','=','asesor_curso.cod_docente')
                        ->select('proyecto_tesis.*','estudiante_ct2022.nombres as nombresAutor','estudiante_ct2022.apellidos as apellidosAutor')->where('asesor_curso.username','=',auth()->user()->name)->where('estudiante_ct2022.cod_matricula',$request->cod_matricula_hidden)->get();
 
+        // dd($cursoTesis[0]);
         $existHisto = Historial_Observaciones::where('cod_proyectotesis',$cursoTesis[0]->cod_proyectotesis)->get();
         if($existHisto->count()==0){
             $existHisto = new Historial_Observaciones();

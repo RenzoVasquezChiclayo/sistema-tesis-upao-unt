@@ -775,3 +775,27 @@ function btnDeleteImg(iTema,pos_grupo,pos_contenedor){
 function deleteGroup(){
     alert('Eliminado');
 }
+
+//Funcion para tabla de reporte rol Director
+var dato = [];
+var filaDato = [];
+
+window.onload = function() {
+    rol = document.getElementById('rol').value;
+    if (rol == "d-CTesis2022-1") {
+        dato = document.getElementById('Codigo_Avance').value;
+    }else if(rol == "a-CTesis2022-1"){
+        dato = document.getElementById('Codigo_Avance_Asesor').value;
+    }
+
+    filaDato = dato.split('-');
+    for (let i = 0; i < filaDato.length-1; i++) {
+        alumno = filaDato[i].split('_');
+        fila = '<tr><td>'+alumno[0]+'</td><td><div class="progress" role="progressbar" aria-label="Example with label" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: '+alumno[1]+'%">'+parseInt(alumno[1])+'%</div></div></td></tr>';
+        document.getElementById('table-reportes').innerHTML +=fila;
+    }
+
+
+
+
+}
