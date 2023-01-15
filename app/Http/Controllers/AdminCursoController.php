@@ -13,10 +13,14 @@ use App\Models\ObservacionesProyCurso;
 use App\Models\Tesis_2022;
 use App\Models\TesisCT2022;
 use App\Models\User;
+use Barryvdh\DomPDF\PDF as DomPDFPDF;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Facades\Excel;
+use PDF;
+use Carbon\Carbon;
 
 
 class AdminCursoController extends Controller
@@ -153,7 +157,20 @@ class AdminCursoController extends Controller
                                 'totalAsesores'=>$totalAsesores,'dato'=>$dato,'dato2'=>$dato2]);
     }
 
+    public function descargarReporteProyT(Request $request){
 
+        // Traendo los datos del alumno y su porcentaje de la tabla reportes
+
+        $lista_alumnos_table = $request->alumnos_porcen_table;
+
+        foreach ($lista_alumnos_table as $fila) {
+            $datos[] = explode('.',$fila);
+        }
+        // dd($datos);
+        $fecha = Carbon::now();
+        $pdf = PDF::loadView('cursoTesis20221.reportes.pdfAvanceProyT',compact('datos','fecha'));
+        return $pdf->download('Reporte Avance Proyecto Tesis.pdf');
+    }
 
     public function saveUser(Request $request){
 

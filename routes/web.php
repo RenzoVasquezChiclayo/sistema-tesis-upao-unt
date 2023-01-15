@@ -93,6 +93,7 @@ Route::delete('/delete-usuario',[CursoTesisController::class,'deleteUsuario'])->
 
 
 // Rutas para el director Curso
+Route::get('/descargar-reportePT',[AdminCursoController::class,'descargarReporteProyT'])->name('director.descargar-reporteProyT')->middleware('auth');
 Route::get('/asignarAsesor',[CursoTesisController::class,'showTablaAsignacion'])->name('director.asignar')->middleware('auth');
 Route::post('/saveRegistro',[CursoTesisController::class,'saveAsesorAsignado'])->name('director.saveAsesor');
 Route::get('/agregarAsesor',[AdminCursoController::class,'showAddAsesor'])->name('director.veragregarAsesor')->middleware('auth');

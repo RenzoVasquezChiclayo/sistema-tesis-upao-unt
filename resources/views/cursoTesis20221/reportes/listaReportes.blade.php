@@ -3,7 +3,7 @@
     Reportes
 @endsection
 @section('contenido')
-    <h1>REPORTES GAAAA</h1>
+    <h1>REPORTES</h1>
     @if (auth()->user()->rol == 'CTesis2022-1')
         <div class="row">
             <div class="col-3">
@@ -52,23 +52,32 @@
         </div>
         <input type="hidden" name="Codigo_Avance" id="Codigo_Avance" value="{{$dato}}">
         <input type="hidden" id="rol" value="d-CTesis2022-1">
-
         <div class="row">
             <div class="col-6">
-                <table class="table" id="table-reportes">
-                    <thead>
-                      <tr>
-                        <th scope="col">Codigo</th>
-                        <th scope="col">Porcentaje de Avance</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                        </tr>
-                    </tbody>
-                  </table>
+                <h2 style="text-align: center">Avances Proyecto de Tesis</h2>
+                <form action="{{ route('director.descargar-reporteProyT') }}" method="get" id="form-reporteProyT">
+                    <table class="table" id="table-reportes">
+                        <thead>
+                          <tr>
+                            <th scope="col">Codigo</th>
+                            <th scope="col">Porcentaje de Avance</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            </tr>
+                        </tbody>
+                      </table>
+                      <div class="row">
+                        <div class="col-4">
+                            <input type="submit" class="btn btn-success" value="Descargar">
+                        </div>
+                    </div>
+                </form>
             </div>
+
         </div>
+
 
     @endif
 

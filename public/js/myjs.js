@@ -776,6 +776,8 @@ function deleteGroup(){
     alert('Eliminado');
 }
 
+
+
 //Funcion para tabla de reporte rol Director
 var dato = [];
 var filaDato = [];
@@ -791,11 +793,14 @@ window.onload = function() {
     filaDato = dato.split('-');
     for (let i = 0; i < filaDato.length-1; i++) {
         alumno = filaDato[i].split('_');
-        fila = '<tr><td>'+alumno[0]+'</td><td><div class="progress" role="progressbar" aria-label="Example with label" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: '+alumno[1]+'%">'+parseInt(alumno[1])+'%</div></div></td></tr>';
+
+        fila = '<tr><td><input name="alumnos_porcen_table[]" type="hidden" value="'+alumno[0]+'.'+parseInt(alumno[1])+'">'+alumno[0]+'</td><td><div class="progress" role="progressbar" aria-label="Example with label" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: '+alumno[1]+'%">'+parseInt(alumno[1])+' %</div></div></td></tr>';
         document.getElementById('table-reportes').innerHTML +=fila;
     }
 
-
-
-
 }
+
+//Funcion para descargar reporte de avance de proyecto de tesis
+// function descargarReporteAvance(){
+//     document.form-reporteProyT.submit();
+// }
