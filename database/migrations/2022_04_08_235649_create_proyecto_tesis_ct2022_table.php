@@ -39,8 +39,8 @@ return new class extends Migration
                     ->onDelete('cascade');
             $table->string('ti_finpersigue',15)->nullable();
             $table->string('ti_disinvestigacion',15)->nullable();
-            $table->string('localidad',30)->nullable();
-            $table->string('institucion',30)->nullable();
+            $table->string('localidad',40)->nullable();
+            $table->string('institucion',50)->nullable();
             $table->integer('meses_ejecucion')->nullable();
 
             $table->string('t_ReparacionInstrum',30)->nullable();

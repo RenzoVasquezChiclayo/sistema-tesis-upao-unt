@@ -1,16 +1,10 @@
 <?php
 
 use App\Http\Controllers\AdminCursoController;
-use App\Http\Controllers\AsesorController;
 use App\Http\Controllers\CursoTesisController;
-use App\Http\Controllers\DocenteController;
-use App\Http\Controllers\EgresadoController;
 use App\Http\Controllers\EstudianteTesisController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Tesis2022Controller;
-use App\Http\Controllers\TesisController;
-use App\Models\Egresado;
-use FontLib\Table\Type\post;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
