@@ -42,7 +42,7 @@ class AdminCursoController extends Controller
                 $proytesis = TesisCT2022::where('cod_matricula','=',$estudiante->cod_matricula)->get();
 
                 $matriz = new MatrizOperacional();
-                $matriz->cod_tesis = $proytesis->cod_proyectotesis;
+                $matriz->cod_proyectotesis = $proytesis->cod_proyectotesis;
                 $matriz->save();
 
             }else{

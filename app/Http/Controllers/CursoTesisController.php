@@ -135,7 +135,6 @@ class CursoTesisController extends Controller
         $id = $aux[0];
         $estudiante = EstudianteCT2022::find($id);
         $hTesis = TesisCT2022::join('asesor_curso as ac','ac.cod_docente','=','proyecto_tesis.cod_docente')->select('ac.nombres as nombre_asesor','proyecto_tesis.*')->where('cod_matricula','=',$estudiante->cod_matricula)->get();
-
         return view('cursoTesis20221.estadoProyecto',['hTesis'=>$hTesis]);
     }
 
