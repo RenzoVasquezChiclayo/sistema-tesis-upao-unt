@@ -13,9 +13,14 @@ use App\Models\ObservacionesProyCurso;
 use App\Models\Tesis_2022;
 use App\Models\TesisCT2022;
 use App\Models\User;
+use Barryvdh\DomPDF\PDF as DomPDFPDF;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Facades\Excel;
+use PDF;
+use Carbon\Carbon;
 
 
 class AdminCursoController extends Controller
@@ -32,17 +37,22 @@ class AdminCursoController extends Controller
             if($existTesis->count()==0){
                 $newTesis = new TesisCT2022();
                 $newTesis->cod_matricula = $estudiante->cod_matricula;
-                $newTesis->nombres = $estudiante->nombres.' '.$estudiante->apellidos;
                 $newTesis->save();
 
-                $tesis = TesisCT2022::where('cod_matricula','=',$estudiante->cod_matricula)->get();
+                $proytesis = TesisCT2022::where('cod_matricula','=',$estudiante->cod_matricula)->get();
 
                 $matriz = new MatrizOperacional();
-                $matriz->cod_tesis = $tesis[0]->cod_proyectotesis;
+                $matriz->cod_tesis = $proytesis->cod_proyectotesis;
                 $matriz->save();
 
+            }else{
+                $MatrizxTesisFind = MatrizOperacional::where('cod_proyectotesis',$existTesis[0]->cod_proyectotesis)->get();
 
-
+                if ($MatrizxTesisFind->count()==0) {
+                    $matriz = new MatrizOperacional();
+                    $matriz->cod_proyectotesis = $existTesis[0]->cod_proyectotesis;
+                    $matriz->save();
+                }
             }
             if ($existTesisII->count()==0) {
                 $newTesisII = new Tesis_2022();
@@ -78,6 +88,88 @@ class AdminCursoController extends Controller
         }
 
 
+    }
+
+    public function reports(){
+        $id = auth()->user()->name;
+        $codigo = explode('-',$id);
+        $porce = 0;
+        $porcent = 0;
+        $porcentaje = 0;
+        $dato = "";
+        $dato2 = "";
+        if (sizeof($codigo)>1) {
+            $id = $codigo[0];
+        }
+
+        // ESTUDIANTES
+
+        $proyTesis = DB::table('proyecto_tesis')
+                            ->where('cod_matricula',$id)->first();
+        if ($proyTesis != null) {
+            foreach ($proyTesis as $pt) {
+                if ($pt!=null) {
+                    $porcentaje += 100/33;
+                }
+            }
+        }
+        // -------------------------------------------------------
+
+        // ASESOR
+
+        $asesor = DB::table('asesor_curso as ac')->where('ac.username',$id)->first();
+        if ($asesor != null) {
+            $MyProyTesis = DB::table('proyecto_tesis as pt')
+                            ->where('pt.cod_docente',$asesor->cod_docente)->get();
+            $MyProyTesis->toArray();
+            for ($i=0; $i < count($MyProyTesis); $i++) {
+                foreach ($MyProyTesis[$i] as $atributo) {
+                    if ($atributo!=null) {
+                        $porcent += 100/33;
+                    }
+                }
+                $dato2 .= $MyProyTesis[$i]->cod_matricula.'_'.(int)$porcent.'-';
+                $porcent = 0;
+            }
+        }
+
+        // ----------------------------------------------------------
+
+        // DIRECTOR
+
+        $totalEstudiantes = count(EstudianteCT2022::all());
+
+        $totalAsesores = count(AsesorCurso::all());
+
+        $AllProyTesis = DB::table('proyecto_tesis')->get();
+        $AllProyTesis->toArray();
+        for ($i=0; $i < count($AllProyTesis); $i++) {
+            foreach ($AllProyTesis[$i] as $atributo) {
+                if ($atributo!=null) {
+                    $porce += 100/33;
+                }
+            }
+            $dato .= $AllProyTesis[$i]->cod_matricula.'_'.(int)$porce.'-';
+            $porce = 0;
+        }
+        // ---------------------------------------------------------
+        return view('cursoTesis20221.reportes.listaReportes',['porcentaje'=>$porcentaje,'totalEstudiantes'=>$totalEstudiantes,
+                                'totalAsesores'=>$totalAsesores,'dato'=>$dato,'dato2'=>$dato2]);
+    }
+
+    public function descargarReporteProyT(Request $request){
+
+        // Traendo los datos del alumno y su porcentaje de la tabla reportes
+
+        $lista_alumnos_table = $request->alumnos_porcen_table;
+
+        foreach ($lista_alumnos_table as $fila) {
+            $datos[] = explode('.',$fila);
+        }
+        // dd($datos);
+        $fecha = Carbon::now();
+        $pdf = PDF::loadView('cursoTesis20221.reportes.pdfAvanceProyT',compact('datos','fecha'));
+        return $pdf->download('Reporte Avance Proyecto Tesis.pdf');
     }
 
     public function saveUser(Request $request){

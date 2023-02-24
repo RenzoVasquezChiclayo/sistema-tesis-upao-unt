@@ -15,22 +15,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(FacultadSeeder::class);
-        // $this->call(SedeSeeder::class);
-        // $this->call(EscuelaSeeder::class);
-        // $this->call(TipoReferenciaSeeder::class);
-        // $this->call(TipoInvestigacionSeeder::class);
-        // $this->call(PresupuestoSeeder::class);
+        $this->call(FacultadSeeder::class);
+        $this->call(SedeSeeder::class);
+        $this->call(EscuelaSeeder::class);
+        $this->call(TipoReferenciaSeeder::class);
+        $this->call(TipoInvestigacionSeeder::class);
+        $this->call(PresupuestoSeeder::class);
 
         User::factory(1)->create(['name'=>'admin','rol'=>'administrador']);
 
-        // User::factory(1)->create(['name'=>'jmiranda','rol'=>'director']);
+        User::factory(1)->create(['name'=>'jmiranda','rol'=>'director']);
 
-        // User::factory(1)->create(['name'=>'rvasquez','rol'=>'docente']);
+        User::factory(1)->create(['name'=>'rvasquez','rol'=>'docente']);
 
-        // User::factory(1)->create(['name'=>'secretaria','rol'=>'secretaria']);
+        User::factory(1)->create(['name'=>'secretaria','rol'=>'secretaria']);
 
-        // User::factory(1)->create(['name'=>'jmiranda-CTesis','rol'=>'d-CTesis2022-1']);
+        User::factory(1)->create(['name'=>'jmiranda-CTesis','rol'=>'d-CTesis2022-1']);
 
     }
 }

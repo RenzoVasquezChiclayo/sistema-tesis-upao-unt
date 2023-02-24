@@ -27,6 +27,9 @@ Route::get('/', [LoginController::class,'index'])
 Route::get('/information',[AdminCursoController::class,'information'])
         ->name('user_information')->middleware('auth');
 
+Route::get('/reports',[AdminCursoController::class,'reports'])
+        ->name('user_reports')->middleware('auth');
+
 Route::post('guardarInformacion/',[AdminCursoController::class,'saveUser'])
         ->name('save_user');
 
@@ -84,6 +87,7 @@ Route::delete('/delete-usuario',[CursoTesisController::class,'deleteUsuario'])->
 
 
 // Rutas para el director Curso
+Route::get('/descargar-reportePT',[AdminCursoController::class,'descargarReporteProyT'])->name('director.descargar-reporteProyT')->middleware('auth');
 Route::get('/asignarAsesor',[CursoTesisController::class,'showTablaAsignacion'])->name('director.asignar')->middleware('auth');
 Route::post('/saveRegistro',[CursoTesisController::class,'saveAsesorAsignado'])->name('director.saveAsesor');
 Route::get('/agregarAsesor',[AdminCursoController::class,'showAddAsesor'])->name('director.veragregarAsesor')->middleware('auth');
