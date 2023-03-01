@@ -58,6 +58,7 @@ return new class extends Migration
             $table->text('variables')->nullable();
 
             $table->text('referencias')->nullable();
+            $table->text('matriz_op')->nullable();
 
         });
 

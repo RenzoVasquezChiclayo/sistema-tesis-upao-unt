@@ -73,21 +73,21 @@
     @if (session('datos') == 'ok')
             <script>
                 Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: 'Alumno agregado correctamente',
-                showConfirmButton: false,
-                timer: 1500
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Alumno agregado correctamente',
+                    showConfirmButton: false,
+                    timer: 1500
                 })
             </script>
     @elseif (session('datos') == 'oknot')
             <script>
                 Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Error al agregar el alumno',
-                showConfirmButton: false,
-                timer: 1500
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Error al agregar el alumno',
+                    showConfirmButton: false,
+                    timer: 1500
                 })
             </script>
     @endif
@@ -95,7 +95,7 @@
 
         const input = document.getElementById('cod_matricula');
 
-        
+
 
         setTimeout(function(){
             document.querySelector('#mensaje').remove();

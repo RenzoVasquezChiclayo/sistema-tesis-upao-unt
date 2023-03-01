@@ -789,8 +789,7 @@
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
                                     <textarea class="form-control" name="txtreal_problematica" id="txtreal_problematica"
-                                        style="height: 100px; resize:none" @if ((sizeof($correciones) > 0 && $correciones[0]->real_problematica == null) ||
-                                            $tesis[0]->real_problematica != '') readonly @endif required>@if ($tesis[0]->real_problematica != ''){{ $tesis[0]->real_problematica }}@endif</textarea>
+                                        style="height: 100px; resize:none" @if (sizeof($correciones) != 0 && $tesis[0]->real_problematica != '' && $correciones[0]->real_problematica == null) readonly @endif required>@if ($tesis[0]->real_problematica != ''){{ $tesis[0]->real_problematica }}@endif</textarea>
                                 </div>
                             </div>
 
