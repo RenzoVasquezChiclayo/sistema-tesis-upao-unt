@@ -135,7 +135,6 @@ class CursoTesisController extends Controller
         $id = $aux[0];
         $estudiante = EstudianteCT2022::find($id);
         $hTesis = TesisCT2022::join('asesor_curso as ac','ac.cod_docente','=','proyecto_tesis.cod_docente')->select('ac.nombres as nombre_asesor','proyecto_tesis.*')->where('cod_matricula','=',$estudiante->cod_matricula)->get();
-
         return view('cursoTesis20221.estadoProyecto',['hTesis'=>$hTesis]);
     }
 
@@ -1320,9 +1319,9 @@ class CursoTesisController extends Controller
         if($buscarAlumno!=""){
             if (is_numeric($buscarAlumno)) {
 
-                $estudiantes = DB::table('estudiante_ct2022 as e')->leftJoin('proyecto_tesis as p','p.cod_matricula','=','e.cod_matricula')->select('e.*','p.cod_docente')->where('estudiante_ct2022.cod_matricula','like','%'.$buscarAlumno.'%')->paginate($this::PAGINATION3);
+                $estudiantes = DB::table('estudiante_ct2022 as e')->leftJoin('proyecto_tesis as p','p.cod_matricula','=','e.cod_matricula')->select('e.*','p.cod_docente')->where('e.cod_matricula','like','%'.$buscarAlumno.'%')->paginate($this::PAGINATION3);
             } else {
-                $estudiantes = DB::table('estudiante_ct2022 as e')->leftJoin('proyecto_tesis as p','p.cod_matricula','=','e.cod_matricula')->select('e.*','p.cod_docente')->where('estudiante_ct2022.apellidos','like','%'.$buscarAlumno.'%')->paginate($this::PAGINATION3);
+                $estudiantes = DB::table('estudiante_ct2022 as e')->leftJoin('proyecto_tesis as p','p.cod_matricula','=','e.cod_matricula')->select('e.*','p.cod_docente')->where('e.apellidos','like','%'.$buscarAlumno.'%')->paginate($this::PAGINATION3);
             }
         }else{
 
@@ -1693,6 +1692,10 @@ class CursoTesisController extends Controller
                 $observaciones->referencias = $request->tachkCorregir22;
                 $arrayThemes[]='referencias';
             }
+            if($request->tachkCorregir24!=""){
+                $observaciones->matriz_op = $request->tachkCorregir24;
+                $arrayThemes[]='matriz_op';
+            }
 
             $observaciones->estado = 1;
             $observaciones->save();
@@ -1731,8 +1734,6 @@ class CursoTesisController extends Controller
             $objetivosProy = Objetivo::where('cod_proyectotesis','=',$tesis->cod_proyectotesis)->get();
             $variableopProy = variableOP::where('cod_proyectotesis','=',$tesis->cod_proyectotesis)->get();
 
-
-            //dd('here');
             if (sizeof($correccion)==1) {
                 $cantObserva = 0;
             }elseif(sizeof($correccion)==2){
@@ -1780,6 +1781,7 @@ class CursoTesisController extends Controller
 
             $variables = $correccion[$cantObserva]->variables;
             $referencias = $correccion[$cantObserva]->referencias;
+            $matriz_op = $correccion[$cantObserva]->matriz_op;
 
             $word = new PhpWord();
 
@@ -1934,8 +1936,11 @@ class CursoTesisController extends Controller
             }
             if ($referencias != "") {
                 $nuevaSesion->addText("REFERENCIAS",$titulos);
-
                 $nuevaSesion->addText("Observacion: ".$referencias);
+            }
+            if ($matriz_op != "") {
+                $nuevaSesion->addText("MATRIZ OPERACIONAL",$titulos);
+                $nuevaSesion->addText("Observacion: ".$matriz_op);
             }
 
 

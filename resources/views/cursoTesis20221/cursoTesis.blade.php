@@ -789,8 +789,7 @@
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
                                     <textarea class="form-control" name="txtreal_problematica" id="txtreal_problematica"
-                                        style="height: 100px; resize:none" @if ((sizeof($correciones) > 0 && $correciones[0]->real_problematica == null) ||
-                                            $tesis[0]->real_problematica != '') readonly @endif required>@if ($tesis[0]->real_problematica != ''){{ $tesis[0]->real_problematica }}@endif</textarea>
+                                        style="height: 100px; resize:none" @if (sizeof($correciones) != 0 && $tesis[0]->real_problematica != '' && $correciones[0]->real_problematica == null) readonly @endif required>@if ($tesis[0]->real_problematica != ''){{ $tesis[0]->real_problematica }}@endif</textarea>
                                 </div>
                             </div>
 
@@ -1763,7 +1762,7 @@
                         </div>
                         <div class="row">
                                 <h5>Matriz Operacional</h5>
-                                <div class="col-11">
+                                <div class="col-10">
                                 <table class="table" id="table-matriz" style="border: 5px;">
                                     <thead>
                                         <tr>
@@ -1802,6 +1801,45 @@
                                     </tbody>
                                 </table>
                             </div>
+                            @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
+                                    @if ($correciones[0]->matriz_op != null)
+                                        <div class="col-2">
+                                            <button type="button" class="btn btn-outline-danger"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#mCorreccionMatriz_op">Correccion</button>
+                                        </div>
+                                    @endif
+                                    {{-- Aqui va el modal --}}
+                                    <div class="modal" id="mCorreccionMatriz_op">
+                                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                            <div class="modal-content">
+                                                <!-- Modal Header -->
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Correccion de la Matriz Operacional</h4>
+                                                    <button type="button" class="btn-close"
+                                                        data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <!-- Modal body -->
+                                                <div class="modal-body">
+                                                    <div class="row" style="padding: 20px">
+                                                        <div class="row my-2">
+                                                            <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->matriz_op }}</textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Modal footer -->
+                                                <div class="modal-footer">
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <button type="button" class="btn btn-danger"
+                                                                data-bs-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
                         </div>
                     </div>
                     <div class="row" style=" margin-bottom:20px; padding-right:12px;"

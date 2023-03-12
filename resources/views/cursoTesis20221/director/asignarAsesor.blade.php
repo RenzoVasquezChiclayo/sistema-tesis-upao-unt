@@ -15,7 +15,7 @@
                 <form id="listAlumno" name="listAlumno" method="get">
                     <div class="row">
                         <div class="input-group">
-                            <input type="text" class="form-control" name="buscarAlumno" placeholder="Codigo de matricula o Apellidos" value="{{$buscarAlumno}}" aria-describedby="btn-search">
+                            <input type="text" class="form-control" name="buscarAlumno" placeholder="Código de matricula o Apellidos" value="{{$buscarAlumno}}" aria-describedby="btn-search">
                             <button class="btn btn-outline-primary" type="submit" id="btn-search">Buscar</button>
                         </div>
                     </div>

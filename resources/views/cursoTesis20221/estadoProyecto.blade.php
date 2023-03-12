@@ -2,6 +2,16 @@
 @section('titulo')
     Estado del Proyecto
 @endsection
+@section('css')
+<style type="text/css">
+    .border-box {
+        border: 0.5px solid rgba(0, 0, 0, 0.2);
+        border-radius: 20px;
+        padding: 10px 0px;
+        margin: 0;
+    }
+</style>
+@endsection
 @section('contenido')
     <div class="row" style="display:flex; align-items:center; justify-content: center;">
         <div class="col-12">
@@ -10,7 +20,7 @@
                 </div>
             </div>
         </div>
-        @if($hTesis[0]!=null)
+        @if(sizeof($hTesis)>0 && $hTesis[0]!=null)
             <div class="col-10">
                 <div class="row">
                     <div class="col-12">
@@ -72,6 +82,8 @@
                     </div>
                 </div>
             </div>
+        @else
+            @include('cards.avisoCard')
         @endif
     </div>
 @endsection
