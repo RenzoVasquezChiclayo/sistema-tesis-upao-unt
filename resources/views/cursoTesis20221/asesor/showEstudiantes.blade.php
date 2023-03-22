@@ -6,7 +6,8 @@
 <div class="row">
     <div class="col-12">
         <div class="row" style="display: flex; align-items:center;">
-            <div class="col-10">
+            <div class="col-8">
+                <h2>En proceso</h2>
                     <table id="table-proyecto" class="table table-striped table-responsive-md">
                         <thead>
                             <tr>
@@ -19,7 +20,13 @@
                         </thead>
                         <tbody>
                             @foreach ($estudiantes as $estu)
-                                <tr>
+                                <tr
+                                @if ($estu->estado == 3)
+                                    style="background-color: #7BF96E;"
+                                @elseif ($estu->estado == 4)
+                                    style="background-color: #FA6A56;"
+                                @endif
+                                >
                                     <td>{{$estu->cod_matricula}}</td>
                                     <td>{{$estu->dni}}</td>
                                     <td>{{$estu->nombres.' '.$estu->apellidos}}</td>

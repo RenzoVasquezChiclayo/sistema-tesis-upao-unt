@@ -1401,7 +1401,8 @@ class CursoTesisController extends Controller
         $asesor = AsesorCurso::where('username',auth()->user()->name)->get();
         $estudiantes = DB::table('estudiante_ct2022')
                             ->join('proyecto_tesis','estudiante_ct2022.cod_matricula','=','proyecto_tesis.cod_matricula')
-                            ->select('estudiante_ct2022.*','proyecto_tesis.cod_docente','proyecto_tesis.estado','proyecto_tesis.cod_proyectotesis')->where('proyecto_tesis.cod_docente',$asesor[0]->cod_docente)->get();
+                            ->select('estudiante_ct2022.*','proyecto_tesis.cod_docente','proyecto_tesis.estado','proyecto_tesis.cod_proyectotesis')
+                            ->where('proyecto_tesis.cod_docente',$asesor[0]->cod_docente)->get();
 
         return view('cursoTesis20221.asesor.showEstudiantes',['estudiantes'=>$estudiantes]);
     }
@@ -1530,13 +1531,19 @@ class CursoTesisController extends Controller
         $campos = DB::table('campos_estudiante')->select('campos_estudiante.*')->where('cod_proyectotesis',$cursoTesis[0]->cod_proyectotesis)->get();
         // $campos = CamposEstudiante::where('cod_matricula',$cursoTesis[0]->cod_matricula)->get();
 
+        $objetivos = DB::table('objetivo')->where('cod_proyectotesis','=',$cursoTesis[0]->cod_proyectotesis)->get();
+
+        $recursos = DB::table('recursos')->where('cod_proyectotesis','=',$cursoTesis[0]->cod_proyectotesis)->get();
+        $variableop = DB::table('variableop')->where('cod_proyectotesis','=',$cursoTesis[0]->cod_proyectotesis)->get();
+        $referencias = DB::table('referencias')->where('cod_proyectotesis','=',$cursoTesis[0]->cod_proyectotesis)->get();
+
         foreach ($campos[0] as $camposC){
             $campoCursoTesis[$aux_campo] = $camposC;
             $aux_campo++;
         }
 
         for ($i=1; $i < sizeof($campoCursoTesis); $i++) {
-            if ($campoCursoTesis[$i]!=0) {
+            if ($campoCursoTesis[$i]!=0 && sizeof($recursos) > 0 && sizeof($objetivos) > 0 && sizeof($variableop) > 0 && sizeof($referencias) > 0 ) {
                 $camposFull = 'true';
             }else{
                 $camposFull = 'false';
@@ -1551,9 +1558,7 @@ class CursoTesisController extends Controller
         ->select('presupuesto_proyecto.*','presupuesto.codeUniversal','presupuesto.denominacion')
         ->where('presupuesto_proyecto.cod_proyectotesis','=',$cursoTesis[0]->cod_proyectotesis)->get();
 
-        $objetivos = Objetivo::where('cod_proyectotesis','=',$cursoTesis[0]->cod_proyectotesis)->get();
-        $variableop = variableOP::where('cod_proyectotesis','=',$cursoTesis[0]->cod_proyectotesis)->get();
-        $referencias = referencias::where('cod_proyectotesis','=',$cursoTesis[0]->cod_proyectotesis)->get();
+
 
         $matriz = MatrizOperacional::where('cod_proyectotesis','=',$cursoTesis[0]->cod_proyectotesis)->get();
 
@@ -1955,22 +1960,22 @@ class CursoTesisController extends Controller
     }
 
     public function aprobarProy(Request $request){
-
         $proyecto = TesisCT2022::find($request->textcod);
-
+        $codHistObserva = Historial_Observaciones::where('cod_proyectotesis',$request->textcod)->first();
         $proyecto->condicion = 'APROBADO';
         $proyecto->estado = 3;
 
         $proyecto->save();
-        return redirect()->route('asesor.verHistoObs')->with('datos','okAprobado');
+
+        return redirect()->route('asesor.verObsEstudiante',$codHistObserva->cod_historialObs)->with('datos','okAprobado');
     }
     public function desaprobarProy(Request $request){
         $proyecto = TesisCT2022::find($request->textcod);
-
+        $codHistObserva = Historial_Observaciones::where('cod_proyectotesis',$request->textcod)->first();
         $proyecto->condicion = 'DESAPROBADO';
         $proyecto->estado = 4;
         $proyecto->save();
-        return redirect()->route('asesor.verHistoObs')->with('datos','okDesaprobado');
+        return redirect()->route('asesor.verObsEstudiante',$codHistObserva->cod_historialObs)->with('datos','okDesaprobado');
     }
 
     // He cambiado lo de tesis a Tesis2022 Controller.

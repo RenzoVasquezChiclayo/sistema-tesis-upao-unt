@@ -35,11 +35,11 @@
                     <h6>{{$estudiante[0]->escuela}}</h6>
                 </div>
                 @if($estudiante[0]->estado == 3)
-                    <div class="col-10" style="background-color: green; padding-top:10px;">
+                    <div class="col-10" style="background-color: #7BF96E; padding-top:10px;">
                         <p style="color: white">Este proyecto fue APROBADO!</p>
                     </div>
                 @elseif ($estudiante[0]->estado == 4)
-                    <div class="col-10" style="background-color: red; padding-top:10px;">
+                    <div class="col-10" style="background-color: #FA6A56; padding-top:10px;">
                         <p style="color: white">Este proyecto fue DESAPROBADO!</p>
                     </div>
                 @endif

@@ -311,12 +311,11 @@ class AdminCursoController extends Controller
         $asesor = AsesorCurso::where('username',$id)->get();
         if (is_numeric($buscarObservaciones)) {
             $estudiantes = DB::connection('mysql')->table('estudiante_ct2022')->join('proyecto_tesis','estudiante_ct2022.cod_matricula','=','proyecto_tesis.cod_matricula')->join('historial_observaciones','proyecto_tesis.cod_proyectotesis','=','historial_observaciones.cod_proyectotesis')
-                            ->select('estudiante_ct2022.*','proyecto_tesis.escuela','historial_observaciones.fecha','historial_observaciones.cod_historialObs')->where('proyecto_tesis.cod_matricula','like','%'.$buscarObservaciones.'%')->where('proyecto_tesis.cod_docente',$asesor[0]->cod_docente)->paginate($this::PAGINATION);
+                            ->select('estudiante_ct2022.*','proyecto_tesis.escuela','proyecto_tesis.estado','historial_observaciones.fecha','historial_observaciones.cod_historialObs')->where('proyecto_tesis.cod_matricula','like','%'.$buscarObservaciones.'%')->where('proyecto_tesis.cod_docente',$asesor[0]->cod_docente)->paginate($this::PAGINATION);
         } else {
             $estudiantes = DB::connection('mysql')->table('estudiante_ct2022')->join('proyecto_tesis','estudiante_ct2022.cod_matricula','=','proyecto_tesis.cod_matricula')->join('historial_observaciones','proyecto_tesis.cod_proyectotesis','=','historial_observaciones.cod_proyectotesis')
-                            ->select('estudiante_ct2022.*','historial_observaciones.fecha','historial_observaciones.cod_historialObs')->where('estudiante_ct2022.apellidos','like','%'.$buscarObservaciones.'%')->where('proyecto_tesis.cod_docente',$asesor[0]->cod_docente)->paginate($this::PAGINATION);
+                            ->select('estudiante_ct2022.*','proyecto_tesis.estado','historial_observaciones.fecha','historial_observaciones.cod_historialObs')->where('estudiante_ct2022.apellidos','like','%'.$buscarObservaciones.'%')->where('proyecto_tesis.cod_docente',$asesor[0]->cod_docente)->paginate($this::PAGINATION);
         }
-
         if(empty($estudiantes)){
             return view('cursoTesis20221.asesor.listaObservaciones',['buscarObservaciones'=>$buscarObservaciones,'estudiantes'=>$estudiantes])->with('datos','No se encontro algun registro');
         }else{

@@ -71,7 +71,7 @@
                                     <input class="form-control" name="txtTitulo" id="txtTitulo" type="text" value="{{$Tesis[0]->titulo}}" readonly>
                                     <span id="validateTitle" name="validateTitle" style="color: red"></span>
                                 </div>
-                                @if ($Tesis[0]->estado==1)
+                                {{-- @if ($Tesis[0]->estado==1)
                                 <div class="col-3" align="center">
                                     <div class="row">
                                         <div class="col-12">
@@ -84,7 +84,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                @endif
+                                @endif --}}
 
 
                             </div>
@@ -147,7 +147,7 @@
                                 <textarea class="form-control" name="taDedicatoria" id="taDedicatoria" style="height: 100px; resize:none" readonly>{{$Tesis[0]->dedicatoria}}</textarea>
                             </div>
                         </div>
-                        @if ($Tesis[0]->estado==1)
+                        {{-- @if ($Tesis[0]->estado==1)
                         <div class="col-2" align="center">
                             <div class="row">
                                 <div class="col-10">
@@ -160,7 +160,7 @@
                                 </div>
                             </div>
                         </div>
-                        @endif
+                        @endif --}}
                     </div>
                     <textarea class="form-control" name="tachkCorregir2" id="tachkCorregir2" cols="30" rows="4"  hidden></textarea>
                 </div>
@@ -172,7 +172,7 @@
                                 <textarea class="form-control" name="taAgradecimiento" id="taAgradecimiento" style="height: 100px; resize:none" readonly>{{$Tesis[0]->agradecimiento}}</textarea>
                             </div>
                         </div>
-                        @if ($Tesis[0]->estado==1)
+                        {{-- @if ($Tesis[0]->estado==1)
                         <div class="col-2" align="center">
                             <div class="row">
                                 <div class="col-10">
@@ -185,7 +185,7 @@
                                 </div>
                             </div>
                         </div>
-                        @endif
+                        @endif --}}
                     </div>
                     <textarea class="form-control" name="tachkCorregir3" id="tachkCorregir3" cols="30" rows="4"  hidden></textarea>
                 </div>

@@ -1111,12 +1111,7 @@
                                     <input class="btn btn-danger" type="button" value="DESAPROBAR PROYECTO"
                                         onclick="desaprobarProy();" style="margin-right:20px;">
                                 </div>
-                                {{-- <div class="col-3 col-md-3">
-                                    <input class="btn btn-success" type="button" value="APROBAR PROYECTO" onclick="aprobarProy();" style="margin-right:20px;">
-                                </div>
-                                <div class="col-3 col-md-3">
-                                    <input class="btn btn-danger" type="button" value="DESAPROBAR PROYECTO" onclick="desaprobarProy();" style="margin-right:20px;">
-                                </div> --}}
+
                             </div>
                             <div class="row" id="grupoObservaciones">
 
@@ -1127,29 +1122,21 @@
                                         <input class="btn btn-primary" type="button" id="btnConObservacion" value="Guardar Observaciones"
                                             onclick="uploadProyecto();">
                                     @endif
-                                    @if ($cursoTesis[0]->estado == 2)
+                                    {{-- @if ($cursoTesis[0]->estado == 2)
                                         <input class="btn btn-warning" type="button" value="Editar campos"
                                             onclick="editCamposEstudiante();">
                                     @endif
                                     @if ($camposFull == 'true')
                                         <input class="btn btn-warning" type="button" id="btnCalificacionFinal" value="Calificación Final"
                                         onclick="checkAprobation();">
-                                    @endif
+                                    @endif --}}
                                     <a href="{{ route('asesor.showEstudiantes') }}" type="button"
                                         class="btn btn-outline-danger">Cancelar</a>
 
                                 </div>
-                                {{-- <div class="col-3 col-md-3">
-                                        <input class="btn btn-success" type="button" value="Sin observaciones" onclick="saveWithoutErrors();" style="margin-right:20px;">
-                                    </div>
-                                    <div class="col-3 col-md-3">
-                                        <input class="btn btn-danger" type="button" value="Guardar Observaciones" onclick="uploadProyecto();" style="margin-right:20px;">
-                                    </div> --}}
 
                             </div>
-                            {{-- <div class="col-3 col-md-3">
-                                <a href="{{route('asesor.showEstudiantes')}}" type="button" class="btn btn-outline-danger">Cancelar</a>
-                            </div> --}}
+
                         </div>
                     </div>
                 </div>
@@ -1263,7 +1250,7 @@
         function uploadProyecto() {
 
             let hayCorreccion = false;
-            for (let i = 1; i < 25; i++) {
+            for (let i = 1; i < 24; i++) {
                 if (array_chk[i] == 1) {
                     if (document.getElementById('tachkCorregir' + i).value != "") {
                         hayCorreccion = true;
@@ -1306,6 +1293,7 @@
             //Validar si hay checks activos
             const condition = (check) => check == 1
             const isFill = array_chk.some(condition)
+            var validaCampos = document.getElementById('validacionCampos').value;
             if(isFill){
                 Swal.fire({
                     icon: 'info',
@@ -1314,7 +1302,11 @@
                 })
                 return
             }
+            if (validaCampos == 'true') {
 
+                checkAprobation();
+                return;
+            }
             Swal.fire({
                 title: 'Estas seguro(a)?',
                 text: "No se guardaran observaciones!",
@@ -1339,7 +1331,6 @@
             var validacionCampos = document.getElementById('validacionCampos').value;
             var validacionTesis = document.getElementById('validacionTesis').value;
             if (validacionTesis == 'true' && validacionCampos == 'true') {
-                document.getElementById('btnCalificacionFinal').hidden = true;
                 document.getElementById('btnSinObservar').hidden = true;
                 document.getElementById('btnConObservacion').hidden = true;
 

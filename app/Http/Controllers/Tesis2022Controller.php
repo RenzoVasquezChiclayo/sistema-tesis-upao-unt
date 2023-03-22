@@ -43,7 +43,7 @@ class Tesis2022Controller extends Controller
 
         $detalles = [];
         if(sizeof($correciones)>0){
-            $detalles = TDetalleObservacion::where('cod_historial_observacion',$correciones[0]->cod_historial_observacion)->get();
+            $detalles = TDetalleObservacion::where('id_observacion',$correciones[0]->cod_historial_observacion)->get();
         }
         $objetivos = TObjetivo::where('cod_tesis','=',$tesis->cod_tesis)->get();
         $tiporeferencia = TipoReferencia::all();
@@ -78,7 +78,7 @@ class Tesis2022Controller extends Controller
                 ->where('t_observacion.estado',1)->get();
 
         if(sizeof($observacionX)>0){
-            $detalles = TDetalleObservacion::where('cod_historial_observacion',$observacionX[0]->cod_historial_observacion)->get();
+            $detalles = TDetalleObservacion::where('id_observacion',$observacionX[0]->cod_historial_observacion)->get();
         }
 
         try{
@@ -620,14 +620,15 @@ class Tesis2022Controller extends Controller
                 $estudiante = EstudianteCT2022::find($datos[0]);
                 //Crear una registro de Tesis para asignar el asesor.
                 $tesisFound = Tesis_2022::where('cod_matricula',$estudiante->cod_matricula)->first();
-                if($tesisFound!=null){
+                if($tesisFound==null){
                     $tesis = new Tesis_2022();
                     $tesis->cod_matricula = $estudiante->cod_matricula;
-                    $tesis->cod_docente = $datos[1];
-                    $tesis->fecha_create = now();
-                    $tesis->fecha_update = now();
-                    $tesis->save();
+
                 }
+                $tesisFound->cod_docente = $datos[1];
+                $tesisFound->fecha_create = now();
+                $tesisFound->fecha_update = now();
+                $tesisFound->save();
             }
             $i++;
         } while ($i<count($posicion));
@@ -716,37 +717,7 @@ class Tesis2022Controller extends Controller
 
     public function guardarSinObservaciones(Request $request){
         $idTesis = $request->textcod;
-
-        $Tesis = DB::table('tesis_2022 as t')
-                       ->join('estudiante_ct2022','estudiante_ct2022.cod_matricula','=','t.cod_matricula')
-                       ->join('asesor_curso','t.cod_docente','=','asesor_curso.cod_docente')
-                       ->select('t.*','estudiante_ct2022.nombres as nombresAutor','estudiante_ct2022.apellidos as apellidosAutor')->where('asesor_curso.username','=',auth()->user()->name)->where('estudiante_ct2022.cod_matricula',$request->cod_matricula_hidden)->get();
-
-
-
-        $existHisto = THistorialObservaciones::where('cod_Tesis',$Tesis[0]->cod_tesis)->get();
-        if($existHisto->count()==0){
-            $existHisto = new THistorialObservaciones();
-            $existHisto->cod_Tesis = $Tesis[0]->cod_tesis;
-            $existHisto->fecha=now();
-            $existHisto->estado=1;
-            $existHisto->save();
-        }
-
-        $existHisto = THistorialObservaciones::where('cod_Tesis',$Tesis[0]->cod_tesis)->get();
-
-
         try {
-
-            $observaciones = new TObservacion();
-            $observaciones->cod_tesis = $Tesis[0]->cod_tesis;
-            $observaciones->cod_historial_observacion = $existHisto[0]->cod_historial_observacion;
-            $observaciones->fecha_create = now();
-
-
-            $observaciones->estado = 1;
-            $observaciones->save();
-
             $tesis = Tesis_2022::find($idTesis);
             $tesis->estado = 2;
             $tesis->save();
@@ -783,106 +754,101 @@ class Tesis2022Controller extends Controller
 
         try {
             $observaciones = new TObservacion();
-            $observaciones->cod_tesis = $Tesis[0]->cod_tesis;
+            // $observaciones->cod_tesis = $Tesis[0]->cod_tesis;
             $observaciones->cod_historial_observacion = $existHisto[0]->cod_historial_observacion;
             $observaciones->fecha_create = now();
 
-            // if($request->tachkCorregir22!=""){
-            //     $observaciones->titulo = $request->tachkCorregir22;
+            // if($request->tachkCorregir1!=""){
+            //     $observaciones->titulo = $request->tachkCorregir1;
             //     $arrayThemes[]='titulo';
             // }
-            // if($request->tachkCorregir0!=""){
-            //     $observaciones->dedicatoria = $request->tachkCorregir0;
+            // if($request->tachkCorregir2!=""){
+            //     $observaciones->dedicatoria = $request->tachkCorregir2;
             //     $arrayThemes[]='dedicatoria';
             // }
 
-            // if($request->tachkCorregir1!=""){
-            //     $observaciones->agradecimiento = $request->tachkCorregir1;
+            // if($request->tachkCorregir3!=""){
+            //     $observaciones->agradecimiento = $request->tachkCorregir3;
             //     $arrayThemes[]='agradecimiento';
             // }
 
-            if($request->tachkCorregir2!=""){
-                $observaciones->presentacion = $request->tachkCorregir2;
+            if($request->tachkCorregir4!=""){
+                $observaciones->presentacion = $request->tachkCorregir4;
                 $arrayThemes[]='presentacion';
             }
-            if($request->tachkCorregir3!=""){
-                $observaciones->resumen = $request->tachkCorregir3;
+            if($request->tachkCorregir5!=""){
+                $observaciones->resumen = $request->tachkCorregir5;
                 $arrayThemes[]='resumen';
             }
-            if($request->tachkCorregir4!=""){
-                $observaciones->introduccion = $request->tachkCorregir4;
+            if($request->tachkCorregir6!=""){
+                $observaciones->introduccion = $request->tachkCorregir6;
                 $arrayThemes[]='introduccion';
             }
 
-            if($request->tachkCorregir5!=""){
-                $observaciones->real_problematica = $request->tachkCorregir5;
+            if($request->tachkCorregir7!=""){
+                $observaciones->real_problematica = $request->tachkCorregir7;
                 $arrayThemes[]='real_problematica';
             }
-            if($request->tachkCorregir6!=""){
-                $observaciones->antecedentes = $request->tachkCorregir6;
+            if($request->tachkCorregir8!=""){
+                $observaciones->antecedentes = $request->tachkCorregir8;
                 $arrayThemes[]='antecedentes';
             }
-            if($request->tachkCorregir7!=""){
-                $observaciones->justificacion = $request->tachkCorregir7;
+            if($request->tachkCorregir9!=""){
+                $observaciones->justificacion = $request->tachkCorregir9;
                 $arrayThemes[]='justificacion';
             }
-            if($request->tachkCorregir8!=""){
-                $observaciones->formulacion_prob = $request->tachkCorregir8;
+            if($request->tachkCorregir10!=""){
+                $observaciones->formulacion_prob = $request->tachkCorregir10;
                 $arrayThemes[]='formulacion_prob';
             }
-            if($request->tachkCorregir9!=""){
-                $observaciones->objetivos = $request->tachkCorregir9;
+            if($request->tachkCorregir11!=""){
+                $observaciones->objetivos = $request->tachkCorregir11;
                 $arrayThemes[]='objetivos';
             }
-            if($request->tachkCorregir10!=""){
-                $observaciones->marco_teorico = $request->tachkCorregir10;
+            if($request->tachkCorregir12!=""){
+                $observaciones->marco_teorico = $request->tachkCorregir12;
                 $arrayThemes[]='marco_teorico';
             }
 
-            if($request->tachkCorregir11!=""){
-                $observaciones->marco_conceptual = $request->tachkCorregir11;
+            if($request->tachkCorregir13!=""){
+                $observaciones->marco_conceptual = $request->tachkCorregir13;
                 $arrayThemes[]='marco_conceptual';
             }
-            if($request->tachkCorregir12!=""){
-                $observaciones->marco_legal = $request->tachkCorregir12;
+            if($request->tachkCorregir14!=""){
+                $observaciones->marco_legal = $request->tachkCorregir14;
                 $arrayThemes[]='marco_legal';
             }
-            if($request->tachkCorregir13!=""){
-                $observaciones->form_hipotesis = $request->tachkCorregir13;
+            if($request->tachkCorregir15!=""){
+                $observaciones->form_hipotesis = $request->tachkCorregir15;
                 $arrayThemes[]='form_hipotesis';
             }
-            if($request->tachkCorregir14!=""){
-                $observaciones->objeto_estudio = $request->tachkCorregir14;
+            if($request->tachkCorregir16!=""){
+                $observaciones->objeto_estudio = $request->tachkCorregir16;
                 $arrayThemes[]='objeto_estudio';
             }
-            if($request->tachkCorregir15!=""){
-                $observaciones->poblacion = $request->tachkCorregir15;
+            if($request->tachkCorregir17!=""){
+                $observaciones->poblacion = $request->tachkCorregir17;
                 $arrayThemes[]='poblacion';
             }
-            if($request->tachkCorregir16!=""){
-                $observaciones->muestra = $request->tachkCorregir16;
+            if($request->tachkCorregir18!=""){
+                $observaciones->muestra = $request->tachkCorregir18;
                 $arrayThemes[]='muestra';
             }
-            if($request->tachkCorregir17!=""){
-                $observaciones->metodos = $request->tachkCorregir17;
+            if($request->tachkCorregir19!=""){
+                $observaciones->metodos = $request->tachkCorregir19;
                 $arrayThemes[]='metodos';
             }
-            if($request->tachkCorregir18!=""){
-                $observaciones->tecnicas_instrum = $request->tachkCorregir18;
+            if($request->tachkCorregir20!=""){
+                $observaciones->tecnicas_instrum = $request->tachkCorregir20;
                 $arrayThemes[]='tecnicas_instrum';
             }
-            if($request->tachkCorregir19!=""){
-                $observaciones->instrumentacion = $request->tachkCorregir19;
+            if($request->tachkCorregir21!=""){
+                $observaciones->instrumentacion = $request->tachkCorregir21;
                 $arrayThemes[]='instrumentacion';
             }
-            if($request->tachkCorregir20!=""){
-                $observaciones->estg_metodologicas = $request->tachkCorregir20;
+            if($request->tachkCorregir22!=""){
+                $observaciones->estg_metodologicas = $request->tachkCorregir22;
                 $arrayThemes[]='estg_metodologicas';
-            }
-
-            if($request->tachkCorregir21!=""){
-                $observaciones->referencias = $request->tachkCorregir21;
-                $arrayThemes[]='referencias';
             }
             if($request->tachkCorregir23!=""){
                 $observaciones->resultados = $request->tachkCorregir23;
@@ -900,7 +866,10 @@ class Tesis2022Controller extends Controller
                 $observaciones->recomendaciones = $request->tachkCorregir26;
                 $arrayThemes[]='recomendaciones';
             }
-
+            if($request->tachkCorregir27!=""){
+                $observaciones->referencias = $request->tachkCorregir27;
+                $arrayThemes[]='referencias';
+            }
             $observaciones->estado = 1;
 
             $observaciones->save();
@@ -915,7 +884,7 @@ class Tesis2022Controller extends Controller
         $latestCorrecion = TObservacion::where('cod_historial_observacion',$existHisto[0]->cod_historial_observacion)->where('estado',1)->get();
         for($i = 0; $i<sizeof($arrayThemes);$i++){
             $detalleObs = new TDetalleObservacion();
-            $detalleObs->cod_historial_observacion=$latestCorrecion[0]->cod_historial_observacion;
+            $detalleObs->id_observacion=$latestCorrecion[0]->cod_historial_observacion;
             $detalleObs->tema_referido = $arrayThemes[$i];
             $detalleObs->correccion = null;
             $detalleObs->save();
