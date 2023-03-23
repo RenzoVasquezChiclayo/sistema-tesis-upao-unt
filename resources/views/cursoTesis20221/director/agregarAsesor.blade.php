@@ -3,14 +3,15 @@
     Agregar Asesor
 @endsection
 @section('contenido')
-    <div class="row" style="display: flex; align-items:center;">
-
+    <div class="row" style="display: flex; align-items:center; padding-top:15px;">
         <div class="col-10">
-            <h3>Registro de Asesor(es)</h3>
+            <div class="row" style="text-align:center;">
+                <h3>Registro de Asesor(es)</h3>
+            </div>
             <div class="row border-box" style="margin-bottom: 50px;">
                 <div class="col-12">
-                    <h4>Curso</h4>
-                    <p><i><b>Tesis I 2022-1</b></i></p>
+                    <h4>Curso </h4>
+                    <p><i>Tesis I 2022-1</i></p>
                     <h5>Importar un registro Excel</h5>
                 </div>
                 <form action="{{ route('director.importarAsesores') }}" method="post" enctype="multipart/form-data">
@@ -63,10 +64,9 @@
 
                     <div class="col-12">
                         <label for="nombres">Direccion</label>
-                        <input class="form-control" type="text" id="direccion" name="direccion"
-                            placeholder="Ingrese su direccion" required>
-                        <div class="invalid-feedback">
-                            Debe contener menos de 45 caracteres.
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="direccion" name="direccion" maxlength="45">
+                            <span class="input-group-text" id="contador-caracteres">0/45</span>
                         </div>
                     </div>
                     <div class="col-12" style="margin-top: 10px;">
@@ -107,8 +107,11 @@
             document.querySelector('#mensaje').remove();
         }, 2000);
 
-        function verifyFields(){
+        const inputDireccion = document.querySelector('#direccion');
+        const contadorCaracteres = document.querySelector('#contador-caracteres');
 
-        }
+        inputDireccion.addEventListener('input', () => {
+            contadorCaracteres.textContent = `${inputDireccion.value.length}/45`;
+        });
     </script>
 @endsection

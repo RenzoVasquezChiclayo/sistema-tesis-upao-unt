@@ -621,10 +621,11 @@ class Tesis2022Controller extends Controller
                 //Crear una registro de Tesis para asignar el asesor.
                 $tesisFound = Tesis_2022::where('cod_matricula',$estudiante->cod_matricula)->first();
                 if($tesisFound==null){
-                    $tesis = new Tesis_2022();
-                    $tesis->cod_matricula = $estudiante->cod_matricula;
+                    $tesisFound = new Tesis_2022();
+                    $tesisFound->cod_matricula = $estudiante->cod_matricula;
 
                 }
+                //dd($datos);
                 $tesisFound->cod_docente = $datos[1];
                 $tesisFound->fecha_create = now();
                 $tesisFound->fecha_update = now();

@@ -6,8 +6,8 @@ let obj_resultadosTxt = [];
 let obj_anexosImg = [];
 let obj_anexosTxt = [];
 
-let array_rowField = [{'field':'resultados','counter':0},{'field':'anexos','counter':0}]; // Contiene el contador de rows de cada campo que lleva imagenes.
-let array_taField = [{'field':'resultados','counter':0},{'field':'anexos','counter':0}]; // Contiene el contador de textarea.
+let array_rowField = [{'field':'Resultados','counter':0},{'field':'Anexos','counter':0}]; // Contiene el contador de rows de cada campo que lleva imagenes.
+let array_taField = [{'field':'Resultados','counter':0},{'field':'Anexos','counter':0}]; // Contiene el contador de textarea.
 let array_imgRow = []; // Contiene el contador de imagenes de cada row. // {'idrow': 0,'field': 'resultados','counter':0}
 
 /*Recibido de la base de datos*/
@@ -30,7 +30,7 @@ if(get_resultadosImg !="[]"){
     obj_resultadosImg = JSONtoArrayImage(get_resultadosImg);
     /*Dibujar los cuadros de texto*/
     obj_resultadosTxt = get_resultadosTxt.split('%&%');
-    initImageTxt('resultados',obj_resultadosTxt.length>1);
+    initImageTxt('Resultados',obj_resultadosTxt.length>1);
 }
 
 /*Dibujar las imagenes de anexos al inicio*/
@@ -38,18 +38,18 @@ if(get_anexosImg !="[]"){
     obj_anexosImg = JSONtoArrayImage(get_anexosImg);
     /*Dibujar los cuadros de texto*/
     obj_anexosTxt = get_anexosTxt.split('%&%');
-    initImageTxt('anexos',obj_anexosTxt.length>1);
+    initImageTxt('Anexos',obj_anexosTxt.length>1);
 }
 
 /*Inicializar las imagenes que estan en bd.*/
 function initImageTxt(fieldname,containText){
     let actualGroup = -1;
     let contadorGrupo = 0;
-    let obj_initImg = (fieldname == "resultados") ? obj_resultadosImg : obj_anexosImg;
-    let obj_initTxt = (fieldname == "resultados") ? obj_resultadosTxt : obj_anexosTxt;
+    let obj_initImg = (fieldname == "Resultados") ? obj_resultadosImg : obj_anexosImg;
+    let obj_initTxt = (fieldname == "Resultados") ? obj_resultadosTxt : obj_anexosTxt;
 
     if(containText){
-        document.getElementById(`txt${fieldname}`).value = obj_initTxt[0];
+        document.getElementById(`ta${fieldname}`).value = obj_initTxt[0];
     }
 
     for(let i=0; i<obj_initImg.length;i++){
@@ -80,10 +80,10 @@ function initImageTxt(fieldname,containText){
         imageField.src = `./cursoTesis-2022/img/${cod_matricula}-Tesis/${fieldname}/${obj_initImg[i].ruta}`;
         document.getElementById(`${fieldname}_listimg_${obj_initImg[i].grupo}`).appendChild(imageField);
 
-        if(i >= obj_initImg.length-1){
-            document.getElementById(`${fieldname}_counterlocal_${actualGroup}`).value = `${contadorGrupo}/5`;
-            contadorGrupo = 0;
-        }
+        // if(i >= obj_initImg.length-1){
+        //     document.getElementById(`${fieldname}_counterlocal_${actualGroup}`).value = `${contadorGrupo}/5`;
+        //     contadorGrupo = 0;
+        // }
     }
 }
 
@@ -131,20 +131,20 @@ function addRowImage(fieldname){
     const contenedorField = document.createElement('div');
     contenedorField.id = `${fieldname}_rowImage_${counterRow}`;
     contenedorField.className= "row";
-    const firstDivField = document.createElement('div');
-    firstDivField.className = "my-2 d-flex";
+    // const firstDivField = document.createElement('div');
+    // firstDivField.className = "my-2 d-flex";
     /*Input donde ira el contador de imagenes*/
-    const inputField = document.createElement('input');
-    inputField.className="form-control input-counter text-center me-3";
-    inputField.id=`${fieldname}_counterlocal_${counterRow}`;
-    inputField.readOnly = true;
-    inputField.value = "0/0";
-    firstDivField.appendChild(inputField);
+    // const inputField = document.createElement('input');
+    // inputField.className="form-control input-counter text-center me-3";
+    // inputField.id=`${fieldname}_counterlocal_${counterRow}`;
+    // inputField.readOnly = true;
+    // inputField.value = "0/0";
+    // firstDivField.appendChild(inputField);
 
     const secondDivField = document.createElement('div');
     secondDivField.id= `${fieldname}_listimg_${counterRow}`;
     secondDivField.className = "row my-3 d-flex";
-    contenedorField.appendChild(firstDivField);
+    // contenedorField.appendChild(firstDivField);
     contenedorField.appendChild(secondDivField);
     if(contenedorRow.hidden) contenedorRow.hidden = false;
     contenedorRow.appendChild(contenedorField);
@@ -166,6 +166,7 @@ function addTextField(fieldname){
     tareaField.className="form-control";
     tareaField.name = `txt${fieldname}[]`;
     tareaField.id = `${fieldname}_textfield_${counterRow}`;
+    tareaField.readOnly = true;
     contenedorField.appendChild(tareaField);
 
     contenedorRow.appendChild(contenedorField);

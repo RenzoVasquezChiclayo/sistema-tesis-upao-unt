@@ -715,11 +715,11 @@
                                 </div>
                                 @endif
                             </div>
-                            <textarea class="form-control" name="tachkCorregir23" id="tachkCorregir23" cols="30" rows="4"  hidden></textarea>
-                            <div id="resultados_contenedor" class="row m-3" hidden>
+                            <div id="Resultados_contenedor" class="row m-3" hidden>
                                 <input name="resultados_getImg" id="resultados_getImg" type="hidden" value="{{$resultadosImg}}">
                                 <input name="resultados_getTxt" id="resultados_getTxt" type="hidden" value="{{$Tesis[0]->resultados}}">
                             </div>
+                            <textarea class="form-control" name="tachkCorregir23" id="tachkCorregir23" cols="30" rows="4"  hidden></textarea>
                         </div>
                     </div>
                     <div class="row" style=" margin-bottom:20px">
@@ -871,7 +871,7 @@
                         @endif
                         <textarea class="form-control" name="tachkCorregir28" id="tachkCorregir28" cols="30" rows="4" hidden></textarea>
                     </div>
-                    <div id="anexos_contenedor" class="row m-3" hidden>
+                    <div id="Anexos_contenedor" class="row m-3" hidden>
                         <input name="anexos_getImg" id="anexos_getImg" type="hidden" value="{{$anexosImg}}">
                         <input name="anexos_getTxt" id="anexos_getTxt" type="hidden" value="{{$Tesis[0]->anexos}}">
                     </div>
@@ -898,7 +898,7 @@
                                     </div>
                                 @endif
                             </div>
-                            <div class="col-3 col-md-3">
+                            <div class="col-3 col-md-3 my-2">
                                 <a href="{{route('asesor.estudiantes-tesis')}}" type="button" class="btn btn-outline-danger">Cancelar</a>
                             </div>
                         </div>
