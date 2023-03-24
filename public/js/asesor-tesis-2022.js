@@ -6,8 +6,8 @@ let obj_resultadosTxt = [];
 let obj_anexosImg = [];
 let obj_anexosTxt = [];
 
-let array_rowField = [{'field':'Resultados','counter':0},{'field':'Anexos','counter':0}]; // Contiene el contador de rows de cada campo que lleva imagenes.
-let array_taField = [{'field':'Resultados','counter':0},{'field':'Anexos','counter':0}]; // Contiene el contador de textarea.
+let array_rowField = [{'field':'resultados','counter':0},{'field':'anexos','counter':0}]; // Contiene el contador de rows de cada campo que lleva imagenes.
+let array_taField = [{'field':'resultados','counter':0},{'field':'anexos','counter':0}]; // Contiene el contador de textarea.
 let array_imgRow = []; // Contiene el contador de imagenes de cada row. // {'idrow': 0,'field': 'resultados','counter':0}
 
 /*Recibido de la base de datos*/
@@ -30,7 +30,7 @@ if(get_resultadosImg !="[]"){
     obj_resultadosImg = JSONtoArrayImage(get_resultadosImg);
     /*Dibujar los cuadros de texto*/
     obj_resultadosTxt = get_resultadosTxt.split('%&%');
-    initImageTxt('Resultados',obj_resultadosTxt.length>1);
+    initImageTxt('resultados',obj_resultadosTxt.length>1);
 }
 
 /*Dibujar las imagenes de anexos al inicio*/
@@ -38,15 +38,15 @@ if(get_anexosImg !="[]"){
     obj_anexosImg = JSONtoArrayImage(get_anexosImg);
     /*Dibujar los cuadros de texto*/
     obj_anexosTxt = get_anexosTxt.split('%&%');
-    initImageTxt('Anexos',obj_anexosTxt.length>1);
+    initImageTxt('anexos',obj_anexosTxt.length>1);
 }
 
 /*Inicializar las imagenes que estan en bd.*/
 function initImageTxt(fieldname,containText){
     let actualGroup = -1;
     let contadorGrupo = 0;
-    let obj_initImg = (fieldname == "Resultados") ? obj_resultadosImg : obj_anexosImg;
-    let obj_initTxt = (fieldname == "Resultados") ? obj_resultadosTxt : obj_anexosTxt;
+    let obj_initImg = (fieldname == "resultados") ? obj_resultadosImg : obj_anexosImg;
+    let obj_initTxt = (fieldname == "resultados") ? obj_resultadosTxt : obj_anexosTxt;
 
     if(containText){
         document.getElementById(`ta${fieldname}`).value = obj_initTxt[0];
@@ -58,10 +58,10 @@ function initImageTxt(fieldname,containText){
             document.getElementById(`${fieldname}_addimg_${actualGroup}`).disabled = true;
         }
         if(actualGroup != obj_initImg[i].grupo){
-            if(actualGroup >= 0){
-                document.getElementById(`${fieldname}_counterlocal_${actualGroup}`).value = `${contadorGrupo}/5`;
-                contadorGrupo = 0;
-            }
+            // if(actualGroup >= 0){
+            //     document.getElementById(`${fieldname}_counterlocal_${actualGroup}`).value = `${contadorGrupo}/5`;
+            //     contadorGrupo = 0;
+            // }
             actualGroup = obj_initImg[i].grupo;
             addRowImage(fieldname); // Creamos los contenedores de las imagenes
 

@@ -697,7 +697,7 @@
                             <div class="row">
                                 <div class="col-12 col-md-10">
                                     <div class="form-floating">
-                                        <textarea class="form-control" name="taResultados" id="taResultados" style="height: 100px; resize:none" readonly>{{$Tesis[0]->resultados}}</textarea>
+                                        <textarea class="form-control" name="taresultados" id="taresultados" style="height: 100px; resize:none" readonly>{{$Tesis[0]->resultados}}</textarea>
                                     </div>
                                 </div>
                                 @if ($Tesis[0]->estado==1)
@@ -715,7 +715,7 @@
                                 </div>
                                 @endif
                             </div>
-                            <div id="Resultados_contenedor" class="row m-3" hidden>
+                            <div id="resultados_contenedor" class="row m-3" hidden>
                                 <input name="resultados_getImg" id="resultados_getImg" type="hidden" value="{{$resultadosImg}}">
                                 <input name="resultados_getTxt" id="resultados_getTxt" type="hidden" value="{{$Tesis[0]->resultados}}">
                             </div>
@@ -853,7 +853,7 @@
                     <h5>Anexos</h5>
                     <div class="row" style="margin-bottom:8px">
                         <div class="col-12 col-md-10">
-                            <textarea class="form-control" name="txtanexos[]" id="txtanexos" readonly>@if ($Tesis[0]->anexos != null){{$Tesis[0]->anexos}}@endif</textarea>
+                            <textarea class="form-control" name="txtanexos[]" id="taanexos" readonly>@if ($Tesis[0]->anexos != null){{$Tesis[0]->anexos}}@endif</textarea>
                         </div>
                         @if ($Tesis[0]->estado==1)
                         <div class="col-1" align="center">
@@ -871,7 +871,7 @@
                         @endif
                         <textarea class="form-control" name="tachkCorregir28" id="tachkCorregir28" cols="30" rows="4" hidden></textarea>
                     </div>
-                    <div id="Anexos_contenedor" class="row m-3" hidden>
+                    <div id="anexos_contenedor" class="row m-3" hidden>
                         <input name="anexos_getImg" id="anexos_getImg" type="hidden" value="{{$anexosImg}}">
                         <input name="anexos_getTxt" id="anexos_getTxt" type="hidden" value="{{$Tesis[0]->anexos}}">
                     </div>

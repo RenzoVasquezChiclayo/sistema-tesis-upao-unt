@@ -178,10 +178,10 @@
           validateChanged();
         };
 
-        const get_user = document.getElementById("").value;
-        if(get_user!=""){
+        // const get_user = document.getElementById("").value;
+        // if(get_user!=""){
 
-        }
+        // }
 
         function aviso(){
             var myModal = document.getElementById('mAvisoPassword');

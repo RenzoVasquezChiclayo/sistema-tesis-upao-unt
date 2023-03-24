@@ -58,10 +58,11 @@
                             <tbody>
                                 @php
                                     $estado = 'Sin iniciar';
+                                    $contadorObs = 1;
                                 @endphp
                                 @foreach ($observaciones as $observacion)
                                     <tr>
-                                        <td>{{$observacion->observacionNum}}</td>
+                                        <td>{{$contadorObs}}</td>
                                         <td>
                                             @php
                                                 switch($observacion->estado){
@@ -72,6 +73,7 @@
                                                         $estado = 'Corregido';
                                                         break;
                                                 }
+                                                $contadorObs++;
                                             @endphp
                                             {{$estado}}</td>
                                         <td>{{$observacion->fecha_create}}</td>

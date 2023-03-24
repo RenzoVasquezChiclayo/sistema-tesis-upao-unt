@@ -78,7 +78,7 @@
                                         <td>Contabilidad y Finanzas</td>
                                         <td>{{$estudiante->fecha}}</td>
                                         <td style="text-align:center;">
-                                            <a href="{{route('asesor.ver-obs-estudiante-tesis',$estudiante->cod_historial_observacion)}}"><i class="far fa-eye"></i>GA</a>
+                                            <a href="{{route('asesor.ver-obs-estudiante-tesis',$estudiante->cod_historial_observacion)}}"><i class="bx bx-sm bx-show"></i></a>
                                             {{-- <form id="form-observacion" action="{{route('asesor.showObservaciones')}}" method="POST">
                                                 @csrf
                                                 <input type="hidden" name="cod_historialObs" value="{{$egresado->cod_historialObs}}">
