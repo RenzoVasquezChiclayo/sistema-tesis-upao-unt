@@ -101,7 +101,7 @@
         <script>
             Swal.fire(
                 'Guardado/Enviado!',
-                'Proyecto de Tesis guardado/enviado correctamente',
+                'Tesis guardado/enviado correctamente',
                 'success'
             )
         </script>

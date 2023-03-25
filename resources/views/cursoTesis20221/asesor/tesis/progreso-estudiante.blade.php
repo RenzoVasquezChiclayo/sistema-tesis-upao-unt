@@ -876,16 +876,16 @@
                         <input name="anexos_getTxt" id="anexos_getTxt" type="hidden" value="{{$Tesis[0]->anexos}}">
                     </div>
                 </div>
-                <input type="hidden" name="validacionTesis" id="validacionTesis" value="{{$isFinal}}">
+                <input type="hidden" name="validacionTesis" id="validacionTesis" value="{{$camposFull}}">
                 <div class="row" style="padding-top: 20px; padding-bottom:20px;">
                     <div class="col-12">
                         <div class="row" style="text-align:left; ">
                             <div class="row" id="grupoAproDesa" hidden>
                                 <div class="col-3 col-md-3">
-                                    <input class="btn btn-success" type="button" value="APROBAR PROYECTO" onclick="aprobarProy();" style="margin-right:20px;">
+                                    <input class="btn btn-success" type="button" value="APROBAR TESIS" onclick="aprobarProy();" style="margin-right:20px;">
                                 </div>
                                 <div class="col-3 col-md-3">
-                                    <input class="btn btn-danger" type="button" value="DESAPROBAR PROYECTO" onclick="desaprobarProy();" style="margin-right:20px;">
+                                    <input class="btn btn-danger" type="button" value="DESAPROBAR TESIS" onclick="desaprobarProy();" style="margin-right:20px;">
                                 </div>
                             </div>
                             <div class="row" id="grupoObservaciones">
@@ -919,7 +919,7 @@
         function aprobarProy(){
             Swal.fire({
                 title: 'Estas seguro(a)?',
-                text: "El proyecto sera APROBADO!",
+                text: "La Tesis sera APROBADA!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -938,7 +938,7 @@
         function desaprobarProy(){
             Swal.fire({
                 title: 'Estas seguro(a)?',
-                text: "El proyecto sera DESAPROBADO!",
+                text: "La Tesis sera DESAPROBADA!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -994,7 +994,7 @@
 
         function saveWithoutErrors(){
             var validacionTesis = document.getElementById('validacionTesis').value;
-            if (validacionTesis == 'true'){
+            if (validacionTesis == true){
                 document.getElementById('grupoAproDesa').hidden=false;
                 document.getElementById('grupoObservaciones').hidden=true;
             }

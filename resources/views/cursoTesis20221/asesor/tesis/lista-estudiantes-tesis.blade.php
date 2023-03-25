@@ -19,7 +19,13 @@
                         </thead>
                         <tbody>
                             @foreach ($estudiantes as $estu)
-                                <tr>
+                                <tr
+                                @if ($estu->estado == 3)
+                                    style="background-color: #7BF96E;"
+                                @elseif ($estu->estado == 4)
+                                    style="background-color: #FA6A56;"
+                                @endif
+                                >
                                     <td>{{$estu->cod_matricula}}</td>
                                     <td>{{$estu->dni}}</td>
                                     <td>{{$estu->nombres.' '.$estu->apellidos}}</td>

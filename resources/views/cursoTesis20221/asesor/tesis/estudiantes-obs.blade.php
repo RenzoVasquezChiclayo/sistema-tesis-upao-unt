@@ -72,18 +72,19 @@
                             </thead>
                             <tbody>
                                 @foreach ($estudiantes as $estudiante)
-                                    <tr>
+                                    <tr
+                                    @if ($estudiante->estado == 3)
+                                        style= "background-color: #7BF96E;"
+                                    @elseif ($estudiante->estado == 4)
+                                        style= "background-color: #FA6A56;"
+                                    @endif
+                                    >
                                         <td>{{$estudiante->cod_matricula}}</td>
                                         <td>{{$estudiante->apellidos.', '.$estudiante->nombres}}</td>
                                         <td>Contabilidad y Finanzas</td>
                                         <td>{{$estudiante->fecha}}</td>
                                         <td style="text-align:center;">
                                             <a href="{{route('asesor.ver-obs-estudiante-tesis',$estudiante->cod_historial_observacion)}}"><i class="bx bx-sm bx-show"></i></a>
-                                            {{-- <form id="form-observacion" action="{{route('asesor.showObservaciones')}}" method="POST">
-                                                @csrf
-                                                <input type="hidden" name="cod_historialObs" value="{{$egresado->cod_historialObs}}">
-                                                <a href="#" onclick="this.closest('#form-observacion').submit()"><i class="fa fa-download"></i></a>
-                                            </form> --}}
                                         </td>
                                     </tr>
                                 @endforeach

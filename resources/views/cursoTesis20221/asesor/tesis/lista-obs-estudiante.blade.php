@@ -36,11 +36,11 @@
                 </div>
                 @if($estudiante[0]->estado == 3)
                     <div class="col-10" style="background-color: green; padding-top:10px;">
-                        <p style="color: white">Este proyecto fue APROBADO!</p>
+                        <p style="color: white">Esta Tesis fue APROBADO!</p>
                     </div>
                 @elseif ($estudiante[0]->estado == 4)
                     <div class="col-10" style="background-color: red; padding-top:10px;">
-                        <p style="color: white">Este proyecto fue DESAPROBADO!</p>
+                        <p style="color: white">Esta Tesis fue DESAPROBADO!</p>
                     </div>
                 @endif
                 <div class="col-10 ">
@@ -116,7 +116,7 @@
         <script>
             Swal.fire(
             'Guardado!',
-            'El proyecto fue APROBADO',
+            'La Tesis fue APROBADA',
             'success'
             )
         </script>
@@ -124,7 +124,7 @@
         <script>
             Swal.fire(
             'Guardado!',
-            'El proyecto fue DESAPROBADO',
+            'La Tesis fue DESAPROBADA',
             'success'
             )
         </script>

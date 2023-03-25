@@ -672,11 +672,7 @@ class Tesis2022Controller extends Controller
 
     public function revisarTesis(Request $request){
         $Tesis = [];
-        $campoTesis = [];
-        $aux = 0;
-        $aux_campo = 0;
-        $isFinal = 'false';
-        $camposFull = 'false';
+        $camposFull = false;
 
         $cod_matricula = $request->cod_matricula;
         $Tesis = DB::table('tesis_2022 as t')
@@ -684,17 +680,18 @@ class Tesis2022Controller extends Controller
                             ->join('asesor_curso as ac','t.cod_docente','=','ac.cod_docente')
                             ->select('t.*','et.nombres as nombresAutor','et.apellidos as apellidosAutor','ac.*')->where('et.cod_matricula',$cod_matricula)->get();
 
-        $validaTesis = DB::table('tesis_2022')->join('estudiante_ct2022','estudiante_ct2022.cod_matricula','=','tesis_2022.cod_matricula')->select('tesis_2022.*')->where('estudiante_ct2022.cod_matricula',$cod_matricula)->get();
+        $objetivos = DB::table('t_objetivo')->where('cod_tesis','=',$Tesis[0]->cod_tesis)->get();
+        $t_keywords = DB::table('t_keyword')->where('cod_tesis','=',$Tesis[0]->cod_tesis)->get();
+        $referencias = DB::table('t_referencias')->where('cod_tesis','=',$Tesis[0]->cod_tesis)->get();
 
-        foreach ($validaTesis[0] as $curso) {
-            $arregloAux[$aux] = $curso;
-            $aux++;
-        }
-        for ($i=0; $i < sizeof($arregloAux)-4; $i++) {
-            if ($arregloAux[$i]!=null) {
-                $isFinal = 'true';
+        $validatesis = DB::table('tesis_2022')
+                                    ->select('titulo','presentacion','resumen','introduccion','real_problematica','antecedentes','justificacion','formulacion_prob','marco_teorico','marco_conceptual','marco_legal','form_hipotesis','objeto_estudio','poblacion','muestra','metodos','tecnicas_instrum','instrumentacion','estg_metodologicas','discusion','conclusiones','recomendaciones','resultados','anexos')
+                                    ->where('cod_tesis','=',$Tesis[0]->cod_tesis)->first();
+        foreach ($validatesis as $atri) {
+            if ($atri != null && sizeof($t_keywords) > 0 && sizeof($objetivos) > 0 && sizeof($referencias) > 0 ) {
+                $camposFull = true;
             }else{
-                $isFinal = 'false';
+                $camposFull = false;
                 break;
             }
         }
@@ -709,16 +706,14 @@ class Tesis2022Controller extends Controller
 
         $observaciones = TObservacion::join('t_historial_observaciones as ho','ho.cod_historial_observacion','=','t_observacion.cod_historial_observacion')->select('t_observacion.*')->where('ho.cod_tesis',$Tesis[0]->cod_tesis)->get();
 
-        $objetivos = TObjetivo::where('cod_tesis','=',$Tesis[0]->cod_tesis)->get();
-
-        $referencias = TReferencias::where('cod_tesis','=',$Tesis[0]->cod_tesis)->get();
-        return view('cursoTesis20221.asesor.tesis.progreso-estudiante',['Tesis'=>$Tesis,'keywords'=>$keywords,'objetivos'=>$objetivos,'$observaciones' => $observaciones,'isFinal'=>$isFinal,'referencias'=>$referencias, 'resultadosImg'=>$resultadosImg, 'anexosImg'=>$anexosImg]);
+        return view('cursoTesis20221.asesor.tesis.progreso-estudiante',['Tesis'=>$Tesis,'keywords'=>$keywords,'objetivos'=>$objetivos,'$observaciones' => $observaciones,'camposFull'=>$camposFull,'referencias'=>$referencias, 'resultadosImg'=>$resultadosImg, 'anexosImg'=>$anexosImg]);
 
     }
 
     public function guardarSinObservaciones(Request $request){
         $idTesis = $request->textcod;
         try {
+
             $tesis = Tesis_2022::find($idTesis);
             $tesis->estado = 2;
             $tesis->save();
@@ -727,8 +722,8 @@ class Tesis2022Controller extends Controller
             $th;
         }
 
-
         return redirect()->route('asesor.estudiantes-tesis');
+
     }
 
     public function guardarConObservaciones(Request $request){
@@ -911,10 +906,10 @@ class Tesis2022Controller extends Controller
         $asesor = AsesorCurso::where('username',$id)->get();
         if (is_numeric($buscarObservaciones)) {
             $estudiantes = DB::connection('mysql')->table('estudiante_ct2022')->join('tesis_2022','estudiante_ct2022.cod_matricula','=','tesis_2022.cod_matricula')->join('t_historial_observaciones','tesis_2022.cod_tesis','=','t_historial_observaciones.cod_tesis')
-                            ->select('estudiante_ct2022.*','t_historial_observaciones.fecha','t_historial_observaciones.cod_historial_observacion')->where('tesis_2022.cod_matricula','like','%'.$buscarObservaciones.'%')->where('tesis_2022.cod_docente',$asesor[0]->cod_docente)->paginate($this::PAGINATION);
+                            ->select('estudiante_ct2022.*','tesis_2022.estado','t_historial_observaciones.fecha','t_historial_observaciones.cod_historial_observacion')->where('tesis_2022.cod_matricula','like','%'.$buscarObservaciones.'%')->where('tesis_2022.cod_docente',$asesor[0]->cod_docente)->paginate($this::PAGINATION);
         } else {
             $estudiantes = DB::connection('mysql')->table('estudiante_ct2022')->join('tesis_2022','estudiante_ct2022.cod_matricula','=','tesis_2022.cod_matricula')->join('t_historial_observaciones','tesis_2022.cod_tesis','=','t_historial_observaciones.cod_Tesis')
-                            ->select('estudiante_ct2022.*','t_historial_observaciones.fecha','t_historial_observaciones.cod_historial_observacion')->where('estudiante_ct2022.apellidos','like','%'.$buscarObservaciones.'%')->where('tesis_2022.cod_docente',$asesor[0]->cod_docente)->paginate($this::PAGINATION);
+                            ->select('estudiante_ct2022.*','tesis_2022.estado','t_historial_observaciones.fecha','t_historial_observaciones.cod_historial_observacion')->where('estudiante_ct2022.apellidos','like','%'.$buscarObservaciones.'%')->where('tesis_2022.cod_docente',$asesor[0]->cod_docente)->paginate($this::PAGINATION);
         }
 
         if(empty($estudiantes)){
@@ -1595,20 +1590,20 @@ class Tesis2022Controller extends Controller
     public function aprobarTesis(Request $request){
 
         $tesis = Tesis_2022::find($request->textcod);
-
+        $codHistObserva = THistorialObservaciones::where('cod_tesis',$request->textcod)->first();
         $tesis->condicion = 'APROBADO';
         $tesis->estado = 3;
 
         $tesis->save();
-        return redirect()->route('asesor.ver-obs-estudiante-tesis',$tesis->cod_tesis)->with('datos','okAprobado');
+        return redirect()->route('asesor.ver-obs-estudiante-tesis',$codHistObserva->cod_historial_observacion)->with('datos','okAprobado');
     }
     public function desaprobarTesis(Request $request){
         $tesis = Tesis_2022::find($request->textcod);
-
+        $codHistObserva = THistorialObservaciones::where('cod_tesis',$request->textcod)->first();
         $tesis->condicion = 'DESAPROBADO';
         $tesis->estado = 4;
         $tesis->save();
-        return redirect()->route('asesor.ver-obs-estudiante-tesis',$tesis->cod_tesis)->with('datos','okDesaprobado');
+        return redirect()->route('asesor.ver-obs-estudiante-tesis',$codHistObserva->cod_historial_observacion)->with('datos','okDesaprobado');
     }
 
 }
