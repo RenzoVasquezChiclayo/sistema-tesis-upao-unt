@@ -874,7 +874,7 @@ class Tesis2022Controller extends Controller
             $tesis->save();
 
         } catch (\Throwable $th) {
-            dd($th);
+            return redirect()->route('asesor.revisar-tesis')->with('datos','oknot');
         }
 
         $latestCorrecion = TObservacion::where('cod_historial_observacion',$existHisto[0]->cod_historial_observacion)->where('estado',1)->get();
@@ -885,7 +885,6 @@ class Tesis2022Controller extends Controller
             $detalleObs->correccion = null;
             $detalleObs->save();
         }
-        // return redirect()->route('asesor.verHistoObs')->with('datos','ok');
         return redirect()->route('asesor.ver-obs-estudiante-tesis',$existHisto[0]->cod_historial_observacion)->with('datos','ok');
 
     }

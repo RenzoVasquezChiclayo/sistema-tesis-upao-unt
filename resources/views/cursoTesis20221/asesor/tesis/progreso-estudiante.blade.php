@@ -911,6 +911,17 @@
 @section('js')
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="./js/asesor-tesis-2022.js"></script>
+    @if (session('datos')=='oknot')
+        <script>
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'No se ha podido guardar las observaciones, revise si su informacion es correcta',
+                showConfirmButton: true,
+                timer: 2500
+            })
+        </script>
+    @endif
     <script type="text/javascript">
         let array_chk = new Array(30);
         array_chk.fill(0,0);

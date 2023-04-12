@@ -703,17 +703,15 @@ class CursoTesisController extends Controller
             $col_matriz[0]->save();
 
 
-
-
+            $tesis->fecha = now();
+            $tesis->save();
 
 
         } catch (\Throwable $th) {
-            $th;
+            return redirect()->route('curso.tesis20221')->with('datos','oknot');
         }
 
 
-        $tesis->fecha = now();
-        $tesis->save();
 
         return redirect()->route('curso.estado-proyecto')->with('datos','ok');
     }
@@ -1449,7 +1447,7 @@ class CursoTesisController extends Controller
 
             return redirect()->route('director.listaAlumnos')->with('datos','Alumno eliminado correctamente');
         } catch (\Throwable $th) {
-            dd($th);
+            return redirect()->route('director.listaAlumnos')->with('datos','No se pudo eliminar el Alumno');
         }
     }
 

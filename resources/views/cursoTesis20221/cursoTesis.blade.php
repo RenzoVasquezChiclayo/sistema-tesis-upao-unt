@@ -2215,6 +2215,17 @@
 @section('js')
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="./js/myjs.js"></script>
+    @if (session('datos')=='oknot')
+        <script>
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'No se ha podido Guardar/Enviar, revise si su informacion es correcta',
+                showConfirmButton: true,
+                timer: 2500
+            })
+        </script>
+    @endif
     <script type="text/javascript">
         var existMes = false;
         if (document.getElementById('txtmeses_ejecucion').value != "") {
