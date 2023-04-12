@@ -30,7 +30,7 @@ class AdminCursoController extends Controller
         $aux = explode('-',$id);
         $id = $aux[0];
         if(auth()->user()->rol == 'CTesis2022-1'){
-            $estudiante = EstudianteCT2022::find($id);
+            $estudiante = DB::table('estudiante_ct2022')->where('cod_matricula',$id)->first();
             $existTesis = TesisCT2022::where('cod_matricula',$estudiante->cod_matricula)->get();
             $existTesisII = Tesis_2022::where('cod_matricula',$estudiante->cod_matricula)->get();
 
@@ -61,16 +61,11 @@ class AdminCursoController extends Controller
             }
 
         }
-        //$egresado = Egresado::find($id);
         $usuario = User::where('name',$id.'-C')->first();
         $estudiante = DB::table('estudiante_ct2022 as E')->where('E.cod_matricula',$id)->first();
         $asesor = DB::table('asesor_curso as A')->where('A.username',$id)->first();
-        //dd($aux);
         $img = 'profile-notfound.jpg';
-        // $imagen = ImgEgresado::find($id);
-        // if($imagen != null){
-        //     $img=$imagen->referencia;
-        // }
+
         return view('user.informacion',['usuario'=>$usuario,'img'=>$img,'estudiante'=>$estudiante,'asesor'=>$asesor]);
     }
 

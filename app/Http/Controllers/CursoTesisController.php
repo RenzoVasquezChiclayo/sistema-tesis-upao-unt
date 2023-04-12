@@ -80,11 +80,11 @@ class CursoTesisController extends Controller
         $aux = explode('-',$id);
         $id = $aux[0];
 
-        $autor = EstudianteCT2022::leftJoin('proyecto_tesis as p','p.cod_matricula','=','estudiante_ct2022.cod_matricula')->select('estudiante_ct2022.*','p.cod_docente')->where('estudiante_ct2022.cod_matricula',$id)->first(); //Encontramos al autor
+        $autor = DB::table('estudiante_ct2022')->leftJoin('proyecto_tesis as p','p.cod_matricula','=','estudiante_ct2022.cod_matricula')->select('estudiante_ct2022.*','p.cod_docente')->where('estudiante_ct2022.cod_matricula',$id)->first();   //Encontramos al autor
 
         $tesis = TesisCT2022::where('cod_matricula','=',$autor->cod_matricula)->get(); //Encontramos la tesis
 
-        $asesor = AsesorCurso::find($tesis[0]->cod_docente); //Encontramos al asesor
+        $asesor = DB::table('asesor_curso')->where('cod_docente',$tesis[0]->cod_docente)->first();  //Encontramos al asesor
         /* Traemos informacion de las tablas*/
         $tinvestigacion = TipoInvestigacion::all();
         $presupuestos = Presupuesto::all();
@@ -114,12 +114,6 @@ class CursoTesisController extends Controller
 
         //Obtener los archivos e imagenes que tuviese guardado.
         $detalleHistorial = [];
-        // $historialArchivos = Archivo_Tesis_ct2022::where('cod_proyectotesis','=',$tesis[0]->cod_proyectotesis)->get();
-
-        // if ($historialArchivos->count()>0) {
-        //     $detalleHistorial = Detalle_Archivo::where('cod_archivos','=',$historialArchivos[0]->cod_archivos)->get();
-
-        // }
 
         return view('cursoTesis20221.cursoTesis',['autor'=>$autor,
                 'presupuestos'=>$presupuestos,'tiporeferencia'=>$tiporeferencia,'tesis'=>$tesis,'asesor'=>$asesor,
@@ -1327,8 +1321,7 @@ class CursoTesisController extends Controller
 
             $estudiantes = DB::table('estudiante_ct2022 as e')->leftJoin('proyecto_tesis as p','p.cod_matricula','=','e.cod_matricula')->select('e.*','p.cod_docente')->paginate($this::PAGINATION3);
         }
-        // $estudiantes = DB::table('estudiante_ct2022')->where('cod_matricula','!=',null)->paginate($this::PAGINATION3);
-        $asesores = AsesorCurso::all();
+        $asesores = DB::table('asesor_curso')->select('cod_docente','nombres')->get();
         return view('cursoTesis20221.director.asignarAsesor',['estudiantes'=>$estudiantes,'asesores'=>$asesores,'buscarAlumno'=>$buscarAlumno]);
     }
 
@@ -1348,7 +1341,7 @@ class CursoTesisController extends Controller
         do {
             if ($posicion[$i]!=null) {
                 $datos = explode('_',$posicion[$i]);
-                $estudiante = EstudianteCT2022::find($datos[0]);
+                $estudiante = DB::table('estudiante_ct2022')->where('cod_matricula',$datos[0])->first();
                 if($estudiante!=null){
                     $proyectoTesis = TesisCT2022::where('cod_matricula',$estudiante->cod_matricula)->first();
                     if ($proyectoTesis==null){
@@ -1381,7 +1374,7 @@ class CursoTesisController extends Controller
                 if ($posicion[$i]!=null) {
                     $datos = explode('_',$posicion[$i]);
 
-                    $estudiante = EstudianteCT2022::find($datos[0]);
+                    $estudiante = DB::table('estudiante_ct2022')->where('cod_matricula',$datos[0])->first();
                     if($estudiante!=null){
                         $proyectoTesis = TesisCT2022::where('cod_matricula',$estudiante->cod_matricula)->first();
                         $proyectoTesis->cod_docente = $datos[1];

@@ -65,12 +65,12 @@
                     <div class="col-12">
                         <label for="nombres">Direccion</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="direccion" name="direccion" maxlength="45">
-                            <span class="input-group-text" id="contador-caracteres">0/45</span>
+                            <input type="text" class="form-control" id="direccion" name="direccion" maxlength="30">
+                            <span class="input-group-text" id="contador-caracteres">0/30</span>
                         </div>
                     </div>
                     <div class="col-12" style="margin-top: 10px;">
-                        <button class="btn btn-success" type="button" onclick="verifyFields()">Registrar</button>
+                        <button class="btn btn-success" type="submit">Registrar</button>
                         <a href="{{ route('user_information') }}" type="button" class="btn btn-danger">Cancelar</a>
                     </div>
                 </form>
@@ -103,15 +103,12 @@
         </script>
     @endif
     <script type="text/javascript">
-        setTimeout(function() {
-            document.querySelector('#mensaje').remove();
-        }, 2000);
 
         const inputDireccion = document.querySelector('#direccion');
         const contadorCaracteres = document.querySelector('#contador-caracteres');
 
         inputDireccion.addEventListener('input', () => {
-            contadorCaracteres.textContent = `${inputDireccion.value.length}/45`;
+            contadorCaracteres.textContent = `${inputDireccion.value.length}/30`;
         });
     </script>
 @endsection
