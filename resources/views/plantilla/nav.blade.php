@@ -132,6 +132,13 @@
             <span class="tooltip">Lista Alumnos</span>
         </li>
         <li>
+            <a href="{{ route('director.listaAsesores') }}">
+                <i class='bx bx-sm bx-list-ol'></i>
+                <span class="links_name">Lista Asesores</span>
+            </a>
+            <span class="tooltip">Lista Asesores</span>
+        </li>
+        <li>
             <a href="{{ route('director.veragregarAsesor') }}">
                 <i class='bx bx-sm bx-message-square-add'></i>
                 <span class="links_name">Agregar Asesor</span>

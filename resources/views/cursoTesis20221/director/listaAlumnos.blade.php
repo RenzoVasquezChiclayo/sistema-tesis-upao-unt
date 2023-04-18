@@ -104,6 +104,26 @@
                 timer: 1200
                 })
             </script>
+    @elseif (session('datos') == 'okDelete')
+        <script>
+            Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Alumno eliminado correctamente',
+            showConfirmButton: false,
+            timer: 1200
+            })
+        </script>
+    @elseif (session('datos') == 'okNotDelete')
+        <script>
+            Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Error al eliminar el alumno',
+            showConfirmButton: false,
+            timer: 1200
+            })
+        </script>
     @endif
 <script type="text/javascript">
     function editarAlumno(formulario, contador){

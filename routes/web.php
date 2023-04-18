@@ -108,6 +108,9 @@ Route::post('/save-edicion-asignar',[Tesis2022Controller::class,'saveEditarAsign
 Route::get('/listaAlumnos',[CursoTesisController::class,'listaAlumnos'])->name('director.listaAlumnos')->middleware('auth');
 Route::post('/verAlumnoEditar',[CursoTesisController::class,'verAlumnoEditar'])->name('director.verAlumnoEditar');
 Route::post('/saveEditAlumno',[CursoTesisController::class,'editEstudiante'])->name('director.editEstudiante');
+Route::get('/listaAsesores',[CursoTesisController::class,'listaAsesores'])->name('director.listaAsesores')->middleware('auth');
+Route::post('/verAsesorEditar',[CursoTesisController::class,'verAsesorEditar'])->name('director.verAsesorEditar');
+Route::post('/saveEditAsesor',[CursoTesisController::class,'editAsesor'])->name('director.editAsesor');
 
 //Rutas para el asesor Curso
 Route::get('/verEstudiantes',[CursoTesisController::class,'showEstudiantes'])->name('asesor.showEstudiantes')->middleware('auth');

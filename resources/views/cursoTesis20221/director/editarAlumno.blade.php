@@ -4,24 +4,12 @@
 @endsection
 @section('contenido')
 <div class="row" style="display: flex; align-items:center;">
-    <div class="col-10">
-        @if (session('datos'))
-            <div id="mensaje">
-                <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
-                    {{ session('datos') }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            </div>
-        @endif
-    </div>
+
     <div class="col-10">
         <h3>Editar Estudiante</h3>
         <div class="row border-box">
             <form action="{{route('director.editEstudiante')}}" method="POST">
                 @csrf
-
                 <div class="col-6">
                     <label for="cod_matricula">Codigo de Matricula</label>
                     <input class="form-control" type="text" minlength="8" maxlength="10"  value="{{$alumno[0]->cod_matricula}}" id="cod_matricula" name="cod_matricula" placeholder="Ingrese su codigo de matricula" readonly>

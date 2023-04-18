@@ -1414,6 +1414,23 @@ class CursoTesisController extends Controller
         return view('cursoTesis20221.director.listaAlumnos',['estudiantes'=>$estudiantes,'buscarAlumno'=>$buscarAlumno]);
     }
 
+    const PAGINATION4 = 10;
+    public function listaAsesores(Request $request){
+        $buscarAsesor = $request->buscarAsesor;
+        if($buscarAsesor!=""){
+            if (is_numeric($buscarAsesor)) {
+
+                $asesores = DB::table('asesor_curso')->select('asesor_curso.*')->where('asesor_curso.cod_docente','like','%'.$buscarAsesor.'%')->paginate($this::PAGINATION4);
+            } else {
+                $asesores = DB::table('asesor_curso')->select('asesor_curso.*')->where('asesor_curso.apellidos','like','%'.$buscarAsesor.'%')->paginate($this::PAGINATION4);
+            }
+        }else{
+
+            $asesores = DB::table('asesor_curso')->select('asesor_curso.*')->paginate($this::PAGINATION4);
+        }
+        return view('cursoTesis20221.director.listaAsesores',['asesores'=>$asesores,'buscarAsesor'=>$buscarAsesor]);
+    }
+
     public function verAlumnoEditar(Request $request){
 
         $alumno = DB::table('estudiante_ct2022')->select('estudiante_ct2022.*')->where('estudiante_ct2022.cod_matricula','=',$request->auxid)->get();
@@ -1421,11 +1438,17 @@ class CursoTesisController extends Controller
         return view('cursoTesis20221.director.editarAlumno',['alumno'=>$alumno]);
     }
 
+    public function verAsesorEditar(Request $request){
+
+        $asesor = DB::table('asesor_curso')->select('asesor_curso.*')->where('asesor_curso.cod_docente','=',$request->auxid)->get();
+
+        return view('cursoTesis20221.director.editarAsesor',['asesor'=>$asesor]);
+    }
+
     public function editEstudiante(Request $request){
 
         try {
             $alumno = EstudianteCT2022::find($request->cod_matricula);
-
             $alumno->dni = $request->dni;
             $alumno->apellidos = $request->apellidos;
             $alumno->nombres = $request->nombres;
@@ -1439,15 +1462,33 @@ class CursoTesisController extends Controller
 
     }
 
+    public function editAsesor(Request $request){
+
+        try {
+            $asesor = AsesorCurso::find($request->cod_docente);
+            $asesor->nombres = $request->nombres;
+            $asesor->grado_academico = $request->gradAcademico;
+            $asesor->direccion = $request->direccion;
+
+            $asesor->save();
+
+            return redirect()->route('director.listaAsesores')->with('datos','ok');
+        } catch (\Throwable $th) {
+            return back()->with('datos','oknot');
+        }
+
+    }
+
     public function deleteAlumno(Request $request){
         try {
-
+            $usuario = User::where('name',$request->auxidDelete.'-C')->first();
+            $usuario->delete();
             $alumno = EstudianteCT2022::where('cod_matricula',$request->auxidDelete);
             $alumno->delete();
 
-            return redirect()->route('director.listaAlumnos')->with('datos','Alumno eliminado correctamente');
+            return redirect()->route('director.listaAlumnos')->with('datos','okDelete');
         } catch (\Throwable $th) {
-            return redirect()->route('director.listaAlumnos')->with('datos','No se pudo eliminar el Alumno');
+            return redirect()->route('director.listaAlumnos')->with('datos','okNotDelete');
         }
     }
 
