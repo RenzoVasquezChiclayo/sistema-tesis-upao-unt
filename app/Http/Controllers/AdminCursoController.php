@@ -99,9 +99,12 @@ class AdminCursoController extends Controller
     public function saveGeneralidades(Request $request){
         $cod_escuela = $request->escuela;
         $linea_investigacion = $request->id_linea_investigacion;
-        foreach ($linea_investigacion as $l_i) {
-            $datos[] = explode('_',$l_i);
+        if ($linea_investigacion != null) {
+            foreach ($linea_investigacion as $l_i) {
+                $datos[] = explode('_',$l_i);
+            }
         }
+
         $fin_persigue = $request->id_fin_persigue;
         $diseno_investigacion = $request->id_diseno_investigacion;
         try {
