@@ -33,7 +33,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::connection('mysql')->dropIfExists('historial_observaciones');
+        // Schema::connection('mysql')->dropIfExists('historial_observaciones');
 
     }
 };

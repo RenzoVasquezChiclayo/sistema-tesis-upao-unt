@@ -9,27 +9,36 @@
                 <h3>Registro de Asesor(es)</h3>
             </div>
             <div class="row border-box" style="margin-bottom: 50px;">
-                <div class="col-12">
-                    <h4>Curso </h4>
-                    <p><i>Tesis I 2022-1</i></p>
-                    <h5>Importar un registro Excel</h5>
-                </div>
                 <form action="{{ route('director.importarAsesores') }}" method="post" enctype="multipart/form-data">
                     @csrf
-                    <div class="row">
-                        <div class="col-7">
-                            <input class="form-control" type="file" name="importAsesor" id="importAsesor">
+                    <div class="row justify-content-end">
+                        <div class="col-3">
+                            <h5>Semestre academico</h5>
                         </div>
-                        <div class="col-5">
-                            <button class="btn btn-success" type="submit">Importar Registro</button>
+                        <div class="col-2">
+                            <select class="form-select" name="semestre_academico" id="semestre_academico" required>
+                                <option value="2023-I">2023-I</option>
+                            </select>
                         </div>
                     </div>
+                    <div class="col-12">
+                        <h5>Importar un registro Excel</h5>
+                    </div>
+                        <div class="row">
+                            <div class="col-7">
+                                <input class="form-control" type="file" name="importAsesor" id="importAsesor">
+                            </div>
+                            <div class="col-5">
+                                <button class="btn btn-success" type="submit">Importar Registro</button>
+                            </div>
+                        </div>
                 </form>
             </div>
             <div class="row border-box">
                 <h5>Registrar por asesor</h5>
                 <form class="row g-3 needs-validation" action="{{ route('director.addAsesor') }}" method="POST" novalidate>
                     @csrf
+                    <input type="hidden" name="semestre_hidden" id="semestre_hidden">
                     <div class="col-6">
                         <label for="cod_docente">Codigo Institucional</label>
                         <input class="form-control" minlength="4" maxlength="4" type="text" id="cod_docente"
@@ -103,12 +112,18 @@
         </script>
     @endif
     <script type="text/javascript">
-
+        window.onload = function() {
+            semestre = document.getElementById('semestre_academico').value;
+            document.getElementById('semestre_hidden').value = semestre;
+        }
         const inputDireccion = document.querySelector('#direccion');
         const contadorCaracteres = document.querySelector('#contador-caracteres');
 
         inputDireccion.addEventListener('input', () => {
             contadorCaracteres.textContent = `${inputDireccion.value.length}/30`;
         });
+
+
+
     </script>
 @endsection

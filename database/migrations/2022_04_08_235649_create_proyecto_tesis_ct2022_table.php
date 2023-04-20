@@ -82,6 +82,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tesis_ct2022');
+        // Schema::dropIfExists('tesis_ct2022');
     }
 };

@@ -21,7 +21,8 @@ class AsesorCurso extends Model
         'direccion',
 
         //Fines del curso
-        'username'
+        'username',
+        'semestre_academico'
     ];
 
 

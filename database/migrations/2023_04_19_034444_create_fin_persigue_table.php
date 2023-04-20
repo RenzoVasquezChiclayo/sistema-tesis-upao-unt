@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('t_keyword', function (Blueprint $table) {
-            $table->integer('id_keyword')->autoIncrement();
-            $table->integer('cod_tesis')->nullable(false);
-            $table->foreign('cod_tesis')
-                    ->references('cod_tesis')
-                    ->on('tesis_2022')
+        Schema::create('fin_persigue', function (Blueprint $table) {
+            $table->integer('cod_fin_persigue')->autoIncrement();
+            $table->string('descripcion',50);
+            $table->char('cod_escuela',4);
+            $table->foreign('cod_escuela')
+                    ->references('cod_escuela')
+                    ->on('escuela')
                     ->onDelete('cascade');
-            $table->date('fecha_update')->nullable(true);
         });
     }
 
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        // Schema::dropIfExists('t_keyword');
+        // Schema::dropIfExists('fin_persigue');
     }
 };

@@ -78,6 +78,6 @@ return new class extends Migration
     public function down()
     {
         //
-        Schema::dropIfExists('tesis_2022');
+        // Schema::dropIfExists('tesis_2022');
     }
 };

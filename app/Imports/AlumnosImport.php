@@ -8,7 +8,12 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class AlumnosImport implements ToModel
 {
+    public $semestre_academico;
 
+    public function __construct($semestre_academico)
+    {
+        $this->semestre_academico = $semestre_academico;
+    }
     public function model(array $row)
     {
         return new EstudianteCT2022([
@@ -16,6 +21,7 @@ class AlumnosImport implements ToModel
             'dni' => $row[1],
             'apellidos' => $row[2],
             'nombres' => $row[3],
+            'semestre_academico'=> $this->semestre_academico,
         ]);
     }
 

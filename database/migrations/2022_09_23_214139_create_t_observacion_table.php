@@ -68,6 +68,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('t_observacion');
+        // Schema::dropIfExists('t_observacion');
     }
 };

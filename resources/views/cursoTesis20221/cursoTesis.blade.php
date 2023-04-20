@@ -327,10 +327,10 @@
                             @else
                                 required @endif>
                                     <option value="" selected>-</option>
-                                    <option value="Basica" @if ($tesis[0]->ti_finpersigue == 'Basica') selected @endif>Basica
-                                    </option>
-                                    <option value="Aplicada" @if ($tesis[0]->ti_finpersigue == 'Aplicada') selected @endif>Aplicada
-                                    </option>
+                                    @foreach ($fin_persigue as $f_p)
+                                        <option value="{{$f_p->cod_fin_persigue}}" @if ($tesis[0]->ti_finpersigue == $f_p->descripcion) selected @endif>{{$f_p->descripcion}}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="col-12 col-sm-6 col-md-4">
@@ -341,10 +341,10 @@
                             @else
                                 required @endif>
                                     <option value="" selected>-</option>
-                                    <option value="Descriptiva" @if ($tesis[0]->ti_disinvestigacion == 'Descriptiva') selected @endif>
-                                        Descriptiva</option>
-                                    <option value="Explicativa" @if ($tesis[0]->ti_disinvestigacion == 'Explicativa') selected @endif>
-                                        Explicativa</option>
+                                    @foreach ($diseno_investigacion as $d_i)
+                                        <option value="{{$d_i->cod_diseno_investigacion}}" @if ($tesis[0]->ti_finpersigue == $d_i->descripcion) selected @endif>{{$d_i->descripcion}}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
                             @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)

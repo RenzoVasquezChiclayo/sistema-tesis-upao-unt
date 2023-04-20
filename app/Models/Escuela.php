@@ -23,6 +23,14 @@ class Escuela extends Model
         return $this->hasMany(TipoInvestigacion::class);
     }
 
+    public function fin_persigue(){
+        return $this->hasMany(Fin_Persigue::class);
+    }
+
+    public function diseno_investigacion(){
+        return $this->hasMany(Diseno_Investigacion::class);
+    }
+
     public function formatoTitulo(){
         return $this->hasMany(FormatoTitulo::class);
     }

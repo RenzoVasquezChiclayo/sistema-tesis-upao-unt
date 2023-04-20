@@ -50,7 +50,7 @@
                                             <a href="#" class="btn btn-warning" onclick="this.closest('#form-asesor').submit();"><i class='bx bx-sm bx-edit-alt'></i></a>
                                         </form>
                                     </td>
-                                    @if (auth()->user()->rol == 'administrador')
+                                    {{-- @if (auth()->user()->rol == 'administrador')
                                         <td>
                                             <form id="formAsesorDelete" name="formAsesorDelete" method="" action="">
                                                 @method('DELETE')
@@ -60,7 +60,7 @@
                                                 <a href="#" class="btn btn-danger btn-eliminar" onclick="alertaConfirmacion(this);"><i class='bx bx-message-square-x' ></i></a>
                                             </form>
                                         </td>
-                                    @endif
+                                    @endif --}}
 
                                 </tr>
                                 @php
@@ -108,27 +108,6 @@
 <script type="text/javascript">
     function editarAsesor(formulario, contador){
         formulario.closest('#form-asesor'+contador).submit();
-    }
-    function alertaConfirmacion(e){
-
-        Swal.fire({
-            title: 'Estas Seguro que deseas eliminar?',
-            text: "No podras revertirlo",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Confirmar!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-
-                document.formAsesorDelete.action ="{{route('director.deleteAsesor')}}";
-                document.formAsesorDelete.method = "POST";
-                e.closest('#formAsesorDelete').submit();
-
-            }
-        });
-
     }
 
 </script>

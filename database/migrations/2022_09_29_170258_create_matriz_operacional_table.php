@@ -43,6 +43,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('matriz_operacional');
+        // Schema::dropIfExists('matriz_operacional');
     }
 };

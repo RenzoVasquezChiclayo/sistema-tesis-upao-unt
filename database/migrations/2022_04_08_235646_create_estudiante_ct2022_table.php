@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::connection('mysql')->dropIfExists('estudiante_ct2022');
+        // Schema::connection('mysql')->dropIfExists('estudiante_ct2022');
     }
 };

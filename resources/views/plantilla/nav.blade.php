@@ -125,6 +125,13 @@
             </li>
         @endif
         <li>
+            <a href="{{ route('director.generalidades') }}">
+
+                <span class="links_name">Generalidades</span>
+            </a>
+            <span class="tooltip">Generalidades</span>
+        </li>
+        <li>
             <a href="{{ route('director.listaAlumnos') }}">
                 <i class='bx bx-sm bx-list-ol'></i>
                 <span class="links_name">Lista Alumnos</span>

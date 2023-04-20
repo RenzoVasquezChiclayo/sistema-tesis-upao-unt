@@ -13,12 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::connection('mysql')->create('presupuesto', function (Blueprint $table) {
-            $table->integer('cod_presupuesto')->autoIncrement();
-            $table->string('codeUniversal',15);
-            $table->string('denominacion',50);
+        Schema::table('estudiante_ct2022', function (Blueprint $table) {
+            $table->string('semestre_academico',30);
         });
-
     }
 
     /**
@@ -28,7 +25,6 @@ return new class extends Migration
      */
     public function down()
     {
-        // Schema::connection('mysql')->dropIfExists('presupuesto');
-
+        //
     }
 };

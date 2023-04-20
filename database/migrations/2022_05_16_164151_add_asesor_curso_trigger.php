@@ -22,6 +22,6 @@ return new class extends Migration
     }
     public function down()
     {
-        DB::connection('mysql')->unprepared('DROP TRIGGER `add_user_asesor_curso`');
+        // DB::connection('mysql')->unprepared('DROP TRIGGER `add_user_asesor_curso`');
     }
 };

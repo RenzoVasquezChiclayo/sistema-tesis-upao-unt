@@ -49,7 +49,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::connection('mysql')->dropIfExists('campos_estudiante');
+        // Schema::connection('mysql')->dropIfExists('campos_estudiante');
 
     }
 };

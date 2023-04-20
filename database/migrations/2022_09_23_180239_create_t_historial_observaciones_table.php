@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('t_historial_observaciones');
+        // Schema::dropIfExists('t_historial_observaciones');
     }
 };

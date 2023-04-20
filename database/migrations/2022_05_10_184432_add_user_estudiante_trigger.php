@@ -22,6 +22,6 @@ return new class extends Migration
     }
     public function down()
     {
-        DB::unprepared('DROP TRIGGER `add_user_estudiante`');
+        // DB::unprepared('DROP TRIGGER `add_user_estudiante`');
     }
 };

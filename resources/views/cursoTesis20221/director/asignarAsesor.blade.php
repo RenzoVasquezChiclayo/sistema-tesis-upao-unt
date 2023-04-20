@@ -92,9 +92,6 @@
                 </table>
                 {{$estudiantes->links()}}
             </div>
-            {{-- <div>
-                {{$estudiantes->links()}}
-            </div> --}}
             <div class="row" style="margin: 10px;">
                 <div class="col-12" style="text-align: right;">
                     <input class="btn btn-success" type="submit" value="Guardar registro" id="saveAsignacion" hidden>

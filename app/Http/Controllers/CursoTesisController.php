@@ -21,6 +21,8 @@ use App\Models\MatrizOperacional;
 use App\Models\Tesis_2022;
 use App\Models\User;
 use App\Models\variableOP;
+use App\Models\Fin_Persigue;
+use App\Models\Diseno_Investigacion;
 use Illuminate\Support\Facades\DB;
 use League\CommonMark\Node\Block\Paragraph;
 use PhpOffice\PhpWord\PhpWord;
@@ -87,6 +89,8 @@ class CursoTesisController extends Controller
         $asesor = DB::table('asesor_curso')->where('cod_docente',$tesis[0]->cod_docente)->first();  //Encontramos al asesor
         /* Traemos informacion de las tablas*/
         $tinvestigacion = TipoInvestigacion::all();
+        $fin_persigue = Fin_Persigue::all();
+        $diseno_investigacion = Diseno_Investigacion::all();
         $presupuestos = Presupuesto::all();
         $tiporeferencia = TipoReferencia::all();
         $referencias = referencias::where('cod_proyectotesis','=',$tesis[0]->cod_proyectotesis)->get(); //Por si existen referencias
@@ -116,7 +120,7 @@ class CursoTesisController extends Controller
         $detalleHistorial = [];
 
         return view('cursoTesis20221.cursoTesis',['autor'=>$autor,
-                'presupuestos'=>$presupuestos,'tiporeferencia'=>$tiporeferencia,'tesis'=>$tesis,'asesor'=>$asesor,
+                'presupuestos'=>$presupuestos,'fin_persigue'=>$fin_persigue,'diseno_investigacion'=>$diseno_investigacion,'tiporeferencia'=>$tiporeferencia,'tesis'=>$tesis,'asesor'=>$asesor,
                 'correciones' => $correciones,'recursos'=>$recursos,'objetivos'=>$objetivos,'variableop'=>$variableop,
                 'presupuestoProy'=>$presupuestoProy,'detalles'=>$detalles,'tinvestigacion'=>$tinvestigacion,'campos'=>$campos,
                 'referencias'=>$referencias, 'detalleHistorial'=>$detalleHistorial,'matriz'=>$matriz
@@ -797,9 +801,15 @@ class CursoTesisController extends Controller
                 $cod_tinvestigacion = $cod_tinvestigacion->descripcion;
             }
 
+            $fin_persigue = Fin_Persigue::find($tesis[0]->ti_finpersigue);
+            if($fin_persigue!=null){
+                $ti_finpersigue =$fin_persigue->descripcion;
+            }
 
-            $ti_finpersigue =$tesis[0]->ti_finpersigue;
-            $ti_disinvestigacion = $tesis[0]->ti_disinvestigacion;
+            $diseno_investigacion = Diseno_Investigacion::find($tesis[0]->ti_disinvestigacion);
+            if($diseno_investigacion!=null){
+                $ti_disinvestigacion =$diseno_investigacion->descripcion;
+            }
 
             //Desarrollo del proyecto
             $localidad = $tesis[0]->localidad;
@@ -947,7 +957,7 @@ class CursoTesisController extends Controller
             $nuevaSesion->addListItem("4. TIPO DE INVESTIGACION",0.5,$titulos,[\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER],$styleContenido);
             $nuevaSesion->addText($cod_tinvestigacion,null,$styleContenido);
             $nuevaSesion->addText("De acuerdo al fin que se persigue: ".$ti_finpersigue,null,$styleContenido);
-            $nuevaSesion->addText("De acuerdo al diseño de investigacion".$ti_disinvestigacion,null,$styleContenido);
+            $nuevaSesion->addText("De acuerdo al diseño de investigacion: ".$ti_disinvestigacion,null,$styleContenido);
 
             $nuevaSesion->addListItem("5. LOCALIDAD E INSTITUCION DONDE SE DESARROLLO EL PROYECTO",0.5,$titulos,[\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER],$styleContenido);
             $nuevaSesion->addText("Localidad: ".$localidad,null,$styleContenido);
@@ -1585,7 +1595,8 @@ class CursoTesisController extends Controller
 
         $recursos = recursos::where('cod_proyectotesis','=',$cursoTesis[0]->cod_proyectotesis)->get();
         $tipoinvestigacion = TipoInvestigacion::where('cod_tinvestigacion','=',$cursoTesis[0]->cod_tinvestigacion)->get();
-        //dd($tipoinvestigacion);
+        $fin_persigue = Fin_Persigue::where('cod_fin_persigue','=',$cursoTesis[0]->ti_finpersigue)->get();
+        $diseno_investigacion = Diseno_Investigacion::where('cod_diseno_investigacion','=',$cursoTesis[0]->ti_disinvestigacion)->get();
         $presupuesto = Presupuesto_Proyecto::join('presupuesto','presupuesto.cod_presupuesto','=','presupuesto_proyecto.cod_presupuesto')
         ->select('presupuesto_proyecto.*','presupuesto.codeUniversal','presupuesto.denominacion')
         ->where('presupuesto_proyecto.cod_proyectotesis','=',$cursoTesis[0]->cod_proyectotesis)->get();
@@ -1596,7 +1607,8 @@ class CursoTesisController extends Controller
 
 
         return view('cursoTesis20221.asesor.progresoEstudiante',['presupuesto'=>$presupuesto,
-                '$observaciones' => $observaciones,'tipoinvestigacion'=>$tipoinvestigacion,
+                '$observaciones' => $observaciones,'fin_persigue'=>$fin_persigue,'diseno_investigacion'=>$diseno_investigacion
+                ,'tipoinvestigacion'=>$tipoinvestigacion,
                 'recursos'=>$recursos,'objetivos'=>$objetivos,'variableop'=>$variableop,
                 'campos'=>$campos,'cursoTesis'=>$cursoTesis,'referencias'=>$referencias,'isFinal'=>$isFinal,
                 'camposFull'=>$camposFull,'matriz'=>$matriz

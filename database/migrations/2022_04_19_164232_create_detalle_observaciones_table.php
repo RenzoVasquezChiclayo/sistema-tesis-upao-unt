@@ -38,7 +38,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::connection('mysql')->dropIfExists('detalle_observaciones');
+        // Schema::connection('mysql')->dropIfExists('detalle_observaciones');
 
     }
 };

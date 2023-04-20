@@ -6,12 +6,15 @@ use App\Imports\AlumnosImport;
 use App\Imports\AsesorImport;
 
 use App\Models\AsesorCurso;
+use App\Models\Diseno_Investigacion;
 use App\Models\EstudianteCT2022;
+use App\Models\Fin_Persigue;
 use App\Models\MatrizOperacional;
 use App\Models\ObservacionesProy;
 use App\Models\ObservacionesProyCurso;
 use App\Models\Tesis_2022;
 use App\Models\TesisCT2022;
+use App\Models\TipoInvestigacion;
 use App\Models\User;
 use Barryvdh\DomPDF\PDF as DomPDFPDF;
 use DateTime;
@@ -79,6 +82,57 @@ class AdminCursoController extends Controller
             return redirect()->route('user_information')->with('datos','okUpdate');
         } catch (\Throwable $th) {
             return redirect()->route('user_information')->with('datos','oknotUpdate');
+        }
+
+
+    }
+
+    public function agregarGeneralidades(){
+        $escuela = DB::table('escuela')->select('escuela.*')->get();
+        $linea_investigacion = DB::table('tipoinvestigacion')->select('tipoinvestigacion.*')->get();
+        $fin_persigue = DB::table('fin_persigue')->select('fin_persigue.*')->get();
+        $diseno_investigacion = DB::table('diseno_investigacion')->select('diseno_investigacion.*')->get();
+        return view('cursoTesis20221.director.actualizarGeneralidades',['escuela'=>$escuela,
+                        'linea_investigacion'=>$linea_investigacion,'fin_persigue'=>$fin_persigue,'diseno_investigacion'=>$diseno_investigacion]);
+    }
+
+    public function saveGeneralidades(Request $request){
+        $cod_escuela = $request->escuela;
+        $linea_investigacion = $request->id_linea_investigacion;
+        foreach ($linea_investigacion as $l_i) {
+            $datos[] = explode('_',$l_i);
+        }
+        $fin_persigue = $request->id_fin_persigue;
+        $diseno_investigacion = $request->id_diseno_investigacion;
+        try {
+            if ($linea_investigacion != null) {
+                for ($i=0; $i < sizeof($linea_investigacion); $i++) {
+                    $new_linea_inves = new TipoInvestigacion();
+                    $new_linea_inves->cod_tinvestigacion = $datos[$i][0];
+                    $new_linea_inves->descripcion = $datos[$i][1];
+                    $new_linea_inves->cod_escuela = $cod_escuela;
+                    $new_linea_inves->save();
+                }
+            }
+            if ($fin_persigue != null) {
+                for ($i=0; $i < sizeof($fin_persigue); $i++) {
+                    $new_fin_persigue = new Fin_Persigue();
+                    $new_fin_persigue->descripcion = $fin_persigue[$i];
+                    $new_fin_persigue->cod_escuela = $cod_escuela;
+                    $new_fin_persigue->save();
+                }
+            }
+            if ($diseno_investigacion != null) {
+                for ($i=0; $i < sizeof($diseno_investigacion); $i++) {
+                    $new_diseno_investigacion = new Diseno_Investigacion();
+                    $new_diseno_investigacion->descripcion = $diseno_investigacion[$i];
+                    $new_diseno_investigacion->cod_escuela = $cod_escuela;
+                    $new_diseno_investigacion->save();
+                }
+            }
+            return redirect()->route('director.generalidades')->with('datos','ok');
+        } catch (\Throwable $th) {
+            dd($th);
         }
 
 
@@ -192,19 +246,16 @@ class AdminCursoController extends Controller
     public function importRegistroAlumnos(Request $request){
         if ($request->hasFile('importAlumno')) {
             try {
-
+                $semestre = $request->semestre_academico;
                 $path = $request->file('importAlumno');
 
-                Excel::import(new AlumnosImport,$path);
+                Excel::import(new AlumnosImport($semestre),$path);
 
                 return back()->with('datos','ok');
             } catch (\Throwable $th) {
                 return back()->with('datos','oknot');
 
             }
-
-
-
         }else {
             return back()->with('datos','oknot');
         }
@@ -214,16 +265,13 @@ class AdminCursoController extends Controller
     public function importRegistroAsesores(Request $request){
         if ($request->hasFile('importAsesor')) {
             try {
+                $semestre = $request->semestre_academico;
                 $path = $request->file('importAsesor');
-                Excel::import(new AsesorImport,$path);
-
+                Excel::import(new AsesorImport($semestre),$path);
                 return back()->with('datos','ok');
             } catch (\Throwable $th) {
                 return back()->with('datos','oknot');
             }
-
-
-
         }else {
             return back()->with('datos','oknot');
         }
@@ -241,7 +289,9 @@ class AdminCursoController extends Controller
             'direccion'=>'required',
 
         ]);
+        $semestre_academico = $request->semestre_hidden;
         $existAsesor = AsesorCurso::where('cod_docente',$request->cod_docente)->get();
+
         if($existAsesor->count()==0){
             $newAsesor=new AsesorCurso();
             $newAsesor->cod_docente = $request->cod_docente;
@@ -266,6 +316,7 @@ class AdminCursoController extends Controller
                     break;
             }
             $newAsesor->direccion = $request->direccion;
+            $newAsesor->semestre_academico = $semestre_academico;
             $newAsesor->save();
 
             return redirect()->route('director.veragregarAsesor')->with('datos','ok');
@@ -285,6 +336,7 @@ class AdminCursoController extends Controller
             'nombres'=> 'required',
 
         ]);
+        $semestre_academico = $request->semestre_hidden;
         $existEstudiante = EstudianteCT2022::where('cod_matricula',$request->cod_matricula)->get();
         if($existEstudiante->count()==0){
             $newEstudiante=new EstudianteCT2022();
@@ -292,6 +344,7 @@ class AdminCursoController extends Controller
             $newEstudiante->dni = $request->dni;
             $newEstudiante->apellidos = $request->apellidos;
             $newEstudiante->nombres = $request->nombres;
+            $newEstudiante->semestre_academico = $semestre_academico;
             $newEstudiante->save();
 
             return redirect()->route('director.veragregar')->with('datos','ok');
