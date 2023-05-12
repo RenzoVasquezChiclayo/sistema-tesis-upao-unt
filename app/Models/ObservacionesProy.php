@@ -21,6 +21,7 @@ class ObservacionesProy extends Model
         'meses_ejecucion',
 
         'recursos',
+        'presupuesto_proy',
         'real_problematica',
         'antecedentes',
         'justificacion',

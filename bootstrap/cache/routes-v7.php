@@ -24,7 +24,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::FxBARHBpQjsjaJUK',
+            '_route' => 'generated::31lwcSt3wqhGm2A5',
           ),
           1 => NULL,
           2 => 
@@ -102,7 +102,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::Xg7rPb8DyQapl3Kf',
+            '_route' => 'generated::PB4JU34P9u3RLE15',
           ),
           1 => NULL,
           2 => 
@@ -576,6 +576,121 @@ app('router')->setCompiledRoutes(
           array (
             'GET' => 0,
             'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/mantenedorLinea' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'director.mantenedorlineaInves',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/editarLinea' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'director.lineaInvesEditar',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/save-editarLinea' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'director.editLineaInves',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/deleteLinea' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'director.deleteLineaInves',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'DELETE' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/delete-fin-persigue' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'director.deleteFinPersigue',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'DELETE' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/delete-dis-investiga' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'director.deleteDisInvestiga',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'DELETE' => 0,
           ),
           3 => NULL,
           4 => false,
@@ -1335,7 +1450,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::7TKnRyvThtjsUqMx',
+            '_route' => 'generated::0QojebPGqRpeCdiw',
           ),
           1 => NULL,
           2 => 
@@ -1371,7 +1486,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::73O0fkMVDaLwr9in',
+            '_route' => 'generated::hBL7ZHELzdFRXIDn',
           ),
           1 => NULL,
           2 => 
@@ -1462,7 +1577,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::tlRJcoBdGLjbMQdS',
+            '_route' => 'generated::Qv7ruSdL4LZdtLWE',
           ),
           1 => NULL,
           2 => 
@@ -1580,7 +1695,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::n24Vfq2fzBQY09Ze',
+            '_route' => 'generated::zxJpnlyUqGhl0zRc',
           ),
           1 => 
           array (
@@ -1612,7 +1727,7 @@ app('router')->setCompiledRoutes(
   ),
   'attributes' => 
   array (
-    'generated::FxBARHBpQjsjaJUK' => 
+    'generated::31lwcSt3wqhGm2A5' => 
     array (
       'methods' => 
       array (
@@ -1633,7 +1748,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
         ),
-        'as' => 'generated::FxBARHBpQjsjaJUK',
+        'as' => 'generated::31lwcSt3wqhGm2A5',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1758,7 +1873,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::Xg7rPb8DyQapl3Kf' => 
+    'generated::PB4JU34P9u3RLE15' => 
     array (
       'methods' => 
       array (
@@ -1775,13 +1890,13 @@ app('router')->setCompiledRoutes(
         ),
         'uses' => 'O:47:"Laravel\\SerializableClosure\\SerializableClosure":1:{s:12:"serializable";O:46:"Laravel\\SerializableClosure\\Serializers\\Signed":2:{s:12:"serializable";s:297:"O:46:"Laravel\\SerializableClosure\\Serializers\\Native":5:{s:3:"use";a:0:{}s:8:"function";s:79:"function (\\Illuminate\\Http\\Request $request) {
     return $request->user();
-}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"000000002dcebf250000000050334561";}";s:4:"hash";s:44:"V9qDewoNmZt4jua7YYnKIUU9759Rm4GW2yLDd+E9SpU=";}}',
+}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"00000000266f150200000000119acf2c";}";s:4:"hash";s:44:"/D+fkTrk5OMfqAx11htls1OIcwAKY3vqTgwGYHVwS04=";}}',
         'namespace' => NULL,
         'prefix' => 'api',
         'where' => 
         array (
         ),
-        'as' => 'generated::Xg7rPb8DyQapl3Kf',
+        'as' => 'generated::PB4JU34P9u3RLE15',
       ),
       'fallback' => false,
       'defaults' => 
@@ -2708,6 +2823,223 @@ app('router')->setCompiledRoutes(
         array (
         ),
         'as' => 'director.descargar-reporteProyT',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'director.mantenedorlineaInves' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'mantenedorLinea',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+        ),
+        'uses' => 'App\\Http\\Controllers\\AdminCursoController@mantenedorLineaInves',
+        'controller' => 'App\\Http\\Controllers\\AdminCursoController@mantenedorLineaInves',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'director.mantenedorlineaInves',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'director.lineaInvesEditar' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'editarLinea',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+        ),
+        'uses' => 'App\\Http\\Controllers\\AdminCursoController@editarLineaInves',
+        'controller' => 'App\\Http\\Controllers\\AdminCursoController@editarLineaInves',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'director.lineaInvesEditar',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'director.editLineaInves' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'save-editarLinea',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+        ),
+        'uses' => 'App\\Http\\Controllers\\AdminCursoController@saveEditarLineaInves',
+        'controller' => 'App\\Http\\Controllers\\AdminCursoController@saveEditarLineaInves',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'director.editLineaInves',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'director.deleteLineaInves' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'DELETE',
+      ),
+      'uri' => 'deleteLinea',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+        ),
+        'uses' => 'App\\Http\\Controllers\\AdminCursoController@eliminarLineaInves',
+        'controller' => 'App\\Http\\Controllers\\AdminCursoController@eliminarLineaInves',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'director.deleteLineaInves',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'director.deleteFinPersigue' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'DELETE',
+      ),
+      'uri' => 'delete-fin-persigue',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+        ),
+        'uses' => 'App\\Http\\Controllers\\AdminCursoController@eliminarFinPersigue',
+        'controller' => 'App\\Http\\Controllers\\AdminCursoController@eliminarFinPersigue',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'director.deleteFinPersigue',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'director.deleteDisInvestiga' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'DELETE',
+      ),
+      'uri' => 'delete-dis-investiga',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+        ),
+        'uses' => 'App\\Http\\Controllers\\AdminCursoController@eliminarDisInvestiga',
+        'controller' => 'App\\Http\\Controllers\\AdminCursoController@eliminarDisInvestiga',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'director.deleteDisInvestiga',
       ),
       'fallback' => false,
       'defaults' => 
@@ -4233,7 +4565,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::7TKnRyvThtjsUqMx' => 
+    'generated::0QojebPGqRpeCdiw' => 
     array (
       'methods' => 
       array (
@@ -4253,7 +4585,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::7TKnRyvThtjsUqMx',
+        'as' => 'generated::0QojebPGqRpeCdiw',
       ),
       'fallback' => false,
       'defaults' => 
@@ -4306,7 +4638,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::73O0fkMVDaLwr9in' => 
+    'generated::hBL7ZHELzdFRXIDn' => 
     array (
       'methods' => 
       array (
@@ -4326,7 +4658,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::73O0fkMVDaLwr9in',
+        'as' => 'generated::hBL7ZHELzdFRXIDn',
       ),
       'fallback' => false,
       'defaults' => 
@@ -4525,7 +4857,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::tlRJcoBdGLjbMQdS' => 
+    'generated::Qv7ruSdL4LZdtLWE' => 
     array (
       'methods' => 
       array (
@@ -4545,7 +4877,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::tlRJcoBdGLjbMQdS',
+        'as' => 'generated::Qv7ruSdL4LZdtLWE',
       ),
       'fallback' => false,
       'defaults' => 
@@ -4561,7 +4893,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::n24Vfq2fzBQY09Ze' => 
+    'generated::zxJpnlyUqGhl0zRc' => 
     array (
       'methods' => 
       array (
@@ -4578,13 +4910,13 @@ app('router')->setCompiledRoutes(
         'uses' => 'O:47:"Laravel\\SerializableClosure\\SerializableClosure":1:{s:12:"serializable";O:46:"Laravel\\SerializableClosure\\Serializers\\Signed":2:{s:12:"serializable";s:295:"O:46:"Laravel\\SerializableClosure\\Serializers\\Native":5:{s:3:"use";a:0:{}s:8:"function";s:77:"function($comand){
     \\Illuminate\\Support\\Facades\\Artisan::call($comand);
 
-}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"000000002dcebf620000000050334561";}";s:4:"hash";s:44:"kDrpVd5CTYgRdT6IjGYoDo93pN2CYBQtEnsAMFr7CHA=";}}',
+}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"00000000266f155b00000000119acf2c";}";s:4:"hash";s:44:"ZxFSFZvdXc4cc9lFk+aAYf/KOZuTe93w2ixH2Lfs39c=";}}',
         'namespace' => NULL,
         'prefix' => '',
         'where' => 
         array (
         ),
-        'as' => 'generated::n24Vfq2fzBQY09Ze',
+        'as' => 'generated::zxJpnlyUqGhl0zRc',
       ),
       'fallback' => false,
       'defaults' => 

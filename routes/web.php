@@ -91,6 +91,12 @@ Route::delete('/delete-usuario',[CursoTesisController::class,'deleteUsuario'])->
 Route::get('/generalidades',[AdminCursoController::class,'agregarGeneralidades'])->name('director.generalidades')->middleware('auth');
 Route::post('/save-generalidades',[AdminCursoController::class,'saveGeneralidades'])->name('director.saveDatosGenerales');
 Route::get('/descargar-reportePT',[AdminCursoController::class,'descargarReporteProyT'])->name('director.descargar-reporteProyT')->middleware('auth');
+Route::get('/mantenedorLinea',[AdminCursoController::class,'mantenedorLineaInves'])->name('director.mantenedorlineaInves');
+Route::post('/editarLinea',[AdminCursoController::class,'editarLineaInves'])->name('director.lineaInvesEditar');
+Route::post('/save-editarLinea',[AdminCursoController::class,'saveEditarLineaInves'])->name('director.editLineaInves');
+Route::delete('/deleteLinea',[AdminCursoController::class,'eliminarLineaInves'])->name('director.deleteLineaInves');
+Route::delete('/delete-fin-persigue',[AdminCursoController::class,'eliminarFinPersigue'])->name('director.deleteFinPersigue');
+Route::delete('/delete-dis-investiga',[AdminCursoController::class,'eliminarDisInvestiga'])->name('director.deleteDisInvestiga');
 Route::get('/asignarAsesor',[CursoTesisController::class,'showTablaAsignacion'])->name('director.asignar')->middleware('auth');
 Route::post('/saveRegistro',[CursoTesisController::class,'saveAsesorAsignado'])->name('director.saveAsesor');
 Route::get('/agregarAsesor',[AdminCursoController::class,'showAddAsesor'])->name('director.veragregarAsesor')->middleware('auth');

@@ -14,7 +14,8 @@ class Diseno_Investigacion extends Model
     protected $fillable = [
         'cod_diseno_investigacion',
         'descripcion',
-        'cod_escuela'
+        'cod_escuela',
+        'semestre_academico'
     ];
 
     public $timestamps = false;

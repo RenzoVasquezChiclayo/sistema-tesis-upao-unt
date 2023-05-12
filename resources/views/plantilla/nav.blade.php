@@ -132,6 +132,13 @@
             <span class="tooltip">Generalidades</span>
         </li>
         <li>
+            <a href="{{ route('director.mantenedorlineaInves') }}">
+
+                <span class="links_name">Mantenedor Generalidades</span>
+            </a>
+            <span class="tooltip">Mantenedor Generalidades</span>
+        </li>
+        <li>
             <a href="{{ route('director.listaAlumnos') }}">
                 <i class='bx bx-sm bx-list-ol'></i>
                 <span class="links_name">Lista Alumnos</span>

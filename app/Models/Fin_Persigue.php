@@ -14,7 +14,8 @@ class Fin_Persigue extends Model
     protected $fillable = [
         'cod_fin_persigue',
         'descripcion',
-        'cod_escuela'
+        'cod_escuela',
+        'semestre_academico'
     ];
 
 

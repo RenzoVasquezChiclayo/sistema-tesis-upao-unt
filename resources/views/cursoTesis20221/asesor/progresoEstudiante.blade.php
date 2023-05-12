@@ -187,13 +187,13 @@
                         <div class="item-card col-4">
                             <label for="cboFinInvestigacion" class="form-label">De acuerdo al fin que se persigue</label>
                             <input class="form-control" type="text" name="txtFinInvestigacion"
-                                id="txtFinInvestigacion" value="{{ $fin_persigue[0]->descripcion }}" readonly>
+                                id="txtFinInvestigacion" value="@if ($fin_persigue->count() > 0) {{ $fin_persigue[0]->descripcion }} @endif" readonly>
                         </div>
                         <div class="item-card col-4">
                             <label for="cboDesignInvestigacion" class="form-label">De acuerdo al diseño de
                                 investigación</label>
                             <input class="form-control" type="text" name="txtDesignInvestigacion"
-                                id="txtDesignInvestigacion" value="{{ $diseno_investigacion[0]->descripcion }}" readonly>
+                                id="txtDesignInvestigacion" value="@if ($diseno_investigacion->count() > 0) {{ $diseno_investigacion[0]->descripcion }} @endif" readonly>
                         </div>
                         <div class="col-12">
                             <textarea class="form-control" name="tachkCorregir23" id="tachkCorregir23" cols="30" rows="4" hidden
@@ -373,38 +373,61 @@
                     </div>
                     <h5>Presupuesto</h5>
                     {{-- Tabla resumen del presupuesto --}}
-                    <div class="row" style="margin-bottom:8px; padding-left:25px;">
-                        <table class="table">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>Codigo</th>
-                                    <th>Denominacion</th>
-                                    <th>Precio Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($presupuesto as $presu)
+
+                        <div class="col-8 col-md-5 col-xl-11">
+                            <table class="table">
+                                <thead class="thead-dark">
                                     <tr>
-                                        <td>{{ $presu->codeUniversal }}</td>
-                                        <td>{{ $presu->denominacion }}</td>
-                                        <td>S/. {{ $presu->precio }}.00</td>
+                                        <th>Codigo</th>
+                                        <th>Denominacion</th>
+                                        <th>Precio Total</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th colspan="2" style="text-align: right;">
-                                        <p><strong>Total:</strong></p>
-                                    </th>
-                                    <th>
-                                        <p><strong>S/. @if ($presupuesto->count() > 0)
-                                                    {{ $presupuesto[0]->precio + $presupuesto[1]->precio + $presupuesto[2]->precio + $presupuesto[3]->precio + $presupuesto[4]->precio }}
-                                                @endif
-                                            </strong></p>
-                                    </th>
-                                </tr>
-                            </tfoot>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach ($presupuesto as $presu)
+                                        <tr>
+                                            <td>{{ $presu->codeUniversal }}</td>
+                                            <td>{{ $presu->denominacion }}</td>
+                                            <td>S/. {{ $presu->precio }}.00</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="2" style="text-align: right;">
+                                            <p><strong>Total:</strong></p>
+                                        </th>
+                                        <th>
+                                            <p><strong>S/. @if ($presupuesto->count() > 0)
+                                                        {{ $presupuesto[0]->precio + $presupuesto[1]->precio + $presupuesto[2]->precio + $presupuesto[3]->precio + $presupuesto[4]->precio }}
+                                                    @endif
+                                                </strong></p>
+                                        </th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        @if ($cursoTesis[0]->estado == 1)
+                            <div class="col-1" align="center">
+                                <div class="row">
+                                    <div class="col-10">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="chkCorregir25"
+                                                onchange="chkCorregir(this);">
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                Corregir
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
+                    <div class="row" style="margin-bottom:15px;">
+                        <div class="col-12">
+                            <textarea class="form-control" name="tachkCorregir25" id="tachkCorregir25" cols="30" rows="4" hidden></textarea>
+                        </div>
+
                     </div>
                 </div>
 
@@ -1250,7 +1273,7 @@
         function uploadProyecto() {
 
             let hayCorreccion = false;
-            for (let i = 1; i < 24; i++) {
+            for (let i = 1; i < 26; i++) {
                 if (array_chk[i] == 1) {
                     if (document.getElementById('tachkCorregir' + i).value != "") {
                         hayCorreccion = true;

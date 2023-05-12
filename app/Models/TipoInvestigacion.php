@@ -13,7 +13,8 @@ class TipoInvestigacion extends Model
     protected $primaryKey = 'cod_tinvestigacion';
     protected $fillable = [
         'descripcion',
-        'cod_escuela'
+        'cod_escuela',
+        'semestre_academico'
     ];
 
     public function escuela(){

@@ -85,7 +85,6 @@ class CursoTesisController extends Controller
         $autor = DB::table('estudiante_ct2022')->leftJoin('proyecto_tesis as p','p.cod_matricula','=','estudiante_ct2022.cod_matricula')->select('estudiante_ct2022.*','p.cod_docente')->where('estudiante_ct2022.cod_matricula',$id)->first();   //Encontramos al autor
 
         $tesis = TesisCT2022::where('cod_matricula','=',$autor->cod_matricula)->get(); //Encontramos la tesis
-
         $asesor = DB::table('asesor_curso')->where('cod_docente',$tesis[0]->cod_docente)->first();  //Encontramos al asesor
         /* Traemos informacion de las tablas*/
         $tinvestigacion = TipoInvestigacion::all();
@@ -363,12 +362,23 @@ class CursoTesisController extends Controller
             if($request->precios!=""){
                 $preciosP = $request->precios;
                 $preciosP = explode("_",$preciosP);
+                $cadena_presup = "";
+                if ($preciosP != null) {
+                    for ($a=0; $a < sizeof($preciosP); $a++) {
 
+                        if ($a==sizeof($preciosP)-1) {
+                            $cadena_presup .= $preciosP[$a];
+                            break;
+                        }
+                        $cadena_presup .= $preciosP[$a].", ";
+
+
+                    }
+                }
                 $arregloPresupuesto = Presupuesto::all();
                 $existPresupuesto = Presupuesto_Proyecto::where('cod_proyectotesis',$tesis->cod_proyectotesis)->get();
                 $x=0;
                 if($existPresupuesto->count()==0){
-
 
                     foreach ($arregloPresupuesto as $presupuesto) {
 
@@ -386,6 +396,16 @@ class CursoTesisController extends Controller
                         $last_presupuesto=Presupuesto_Proyecto::find($existPresupuesto[$i]->cod_presProyecto);
                         $last_presupuesto->precio=$preciosP[$i];
                         $last_presupuesto->save();
+                    }
+                    if(sizeof($observacionX)>0){
+                        for($i=0; $i<sizeof($detalles);$i++){
+                            if($detalles[$i]->tema_referido == 'presupuesto_proy'){
+                                $detalleEEG=Detalle_Observaciones::find($detalles[$i]->cod_detalleObs);
+                                $detalleEEG->correccion=$cadena_presup;
+                                $detalleEEG->save();
+                            }
+
+                        }
                     }
                 }
             }
@@ -804,12 +824,17 @@ class CursoTesisController extends Controller
             $fin_persigue = Fin_Persigue::find($tesis[0]->ti_finpersigue);
             if($fin_persigue!=null){
                 $ti_finpersigue =$fin_persigue->descripcion;
+            }else{
+                $ti_finpersigue="";
             }
 
             $diseno_investigacion = Diseno_Investigacion::find($tesis[0]->ti_disinvestigacion);
             if($diseno_investigacion!=null){
                 $ti_disinvestigacion =$diseno_investigacion->descripcion;
+            }else{
+                $ti_disinvestigacion="";
             }
+
 
             //Desarrollo del proyecto
             $localidad = $tesis[0]->localidad;
@@ -1414,6 +1439,7 @@ class CursoTesisController extends Controller
             if (is_numeric($buscarAlumno)) {
 
                 $estudiantes = DB::table('estudiante_ct2022')->select('estudiante_ct2022.*')->where('estudiante_ct2022.cod_matricula','like','%'.$buscarAlumno.'%')->paginate($this::PAGINATION2);
+
             } else {
                 $estudiantes = DB::table('estudiante_ct2022')->select('estudiante_ct2022.*')->where('estudiante_ct2022.apellidos','like','%'.$buscarAlumno.'%')->paginate($this::PAGINATION2);
             }
@@ -1745,6 +1771,10 @@ class CursoTesisController extends Controller
                 $observaciones->matriz_op = $request->tachkCorregir24;
                 $arrayThemes[]='matriz_op';
             }
+            if($request->tachkCorregir25!=""){
+                $observaciones->presupuesto_proy = $request->tachkCorregir25;
+                $arrayThemes[]='presupuesto_proy';
+            }
 
             $observaciones->estado = 1;
             $observaciones->save();
@@ -1779,7 +1809,9 @@ class CursoTesisController extends Controller
             $estudiante = EstudianteCT2022::find($tesis->cod_matricula);
             $asesor = AsesorCurso::find($tesis->cod_docente);
             $recursosProy = recursos::where('cod_proyectotesis','=',$tesis->cod_proyectotesis)->get();
-
+            $presupues = DB::table('presupuesto_proyecto')->join('presupuesto','presupuesto_proyecto.cod_presupuesto','=','presupuesto.cod_presupuesto')
+                            ->select('precio','presupuesto.codeUniversal','presupuesto.denominacion')
+                            ->where('cod_proyectotesis','=',$tesis->cod_proyectotesis)->latest('cod_presProyecto')->get();
             $objetivosProy = Objetivo::where('cod_proyectotesis','=',$tesis->cod_proyectotesis)->get();
             $variableopProy = variableOP::where('cod_proyectotesis','=',$tesis->cod_proyectotesis)->get();
 
@@ -1805,7 +1837,7 @@ class CursoTesisController extends Controller
             $meses_ejecucion = $correccion[$cantObserva]->meses_ejecucion;
 
             $recursos = $correccion[$cantObserva]->recursos;
-
+            $presupuesto_proy = $correccion[$cantObserva]->presupuesto_proy;
             $real_problematica = $correccion[$cantObserva]->real_problematica;
             $antecedentes = $correccion[$cantObserva]->antecedentes;
             $justificacion = $correccion[$cantObserva]->justificacion;
@@ -1892,6 +1924,39 @@ class CursoTesisController extends Controller
                 }
                 $nuevaSesion->addText($recursos);
 
+            }
+            if ($presupuesto_proy!= "") {
+                $nuevaSesion->addText("PRESUPUESTO",$titulos);
+                /* Presupuesto */
+                $tableStyle = array(
+                    'borderSize' => 6,
+                    'cellMargin' => 50,
+                    'alignMent' => 'center'
+                );
+
+                $presupuestoTable = $nuevaSesion->addTable($tableStyle);
+
+                $presupuestoTable->addRow(400);
+                $presupuestoTable->addCell(2000)->addText("CODIGO",$titulos);
+                $presupuestoTable->addCell(4000)->addText("DENOMINACION",$titulos);
+                $presupuestoTable->addCell(1500)->addText("PRECIO TOTAL (S/.)",$titulos);
+                $totalP = 0;
+                if($presupues->count()!=0){
+                    for ($i=count($presupues)-1; $i >= 0; $i--) {
+                        $presupuestoTable->addRow(400);
+                        $presupuestoTable->addCell(2000)->addText($presupues[$i]->codeUniversal,$titulos);
+                        $presupuestoTable->addCell(4000)->addText($presupues[$i]->denominacion,$titulos);
+                        $presupuestoTable->addCell(1500)->addText($presupues[$i]->precio.".00",$titulos);
+                        $totalP += floatval($presupues[$i]->precio);
+                    }
+                }
+
+                $presupuestoTable->addRow(400);
+                $presupuestoTable->addCell(2000)->addText("",$titulos);
+                $presupuestoTable->addCell(4000)->addText("TOTAL",$titulos);
+                $presupuestoTable->addCell(1500)->addText($totalP.".00",$titulos);//x
+
+                $nuevaSesion->addText("Observacion: ".$presupuesto_proy);
             }
             if ($real_problematica!= "") {
                 $nuevaSesion->addText("REALIDAD PROBLEMATICA",$titulos);

@@ -28,6 +28,7 @@ use Carbon\Carbon;
 
 class AdminCursoController extends Controller
 {
+    const PAGINATION = 10;
     public function information(){
         $id = auth()->user()->name;
         $aux = explode('-',$id);
@@ -87,6 +88,24 @@ class AdminCursoController extends Controller
 
     }
 
+    public function mantenedorLineaInves(Request $request){
+        $buscarpor_semestre = $request->buscarpor_semestre;
+
+        if($buscarpor_semestre!=""){
+            $lineasInves = DB::table('tipoinvestigacion')->select('tipoinvestigacion.*')->where('tipoinvestigacion.semestre_academico','like','%'.$buscarpor_semestre.'%')->paginate($this::PAGINATION);
+            $fin_persigue = DB::table('fin_persigue')->select('fin_persigue.*')->where('fin_persigue.semestre_academico','like','%'.$buscarpor_semestre.'%')->paginate($this::PAGINATION);
+            $diseno_investigacion = DB::table('diseno_investigacion')->select('diseno_investigacion.*')->where('diseno_investigacion.semestre_academico','like','%'.$buscarpor_semestre.'%')->paginate($this::PAGINATION);
+        }else{
+            $lineasInves = DB::table('tipoinvestigacion')->select('tipoinvestigacion.*')->get();
+            $fin_persigue = DB::table('fin_persigue')->select('fin_persigue.*')->get();
+            $diseno_investigacion = DB::table('diseno_investigacion')->select('diseno_investigacion.*')->get();
+        }
+        return view('cursoTesis20221.director.mantenedorGeneralidades',['lineasInves'=>$lineasInves,'fin_persigue'=>$fin_persigue,'diseno_investigacion'=>$diseno_investigacion,'buscarpor_semestre'=>$buscarpor_semestre]);
+
+
+
+    }
+
     public function agregarGeneralidades(){
         $escuela = DB::table('escuela')->select('escuela.*')->get();
         $linea_investigacion = DB::table('tipoinvestigacion')->select('tipoinvestigacion.*')->get();
@@ -96,8 +115,40 @@ class AdminCursoController extends Controller
                         'linea_investigacion'=>$linea_investigacion,'fin_persigue'=>$fin_persigue,'diseno_investigacion'=>$diseno_investigacion]);
     }
 
+    public function editarLineaInves(Request $request){
+        $id = $request->auxid;
+        $linea_find = DB::table('tipoinvestigacion')->where('cod_tinvestigacion',$id)->get();
+        return view('cursoTesis20221.director.editarLineaInves',['linea_find'=>$linea_find]);
+    }
+
+    public function saveEditarLineaInves(Request $request){
+        $linea = TipoInvestigacion::find($request->cod_tinvestigacion);
+        $linea-> descripcion = $request->descripcion;
+        $linea->save();
+        return redirect()->route('director.mantenedorlineaInves')->with('datos','okEdit');
+    }
+
+    public function eliminarLineaInves(Request $request){
+        $linea = TipoInvestigacion::find($request->auxidDelete);
+        $linea->delete();
+        return redirect()->route('director.mantenedorlineaInves')->with('datos','okDelete');
+    }
+
+    public function eliminarFinPersigue(Request $request){
+        $f_p = Fin_Persigue::find($request->auxidDeleteF_P);
+        $f_p->delete();
+        return redirect()->route('director.mantenedorlineaInves')->with('datos','okDelete');
+    }
+
+    public function eliminarDisInvestiga(Request $request){
+        $d_i = Diseno_Investigacion::find($request->auxidDeleteD_I);
+        $d_i->delete();
+        return redirect()->route('director.mantenedorlineaInves')->with('datos','okDelete');
+    }
+
     public function saveGeneralidades(Request $request){
         $cod_escuela = $request->escuela;
+        $semestre_aca = $request->semestre_academico;
         $linea_investigacion = $request->id_linea_investigacion;
         if ($linea_investigacion != null) {
             foreach ($linea_investigacion as $l_i) {
@@ -114,6 +165,7 @@ class AdminCursoController extends Controller
                     $new_linea_inves->cod_tinvestigacion = $datos[$i][0];
                     $new_linea_inves->descripcion = $datos[$i][1];
                     $new_linea_inves->cod_escuela = $cod_escuela;
+                    $new_linea_inves->semestre_academico = $semestre_aca;
                     $new_linea_inves->save();
                 }
             }
@@ -122,6 +174,7 @@ class AdminCursoController extends Controller
                     $new_fin_persigue = new Fin_Persigue();
                     $new_fin_persigue->descripcion = $fin_persigue[$i];
                     $new_fin_persigue->cod_escuela = $cod_escuela;
+                    $new_fin_persigue->semestre_academico = $semestre_aca;
                     $new_fin_persigue->save();
                 }
             }
@@ -130,6 +183,7 @@ class AdminCursoController extends Controller
                     $new_diseno_investigacion = new Diseno_Investigacion();
                     $new_diseno_investigacion->descripcion = $diseno_investigacion[$i];
                     $new_diseno_investigacion->cod_escuela = $cod_escuela;
+                    $new_diseno_investigacion->semestre_academico = $semestre_aca;
                     $new_diseno_investigacion->save();
                 }
             }
@@ -355,12 +409,13 @@ class AdminCursoController extends Controller
         return redirect()->route('director.veragregar')->with('datos','oknot');
     }
 
-    const PAGINATION = 10;
+
     public function verListaObservacion(Request $request){
         $buscarObservaciones = $request->get('buscarObservacion');
         $id = auth()->user()->name;
         $asesor = AsesorCurso::where('username',$id)->get();
         if (is_numeric($buscarObservaciones)) {
+
             $estudiantes = DB::connection('mysql')->table('estudiante_ct2022')->join('proyecto_tesis','estudiante_ct2022.cod_matricula','=','proyecto_tesis.cod_matricula')->join('historial_observaciones','proyecto_tesis.cod_proyectotesis','=','historial_observaciones.cod_proyectotesis')
                             ->select('estudiante_ct2022.*','proyecto_tesis.escuela','proyecto_tesis.estado','historial_observaciones.fecha','historial_observaciones.cod_historialObs')->where('proyecto_tesis.cod_matricula','like','%'.$buscarObservaciones.'%')->where('proyecto_tesis.cod_docente',$asesor[0]->cod_docente)->paginate($this::PAGINATION);
         } else {

@@ -186,17 +186,13 @@
                                             <div class="col-12 col-sm-9">
                                                 <input class="form-control" name="txttitulo" id="txttitulo" type="text"
                                                     value="@if ($tesis[0]->titulo != '') {{ $tesis[0]->titulo }} @endif"
-                                                    placeholder="Ingrese el titulo del proyecto"
-                                                    @if (sizeof($correciones) != 0 && $correciones[0]->titulo == null) readonly
-                                                    @else
-                                                        required @endif>
+                                                    placeholder="Ingrese el titulo del proyecto" required>
                                                 <span class="ps-2" id="validateTitle" name="validateTitle"
                                                     style="color: red"></span>
                                             </div>
                                             <div class="col-12 col-sm-3">
                                                 <input type="button" value="Verificar" onclick="validaText();"
-                                                    class="btn btn-success"
-                                                    @if (sizeof($correciones) != 0 && $correciones[0]->titulo == null) disabled @endif>
+                                                    class="btn btn-success">
                                             </div>
                                         </div>
                                     </div>
@@ -307,10 +303,7 @@
                         <div class="row border-box">
                             <div class="col-12 col-sm-6 col-md-4">
                                 <label for="cboTipoInvestigacion" class="form-label">Linea de Investigacion</label>
-                                <select name="cboTipoInvestigacion" id="cboTipoInvestigacion" class="form-select"
-                                    @if (sizeof($correciones) != 0 && $correciones[0]->linea_investigacion == null) disabled
-                            @else
-                                required @endif>
+                                <select name="cboTipoInvestigacion" id="cboTipoInvestigacion" class="form-select" required>
                                     <option value="">-</option>
                                     @foreach ($tinvestigacion as $tipo)
                                         <option value="{{ $tipo->cod_tinvestigacion }}"
@@ -322,13 +315,10 @@
                             <div class="col-12 col-sm-6 col-md-4">
                                 <label for="cboFinInvestigacion" class="form-label">De acuerdo al fin que se
                                     persigue</label>
-                                <select name="txtti_finpersigue" id="cboFinInvestigacion" class="form-select"
-                                    @if (sizeof($correciones) != 0 && $correciones[0]->linea_investigacion == null) disabled
-                            @else
-                                required @endif>
+                                <select name="txtti_finpersigue" id="cboFinInvestigacion" class="form-select" required>
                                     <option value="" selected>-</option>
                                     @foreach ($fin_persigue as $f_p)
-                                        <option value="{{$f_p->cod_fin_persigue}}" @if ($tesis[0]->ti_finpersigue == $f_p->descripcion) selected @endif>{{$f_p->descripcion}}
+                                        <option value="{{$f_p->cod_fin_persigue}}" @if ($tesis[0]->ti_finpersigue == $f_p->cod_fin_persigue) selected @endif>{{$f_p->descripcion}}
                                         </option>
                                     @endforeach
                                 </select>
@@ -336,13 +326,10 @@
                             <div class="col-12 col-sm-6 col-md-4">
                                 <label for="cboDesignInvestigacion" class="form-label">De acuerdo al diseño de
                                     investigación</label>
-                                <select name="txtti_disinvestigacion" id="cboDesignInvestigacion" class="form-select"
-                                    @if (sizeof($correciones) != 0 && $correciones[0]->linea_investigacion == null) disabled
-                            @else
-                                required @endif>
+                                <select name="txtti_disinvestigacion" id="cboDesignInvestigacion" class="form-select" required>
                                     <option value="" selected>-</option>
                                     @foreach ($diseno_investigacion as $d_i)
-                                        <option value="{{$d_i->cod_diseno_investigacion}}" @if ($tesis[0]->ti_finpersigue == $d_i->descripcion) selected @endif>{{$d_i->descripcion}}
+                                        <option value="{{$d_i->cod_diseno_investigacion}}" @if ($tesis[0]->ti_disinvestigacion == $d_i->cod_diseno_investigacion) selected @endif>{{$d_i->descripcion}}
                                         </option>
                                     @endforeach
                                 </select>
@@ -394,16 +381,14 @@
                                         <label for="txtLocalidad" class="form-label">Localidad</label>
                                         <input class="form-control" name="txtlocalidad" id="txtLocalidad" type="text"
                                             value="@if ($tesis[0]->localidad != '') {{ $tesis[0]->localidad }} @endif"
-                                            placeholder="Localidad" @if (sizeof($correciones) != 0 && $correciones[0]->localidad_institucion == null) readonly @endif
-                                            required>
+                                            placeholder="Localidad" required>
 
                                     </div>
                                     <div class="col-12 col-md-6">
                                         <label for="txtInstitucion" class="form-label">Institucion</label>
                                         <input class="form-control" name="txtinstitucion" id="txtInstitucion" type="text"
                                             value="@if ($tesis[0]->institucion != '') {{ $tesis[0]->institucion }} @endif"
-                                            placeholder="Institucion" @if (sizeof($correciones) != 0 && $correciones[0]->localidad_institucion == null) readonly @endif
-                                            required>
+                                            placeholder="Institucion" required>
                                     </div>
 
                                     @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
@@ -454,8 +439,7 @@
                                         <div class="row">
                                             <div class="col-4 col-xl-3" style="padding-top: 32px;">
                                                 <input type="button" class="btn btn-success" value="Set"
-                                                    id="setMes" name="setMes" onclick="setMeses();"
-                                                    @if (sizeof($correciones) != 0 && $correciones[0]->meses_ejecucion == null) disabled @endif required>
+                                                    id="setMes" name="setMes" onclick="setMeses();" required>
                                             </div>
                                             <div class="col-8 col-xl-9" style="text-align: right;">
                                                 <label for="txtmeses_ejecucion" class="form-label">Numero de meses</label>
@@ -463,15 +447,14 @@
                                                     id="txtmeses_ejecucion" type="number"
                                                     onkeypress="return isNumberKey(this);"
                                                     value="@if($tesis[0]->meses_ejecucion != ''){{$tesis[0]->meses_ejecucion}}@endif"
-                                                    placeholder="00" min="0"
-                                                    @if (sizeof($correciones) != 0 && $correciones[0]->meses_ejecucion == null) readonly @endif required>
+                                                    placeholder="00" min="0" required>
                                                 <input type="hidden" id="valuesMesesPart"
                                                     value="@if ($tesis[0]->meses_ejecucion != '') {{$tesis[0]->t_ReparacionInstrum}},{{$tesis[0]->t_RecoleccionDatos}},{{$tesis[0]->t_AnalisisDatos}},{{$tesis[0]->t_ElaboracionInfo}} @endif">
                                             </div>
 
                                         </div>
                                         <input type="hidden" id="CorreccionMes"
-                                            value="@if ($correciones->count() > 0 && $correciones[0]->meses_ejecucion != null) corregir @endif">
+                                            value="corregir">
                                     </div>
                                     @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
                                         @if ($correciones[0]->meses_ejecucion != null)
@@ -550,8 +533,7 @@
                     <div class="row mb-3" @if ($campos[0]->recursos == 0) hidden @endif>
                         <h5>Recursos</h5>
                         <div class="col col-sm-8 col-lg-6 col-xl-3 mb-3">
-                            <div class="row border-box"
-                                @if (sizeof($correciones) != 0 && $correciones[0]->recursos == null) hidden @endif>
+                            <div class="row border-box">
                                 <div class="col-6" style="text-align:center; justify-content:center;">
                                     <p>Agregar un recurso</p>
                                 </div>
@@ -587,11 +569,9 @@
                                                     <td>{{ $rec->subtipo }}</td>
                                                     <td class="td_descripcion">{{ $rec->descripcion }}</td>
                                                     <td style=" text-align:center;">
-                                                        @if ((sizeof($correciones) > 0 && $correciones[0]->recursos != null) || $tesis[0]->estado != 1)
                                                             <a href="#" id="lrec-{{ $indRec }}"
                                                                 class="btn btn-warning"
                                                                 onclick="deleteOldRecurso(this);">X</a>
-                                                        @endif
                                                         <input type="hidden" id="xlrec-{{ $indRec }}"
                                                             value="{{ $rec->cod_recurso }}">
                                                     </td>
@@ -651,72 +631,109 @@
                         <div class="col"><hr style="border: 1px solid gray"></div>
                         <h5>Presupuesto</h5>
                         {{-- Tabla resumen del presupuesto --}}
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th>Codigo</th>
-                                        <th>Denominacion</th>
-                                        <th>Precio Total</th>
-                                    </tr>
-                                </thead>
-                                @php
-                                    $i = 0;
-                                    $total = 0;
-                                @endphp
-                                <tbody>
-                                    @foreach ($presupuestos as $presupuesto)
+                        <div class="col-11">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead class="thead-dark">
                                         <tr>
-                                            <th>{{ $presupuesto->codeUniversal }}</th>
-                                            <td>{{ $presupuesto->denominacion }}</td>
-                                            <td>
+                                            <th>Codigo</th>
+                                            <th>Denominacion</th>
+                                            <th>Precio Total</th>
+                                        </tr>
+                                    </thead>
+                                    @php
+                                        $i = 0;
+                                        $total = 0;
+                                    @endphp
+                                    <tbody>
+                                        @foreach ($presupuestos as $presupuesto)
+                                            <tr>
+                                                <th>{{ $presupuesto->codeUniversal }}</th>
+                                                <td>{{ $presupuesto->denominacion }}</td>
+                                                <td>
+                                                    <div class="input-group mb-1">
+                                                        <span class="input-group-text">S/.</span>
+                                                        <input type="number" id="cod_{{ $i }}"
+                                                            name="cod_{{ $i }}" class="form-control"
+                                                            aria-label="Amount (to the nearest dollar)" min="0"
+                                                            value=@if ($presupuestoProy->count() > 0) "{{ $presupuestoProy[$i]->precio }}"
+                                                            @elseif(sizeof($correciones) == 0)
+                                                            "0" required
+                                                            @endif>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @php
+                                                $i++;
+                                            @endphp
+                                        @endforeach
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="2" style="text-align: right;"><input type="button"
+                                                    class="btn btn-success" onclick="verTotal();" value="Total">
+                                            </th>
+                                            <th>
                                                 <div class="input-group mb-1">
                                                     <span class="input-group-text">S/.</span>
-                                                    <input type="number" id="cod_{{ $i }}"
-                                                        name="cod_{{ $i }}" class="form-control"
-                                                        aria-label="Amount (to the nearest dollar)" min="0"
-                                                        value=@if ($presupuestoProy->count() > 0) "{{ $presupuestoProy[$i]->precio }}"
-                                                        @elseif(sizeof($correciones) == 0)
-                                                        "0" required
-                                                        @endif
-                                                        @if ($correciones->count() > 0 && $campos[0]->presupuesto == 1) disabled @endif>
+                                                    <input class="form-control" type="number" id="total" name="total"
+                                                    value=@if ($presupuestoProy->count() > 0) "{{ $presupuestoProy[0]->precio + $presupuestoProy[1]->precio + $presupuestoProy[2]->precio + $presupuestoProy[3]->precio + $presupuestoProy[4]->precio }}" disabled
+                                                    @elseif(sizeof($correciones) == 0)
+                                                    "0" @endif>
                                                 </div>
-                                            </td>
-                                        </tr>
-                                        @php
-                                            $i++;
-                                        @endphp
-                                    @endforeach
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th colspan="2" style="text-align: right;"><input type="button"
-                                                class="btn btn-success" onclick="verTotal();" value="Total"
-                                                @if (sizeof($correciones) != 0 && $presupuestoProy->count() > 0) disabled @endif>
-                                        </th>
-                                        <th>
-                                            <div class="input-group mb-1">
-                                                <span class="input-group-text">S/.</span>
-                                                <input class="form-control" type="number" id="total" name="total"
-                                                value=@if ($presupuestoProy->count() > 0) "{{ $presupuestoProy[0]->precio + $presupuestoProy[1]->precio + $presupuestoProy[2]->precio + $presupuestoProy[3]->precio + $presupuestoProy[4]->precio }}" disabled
-                                                @elseif(sizeof($correciones) == 0)
-                                                "0" @endif>
-                                            </div>
 
-                                        </th>
-                                        <input type="hidden" id="precios" name="precios" value="">
-                                    </tr>
-                                </tfoot>
-                            </table>
+                                            </th>
+                                            <input type="hidden" id="precios" name="precios" value="">
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
                         </div>
+                        @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
+                                @if ($correciones[0]->presupuesto_proy != null)
+                                    <div class="col-1">
+                                        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+                                            data-bs-target="#mCorreccionRProbl">Correccion</button>
+                                    </div>
+                                @endif
+                                {{-- Aqui va el modal --}}
+                                <div class="modal" id="mCorreccionRProbl">
+                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                        <div class="modal-content">
+                                            <!-- Modal Header -->
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Correccion de Realidad problematica</h4>
+                                                <button type="button" class="btn-close"
+                                                    data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <!-- Modal body -->
+                                            <div class="modal-body">
+                                                <div class="row" style="padding: 20px">
+                                                    <div class="row my-2">
+                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->presupuesto_proy }}</textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Modal footer -->
+                                            <div class="modal-footer">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <button type="button" class="btn btn-danger"
+                                                            data-bs-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
                     </div>
 
                     <div class="row" style="margin-bottom:20px" @if ($campos[0]->financiamiento == 0) hidden @endif>
                         <h5>Financiamiento </h5>
                         <div class="row" style="margin-bottom:8px">
                             <div class="col-8 col-md-5">
-                                <select name="txtfinanciamiento" id="cboFinanciamiento" class="form-select"
-                                    @if ($tesis[0]->financiamiento != null) disabled @endif>
+                                <select name="txtfinanciamiento" id="cboFinanciamiento" class="form-select">
                                     <option value="">-</option>
                                     <option value="Con recursos propios"
                                         @if ($tesis[0]->financiamiento == 'Con recursos propios') selected @endif>Con recursos propios</option>
@@ -789,7 +806,7 @@
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
                                     <textarea class="form-control" name="txtreal_problematica" id="txtreal_problematica"
-                                        style="height: 100px; resize:none" @if (sizeof($correciones) != 0 && $tesis[0]->real_problematica != '' && $correciones[0]->real_problematica == null) readonly @endif required>@if ($tesis[0]->real_problematica != ''){{ $tesis[0]->real_problematica }}@endif</textarea>
+                                        style="height: 100px; resize:none" required>@if ($tesis[0]->real_problematica != ''){{ $tesis[0]->real_problematica }}@endif</textarea>
                                 </div>
                             </div>
 
@@ -867,7 +884,7 @@
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
                                     <textarea class="form-control" name="txtantecedentes" id="txtantecedentes" style="height: 100px; resize:none"
-                                        @if (sizeof($correciones) != 0 && $tesis[0]->antecedentes != '' && $correciones[0]->antecedentes == null) readonly @endif required>@if ($tesis[0]->antecedentes != ''){{ $tesis[0]->antecedentes }}@endif</textarea>
+                                    required>@if ($tesis[0]->antecedentes != ''){{ $tesis[0]->antecedentes }}@endif</textarea>
                                 </div>
                             </div>
 
@@ -918,7 +935,7 @@
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
                                     <textarea class="form-control" name="txtjustificacion" id="txtjustificacion" style="height: 100px; resize:none"
-                                        @if (sizeof($correciones) != 0 && $tesis[0]->justificacion != '' && $correciones[0]->justificacion == null) readonly @endif required>@if ($tesis[0]->justificacion != ''){{ $tesis[0]->justificacion }}@endif</textarea>
+                                    required>@if ($tesis[0]->justificacion != ''){{ $tesis[0]->justificacion }}@endif</textarea>
                                 </div>
                             </div>
 
@@ -970,7 +987,7 @@
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
                                     <textarea class="form-control" name="txtformulacion_prob" id="txtformulacion_prob"
-                                        style="height: 100px; resize:none" @if (sizeof($correciones) != 0 && $tesis[0]->formulacion_prob != '' && $correciones[0]->formulacion_prob == null) readonly @endif>@if ($tesis[0]->formulacion_prob != ''){{ $tesis[0]->formulacion_prob }}@endif</textarea>
+                                        style="height: 100px; resize:none" required>@if ($tesis[0]->formulacion_prob != ''){{ $tesis[0]->formulacion_prob }}@endif</textarea>
                                 </div>
                             </div>
 
@@ -1018,8 +1035,7 @@
                     <div class="row" style=" margin-bottom:20px" @if ($campos[0]->objetivos == 0) hidden @endif>
                         <h5>Objetivos</h5>
                         <div class="col-8 col-md-5 col-xl-3">
-                            <div class="row border-box" style="margin-bottom:20px"
-                                @if (sizeof($correciones) != 0 && $correciones[0]->objetivos == null) hidden @endif>
+                            <div class="row border-box" style="margin-bottom:20px">
                                 <div class="col-7 col-md-6" style="text-align:center">
                                     <p>Agregar un objetivo</p>
                                 </div>
@@ -1092,11 +1108,9 @@
                                                     <td>{{ $obj->tipo }}</td>
                                                     <td>{{ $obj->descripcion }}</td>
                                                     <td>
-                                                        @if ((sizeof($correciones) > 0 && $correciones[0]->objetivos != null) || $tesis[0]->estado != 1)
                                                             <a href="#" id="lobj-{{ $indObj }}"
                                                                 class="btn btn-warning"
                                                                 onclick="deleteOldRecurso(this);">X</a>
-                                                        @endif
                                                         <input type="hidden" id="xlobj-{{ $indObj }}"
                                                             value="{{ $obj->cod_objetivo }}">
                                                     </td>
@@ -1124,7 +1138,7 @@
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
                                     <textarea class="form-control" name="txtmarco_teorico" id="txtmarco_teorico" style="height: 100px; resize:none"
-                                        @if (sizeof($correciones) != 0 && $tesis[0]->marco_teorico != '' && $correciones[0]->marco_teorico == null) readonly @endif required>@if ($tesis[0]->marco_teorico != ''){{ $tesis[0]->marco_teorico }}@endif</textarea>
+                                    required>@if ($tesis[0]->marco_teorico != ''){{ $tesis[0]->marco_teorico }}@endif</textarea>
                                 </div>
                             </div>
 
@@ -1173,7 +1187,7 @@
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
                                     <textarea class="form-control" name="txtmarco_conceptual" id="txtmarco_conceptual"
-                                        style="height: 100px; resize:none" @if (sizeof($correciones) != 0 && $tesis[0]->marco_conceptual != '' && $correciones[0]->marco_conceptual == null) readonly @endif required>@if ($tesis[0]->marco_conceptual != ''){{ $tesis[0]->marco_conceptual }}@endif</textarea>
+                                        style="height: 100px; resize:none" required>@if ($tesis[0]->marco_conceptual != ''){{ $tesis[0]->marco_conceptual }}@endif</textarea>
                                 </div>
                             </div>
 
@@ -1219,7 +1233,7 @@
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
                                     <textarea class="form-control" name="txtmarco_legal" id="txtmarco_legal" style="height: 100px; resize:none"
-                                        @if (sizeof($correciones) != 0 && $tesis[0]->marco_legal != '' && $correciones[0]->marco_legal == null) readonly @endif required>@if ($tesis[0]->marco_legal != ''){{ $tesis[0]->marco_legal }}@endif</textarea>
+                                    required>@if ($tesis[0]->marco_legal != ''){{ $tesis[0]->marco_legal }}@endif</textarea>
                                 </div>
                             </div>
 
@@ -1270,7 +1284,7 @@
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
                                     <textarea class="form-control" name="txtform_hipotesis" id="txtform_hipotesis" style="height: 100px; resize:none"
-                                        @if (sizeof($correciones) != 0 && $tesis[0]->form_hipotesis != '' && $correciones[0]->form_hipotesis == null) readonly @endif required>@if ($tesis[0]->form_hipotesis != ''){{ $tesis[0]->form_hipotesis }}@endif</textarea>
+                                    required>@if ($tesis[0]->form_hipotesis != ''){{ $tesis[0]->form_hipotesis }}@endif</textarea>
                                 </div>
                             </div>
 
@@ -1327,7 +1341,7 @@
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
                                     <textarea class="form-control" name="txtobjeto_estudio" id="txtobjeto_estudio" style="height: 100px; resize:none"
-                                        @if (sizeof($correciones) != 0 && $tesis[0]->objeto_estudio != '' && $correciones[0]->objeto_estudio == null) readonly @endif required>@if ($tesis[0]->objeto_estudio != ''){{ $tesis[0]->objeto_estudio }}@endif</textarea>
+                                    required>@if ($tesis[0]->objeto_estudio != ''){{ $tesis[0]->objeto_estudio }}@endif</textarea>
 
                                 </div>
                             </div>
@@ -1376,7 +1390,7 @@
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
                                     <textarea class="form-control" name="txtpoblacion" id="txtpoblacion" style="height: 100px; resize:none"
-                                        @if (sizeof($correciones) != 0 && $tesis[0]->poblacion != '' && $correciones[0]->poblacion == null) readonly @endif required>@if ($tesis[0]->poblacion != ''){{ $tesis[0]->poblacion }}@endif</textarea>
+                                    required>@if ($tesis[0]->poblacion != ''){{ $tesis[0]->poblacion }}@endif</textarea>
 
                                 </div>
                             </div>
@@ -1425,7 +1439,7 @@
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
                                     <textarea class="form-control" name="txtmuestra" id="txtmuestra" style="height: 100px; resize:none"
-                                        @if (sizeof($correciones) != 0 && $tesis[0]->muestra != '' && $correciones[0]->muestra == null) readonly @endif>@if ($tesis[0]->muestra != ''){{ $tesis[0]->muestra }}@endif</textarea>
+                                    required>@if ($tesis[0]->muestra != ''){{ $tesis[0]->muestra }}@endif</textarea>
                                 </div>
                             </div>
 
@@ -1473,7 +1487,7 @@
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
                                     <textarea class="form-control" name="txtmetodos" id="txtmetodos" style="height: 100px; resize:none"
-                                        @if (sizeof($correciones) != 0 && $tesis[0]->metodos != '' && $correciones[0]->metodos == null) readonly @endif>@if ($tesis[0]->metodos != ''){{ $tesis[0]->metodos }}@endif</textarea>
+                                    required>@if ($tesis[0]->metodos != ''){{ $tesis[0]->metodos }}@endif</textarea>
 
                                 </div>
                             </div>
@@ -1523,7 +1537,7 @@
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
                                     <textarea class="form-control" name="txttecnicas_instrum" id="txttecnicas_instrum" type="text"
-                                        value="" style="height: 100px; resize:none" @if (sizeof($correciones) != 0 && $tesis[0]->tecnicas_instrum != '' && $correciones[0]->tecnicas_instrum == null) readonly @endif required>@if ($tesis[0]->tecnicas_instrum != ''){{ $tesis[0]->tecnicas_instrum }}@endif</textarea>
+                                        value="" style="height: 100px; resize:none" required>@if ($tesis[0]->tecnicas_instrum != ''){{ $tesis[0]->tecnicas_instrum }}@endif</textarea>
                                 </div>
                             </div>
                             @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
@@ -1570,7 +1584,7 @@
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
                                     <textarea class="form-control" name="txtinstrumentacion" id="txtinstrumentacion" type="text" value=""
-                                        style="height: 100px; resize:none" @if (sizeof($correciones) != 0 && $tesis[0]->instrumentacion != '' && $correciones[0]->instrumentacion == null) readonly @endif>@if ($tesis[0]->instrumentacion != ''){{ $tesis[0]->instrumentacion }}@endif</textarea>
+                                        style="height: 100px; resize:none" required>@if ($tesis[0]->instrumentacion != ''){{ $tesis[0]->instrumentacion }}@endif</textarea>
                                 </div>
                             </div>
                             @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
@@ -1618,9 +1632,7 @@
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
                                     <textarea class="form-control" name="txtestg_metodologicas" id="txtestg_metodologicas"
-                                        style="height: 100px; resize:none" @if (sizeof($correciones) != 0 &&
-                                            $tesis[0]->estg_metodologicas != '' &&
-                                            $correciones[0]->estg_metodologicas == null) readonly @endif required>@if ($tesis[0]->estg_metodologicas != ''){{ $tesis[0]->estg_metodologicas }}@endif</textarea>
+                                        style="height: 100px; resize:none" required>@if ($tesis[0]->estg_metodologicas != ''){{ $tesis[0]->estg_metodologicas }}@endif</textarea>
                                 </div>
                             </div>
                             @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
@@ -1666,8 +1678,7 @@
                             {{-- Variables de operalizacion modal extra --}}
                             <h6>Variables</h6>
                             <div class="col-8 col-md-7 col-xl-3">
-                                <div class="row border-box" style="margin-bottom:20px"
-                                    @if (sizeof($correciones) != 0 && sizeof($variableop) > 0 && $correciones[0]->variables == null) hidden @endif>
+                                <div class="row border-box" style="margin-bottom:20px">
                                     <div class="col-7 col-md-6" style="text-align:center">
                                         <p>Agregar una variable</p>
                                     </div>
@@ -1738,11 +1749,9 @@
                                                     <tr id="filaV{{ $indVar }}">
                                                         <td>{{ $var->descripcion }}</td>
                                                         <td>
-                                                            @if ((sizeof($correciones) > 0 && $correciones[0]->variables != null) || $tesis[0]->estado != 1)
                                                                 <a href="#" id="lvar-{{ $indVar }}"
                                                                     class="btn btn-warning"
                                                                     onclick="deleteOldRecurso(this);">X</a>
-                                                            @endif
                                                             <input type="hidden" id="xlvar-{{ $indVar }}"
                                                                 value="{{ $var->cod_variable }}">
                                                         </td>
@@ -2022,11 +2031,9 @@
                                             @foreach ($referencias as $ref)
                                                 <tr id="filaRe{{ $indRef }}">
                                                     <td>
-                                                        @if ((sizeof($correciones) > 0 && $correciones[0]->referencias != null) || $tesis[0]->estado != 1)
                                                             <a href="#" id="lref-{{ $indRef }}"
                                                                 class="btn btn-warning"
                                                                 onclick="deleteOldRecurso(this);">X</a>
-                                                        @endif
                                                         <input type="hidden" id="xlref-{{ $indRef }}"
                                                             value="{{ $obj->cod_referencias }}">
                                                     </td>
@@ -2264,16 +2271,16 @@
                     document.getElementById("headers").innerHTML += '<th id="Mes' + i + '" scope="col">Mes ' + i + '</th>'
                     document.getElementById("1Tr").innerHTML += '<input type="hidden" id="n1Tr' + i + '" name="n1Tr' + i +
                         '" value="0"><td id="1Tr' + i +
-                        '" onclick="@if (sizeof($tesis) > 0 && $tesis[0]->estado != 1) @if ((sizeof($correciones) > 0 && $correciones[0]->meses_ejecucion != null) || sizeof($correciones) == 0) setColorTable(this); @endif @endif"></td>'
+                        '" onclick="@if (sizeof($tesis) > 0 && $tesis[0]->estado != 1) setColorTable(this);@endif"></td>'
                     document.getElementById("2Tr").innerHTML += '<input type="hidden" id="n2Tr' + i + '" name="n2Tr' + i +
                         '" value="0"><td id="2Tr' + i +
-                        '" onclick="@if (sizeof($tesis) > 0 && $tesis[0]->estado != 1) @if ((sizeof($correciones) > 0 && $correciones[0]->meses_ejecucion != null) || sizeof($correciones) == 0) setColorTable(this); @endif @endif"></td>'
+                        '" onclick="@if (sizeof($tesis) > 0 && $tesis[0]->estado != 1) setColorTable(this); @endif"></td>'
                     document.getElementById("3Tr").innerHTML += '<input type="hidden" id="n3Tr' + i + '" name="n3Tr' + i +
                         '" value="0"><td id="3Tr' + i +
-                        '" onclick="@if (sizeof($tesis) > 0 && $tesis[0]->estado != 1) @if ((sizeof($correciones) > 0 && $correciones[0]->meses_ejecucion != null) || sizeof($correciones) == 0) setColorTable(this); @endif @endif"></td>'
+                        '" onclick="@if (sizeof($tesis) > 0 && $tesis[0]->estado != 1) setColorTable(this); @endif"></td>'
                     document.getElementById("4Tr").innerHTML += '<input type="hidden" id="n4Tr' + i + '" name="n4Tr' + i +
                         '" value="0"><td id="4Tr' + i +
-                        '" onclick="@if (sizeof($tesis) > 0 && $tesis[0]->estado != 1) @if ((sizeof($correciones) > 0 && $correciones[0]->meses_ejecucion != null) || sizeof($correciones) == 0) setColorTable(this); @endif @endif"></td>'
+                        '" onclick="@if (sizeof($tesis) > 0 && $tesis[0]->estado != 1) setColorTable(this); @endif"></td>'
                 }
             } else {
                 for (i = 1; i <= lastMonth; i++) {

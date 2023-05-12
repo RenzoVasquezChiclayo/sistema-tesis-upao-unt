@@ -1,6 +1,6 @@
 @extends('plantilla.dashboard')
 @section('titulo')
-
+    Generalidades
 @endsection
 @section('css')
 <style type="text/css">
@@ -20,6 +20,13 @@
                             <option value="{{$esc->cod_escuela}}">{{$esc->nombre}}</option>
                         @endforeach
                       </select>
+                </div>
+                <div class="col-6">
+                    <h5>Semestre academico</h5>
+                    <select class="form-select" name="semestre_academico" id="semestre_academico" required>
+                        <option value="2023-I">2023-I</option>
+                        <option value="2023-II">2023-II</option>
+                    </select>
                 </div>
             </div>
             <div class="row" style="margin-top: 20px;">
