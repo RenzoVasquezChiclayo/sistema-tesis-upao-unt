@@ -27,6 +27,10 @@
                     <label for="nombres">Nombres</label>
                     <input class="form-control" type="text" value="{{$alumno[0]->nombres}}" id="nombres" name="nombres" placeholder="Ingrese su nombre" required>
                 </div>
+                <div class="col-12">
+                    <label for="correo">Correo</label>
+                        <input type="text" class="form-control" value="{{$alumno[0]->correo}}" id="correo" name="correo" placeholder="Ingrese su correo"  maxlength="80">
+                </div>
                 <div class="col-12" style="margin-top: 10px;">
                     <button class="btn btn-success" type="submit">Guardar</button>
                     <a href="{{route('user_information')}}" type="button" class="btn btn-danger">Cancelar</a>

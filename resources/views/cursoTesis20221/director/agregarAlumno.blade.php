@@ -67,6 +67,12 @@
                     <label for="nombres">Nombres</label>
                     <input class="form-control" type="text" id="nombres" name="nombres" placeholder="Ingrese su nombre" required>
                 </div>
+                <div class="col-12">
+                    <label for="correo">Correo</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="correo" name="correo" maxlength="80" placeholder="Ingrese su correo">
+                    </div>
+                </div>
                 <div class="col-12" style="margin-top: 10px;">
                     <button class="btn btn-success" type="submit">Registrar</button>
                     <a href="{{route('user_information')}}" type="button" class="btn btn-danger">Cancelar</a>

@@ -291,7 +291,34 @@ class AdminCursoController extends Controller
         }
 
     }
+    public function update_information_estudiante_asesor(Request $request){
+        $id = auth()->user()->rol;
+        if ($id == 'a-CTesis2022-1') {
+            $asesor = AsesorCurso::where('cod_docente','=',$request->txtCodAsesor)->first();
+            try {
+                $asesor->correo = $request->correo;
+                $asesor->save();
+                return redirect()->route('user_information')->with('datos','okCorreo');
+                //Recuerda que luego de actualizar tu contrasena, no podras volver a cambiarla hasta luego de 7 dias.
+            } catch (\Throwable $th) {
+                //throw $th;
+                return redirect()->route('user_information')->with('datos','oknotCorreo');
+            }
+        }
+        elseif ($id == 'CTesis2022-1') {
+            $estudiante = EstudianteCT2022::where('cod_matricula','=',$request->txtCodEstudiante)->first();
+            try {
+                $estudiante->correo = $request->correo;
+                $estudiante->save();
+                return redirect()->route('user_information')->with('datos','okCorreo');
+                //Recuerda que luego de actualizar tu contrasena, no podras volver a cambiarla hasta luego de 7 dias.
+            } catch (\Throwable $th) {
+                //throw $th;
+                return redirect()->route('user_information')->with('datos','oknotCorreo');
+            }
+        }
 
+    }
 
     public function showAddEstudiante(){
         return view('cursoTesis20221.director.agregarAlumno');
@@ -373,6 +400,7 @@ class AdminCursoController extends Controller
                     break;
             }
             $newAsesor->direccion = $request->direccion;
+            $newAsesor->correo = $request->correo;
             $newAsesor->semestre_academico = $semestre_academico;
             $newAsesor->save();
 
@@ -401,6 +429,7 @@ class AdminCursoController extends Controller
             $newEstudiante->dni = $request->dni;
             $newEstudiante->apellidos = $request->apellidos;
             $newEstudiante->nombres = $request->nombres;
+            $newEstudiante->correo = $request->correo;
             $newEstudiante->semestre_academico = $semestre_academico;
             $newEstudiante->save();
 

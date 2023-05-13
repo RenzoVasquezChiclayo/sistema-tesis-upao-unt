@@ -36,6 +36,8 @@ Route::post('guardarInformacion/',[AdminCursoController::class,'saveUser'])
 Route::post('updateInformacion/',[AdminCursoController::class,'updateInformation'])
         ->name('update_user');
 
+Route::post('update-informacion-estudiante_asesor/',[AdminCursoController::class,'update_information_estudiante_asesor'])
+        ->name('save_user_estudiante_asesor');
 //Modified
 Route::post('/verificate-login',[LoginController::class,'validateLogin'])
         ->name('login.verificate');

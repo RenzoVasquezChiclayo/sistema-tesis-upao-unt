@@ -28,6 +28,11 @@ use League\CommonMark\Node\Block\Paragraph;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Settings;
 
+
+use App\Mail\EstadoEnviadaMail;
+use App\Mail\EstadoObservadoMail;
+use Illuminate\Support\Facades\Mail;
+
 use Illuminate\Http\Request;
 
 class CursoTesisController extends Controller
@@ -145,8 +150,10 @@ class CursoTesisController extends Controller
         $id = $aux[0];
         $isSaved = $request->isSaved;
         $estudiante = EstudianteCT2022::find($id);
-        $tesis = TesisCT2022::where('cod_matricula','=',$estudiante->cod_matricula)->first();
-
+        $tesis = TesisCT2022::join('estudiante_ct2022 as ES','proyecto_tesis.cod_matricula','=','ES.cod_matricula')
+                        ->select('proyecto_tesis.*','ES.*')
+                        ->where('proyecto_tesis.cod_matricula','=',$estudiante->cod_matricula)->first();
+        $asesor = AsesorCurso::where('cod_docente',$tesis->cod_docente)->first();
         $observacionX = ObservacionesProy::join('historial_observaciones','observaciones_proy.cod_historialObs','=','historial_observaciones.cod_historialObs')
                     ->select('observaciones_proy.*')->where('historial_observaciones.cod_proyectotesis',$tesis->cod_proyectotesis)
                     ->where('observaciones_proy.estado',1)->get();
@@ -307,6 +314,11 @@ class CursoTesisController extends Controller
                 $tesis->estado = 9;
             }else{
                 $tesis->estado = 1;
+                if ($asesor->correo != null) {
+                    $estudiante = $tesis->apellidos." ".$tesis->nombres;
+                    Mail::to($asesor->correo)->send(new EstadoEnviadaMail($request->txttitulo,$estudiante,$tesis->cod_matricula));
+                }
+
             }
 
 
@@ -1488,6 +1500,7 @@ class CursoTesisController extends Controller
             $alumno->dni = $request->dni;
             $alumno->apellidos = $request->apellidos;
             $alumno->nombres = $request->nombres;
+            $alumno->correo = $request->correo;
 
             $alumno->save();
 
@@ -1505,6 +1518,7 @@ class CursoTesisController extends Controller
             $asesor->nombres = $request->nombres;
             $asesor->grado_academico = $request->gradAcademico;
             $asesor->direccion = $request->direccion;
+            $asesor->correo = $request->correo;
 
             $asesor->save();
 
@@ -1648,9 +1662,9 @@ class CursoTesisController extends Controller
         $cursoTesis = DB::table('proyecto_tesis')
                        ->join('estudiante_ct2022','estudiante_ct2022.cod_matricula','=','proyecto_tesis.cod_matricula')
                        ->join('asesor_curso','proyecto_tesis.cod_docente','=','asesor_curso.cod_docente')
-                       ->select('proyecto_tesis.*','estudiante_ct2022.nombres as nombresAutor','estudiante_ct2022.apellidos as apellidosAutor')->where('asesor_curso.username','=',auth()->user()->name)->where('estudiante_ct2022.cod_matricula',$request->cod_matricula_hidden)->get();
+                       ->select('proyecto_tesis.*','estudiante_ct2022.nombres as nombresAutor','estudiante_ct2022.apellidos as apellidosAutor','estudiante_ct2022.correo as correoEstudi','asesor_curso.nombres as nombresAsesor')->where('asesor_curso.username','=',auth()->user()->name)->where('estudiante_ct2022.cod_matricula',$request->cod_matricula_hidden)->get();
 
-        // dd($cursoTesis[0]);
+
         $existHisto = Historial_Observaciones::where('cod_proyectotesis',$cursoTesis[0]->cod_proyectotesis)->get();
         if($existHisto->count()==0){
             $existHisto = new Historial_Observaciones();
@@ -1776,14 +1790,24 @@ class CursoTesisController extends Controller
                 $arrayThemes[]='presupuesto_proy';
             }
 
+
+
             $observaciones->estado = 1;
             $observaciones->save();
+
+
 
             $tesis->estado = 2;
             $tesis->save();
 
+            if ($cursoTesis[0]->correoEstudi != null) {
+                $titulo = $cursoTesis[0]->titulo;
+                $asesor = $cursoTesis[0]->nombresAsesor;
+                Mail::to($cursoTesis[0]->correoEstudi)->send(new EstadoObservadoMail($titulo,$asesor));
+            }
+
         } catch (\Throwable $th) {
-            $th;
+            return redirect()->route('asesor.verObsEstudiante',$existHisto[0]->cod_historialObs)->with('datos','oknot');
         }
 
         //$historialLastest = Historial_Observaciones::where('cod_proyectotesis',$tesis->cod_proyectotesis)->get();

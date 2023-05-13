@@ -33,6 +33,12 @@
                             <span class="input-group-text" id="contador-caracteres">0/30</span>
                         </div>
                     </div>
+                    <div class="col-12">
+                        <label for="correo">Correo</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="correo" name="correo" value="{{$asesor[0]->correo}}" maxlength="80">
+                        </div>
+                    </div>
                     <div class="col-12" style="margin-top: 10px;">
                         <button class="btn btn-success" type="submit">Guardar</button>
                         <a href="{{ route('user_information') }}" type="button" class="btn btn-danger">Cancelar</a>

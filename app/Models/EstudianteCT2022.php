@@ -18,6 +18,7 @@ class EstudianteCT2022 extends Model
         'dni',
         'apellidos',
         'nombres',
+        'correo',
         'semestre_academico'
     ];
     /*Delete cod docente*/

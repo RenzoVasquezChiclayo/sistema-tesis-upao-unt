@@ -72,10 +72,16 @@
                     </div>
 
                     <div class="col-12">
-                        <label for="nombres">Direccion</label>
+                        <label for="direccion">Direccion</label>
                         <div class="input-group">
                             <input type="text" class="form-control" id="direccion" name="direccion" maxlength="30">
                             <span class="input-group-text" id="contador-caracteres">0/30</span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label for="correo">Correo</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="correo" name="correo" maxlength="80">
                         </div>
                     </div>
                     <div class="col-12" style="margin-top: 10px;">

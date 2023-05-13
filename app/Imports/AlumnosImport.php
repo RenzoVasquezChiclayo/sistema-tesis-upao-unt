@@ -21,6 +21,7 @@ class AlumnosImport implements ToModel
             'dni' => $row[1],
             'apellidos' => $row[2],
             'nombres' => $row[3],
+            'correo' => $row[4],
             'semestre_academico'=> $this->semestre_academico,
         ]);
     }

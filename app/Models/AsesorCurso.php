@@ -19,7 +19,7 @@ class AsesorCurso extends Model
         'grado_academico',
         'titulo_profesional',
         'direccion',
-
+        'correo',
         //Fines del curso
         'username',
         'semestre_academico'

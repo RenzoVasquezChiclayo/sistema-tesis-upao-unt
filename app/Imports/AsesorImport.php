@@ -24,6 +24,7 @@ class AsesorImport implements ToModel
             'grado_academico'=> $row[2],
             'titulo_profesional'=> $row[3],
             'direccion'=> $row[4],
+            'correo' => $row[5],
             'semestre_academico'=> $this->semestre_academico,
         ]);
     }
