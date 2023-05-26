@@ -22,6 +22,11 @@ use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Settings;
 
+use App\Mail\EstadoEnviadoTesisMail;
+use App\Mail\EstadoObservadoTesisMail;
+use Illuminate\Support\Facades\Mail;
+
+
 class Tesis2022Controller extends Controller
 {
     // ------------------------------------------------------------------------------------------------------------------------
@@ -70,9 +75,10 @@ class Tesis2022Controller extends Controller
 
     public function saveTesis2022(Request $request){
         $isSaved = $request->isSaved;
-
-        $tesis = Tesis_2022::find($request->txtcod_tesis);
-
+        $tesis = Tesis_2022::join('estudiante_ct2022 as ES','tesis_2022.cod_matricula','=','ES.cod_matricula')
+                        ->select('tesis_2022.*','ES.*')
+                        ->where('tesis_2022.cod_tesis','=',$request->txtcod_tesis)->first();
+        $asesor = DB::table('asesor_curso')->where('cod_docente',$tesis->cod_docente)->first();  //Encontramos al asesor
         $observacionX = TObservacion::join('t_historial_observaciones','t_observacion.cod_historial_observacion','=','t_historial_observaciones.cod_historial_observacion')
                 ->select('t_observacion.*')->where('t_historial_observaciones.cod_Tesis',$tesis->cod_tesis)
                 ->where('t_observacion.estado',1)->get();
@@ -574,6 +580,10 @@ class Tesis2022Controller extends Controller
                 $tesis->estado = 9;
             }else{
                 $tesis->estado = 1;
+                if ($asesor->correo != null) {
+                    $estudiante = $tesis->apellidos." ".$tesis->nombres;
+                    Mail::to($asesor->correo)->send(new EstadoEnviadoTesisMail($request->txttitulo,$estudiante,$tesis->cod_matricula));
+                }
             }
             $tesis->fecha_update = now();
             $tesis->save();
@@ -732,7 +742,7 @@ class Tesis2022Controller extends Controller
         $Tesis = DB::table('tesis_2022 as t')
                        ->join('estudiante_ct2022','estudiante_ct2022.cod_matricula','=','t.cod_matricula')
                        ->join('asesor_curso','t.cod_docente','=','asesor_curso.cod_docente')
-                       ->select('t.*','estudiante_ct2022.nombres as nombresAutor','estudiante_ct2022.apellidos as apellidosAutor')->where('asesor_curso.username','=',auth()->user()->name)->where('estudiante_ct2022.cod_matricula',$request->cod_matricula_hidden)->get();
+                       ->select('t.*','estudiante_ct2022.nombres as nombresAutor','estudiante_ct2022.apellidos as apellidosAutor','estudiante_ct2022.correo as correoEstudi','asesor_curso.nombres as nombresAsesor')->where('asesor_curso.username','=',auth()->user()->name)->where('estudiante_ct2022.cod_matricula',$request->cod_matricula_hidden)->get();
 
 
 
@@ -872,6 +882,11 @@ class Tesis2022Controller extends Controller
             $tesis = Tesis_2022::find($idTesis);
             $tesis->estado = 2;
             $tesis->save();
+            if ($Tesis[0]->correoEstudi != null) {
+                $titulo = $Tesis[0]->titulo;
+                $asesor = $Tesis[0]->nombresAsesor;
+                Mail::to($Tesis[0]->correoEstudi)->send(new EstadoObservadoTesisMail($titulo,$asesor));
+            }
 
         } catch (\Throwable $th) {
             return redirect()->route('asesor.revisar-tesis')->with('datos','oknot');
@@ -1403,6 +1418,7 @@ class Tesis2022Controller extends Controller
 
         $referencias = $correccion[$cantObserva]->referencias;
 
+        Settings::setOutputEscapingEnabled(true);
         $word = new PhpWord();
 
         /* Creacion de las fuentes */

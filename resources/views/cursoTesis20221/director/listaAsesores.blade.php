@@ -30,6 +30,7 @@
                             <tr>
                                 <td>Codigo</td>
                                 <td>Nombres</td>
+                                <td>ORCID</td>
                                 <td>Categoria</td>
                                 <td>Editar</td>
                             </tr>
@@ -42,6 +43,7 @@
                                 <tr>
                                     <td>{{$ase->cod_docente}}</td>
                                     <td>{{$ase->nombres}}</td>
+                                    <td>{{$ase->orcid}}</td>
                                     <td>{{$ase->grado_academico}}.</td>
                                     <td>
                                         <form id="form-asesor" method="post" action="{{route('director.verAsesorEditar')}}">

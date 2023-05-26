@@ -9,10 +9,17 @@
                 <h5>Editar Asesor</h5>
                 <form action="{{ route('director.editAsesor') }}" method="POST">
                     @csrf
-                    <div class="col-6">
-                        <label for="cod_docente">Codigo Institucional</label>
-                        <input class="form-control" minlength="4" maxlength="4" type="text" id="cod_docente" name="cod_docente"
-                            value="{{$asesor[0]->cod_docente}}" readonly>
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="cod_docente">Codigo Institucional</label>
+                            <input class="form-control" minlength="4" maxlength="4" type="text" id="cod_docente" name="cod_docente"
+                                value="{{$asesor[0]->cod_docente}}" readonly>
+                        </div>
+                        <div class="col-6">
+                            <label for="orcid">ORCID</label>
+                            <input class="form-control" minlength="19" maxlength="20" type="text" id="orcid" name="orcid"
+                                placeholder="Ingrese su codigo ORCID" required>
+                        </div>
                     </div>
                     <div class="col-12">
                         <label for="nombres">Nombres</label>

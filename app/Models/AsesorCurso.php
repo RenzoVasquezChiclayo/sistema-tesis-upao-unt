@@ -16,6 +16,7 @@ class AsesorCurso extends Model
     protected $fillable = [
         'cod_docente',
         'nombres',
+        'orcid',
         'grado_academico',
         'titulo_profesional',
         'direccion',

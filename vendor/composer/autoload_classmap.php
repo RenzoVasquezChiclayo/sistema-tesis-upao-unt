@@ -34,6 +34,7 @@ return array(
     'App\\Imports\\AlumnosImport' => $baseDir . '/app/Imports/AlumnosImport.php',
     'App\\Imports\\AsesorImport' => $baseDir . '/app/Imports/AsesorImport.php',
     'App\\Mail\\EstadoEnviadaMail' => $baseDir . '/app/Mail/EstadoEnviadaMail.php',
+    'App\\Mail\\EstadoObservadoMail' => $baseDir . '/app/Mail/EstadoObservadoMail.php',
     'App\\Models\\Archivo_Tesis_ct2022' => $baseDir . '/app/Models/Archivo_Tesis_ct2022.php',
     'App\\Models\\AsesorCurso' => $baseDir . '/app/Models/AsesorCurso.php',
     'App\\Models\\CamposEstudiante' => $baseDir . '/app/Models/CamposEstudiante.php',

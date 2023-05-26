@@ -45,6 +45,11 @@
                             onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" name="cod_docente"
                             placeholder="Ingrese su codigo de docente" autofocus required>
                     </div>
+                    <div class="col-6">
+                        <label for="orcid">ORCID</label>
+                        <input class="form-control" minlength="19" maxlength="20" type="text" id="orcid" name="orcid"
+                            placeholder="Ingrese su codigo ORCID" required>
+                    </div>
                     <div class="col-12">
                         <label for="apellidos">Apellidos</label>
                         <input class="form-control" type="text" id="apellidos" name="apellidos"

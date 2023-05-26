@@ -21,10 +21,11 @@ class AsesorImport implements ToModel
         return new AsesorCurso([
             'cod_docente'=> $row[0],
             'nombres'=> $row[1],
-            'grado_academico'=> $row[2],
-            'titulo_profesional'=> $row[3],
-            'direccion'=> $row[4],
-            'correo' => $row[5],
+            'orcid'=> $row[2],
+            'grado_academico'=> $row[3],
+            'titulo_profesional'=> $row[4],
+            'direccion'=> $row[5],
+            'correo' => $row[6],
             'semestre_academico'=> $this->semestre_academico,
         ]);
     }

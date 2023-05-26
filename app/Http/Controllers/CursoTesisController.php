@@ -812,14 +812,11 @@ class CursoTesisController extends Controller
         $asesor = AsesorCurso::find($tesis[0]->cod_docente);
             /*Datos del Autor*/
             $nombres =$estudiante->nombres.' '.$estudiante->apellidos;
-            /* $tesis->grado_academico = $request->cboGrAcademicoAutor; */
-            /*'cod_docente',
-        'nombres',
-        'grado_academico',
-        'titulo_profesional',
-        'direccion',*/
+
             /*Datos del Asesor*/
             $nombre_asesor = $asesor->nombres;
+
+            $orcid_asesor = $asesor->orcid;
             $grado_asesor = $asesor->grado_academico;
             $titulo_asesor = $asesor->titulo_profesional;
             $direccion_asesor =$asesor->direccion;
@@ -966,6 +963,8 @@ class CursoTesisController extends Controller
             $caratulaSesion->addText("Bachiller en Ciencias Economicas",array('name'=>'Arial','bold'=>true,'size'=>16),$styleCaratula1);
 
             $caratulaSesion->addText("Asesor: ".$nombre_asesor,array('name'=>'Arial','bold'=>true,'size'=>16),$styleCaratula2);
+
+            $caratulaSesion->addText("ORCID: ".$orcid_asesor,array('name'=>'Arial','bold'=>true,'size'=>14),$styleCaratula2);
 
             $caratulaSesion->addTextBreak(2);
             $caratulaSesion->addText("Trujillo - Peru",array('name'=>'Arial','bold'=>true,'size'=>16),$styleCaratula1);
@@ -1516,6 +1515,7 @@ class CursoTesisController extends Controller
         try {
             $asesor = AsesorCurso::find($request->cod_docente);
             $asesor->nombres = $request->nombres;
+            $asesor->orcid = $request->orcid;
             $asesor->grado_academico = $request->gradAcademico;
             $asesor->direccion = $request->direccion;
             $asesor->correo = $request->correo;
@@ -1888,6 +1888,7 @@ class CursoTesisController extends Controller
             $referencias = $correccion[$cantObserva]->referencias;
             $matriz_op = $correccion[$cantObserva]->matriz_op;
 
+            Settings::setOutputEscapingEnabled(true);
             $word = new PhpWord();
 
             /* Creacion de las fuentes */

@@ -618,6 +618,7 @@ class ComposerStaticInit6fc7bbb644c22bc597ae731b005a3a06
         'App\\Imports\\AlumnosImport' => __DIR__ . '/../..' . '/app/Imports/AlumnosImport.php',
         'App\\Imports\\AsesorImport' => __DIR__ . '/../..' . '/app/Imports/AsesorImport.php',
         'App\\Mail\\EstadoEnviadaMail' => __DIR__ . '/../..' . '/app/Mail/EstadoEnviadaMail.php',
+        'App\\Mail\\EstadoObservadoMail' => __DIR__ . '/../..' . '/app/Mail/EstadoObservadoMail.php',
         'App\\Models\\Archivo_Tesis_ct2022' => __DIR__ . '/../..' . '/app/Models/Archivo_Tesis_ct2022.php',
         'App\\Models\\AsesorCurso' => __DIR__ . '/../..' . '/app/Models/AsesorCurso.php',
         'App\\Models\\CamposEstudiante' => __DIR__ . '/../..' . '/app/Models/CamposEstudiante.php',

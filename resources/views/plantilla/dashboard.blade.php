@@ -62,7 +62,7 @@
       </div>
     </div>
     <div class="bottom-fixed">
-        <strong>Copyright &copy; 2022.</strong> By: Rios Reyes & Vasquez Chiclayo.
+        <strong>Copyright &copy; 2022.</strong> By: Rios Reyes & Vasquez Chiclayo & Dr. Juan Carlos Miranda Robles.
     </div>
 </div>
 

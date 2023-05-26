@@ -269,6 +269,10 @@
                                     <input class="form-control" name="txtCodDocente" id="txtCodDocente" type="text"
                                         value="{{ $asesor->cod_docente }}" placeholder="Codigo del Docente" readonly>
                                 </div>
+                                <div style="width:auto;">
+                                    <input class="form-control" name="txtCodORCID" id="txtCodORCID" type="text"
+                                        value="{{ $asesor->orcid }}" placeholder="Codigo ORCID" readonly>
+                                </div>
                             </div>
                         </div>
                         <div class="row border-box">

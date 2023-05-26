@@ -48,6 +48,10 @@
 
                                         </div>
                                     @elseif (auth()->user()->rol == 'a-CTesis2022-1')
+                                        <div class="col-10 col-md-6" style="text-align: left; margin-bottom:15px;">
+                                            <h5>ORCID</h5>
+                                            <p>{{$asesor->orcid}}</p>
+                                        </div>
                                         <div class="col-10 col-md-10" style="text-align: left; margin-bottom:15px;">
                                             <h5>Nombres</h5>
                                             <p>{{$asesor->nombres}}</p>
@@ -56,6 +60,7 @@
                                             <h5>Condicion</h5>
                                             <p>{{$asesor->grado_academico}}</p>
                                         </div>
+
                                         <div class="col-10 col-md-6" style="text-align: left; margin-bottom:15px;">
                                             <h5>Escuela</h5>
                                             <p>{{$asesor->titulo_profesional}}</p>

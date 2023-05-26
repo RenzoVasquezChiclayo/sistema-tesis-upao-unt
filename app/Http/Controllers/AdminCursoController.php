@@ -380,6 +380,7 @@ class AdminCursoController extends Controller
             $newAsesor=new AsesorCurso();
             $newAsesor->cod_docente = $request->cod_docente;
             $newAsesor->nombres = strtoupper($request->apellidos).' '.strtoupper($request->nombres);
+            $newAsesor->orcid = $request->orcid;
             switch ($request->gradAcademico) {
                 case 0:
                     $newAsesor->grado_academico = 'NOMBRADO';
