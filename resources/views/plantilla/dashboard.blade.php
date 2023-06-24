@@ -58,7 +58,7 @@
     </nav>
     <div class="content">
       <div class="container-fluid">
-        @yield('contenido')
+            @yield('contenido')
       </div>
     </div>
     <div class="bottom-fixed">

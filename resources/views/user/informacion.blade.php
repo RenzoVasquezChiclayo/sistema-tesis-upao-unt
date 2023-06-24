@@ -3,8 +3,8 @@
     Informacion del usuario
 @endsection
 @section('contenido')
-    <div class="row" style="text-align: center;">
 
+    <div class="row" style="text-align: center;">
         <div class="col-7 col-md-10" style="margin:0px auto;margin-top:50px; border: 0.5px solid rgba(0, 0, 0, 0.2); border-radius:18px;">
             <div class="row" style="padding: 10px;">
                 <div class="col-12" style="text-align: left;">

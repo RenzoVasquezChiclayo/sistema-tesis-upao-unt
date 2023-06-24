@@ -28,7 +28,7 @@
                                 <tr>
                                     <td>{{$est->cod_matricula}}</td>
                                     <td>{{$est->dni}}</td>
-                                    <td>{{$est->apellidos.' '.$est->nombres}}.</td>
+                                    <td>{{$est->nombres.' '.$est->apellidos}}.</td>
                                     <td>
                                         <select name="cboAsesor_{{$cont}}" id="cboAsesor_{{$cont}}" class="form-control" onchange="validarSeleccion({{$cont}});"
                                         @if ($est->cod_docente != null)

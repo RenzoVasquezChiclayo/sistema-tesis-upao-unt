@@ -150,6 +150,26 @@ class AdminCursoController extends Controller
         $cod_escuela = $request->escuela;
         $semestre_aca = $request->semestre_academico;
         $linea_investigacion = $request->id_linea_investigacion;
+
+        if($request->listOldl_i!=""){
+            $deletel_i = explode(",",$request->listOldl_i);
+            for($i = 0; $i<sizeof($deletel_i);$i++){
+                TipoInvestigacion::find($deletel_i[$i])->delete();
+            }
+        }
+        if($request->listOldf_p!=""){
+            $deletef_p = explode(",",$request->listOldf_p);
+            for($i = 0; $i<sizeof($deletef_p);$i++){
+                Fin_Persigue::find($deletef_p[$i])->delete();
+            }
+        }
+        if($request->listOldd_i!=""){
+            $deleted_i = explode(",",$request->listOldd_i);
+            for($i = 0; $i<sizeof($deleted_i);$i++){
+                Diseno_Investigacion::find($deleted_i[$i])->delete();
+            }
+        }
+
         if ($linea_investigacion != null) {
             foreach ($linea_investigacion as $l_i) {
                 $datos[] = explode('_',$l_i);
@@ -189,7 +209,7 @@ class AdminCursoController extends Controller
             }
             return redirect()->route('director.generalidades')->with('datos','ok');
         } catch (\Throwable $th) {
-            dd($th);
+            return redirect()->route('director.generalidades')->with('datos','oknot');
         }
 
 

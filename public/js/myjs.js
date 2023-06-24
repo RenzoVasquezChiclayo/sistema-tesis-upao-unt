@@ -78,7 +78,6 @@ function setColorInit(id){
 function deleteOldRecurso(item){
     const iditem = item.id;
     const idindice = iditem.split("-");
-    alert(idindice);
     let code = document.getElementById('x'+iditem).value;
     if(document.getElementById('listOld'+idindice[0]).value == ""){
         document.getElementById('listOld'+idindice[0]).value = code;
