@@ -35,34 +35,43 @@ class AdminCursoController extends Controller
         $id = $aux[0];
         if(auth()->user()->rol == 'CTesis2022-1'){
             $estudiante = DB::table('estudiante_ct2022')->where('cod_matricula',$id)->first();
-            $existTesis = TesisCT2022::where('cod_matricula',$estudiante->cod_matricula)->get();
-            $existTesisII = Tesis_2022::where('cod_matricula',$estudiante->cod_matricula)->get();
+            //BUscar el grupo del estuidante
+            $grupo_inves = DB::table('detalle_grupo_investigacion as d_g')
+                                ->join('grupo_investigacion as g_i','d_g.id_grupo_inves','=','g_i.id_grupo')
+                                ->select('g_i.id_grupo')
+                                ->where('d_g.cod_matricula',$estudiante->cod_matricula)->first();
+            //dd($grupo_inves);
+            if ($grupo_inves != null) {
+                $existTesis = TesisCT2022::where('id_grupo_inves',$grupo_inves->id_grupo)->get();
+                // $existTesisII = Tesis_2022::where('cod_matricula',$grupo_inves->cod_matricula)->get();
 
-            if($existTesis->count()==0){
-                $newTesis = new TesisCT2022();
-                $newTesis->cod_matricula = $estudiante->cod_matricula;
-                $newTesis->save();
+                if($existTesis->count()==0){
+                    $newTesis = new TesisCT2022();
+                    $newTesis->id_grupo_inves = $grupo_inves->id_grupo;
+                    $newTesis->save();
 
-                $proytesis = TesisCT2022::where('cod_matricula','=',$estudiante->cod_matricula)->first();
+                    $proytesis = TesisCT2022::where('id_grupo_inves',$grupo_inves->id_grupo)->first();
 
-                $matriz = new MatrizOperacional();
-                $matriz->cod_proyectotesis = $proytesis->cod_proyectotesis;
-                $matriz->save();
-
-            }else{
-                $matrizxTesisFind = MatrizOperacional::where('cod_proyectotesis',$existTesis[0]->cod_proyectotesis)->get();
-
-                if ($matrizxTesisFind->count()==0) {
                     $matriz = new MatrizOperacional();
-                    $matriz->cod_proyectotesis = $existTesis[0]->cod_proyectotesis;
+                    $matriz->cod_proyectotesis = $proytesis->cod_proyectotesis;
                     $matriz->save();
+
+                }else{
+                    $matrizxTesisFind = MatrizOperacional::where('cod_proyectotesis',$existTesis[0]->cod_proyectotesis)->get();
+
+                    if ($matrizxTesisFind->count()==0) {
+                        $matriz = new MatrizOperacional();
+                        $matriz->cod_proyectotesis = $existTesis[0]->cod_proyectotesis;
+                        $matriz->save();
+                    }
                 }
+                // if ($existTesisII->count()==0) {
+                //     $newTesisII = new Tesis_2022();
+                //     $newTesisII->cod_matricula = $estudiante->cod_matricula;
+                //     $newTesisII->save();
+                // }
             }
-            if ($existTesisII->count()==0) {
-                $newTesisII = new Tesis_2022();
-                $newTesisII->cod_matricula = $estudiante->cod_matricula;
-                $newTesisII->save();
-            }
+
 
         }
         $usuario = User::where('name',$id.'-C')->first();

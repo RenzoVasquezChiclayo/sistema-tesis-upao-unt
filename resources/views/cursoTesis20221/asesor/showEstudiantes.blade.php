@@ -11,31 +11,34 @@
                     <table id="table-proyecto" class="table table-striped table-responsive-md">
                         <thead>
                             <tr>
-                                <td>Numero Matricula</td>
-                                <td>DNI</td>
-                                <td>Nombres</td>
+                                <td>Grupo</td>
+                                <td>Estudiantes</td>
                                 <td>Revision</td>
                                 <td>Descargar</td>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($estudiantes as $estu)
+                            @foreach ($studentforGroups as $estu)
                                 <tr
-                                @if ($estu->estado == 3)
+                                @if ($estu[0]->estado == 3)
                                     style="background-color: #7BF96E;"
-                                @elseif ($estu->estado == 4)
+                                @elseif ($estu[0]->estado == 4)
                                     style="background-color: #FA6A56;"
                                 @endif
                                 >
-                                    <td>{{$estu->cod_matricula}}</td>
-                                    <td>{{$estu->dni}}</td>
-                                    <td>{{$estu->nombres.' '.$estu->apellidos}}</td>
+                                    <td>{{$estu[0]->num_grupo}}</td>
+                                    @if (count($estu)>1)
+                                        <td>{{$estu[0]->nombres.' '.$estu[0]->apellidos.' & '.$estu[1]->nombres.' '.$estu[1]->apellidos}}</td>
+                                    @else
+                                        <td>{{$estu[0]->nombres.' '.$estu[0]->apellidos}}</td>
+                                    @endif
+
                                     <td>
-                                        @if($estu->estado != 0)
+                                        @if($estu[0]->estado != 0)
                                             <form id="form-revisaTema" action="{{route('asesor.revisarTemas')}}" method="POST">
                                                 @csrf
-                                                <input type="hidden" name="cod_matricula" value="{{$estu->cod_matricula}}">
-                                                @if ($estu->estado == 1)
+                                                <input type="hidden" name="id_grupo" value="{{$estu[0]->id_grupo}}">
+                                                @if ($estu[0]->estado == 1)
                                                     <a href="#" onclick="this.closest('#form-revisaTema').submit()" class="btn btn-success">Revisar</a>
                                                 @else
                                                     <a href="#" onclick="this.closest('#form-revisaTema').submit()" class="btn btn-secondary">Observar</a>
@@ -47,7 +50,7 @@
                                     <td style="text-align: center;">
                                         <form id="proyecto-download" action="{{route('curso.descargaTesis')}}" method="POST">
                                             @csrf
-                                            <input type="hidden" name="cod_cursoTesis" value="{{$estu->cod_proyectotesis}}">
+                                            <input type="hidden" name="cod_cursoTesis" value="{{$estu[0]->cod_proyectotesis}}">
                                             <a href="#" onclick="this.closest('#proyecto-download').submit()"><i class='bx bx-sm bx-download'></i></a>
                                         </form>
                                     </td>

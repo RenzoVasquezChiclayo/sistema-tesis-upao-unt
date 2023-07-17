@@ -99,6 +99,12 @@ Route::post('/save-editarLinea',[AdminCursoController::class,'saveEditarLineaInv
 Route::delete('/deleteLinea',[AdminCursoController::class,'eliminarLineaInves'])->name('director.deleteLineaInves');
 Route::delete('/delete-fin-persigue',[AdminCursoController::class,'eliminarFinPersigue'])->name('director.deleteFinPersigue');
 Route::delete('/delete-dis-investiga',[AdminCursoController::class,'eliminarDisInvestiga'])->name('director.deleteDisInvestiga');
+//HOSTING
+Route::get('/ver-agregar-grupos',[CursoTesisController::class,'verAgregarGruposInv'])->name('director.verGrupos')->middleware('auth');
+Route::post('/save-grupos-inv',[CursoTesisController::class,'saveGruposInves'])->name('director.saveGruposInvestigacion');
+Route::get('/ver-asignar-asesor-grupos',[CursoTesisController::class,'showTablaAsignacionGrupos'])->name('director.asignarAsesorGrupos');
+Route::post('/save-asignar-asesor-grupos',[CursoTesisController::class,'saveGrupoAsesorAsignado'])->name('director.saveAsesorAsignadoGrupos');
+//---
 Route::get('/asignarAsesor',[CursoTesisController::class,'showTablaAsignacion'])->name('director.asignar')->middleware('auth');
 Route::post('/saveRegistro',[CursoTesisController::class,'saveAsesorAsignado'])->name('director.saveAsesor');
 Route::get('/agregarAsesor',[AdminCursoController::class,'showAddAsesor'])->name('director.veragregarAsesor')->middleware('auth');

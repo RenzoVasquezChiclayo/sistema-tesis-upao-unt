@@ -28,17 +28,17 @@
                     <div class="col-12" style="text-align: center;">
                         <h4>Asignacion de Temas</h4>
                     </div>
+
                     <div class="col-12" style="text-align: right;">
-                        <h5>Codigo</h5>
-                        <p>{{$estudiante[0]->cod_matricula}}</p>
-                    </div>
-                    <div class="col-12" style="text-align: right;">
-                        <h5>Alumno</h5>
-                        <p>{{$estudiante[0]->estudiante_nombres.' '.$estudiante[0]->estudiante_apellidos}}</p>
+                        <h5>{{$estudiante[0]->num_grupo}}</h5>
+                        @foreach ($estudiantes_grupo as $estu)
+                                <p>{{$estu->nombres.' '.$estu->apellidos}}</p>
+                        @endforeach
+
                     </div>
                     <form id="formCampos" action="{{route('asesor.guardarTemas')}}" method="post">
                         @csrf
-                        <input type="hidden" value="{{$estudiante[0]->cod_matricula}}" name="cod_matriculaAux" >
+                        <input type="hidden" value="{{$estudiante[0]->id_grupo}}" name="id_grupoAux" >
                         <div class="col-12" style="text-align: left;">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="flexCheckDefault" value="chkTInvestigacion" name="chkTInvestigacion" @if ($estudiante[0]->tipo_investigacion==1)disabled checked @endif>

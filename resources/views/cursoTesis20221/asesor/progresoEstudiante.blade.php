@@ -57,7 +57,7 @@
             <form id="formProyecto" name="formProyecto" action="" method="">
                 @csrf
                 <input type="hidden" name="textcod" value="{{ $cursoTesis[0]->cod_proyectotesis }}">
-                <input type="hidden" name="cod_matricula_hidden" value="{{ $cursoTesis[0]->cod_matricula }}">
+                <input type="hidden" name="id_grupo_hidden" value="{{ $cursoTesis[0]->id_grupo_inves }}">
                 <div class="col-12">
                     <h4>GENERALIDADES</h4>
                     <hr style="border:1 px black;">
@@ -100,30 +100,34 @@
                     </div>
                 </div>
                 <div class="row" style=" margin-bottom:20px; padding-right:12px;">
-                    <h5>Autor</h5>
-                    <div class="row" style="margin-bottom:8px;">
-                        <div class="row">
-                            <div class="col-5 col-md-3">
-                                <input class="form-control" name="txtCodMatricula" id="txtCodMatricula" type="search"
-                                    value="{{ $cursoTesis[0]->cod_matricula }}" readonly>
+                    <h5>Autor(es)</h5>
+                    @foreach ($estudiantes_grupo as $est)
+                        <div class="row" style="margin-bottom:8px;">
+                            <div class="row">
+                                <div class="col-5 col-md-3">
+                                    <input class="form-control" name="txtCodMatricula" id="txtCodMatricula" type="search"
+                                        value="{{ $est->cod_matricula }}" readonly>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        {{-- Informacion del egresado --}}
+                        {{-- style="display: grid; grid-template-columns: repeat(3, 1fr); grid-gap: 5px; " --}}
+                        <div class="row border-box card-box">
+                            <div class="item-card col">
+                                <label for="txtNombreAutor" class="form-label">Nombres</label>
+                                <input class="form-control" name="txtNombreAutor" id="txtNombreAutor" type="text"
+                                    value="{{ $est->nombres }}" readonly>
+                            </div>
+                            <div class="item-card">
+                                <label for="txtApellidoAutor" class="form-label">Apellidos</label>
+                                <input class="form-control" name="txtApellidoAutor" id="txtApellidoAutor" type="text"
+                                    value="{{ $est->apellidos }}" readonly>
+                            </div>
+                        </div>
+                    @endforeach
 
-                    {{-- Informacion del egresado --}}
-                    {{-- style="display: grid; grid-template-columns: repeat(3, 1fr); grid-gap: 5px; " --}}
-                    <div class="row border-box card-box">
-                        <div class="item-card col">
-                            <label for="txtNombreAutor" class="form-label">Nombres</label>
-                            <input class="form-control" name="txtNombreAutor" id="txtNombreAutor" type="text"
-                                value="{{ $cursoTesis[0]->nombresAutor }}" readonly>
-                        </div>
-                        <div class="item-card">
-                            <label for="txtApellidoAutor" class="form-label">Apellidos</label>
-                            <input class="form-control" name="txtApellidoAutor" id="txtApellidoAutor" type="text"
-                                value="{{ $cursoTesis[0]->apellidosAutor }}" readonly>
-                        </div>
-                    </div>
+
+
                 </div>
                 <div class="row" style="margin-bottom:20px; padding-right:12px;">
                     <h5>Asesor</h5>

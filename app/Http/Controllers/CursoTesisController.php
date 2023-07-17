@@ -23,6 +23,8 @@ use App\Models\User;
 use App\Models\variableOP;
 use App\Models\Fin_Persigue;
 use App\Models\Diseno_Investigacion;
+use App\Models\Grupo_Investigacion;
+use App\Models\Detalle_Grupo_Investigacion;
 use Illuminate\Support\Facades\DB;
 use League\CommonMark\Node\Block\Paragraph;
 use PhpOffice\PhpWord\PhpWord;
@@ -87,9 +89,20 @@ class CursoTesisController extends Controller
         $aux = explode('-',$id);
         $id = $aux[0];
 
-        $autor = DB::table('estudiante_ct2022')->leftJoin('proyecto_tesis as p','p.cod_matricula','=','estudiante_ct2022.cod_matricula')->select('estudiante_ct2022.*','p.cod_docente')->where('estudiante_ct2022.cod_matricula',$id)->first();   //Encontramos al autor
-
-        $tesis = TesisCT2022::where('cod_matricula','=',$autor->cod_matricula)->get(); //Encontramos la tesis
+        $autor = DB::table('estudiante_ct2022')
+                            ->leftJoin('detalle_grupo_investigacion as dg','dg.cod_matricula','=','estudiante_ct2022.cod_matricula')
+                            ->leftJoin('grupo_investigacion as gp','gp.id_grupo','=','dg.id_grupo_inves')
+                            ->select('estudiante_ct2022.*','gp.cod_docente','gp.id_grupo','gp.num_grupo')
+                            ->where('estudiante_ct2022.cod_matricula',$id)
+                            ->first();
+           //Encontramos al autor
+        //dd($autor);
+        if($autor->id_grupo == null){
+            return view('cursoTesis20221.cursoTesis',['autor'=>$autor,'tesis'=>[]]);
+        }
+        $coautor = DB::table('detalle_grupo_investigacion as dg')->rightJoin('estudiante_ct2022 as e','e.cod_matricula','=','dg.cod_matricula')->select('e.*')->where('dg.id_grupo_inves',$autor->id_grupo)->where('e.cod_matricula','!=',$id)->first();
+        //dd($coautor);
+        $tesis = TesisCT2022::where('id_grupo_inves','=',$autor->id_grupo)->get(); //Encontramos la tesis
         $asesor = DB::table('asesor_curso')->where('cod_docente',$tesis[0]->cod_docente)->first();  //Encontramos al asesor
         /* Traemos informacion de las tablas*/
         $tinvestigacion = TipoInvestigacion::all();
@@ -127,7 +140,7 @@ class CursoTesisController extends Controller
                 'presupuestos'=>$presupuestos,'fin_persigue'=>$fin_persigue,'diseno_investigacion'=>$diseno_investigacion,'tiporeferencia'=>$tiporeferencia,'tesis'=>$tesis,'asesor'=>$asesor,
                 'correciones' => $correciones,'recursos'=>$recursos,'objetivos'=>$objetivos,'variableop'=>$variableop,
                 'presupuestoProy'=>$presupuestoProy,'detalles'=>$detalles,'tinvestigacion'=>$tinvestigacion,'campos'=>$campos,
-                'referencias'=>$referencias, 'detalleHistorial'=>$detalleHistorial,'matriz'=>$matriz
+                'referencias'=>$referencias, 'detalleHistorial'=>$detalleHistorial,'matriz'=>$matriz, 'coautor'=>$coautor
             ]);
     }
 
@@ -136,7 +149,11 @@ class CursoTesisController extends Controller
         $aux = explode('-',$id);
         $id = $aux[0];
         $estudiante = EstudianteCT2022::find($id);
-        $hTesis = TesisCT2022::join('asesor_curso as ac','ac.cod_docente','=','proyecto_tesis.cod_docente')->select('ac.nombres as nombre_asesor','proyecto_tesis.*')->where('cod_matricula','=',$estudiante->cod_matricula)->get();
+        $hTesis = TesisCT2022::join('asesor_curso as ac','ac.cod_docente','=','proyecto_tesis.cod_docente')
+                        ->join('grupo_investigacion as g_i','proyecto_tesis.id_grupo_inves','=','g_i.id_grupo')
+                        ->join('detalle_grupo_investigacion as d_g','d_g.id_grupo_inves','=','g_i.id_grupo')
+                        ->select('ac.nombres as nombre_asesor','proyecto_tesis.*')
+                        ->where('d_g.cod_matricula','=',$estudiante->cod_matricula)->get();
         return view('cursoTesis20221.estadoProyecto',['hTesis'=>$hTesis]);
     }
 
@@ -150,9 +167,11 @@ class CursoTesisController extends Controller
         $id = $aux[0];
         $isSaved = $request->isSaved;
         $estudiante = EstudianteCT2022::find($id);
-        $tesis = TesisCT2022::join('estudiante_ct2022 as ES','proyecto_tesis.cod_matricula','=','ES.cod_matricula')
-                        ->select('proyecto_tesis.*','ES.*')
-                        ->where('proyecto_tesis.cod_matricula','=',$estudiante->cod_matricula)->first();
+
+        $tesis = TesisCT2022::join('grupo_investigacion as g_i','proyecto_tesis.id_grupo_inves','=','g_i.id_grupo')
+                        ->join('detalle_grupo_investigacion as d_g','d_g.id_grupo_inves','=','g_i.id_grupo')
+                        ->select('proyecto_tesis.*')
+                        ->where('d_g.cod_matricula','=',$estudiante->cod_matricula)->first();
         $asesor = AsesorCurso::where('cod_docente',$tesis->cod_docente)->first();
         $observacionX = ObservacionesProy::join('historial_observaciones','observaciones_proy.cod_historialObs','=','historial_observaciones.cod_historialObs')
                     ->select('observaciones_proy.*')->where('historial_observaciones.cod_proyectotesis',$tesis->cod_proyectotesis)
@@ -314,10 +333,10 @@ class CursoTesisController extends Controller
                 $tesis->estado = 9;
             }else{
                 $tesis->estado = 1;
-                if ($asesor->correo != null) {
-                    $estudiante = $tesis->apellidos." ".$tesis->nombres;
-                    Mail::to($asesor->correo)->send(new EstadoEnviadaMail($request->txttitulo,$estudiante,$tesis->cod_matricula));
-                }
+                // if ($asesor->correo != null) {
+                //     $estudiante = $tesis->apellidos." ".$tesis->nombres;
+                //     Mail::to($asesor->correo)->send(new EstadoEnviadaMail($request->txttitulo,$estudiante,$tesis->cod_matricula));
+                // }
 
             }
 
@@ -1406,12 +1425,104 @@ class CursoTesisController extends Controller
 
             return response()->download(storage_path('ProyectoTesis.docx'));
     }
+    //NEWWW-------
+    // ASIGNACION PARA LOS GRUPOS DE INV-----------------------------------
+    const PAGINATION5=10;
+    public function showTablaAsignacionGrupos(Request $request){
+
+        $buscarAlumno = $request->buscarAlumno;
+        if($buscarAlumno!=""){
+            if (is_numeric($buscarAlumno)) {
+
+                $grupo_estudiantes = DB::table('estudiante_ct2022 as e')
+                                    ->leftJoin('detalle_grupo_investigacion as d_g_i','d_g_i.cod_matricula','=','e.cod_matricula')
+                                    ->leftJoin('grupo_investigacion as g_i','g_i.id_grupo','=','d_g_i.id_grupo_inves')
+                                    ->select('e.*','g_i.cod_docente','g_i.num_grupo','g_i.id_grupo')
+                                    ->where('e.cod_matricula','like','%'.$buscarAlumno.'%')->orderBy('e.apellidos')->paginate($this::PAGINATION5);
+            } else {
+                $grupo_estudiantes = DB::table('estudiante_ct2022 as e')
+                                    ->leftJoin('detalle_grupo_investigacion as d_g_i','d_g_i.cod_matricula','=','e.cod_matricula')
+                                    ->leftJoin('grupo_investigacion as g_i','g_i.id_grupo','=','d_g_i.id_grupo_inves')
+                                    ->select('e.*','g_i.cod_docente','g_i.num_grupo','g_i.id_grupo')
+                                    ->where('e.apellidos','like','%'.$buscarAlumno.'%')->orderBy('e.apellidos')->paginate($this::PAGINATION5);
+            }
+        }else{
+            $grupo_estudiantes = DB::table('estudiante_ct2022 as e')
+                                    ->join('detalle_grupo_investigacion as d_g_i','d_g_i.cod_matricula','=','e.cod_matricula')
+                                    ->join('grupo_investigacion as g_i','g_i.id_grupo','=','d_g_i.id_grupo_inves')
+                                    ->select('e.*','g_i.cod_docente','g_i.num_grupo','g_i.id_grupo')->orderBy('g_i.num_grupo')->paginate($this::PAGINATION5);
+        }
+        //Code
+        $lastGroup = 0;
+        $extraArray=[];
+        $studentforGroups=[];
+        $contador = 0;
+        foreach($grupo_estudiantes as $eachStudent){
+            if($lastGroup== 0){
+                array_push($extraArray,$eachStudent);
+                $lastGroup = $eachStudent->id_grupo;
+            }else{
+                if($lastGroup == $eachStudent->id_grupo){
+                    array_push($extraArray,$eachStudent);
+                }else{
+                    array_push($studentforGroups,$extraArray);
+                    $extraArray=[];
+                    array_push($extraArray,$eachStudent);
+                    $lastGroup = $eachStudent->id_grupo;
+                }
+            }
+            $contador++;
+            if($contador == count($grupo_estudiantes)){
+                array_push($studentforGroups,$extraArray);
+            }
+        }
+        $asesores = DB::table('asesor_curso')->select('cod_docente','nombres')->get();
+        return view('cursoTesis20221.director.asignarAsesorGrupos',['studentforGroups'=>$studentforGroups,'asesores'=>$asesores,'buscarAlumno'=>$buscarAlumno]);
+    }
+
+    public function saveGrupoAsesorAsignado(Request $request){
+        $asesorAsignado = $request->saveAsesor;
+        $posicion = explode(',',$asesorAsignado);
+        //dd($posicion);
+        $i = 0;
+        do {
+            if ($posicion[$i]!=null) {
+                $datos = explode('_',$posicion[$i]);
+                //dd($datos);
+                $find_grupo = Grupo_Investigacion::find($datos[0]);
+                //dd($grupo);
+                if($find_grupo!=null){
+                    $proyectoTesis = TesisCT2022::where('id_grupo_inves',$find_grupo->id_grupo)->first();
+                    if ($proyectoTesis==null){
+                        $proyectoTesis = new TesisCT2022();
+                        $proyectoTesis->id_grupo_inves = $find_grupo->id_grupo;
+                    }
+                    $grupo = Grupo_Investigacion::find($datos[0]);
+                    $grupo->cod_docente = $datos[2];
+                    $grupo->save();
+                    $proyectoTesis->cod_docente = $datos[2];
+                    $proyectoTesis->save();
+                    $proyectoTesis = TesisCT2022::where('id_grupo_inves',$find_grupo->id_grupo)->first();
+                    $campo = new CamposEstudiante();
+                    $campo->cod_proyectotesis = $proyectoTesis->cod_proyectotesis;
+                    $campo->save();
+                }else{
+                    return redirect()->route('director.asignarAsesorGrupos')->with('datos','error');
+                }
+            }
+            $i++;
+        } while ($i<count($posicion));
+        return redirect()->route('director.asignarAsesorGrupos')->with('datos','ok');
+    }
+
+    //-------------------------------------------------------------------------
     const PAGINATION3=10;
     public function showTablaAsignacion(Request $request){
 
         $buscarAlumno = $request->buscarAlumno;
         if($buscarAlumno!=""){
             if (is_numeric($buscarAlumno)) {
+
                 $estudiantes = DB::table('estudiante_ct2022 as e')->leftJoin('proyecto_tesis as p','p.cod_matricula','=','e.cod_matricula')->select('e.*','p.cod_docente')->where('e.cod_matricula','like','%'.$buscarAlumno.'%')->orderBy('e.apellidos')->paginate($this::PAGINATION3);
             } else {
                 $estudiantes = DB::table('estudiante_ct2022 as e')->leftJoin('proyecto_tesis as p','p.cod_matricula','=','e.cod_matricula')->select('e.*','p.cod_docente')->where('e.apellidos','like','%'.$buscarAlumno.'%')->orderBy('e.apellidos')->paginate($this::PAGINATION3);
@@ -1491,11 +1602,37 @@ class CursoTesisController extends Controller
     public function showEstudiantes(){
         $asesor = AsesorCurso::where('username',auth()->user()->name)->get();
         $estudiantes = DB::table('estudiante_ct2022')
-                            ->join('proyecto_tesis','estudiante_ct2022.cod_matricula','=','proyecto_tesis.cod_matricula')
-                            ->select('estudiante_ct2022.*','proyecto_tesis.cod_docente','proyecto_tesis.estado','proyecto_tesis.cod_proyectotesis')
+                            ->join('detalle_grupo_investigacion as d_g','d_g.cod_matricula','=','estudiante_ct2022.cod_matricula')
+                            ->join('grupo_investigacion as g_i', 'g_i.id_grupo','=','d_g.id_grupo_inves')
+                            ->join('proyecto_tesis','d_g.id_grupo_inves','=','proyecto_tesis.id_grupo_inves')
+                            ->select('g_i.id_grupo','g_i.num_grupo','estudiante_ct2022.*','proyecto_tesis.cod_docente','proyecto_tesis.estado','proyecto_tesis.cod_proyectotesis')
                             ->where('proyecto_tesis.cod_docente',$asesor[0]->cod_docente)->get();
 
-        return view('cursoTesis20221.asesor.showEstudiantes',['estudiantes'=>$estudiantes]);
+        $lastGroup = 0;
+        $extraArray=[];
+        $studentforGroups=[];
+        $contador = 0;
+        foreach($estudiantes as $eachStudent){
+            if($lastGroup== 0){
+                array_push($extraArray,$eachStudent);
+                $lastGroup = $eachStudent->id_grupo;
+            }else{
+                if($lastGroup == $eachStudent->id_grupo){
+                    array_push($extraArray,$eachStudent);
+                }else{
+                    array_push($studentforGroups,$extraArray);
+                    $extraArray=[];
+                    array_push($extraArray,$eachStudent);
+                    $lastGroup = $eachStudent->id_grupo;
+                }
+            }
+            $contador++;
+            if($contador == count($estudiantes)){
+                array_push($studentforGroups,$extraArray);
+            }
+
+        }
+        return view('cursoTesis20221.asesor.showEstudiantes',['studentforGroups'=>$studentforGroups]);
     }
     const PAGINATION2 = 10;
     public function listaAlumnos(Request $request){
@@ -1591,23 +1728,79 @@ class CursoTesisController extends Controller
         }
     }
 
+    //GRUPOS DE INVESTIGACION
+    //HOSTING
+    public function verAgregarGruposInv(){
+        $estudiantes = DB::table('estudiante_ct2022')->get();
+        $grupo = DB::table('grupo_investigacion')->get();
+        $detalle_grupo = DB::table('detalle_grupo_investigacion as d_g')
+                        ->join('grupo_investigacion as g_i','g_i.id_grupo','=','d_g.id_grupo_inves')
+                        ->join('estudiante_ct2022 as e','e.cod_matricula','=','d_g.cod_matricula')
+                        ->select('d_g.id_grupo_inves','g_i.num_grupo','d_g.cod_matricula','e.nombres','e.apellidos')->get();
+        return view("cursoTesis20221.director.crearGruposDeInvestigacion",["detalle_grupo"=>$detalle_grupo,'estudiantes'=>$estudiantes,'grupo'=>$grupo]);
+    }
+
+    public function saveGruposInves(Request $request){
+        $arreglo_datos = $request->arreglo_grupos;
+        try {
+            if ($arreglo_datos != null) {
+                $grupo = explode(',',$arreglo_datos);
+
+                for ($i=0; $i < sizeof($grupo); $i++) {
+                    $estudiantes_grupo = explode('_',$grupo[$i]);
+                    $num_grupo = $estudiantes_grupo[0];
+
+                    $estudiante_grupo = explode('@',$estudiantes_grupo[1]);
+
+                    $nuevo_grupo_inv = new Grupo_Investigacion();
+                    $nuevo_grupo_inv->num_grupo = "Grupo ".$num_grupo;
+                    $nuevo_grupo_inv->save();
+
+                    $last_grupo = DB::table('grupo_investigacion')->latest('id_grupo')->get();
+
+                    for($j=0; $j < sizeof($estudiante_grupo); $j++){
+                        if($estudiante_grupo[$j] != ""){
+                            $nuevo_detalle_grupo = new Detalle_Grupo_Investigacion();
+                            $nuevo_detalle_grupo->id_grupo_inves = $last_grupo[0]->id_grupo;
+                            $nuevo_detalle_grupo->cod_matricula = $estudiante_grupo[$j];
+                            $nuevo_detalle_grupo->save();
+                        }
+
+                    }
+
+                }
+            }
+        } catch (\Throwable $th) {
+            dd($th);
+            //return redirect()->route('director.verGrupos')->with('datos','oknot');
+        }
+
+        return redirect()->route('director.verGrupos')->with('datos','ok');
+    }
+
     public function asignarTemas(Request $request){
-        $id = $request->cod_matricula_hidden;
-        $tesis = TesisCT2022::where('cod_matricula',$id)->first();
+        $id = $request->id_grupo_hidden;
+        $tesis = TesisCT2022::where('id_grupo_inves',$id)->first();
         if($tesis->estado !=2){
             $tesis->estado = 2;
             $tesis->save();
         }
         $estudiante = DB::table('campos_estudiante as ce')
                             ->join('proyecto_tesis as p','p.cod_proyectotesis','=','ce.cod_proyectotesis')
-                            ->join('estudiante_ct2022 as e','e.cod_matricula','=','p.cod_matricula')
-                            ->select('ce.*','e.nombres as estudiante_nombres','e.apellidos as estudiante_apellidos','e.cod_matricula')
+                            ->join('grupo_investigacion as g_i','g_i.id_grupo','=','p.id_grupo_inves')
+                            ->select('ce.*','g_i.num_grupo','g_i.id_grupo')
                             ->where('ce.cod_proyectotesis',$tesis->cod_proyectotesis)->get();
-        return view('cursoTesis20221.asesor.camposEstudiante',['estudiante'=>$estudiante]);
+
+        $estudiantes_grupo = DB::table('estudiante_ct2022 as e')
+            ->join('detalle_grupo_investigacion as d_g','d_g.cod_matricula','=','e.cod_matricula')
+            ->select('e.cod_matricula','e.nombres','e.apellidos')
+            ->where('d_g.id_grupo_inves',$id)->get();
+        return view('cursoTesis20221.asesor.camposEstudiante',['estudiante'=>$estudiante,'estudiantes_grupo'=>$estudiantes_grupo]);
     }
 
     public function guardarTemas(Request $request){
-        $tesis = TesisCT2022::where('cod_matricula',$request->cod_matriculaAux)->first();
+
+        $tesis = TesisCT2022::where('id_grupo_inves',$request->id_grupoAux)->first();
         $temas = CamposEstudiante::where('cod_proyectotesis',$tesis->cod_proyectotesis)->first();
         if($request->chkTInvestigacion != null) $temas->tipo_investigacion = 1;
         if($request->chkLocalidad != null)      $temas->localidad_institucion = 1;
@@ -1635,12 +1828,18 @@ class CursoTesisController extends Controller
         $isFinal = 'false';
         $camposFull = 'false';
 
-        $cod_matricula = $request->cod_matricula;
+        $id_grupo = $request->id_grupo;
         $cursoTesis = DB::table('proyecto_tesis as p')
-                            ->join('estudiante_ct2022 as e','e.cod_matricula','=','p.cod_matricula')
+                            ->join('grupo_investigacion as g_i','g_i.id_grupo','=','p.id_grupo_inves')
+                            // ->join('estudiante_ct2022 as e','e.cod_matricula','=','p.cod_matricula')
                             ->join('asesor_curso as ac','ac.cod_docente','=','p.cod_docente')
-                            ->select('p.*','e.nombres as nombresAutor','e.apellidos as apellidosAutor','ac.nombres as nombre_asesor','ac.*')
-                            ->where('e.cod_matricula',$cod_matricula)->get();
+                            ->select('p.*','ac.nombres as nombre_asesor','ac.*')
+                            ->where('g_i.id_grupo',$id_grupo)->get();
+
+        $estudiantes_grupo = DB::table('estudiante_ct2022 as e')
+                                    ->join('detalle_grupo_investigacion as d_g','d_g.cod_matricula','=','e.cod_matricula')
+                                    ->select('e.cod_matricula','e.nombres','e.apellidos')
+                                    ->where('d_g.id_grupo_inves',$id_grupo)->get();
 
         foreach ($cursoTesis[0] as $curso) {
             $arregloAux[$aux] = $curso;
@@ -1700,18 +1899,18 @@ class CursoTesisController extends Controller
                 ,'tipoinvestigacion'=>$tipoinvestigacion,
                 'recursos'=>$recursos,'objetivos'=>$objetivos,'variableop'=>$variableop,
                 'campos'=>$campos,'cursoTesis'=>$cursoTesis,'referencias'=>$referencias,'isFinal'=>$isFinal,
-                'camposFull'=>$camposFull,'matriz'=>$matriz
+                'camposFull'=>$camposFull,'matriz'=>$matriz, 'estudiantes_grupo'=>$estudiantes_grupo
         ]);
 
     }
 
     public function guardarObservaciones(Request $request){
 
-
         $cursoTesis = DB::table('proyecto_tesis')
-                       ->join('estudiante_ct2022','estudiante_ct2022.cod_matricula','=','proyecto_tesis.cod_matricula')
+                        ->join('detalle_grupo_investigacion as d_g','d_g.id_grupo_inves','=','proyecto_tesis.id_grupo_inves')
+                       ->join('estudiante_ct2022','estudiante_ct2022.cod_matricula','=','d_g.cod_matricula')
                        ->join('asesor_curso','proyecto_tesis.cod_docente','=','asesor_curso.cod_docente')
-                       ->select('proyecto_tesis.*','estudiante_ct2022.nombres as nombresAutor','estudiante_ct2022.apellidos as apellidosAutor','estudiante_ct2022.correo as correoEstudi','asesor_curso.nombres as nombresAsesor')->where('asesor_curso.username','=',auth()->user()->name)->where('estudiante_ct2022.cod_matricula',$request->cod_matricula_hidden)->get();
+                       ->select('proyecto_tesis.*','estudiante_ct2022.nombres as nombresAutor','estudiante_ct2022.apellidos as apellidosAutor','estudiante_ct2022.correo as correoEstudi','asesor_curso.nombres as nombresAsesor')->where('asesor_curso.username','=',auth()->user()->name)->where('proyecto_tesis.id_grupo_inves',$request->id_grupo_hidden)->get();
 
 
         $existHisto = Historial_Observaciones::where('cod_proyectotesis',$cursoTesis[0]->cod_proyectotesis)->get();

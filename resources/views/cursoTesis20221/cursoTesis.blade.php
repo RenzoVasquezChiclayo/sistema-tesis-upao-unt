@@ -106,7 +106,25 @@
             width: 60%;
         }
     </style>
-    @if ($autor->cod_docente == null)
+    @if ($autor->id_grupo == null)
+        <div class="row d-flex" style="align-items:center; justify-content: center;">
+            <div class="col-8 border-box mt-3">
+                <div class="row">
+                    <div class="col">
+                        <h4 style="color:red;">Aviso!</h4>
+                        <hr style="border: 1px solid black;" />
+                    </div>
+
+                    <div class="col">
+                        <p>Esta vista estara habilitada cuando se te asigne algun grupo de investigacion para el curso.
+                            Si existe algun inconveniente y/o queja envia un correo a <a href="#">
+                                <>example@unitru.edu.pe</u>
+                            </a> para mas informacion.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @elseif ($autor->cod_docente == null)
         <div class="row d-flex" style="align-items:center; justify-content: center;">
             <div class="col-8 border-box mt-3">
                 <div class="row">
@@ -248,6 +266,20 @@
                             </div>
                         </div>
                         {{-- Informacion del egresado --}}
+                        @if ($coautor != null)
+                            <div class="row border-box">
+                                <div class="col-12 col-sm-6">
+                                    <label for="txtNombreAutor" class="form-label">Nombres</label>
+                                    <input class="form-control" name="txtNombreAutor" id="txtNombreAutor" type="text"
+                                        value="{{ $coautor->nombres }}" placeholder="Nombres" readonly>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <label for="txtApellidoAutor" class="form-label">Apellidos</label>
+                                    <input class="form-control" name="txtApellidoAutor" id="txtApellidoAutor" type="text"
+                                        value="{{ $coautor->apellidos }}" placeholder="Apellidos" readonly>
+                                </div>
+                            </div>
+                        @endif
                         <div class="row border-box">
                             <div class="col-12 col-sm-6">
                                 <label for="txtNombreAutor" class="form-label">Nombres</label>
