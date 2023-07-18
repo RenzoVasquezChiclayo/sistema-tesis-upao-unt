@@ -1317,10 +1317,12 @@
 
         // Guardar sin observacion el proyecto
         function saveWithoutErrors() {
+
             //Validar si hay checks activos
             const condition = (check) => check == 1
             const isFill = array_chk.some(condition)
             var validaCampos = document.getElementById('validacionCampos').value;
+
             if(isFill){
                 Swal.fire({
                     icon: 'info',
@@ -1363,6 +1365,25 @@
 
                 document.getElementById('grupoAproDesa').hidden = false;
                 document.getElementById('grupoObservaciones').hidden = true;
+            }else if(validacionTesis == 'false' && validacionCampos == 'true'){
+                Swal.fire({
+                    title: 'Estas seguro(a)?',
+                    text: "Existen campos vacios que el estudiante no registro, debe observarlos para que el estudiante los complete.",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si, continuar!',
+                    cancelButtonText: 'Cancelar',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('btnSinObservar').hidden = true;
+                        document.getElementById('btnConObservacion').hidden = true;
+
+                        document.getElementById('grupoAproDesa').hidden = false;
+                        document.getElementById('grupoObservaciones').hidden = true;
+                    }
+                })
             }
         }
 

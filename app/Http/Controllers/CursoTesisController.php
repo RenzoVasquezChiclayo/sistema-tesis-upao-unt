@@ -172,6 +172,12 @@ class CursoTesisController extends Controller
                         ->join('detalle_grupo_investigacion as d_g','d_g.id_grupo_inves','=','g_i.id_grupo')
                         ->select('proyecto_tesis.*')
                         ->where('d_g.cod_matricula','=',$estudiante->cod_matricula)->first();
+
+        $estudiantes_grupo = DB::table('estudiante_ct2022 as e')
+                        ->join('detalle_grupo_investigacion as d_g','d_g.cod_matricula','=','e.cod_matricula')
+                        ->join('grupo_investigacion as g_i','g_i.id_grupo','=','d_g.id_grupo_inves')
+                        ->select('g_i.num_grupo','e.cod_matricula','e.nombres','e.apellidos')
+                        ->where('d_g.id_grupo_inves',$tesis->id_grupo_inves)->get();
         $asesor = AsesorCurso::where('cod_docente',$tesis->cod_docente)->first();
         $observacionX = ObservacionesProy::join('historial_observaciones','observaciones_proy.cod_historialObs','=','historial_observaciones.cod_historialObs')
                     ->select('observaciones_proy.*')->where('historial_observaciones.cod_proyectotesis',$tesis->cod_proyectotesis)
@@ -333,10 +339,9 @@ class CursoTesisController extends Controller
                 $tesis->estado = 9;
             }else{
                 $tesis->estado = 1;
-                // if ($asesor->correo != null) {
-                //     $estudiante = $tesis->apellidos." ".$tesis->nombres;
-                //     Mail::to($asesor->correo)->send(new EstadoEnviadaMail($request->txttitulo,$estudiante,$tesis->cod_matricula));
-                // }
+                if ($asesor->correo != null) {
+                    Mail::to($asesor->correo)->send(new EstadoEnviadaMail($request->txttitulo,$estudiantes_grupo));
+                }
 
             }
 
@@ -830,7 +835,7 @@ class CursoTesisController extends Controller
         $estudiantes_grupo = DB::table('estudiante_ct2022 as e')
                                     ->join('detalle_grupo_investigacion as d_g','d_g.cod_matricula','=','e.cod_matricula')
                                     ->select('e.cod_matricula','e.nombres','e.apellidos')
-                                    ->where('d_g.id_grupo_inves',$tesis->id_grupo_inves)->get();
+                                    ->where('d_g.id_grupo_inves',$tesis[0]->id_grupo_inves)->get();
         $asesor = AsesorCurso::find($tesis[0]->cod_docente);
             /*Datos del Autor*/
             if (count($estudiantes_grupo)>1) {
@@ -1752,7 +1757,7 @@ class CursoTesisController extends Controller
     //GRUPOS DE INVESTIGACION
     //HOSTING
     public function verAgregarGruposInv(){
-        $estudiantes = DB::table('estudiante_ct2022 as e')->leftJoin('detalle_grupo_investigacion as dg','e.cod_matricula','=','dg.cod_matricula')->where('dg.id_detalle_grupo',null)->get();
+        $estudiantes = DB::table('estudiante_ct2022 as e')->leftJoin('detalle_grupo_investigacion as dg','e.cod_matricula','=','dg.cod_matricula')->select('e.*')->where('dg.id_detalle_grupo',null)->get();
         $grupo = DB::table('grupo_investigacion')->get();
         $detalle_grupo = DB::table('detalle_grupo_investigacion as d_g')
                         ->join('grupo_investigacion as g_i','g_i.id_grupo','=','d_g.id_grupo_inves')
@@ -1796,30 +1801,16 @@ class CursoTesisController extends Controller
         $arreglo_datos = $request->arreglo_grupos;
         try {
             if ($arreglo_datos != null) {
-                $grupo = explode(',',$arreglo_datos);
-
+                $grupo = explode('_',$arreglo_datos);
+                $last_grupo = DB::table('grupo_investigacion')->latest('id_grupo')->get();
+                $nuevo_grupo_inv = new Grupo_Investigacion();
+                $nuevo_grupo_inv->num_grupo = "Grupo ".$last_grupo[0]->id_grupo;
+                $nuevo_grupo_inv->save();
                 for ($i=0; $i < sizeof($grupo); $i++) {
-                    $estudiantes_grupo = explode('_',$grupo[$i]);
-                    $num_grupo = $estudiantes_grupo[0];
-
-                    $estudiante_grupo = explode('@',$estudiantes_grupo[1]);
-
-                    $nuevo_grupo_inv = new Grupo_Investigacion();
-                    $nuevo_grupo_inv->num_grupo = "Grupo ".$num_grupo;
-                    $nuevo_grupo_inv->save();
-
-                    $last_grupo = DB::table('grupo_investigacion')->latest('id_grupo')->get();
-
-                    for($j=0; $j < sizeof($estudiante_grupo); $j++){
-                        if($estudiante_grupo[$j] != ""){
-                            $nuevo_detalle_grupo = new Detalle_Grupo_Investigacion();
-                            $nuevo_detalle_grupo->id_grupo_inves = $last_grupo[0]->id_grupo;
-                            $nuevo_detalle_grupo->cod_matricula = $estudiante_grupo[$j];
-                            $nuevo_detalle_grupo->save();
-                        }
-
-                    }
-
+                    $detalle = new Detalle_Grupo_Investigacion();
+                    $detalle->id_grupo_inves = $last_grupo[0]->id_grupo;
+                    $detalle->cod_matricula = $grupo[$i];
+                    $detalle->save();
                 }
             }
         } catch (\Throwable $th) {
