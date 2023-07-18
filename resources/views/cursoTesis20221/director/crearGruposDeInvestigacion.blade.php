@@ -148,6 +148,21 @@
         }
 
         function guardarGrupo(count) {
+            if(datos.length == 0){
+                alert("Debe seleccionar almenos un estudiante.");
+                return;
+            }
+            let select = document.getElementById(`selectStudent_${datos[0].select}`);
+            if(select.selectedIndex == 0){
+                alert("Seleccione una opcion!");
+                return;
+            }
+            if(datos.length > 1){
+                if(datos[0].code == datos[1].code){
+                    alert("Debe seleccionar dos estudiantes distintos.")
+                    return;
+                }
+            }
             var chainGroup = (datos.length>1) ? datos[0].code + "_" + datos[1].code : datos[0].code;
             console.log(datos);
             document.getElementById("arreglo_grupos").value = chainGroup;

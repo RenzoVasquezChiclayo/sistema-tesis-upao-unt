@@ -6,13 +6,13 @@
         </a>
         <span class="tooltip">Perfil</span>
     </li>
-    <li>
+    <!-- <li>
         <a href="{{ route('user_reports') }}">
             <i class='bx bxs-report'></i>
             <span class="links_name">Reportes</span>
         </a>
         <span class="tooltip">Reportes</span>
-    </li>
+    </li> -->
 
     {{-- Nav para el Egresado --}}
     @if (auth()->user()->rol == 'estudiante')
@@ -126,32 +126,32 @@
         @endif
         <li>
             <a href="{{ route('director.generalidades') }}">
-
+                <i class='bx bx-highlight'></i>
                 <span class="links_name">Generalidades</span>
             </a>
             <span class="tooltip">Generalidades</span>
         </li>
         <li>
             <a href="{{ route('director.mantenedorlineaInves') }}">
-
+                <i class='bx bx-search-alt' ></i>
                 <span class="links_name">Mantenedor Generalidades</span>
             </a>
             <span class="tooltip">Mantenedor Generalidades</span>
         </li>
         <li>
             <a href="{{ route('director.verGrupos') }}">
-
+                <i class='bx bxs-group'></i>
                 <span class="links_name">Grupos de Investigacion</span>
             </a>
             <span class="tooltip">Grupos de Investigacion</span>
         </li>
-        <li>
+        <!-- <li>
             <a href="{{ route('director.asignarAsesorGrupos') }}">
 
                 <span class="links_name">Asignar Asesor a Grupos</span>
             </a>
             <span class="tooltip">Asignar Asesor a Grupos</span>
-        </li>
+        </li> -->
         <li>
             <a href="{{ route('director.listaAlumnos') }}">
                 <i class='bx bx-sm bx-list-ol'></i>
@@ -186,7 +186,7 @@
             </div>
         </li>
         <li>
-            <a href="{{ route('director.asignar') }}">
+            <a href="{{ route('director.asignarAsesorGrupos') }}">
                 <i class='bx bx-sm bx-check-square'></i>
                 <span class="links_name">Proyecto de Tesis</span>
             </a>

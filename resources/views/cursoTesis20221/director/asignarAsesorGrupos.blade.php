@@ -44,7 +44,7 @@
                 <table id="table-proyecto" class="table table-striped table-responsive-md">
                     <thead>
                         <tr>
-                            <td>Numero de grupos</td>
+                            <td>Numero de grupo</td>
                             <td>Estudiante</td>
                             <td>Asignar</td>
                         </tr>
@@ -106,6 +106,7 @@
 @section('js')
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript">
+        var arregloAsesor = [];
             function validarSeleccion(cont){
                 const selector = document.getElementById('cboAsesor_'+cont);
                 index = document.getElementById('cboAsesor_'+cont).selectedIndex;
@@ -118,7 +119,7 @@
                 }
             }
             //CAMBIAR
-            var arregloAsesor = []
+
             function guardarAsesor(cont){
                 const selector = document.getElementById('cboAsesor_'+cont);
                 asesor = document.getElementById('cboAsesor_'+cont).value;

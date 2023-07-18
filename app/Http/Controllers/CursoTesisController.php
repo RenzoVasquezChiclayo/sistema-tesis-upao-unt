@@ -1508,15 +1508,12 @@ class CursoTesisController extends Controller
 
     public function saveGrupoAsesorAsignado(Request $request){
         $asesorAsignado = $request->saveAsesor;
-        $posicion = explode(',',$asesorAsignado);
-        //dd($posicion);
+        $posicion = explode(',',$asesorAsignado); //["2_0135"] -> "idGrupo_codDocente"
         $i = 0;
         do {
             if ($posicion[$i]!=null) {
                 $datos = explode('_',$posicion[$i]);
-                //dd($datos);
                 $find_grupo = Grupo_Investigacion::find($datos[0]);
-                //dd($grupo);
                 if($find_grupo!=null){
                     $proyectoTesis = TesisCT2022::where('id_grupo_inves',$find_grupo->id_grupo)->first();
                     if ($proyectoTesis==null){
@@ -1524,9 +1521,9 @@ class CursoTesisController extends Controller
                         $proyectoTesis->id_grupo_inves = $find_grupo->id_grupo;
                     }
                     $grupo = Grupo_Investigacion::find($datos[0]);
-                    $grupo->cod_docente = $datos[2];
+                    $grupo->cod_docente = $datos[1];
                     $grupo->save();
-                    $proyectoTesis->cod_docente = $datos[2];
+                    $proyectoTesis->cod_docente = $datos[1];
                     $proyectoTesis->save();
                     $proyectoTesis = TesisCT2022::where('id_grupo_inves',$find_grupo->id_grupo)->first();
                     $campo = new CamposEstudiante();
@@ -1561,10 +1558,36 @@ class CursoTesisController extends Controller
     }
 
     public function showAlumnosAsignados(){
+        $estudiantes = DB::table('estudiante_ct2022 as e')->leftJoin('detalle_grupo_investigacion as dg','dg.cod_matricula','=','e.cod_matricula')->join('grupo_investigacion as gi','gi.id_grupo','=','dg.id_grupo_inves')->select('e.*','gi.cod_docente','gi.id_grupo','gi.num_grupo')->where('gi.cod_docente','!=',null)->orderBy('gi.id_grupo')->get();
 
-        $estudiantes = DB::table('estudiante_ct2022 as e')->rightJoin('proyecto_tesis as p','p.cod_matricula','=','e.cod_matricula')->select('e.*','p.cod_docente')->where('cod_docente','!=',null)->orderBy('e.apellidos')->paginate($this::PAGINATION3);
+        //Code
+        $lastGroup = 0;
+        $extraArray=[];
+        $studentforGroups=[];
+        $contador = 0;
+        foreach($estudiantes as $each){
+            if($lastGroup== 0){
+                array_push($extraArray,$each);
+                $lastGroup = $each->id_grupo;
+            }else{
+                if($lastGroup == $each->id_grupo){
+                    array_push($extraArray,$each);
+                }else{
+                    array_push($studentforGroups,$extraArray);
+                    $extraArray=[];
+                    array_push($extraArray,$each);
+                    $lastGroup = $each->id_grupo;
+                }
+            }
+            $contador++;
+            if($contador == sizeof($estudiantes)){
+                array_push($studentforGroups,$extraArray);
+            }
+        }
+        $studentforGroups = new Paginator($studentforGroups, $this::PAGINATION5);
+
         $asesores = AsesorCurso::all();
-        return view('cursoTesis20221.director.editarAsignacion',['estudiantes'=>$estudiantes,'asesores'=>$asesores]);
+        return view('cursoTesis20221.director.editarAsignacion',['estudiantes'=>$estudiantes,'asesores'=>$asesores, 'studentforGroups'=>$studentforGroups]);
     }
 
     public function saveAsesorAsignado(Request $request){
@@ -1601,27 +1624,29 @@ class CursoTesisController extends Controller
 
     public function saveEdicionAsignacion(Request $request){
         $asesorAsig = $request->saveAsesor;
-
-            $posicion = explode(',',$asesorAsig);
-
+        $posicion = explode(',',$asesorAsig);
+        try{
             $i = 0;
             do {
                 if ($posicion[$i]!=null) {
                     $datos = explode('_',$posicion[$i]);
 
-                    $estudiante = DB::table('estudiante_ct2022')->where('cod_matricula',$datos[0])->first();
-                    if($estudiante!=null){
-                        $proyectoTesis = TesisCT2022::where('cod_matricula',$estudiante->cod_matricula)->first();
-                        $proyectoTesis->cod_docente = $datos[1];
-                        $proyectoTesis->save();
-                    }else{
-                        return redirect()->route('director.editarAsignacion')->with('datos','error');
+                    $grupo = Grupo_Investigacion::where('id_grupo',$datos[0])->first();
+                    if($grupo == null){
+                        return redirect()->route('director.editarAsignacion')->with('datos','oknot');
                     }
+                    $grupo->cod_docente = $datos[1];
+                    $grupo->save();
+                    $proyectoTesis = TesisCT2022::where('id_grupo_inves',$grupo->id_grupo)->first();
+                    $proyectoTesis->cod_docente = $datos[1];
+                    $proyectoTesis->save();
 
                 }
                 $i++;
             } while ($i<count($posicion));
-
+        }catch(\Throwable $th) {
+            return back()->with('datos','oknot');
+        }
         return redirect()->route('director.editarAsignacion')->with('datos','ok');
     }
 
@@ -1802,13 +1827,16 @@ class CursoTesisController extends Controller
         try {
             if ($arreglo_datos != null) {
                 $grupo = explode('_',$arreglo_datos);
-                $last_grupo = DB::table('grupo_investigacion')->latest('id_grupo')->get();
                 $nuevo_grupo_inv = new Grupo_Investigacion();
-                $nuevo_grupo_inv->num_grupo = "Grupo ".$last_grupo[0]->id_grupo;
+                $nuevo_grupo_inv->num_grupo = "".$grupo[0];
                 $nuevo_grupo_inv->save();
+                //Obtenemos el recien registrado
+                $groupAdded = Grupo_Investigacion::where('num_grupo',$grupo[0])->first();
+                $groupAdded->num_grupo = "Grupo ".$groupAdded->id_grupo;
+                $groupAdded->save();
                 for ($i=0; $i < sizeof($grupo); $i++) {
                     $detalle = new Detalle_Grupo_Investigacion();
-                    $detalle->id_grupo_inves = $last_grupo[0]->id_grupo;
+                    $detalle->id_grupo_inves = $groupAdded->id_grupo;
                     $detalle->cod_matricula = $grupo[$i];
                     $detalle->save();
                 }

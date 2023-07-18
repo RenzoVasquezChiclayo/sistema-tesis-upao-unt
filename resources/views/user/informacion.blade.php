@@ -158,7 +158,8 @@
                                                                         <input type="hidden" id="txtCodAsesor" name="txtCodAsesor" value="{{$asesor->cod_docente}}" >
                                                                     @endif
                                                                     <h5>Correo</h5>
-                                                                    <input type="input" class="form-control" id="correo" name="correo" required>
+                                                                    <input type="input" class="form-control" id="correo" name="correo" onchange="verificarCorreo();" required>
+                                                                    <span style="color: red" id="mensaje_correo"></span>
                                                                     <span id="guardadoCorreo"></span>
                                                                 </div>
 
@@ -169,7 +170,7 @@
                                                     <div class="modal-footer">
                                                         <div class="row">
                                                             <div class="col-6">
-                                                                <input id="btnEnvioCorreo" type="submit" class="btn btn-success" value="Guardar">
+                                                                <input id="btnEnvioCorreo" type="submit" class="btn btn-success" value="Guardar" disabled>
                                                             </div>
                                                             <div class="col-6">
                                                                 <button type="button" class="btn btn-danger"
@@ -308,6 +309,26 @@
             }
         }
 
+        function verificarCorreo(){
+            correo = document.getElementById("correo").value;
+            var cont=0;
+
+            for(i=0; i<correo.length; i++){
+
+                if(correo[i] == "@"){
+                    cont++;
+                    document.getElementById("mensaje_correo").innerHTML = "Valido";
+                    document.getElementById("btnEnvioCorreo").disabled = false;
+                }
+            }
+            if(cont == 0){
+                document.getElementById("mensaje_correo").innerHTML = "Ingrese un correo valido.";
+                document.getElementById("btnEnvioCorreo").disabled = true;
+                return false;
+            }else{
+                return true;
+            }
+        }
     </script>
 @endsection
 

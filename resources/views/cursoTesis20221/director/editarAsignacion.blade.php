@@ -14,31 +14,30 @@
                     <table id="table-proyecto" class="table table-striped table-responsive-md">
                         <thead>
                             <tr>
-                                <td>Numero Matricula</td>
-                                <td>DNI</td>
-                                <td>Nombre</td>
-                                <td>Asignar</td>
+                                <td>Numero de grupo</td>
+                                <td>Estudiante(s)</td>
+                                <td>Asignar asesor</td>
                             </tr>
                         </thead>
                         <tbody>
                             @php
                                 $cont = 0;
                             @endphp
-                            @foreach ($estudiantes as $est)
+                            @foreach ($studentforGroups as $grupo)
                                 <tr>
-                                    <td>{{$est->cod_matricula}}</td>
-                                    <td>{{$est->dni}}</td>
-                                    <td>{{$est->nombres.' '.$est->apellidos}}.</td>
+                                    <td>{{$grupo[0]->num_grupo}}</td>
+                                    <td>@if(count($grupo)>1){{$grupo[0]->apellidos.' '.$grupo[0]->nombres.' & '.$grupo[1]->apellidos.' '.$grupo[1]->nombres}}@else{{$grupo[0]->apellidos.' '.$grupo[0]->nombres}}@endif</td>
+
                                     <td>
                                         <select name="cboAsesor_{{$cont}}" id="cboAsesor_{{$cont}}" class="form-control" onchange="validarSeleccion({{$cont}});"
-                                        @if ($est->cod_docente != null)
+                                        @if ($grupo[0]->cod_docente != null)
                                             disabled
                                         @endif
                                         >
                                             <option value="0">-</option>
                                             @foreach ($asesores as $ase)
                                                 <option value="{{$ase->cod_docente}}"
-                                                @if ($est->cod_docente == $ase->cod_docente)
+                                                @if ($grupo[0]->cod_docente == $ase->cod_docente)
                                                     selected
                                                 @endif
                                                 >{{$ase->nombres}}</option>
@@ -48,30 +47,27 @@
                                     <td>
                                         <input  class="btn btn-success" id="btnAsesor_{{$cont}}" type="button" value="+" onclick="guardarAsesor({{$cont}});" hidden>
                                     </td>
-                                    @if ($est->cod_docente != null)
+                                    @if ($grupo[0]->cod_docente != null)
                                             <td><a class="btn btn-warning" id="btnOpenEdit_{{$cont}}" onclick="openEdit({{$cont}})"><i class='bx bx-sm bx-edit-alt'></i></a></td>
                                     @endif
                                 </tr>
-                                <input type="hidden" id="codEst_{{$cont}}" value="{{$est->cod_matricula}}">
-
+                                <input type="hidden" id="codEst_{{$cont}}_grupo" value="{{$grupo[0]->id_grupo}}">
                                 @php
                                     $cont++;
                                 @endphp
                             @endforeach
                             <input type="hidden" name="saveAsesor" id="saveAsesor">
-                            <input type="hidden" id="cantidadEstudiantes" value="{{count($estudiantes)}}">
                         </tbody>
                     </table>
 
                     <div class="row" >
                         <input class="btn btn-success" type="submit" value="Guardar Edicion" id="saveAsignacion" hidden>
-
                     </div>
                     <a href="{{route('director.asignar')}}" class="btn btn-danger">Volver</a>
                 </form>
-                    <div>
-                        {{$estudiantes->links()}}
-                    </div>
+                <div>
+                    {{$studentforGroups->links()}}
+                </div>
             </div>
         </div>
 
@@ -83,37 +79,38 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script type="text/javascript">
+    var arregloAsesor = [];
     function validarSeleccion(cont){
 
-    index = document.getElementById('cboAsesor_'+cont).selectedIndex;
+        index = document.getElementById('cboAsesor_'+cont).selectedIndex;
 
-    if (index!=0) {
+        if (index!=0) {
 
-        document.getElementById("btnAsesor_"+cont).hidden=false;
-    }else {
-        document.getElementById("btnAsesor_"+cont).hidden=true;
+            document.getElementById("btnAsesor_"+cont).hidden=false;
+        }else {
+            document.getElementById("btnAsesor_"+cont).hidden=true;
+        }
     }
-    }
 
-    var arregloAsesor = []
+
     function guardarAsesor(cont){
 
-    asesor = document.getElementById('cboAsesor_'+cont).value;
+        asesor = document.getElementById('cboAsesor_'+cont).value;
 
-    codEstudiante = document.getElementById('codEst_'+cont).value;
+        idGrupo = document.getElementById(`codEst_${cont}_grupo`).value;
 
-    arregloAsesor[cont] = codEstudiante+'_'+asesor;
+        arregloAsesor[cont] = idGrupo+'_'+asesor;
 
-    document.getElementById('saveAsesor').value = arregloAsesor;
+        document.getElementById('saveAsesor').value = arregloAsesor;
 
-    document.getElementById("saveAsignacion").hidden=false;
-    document.getElementById("btnAsesor_"+cont).hidden=true;
+        document.getElementById("saveAsignacion").hidden=false;
+        document.getElementById("btnAsesor_"+cont).hidden=true;
 
     }
 
     function openEdit(cont){
-    document.getElementById('cboAsesor_'+cont).disabled=false;
-    document.getElementById('btnOpenEdit_'+cont).hidden=true;
+        document.getElementById('cboAsesor_'+cont).disabled=false;
+        document.getElementById('btnOpenEdit_'+cont).hidden=true;
     }
 </script>
 

@@ -15,7 +15,8 @@ class TesisCT2022 extends Model
     protected $fillable = [
         'cod_proyectotesis',
         'titulo',
-        'cod_matricula',
+        //'cod_matricula',
+        'id_grupo_inves',
 
         'cod_docente',
         /*Delete info de asesor y nombre de alumno*/
