@@ -29,7 +29,7 @@ use Illuminate\Support\Facades\DB;
 use League\CommonMark\Node\Block\Paragraph;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Settings;
-
+use Illuminate\Pagination\Paginator;
 
 use App\Mail\EstadoEnviadaMail;
 use App\Mail\EstadoObservadoMail;
@@ -827,10 +827,18 @@ class CursoTesisController extends Controller
         $cod_cursoTesis = $request->cod_cursoTesis;
 
         $tesis = TesisCT2022::where('cod_proyectotesis',$cod_cursoTesis)->get();
-        $estudiante = EstudianteCT2022::find($tesis[0]->cod_matricula);
+        $estudiantes_grupo = DB::table('estudiante_ct2022 as e')
+                                    ->join('detalle_grupo_investigacion as d_g','d_g.cod_matricula','=','e.cod_matricula')
+                                    ->select('e.cod_matricula','e.nombres','e.apellidos')
+                                    ->where('d_g.id_grupo_inves',$tesis->id_grupo_inves)->get();
         $asesor = AsesorCurso::find($tesis[0]->cod_docente);
             /*Datos del Autor*/
-            $nombres =$estudiante->nombres.' '.$estudiante->apellidos;
+            if (count($estudiantes_grupo)>1) {
+                $estudiante1 = $estudiantes_grupo[0]->nombres.' '.$estudiantes_grupo[0]->apellidos;
+                $estudiante2 = $estudiantes_grupo[1]->nombres.' '.$estudiantes_grupo[1]->apellidos;
+            }else{
+                $estudiante1 = $estudiantes_grupo[0]->nombres.' '.$estudiantes_grupo[0]->apellidos;
+            }
 
             /*Datos del Asesor*/
             $nombre_asesor = $asesor->nombres;
@@ -1038,7 +1046,14 @@ class CursoTesisController extends Controller
             $caratulaSesion->addText($cod_tinvestigacion,array('name'=>'Arial','bold'=>false,'size'=>12,'align'=>'justify'),$styleCaratula1UPAO);
 
             $caratulaSesion->addText("Autor (es)",array('name'=>'Arial','bold'=>true,'size'=>12,'align'=>'justify'),$styleCaratula1UPAO);
-            $caratulaSesion->addText($nombres,array('name'=>'Arial','bold'=>false,'size'=>12,'align'=>'justify'),$styleCaratula1UPAO);
+
+            if (count($estudiantes_grupo)>1){
+                $caratulaSesion->addText($estudiante1,array('name'=>'Arial','bold'=>false,'size'=>12,'align'=>'justify'),$styleCaratula1UPAO);
+                $caratulaSesion->addText($estudiante2,array('name'=>'Arial','bold'=>false,'size'=>12,'align'=>'justify'),$styleCaratula1UPAO);
+            } else {
+                $caratulaSesion->addText($estudiante1,array('name'=>'Arial','bold'=>false,'size'=>12,'align'=>'justify'),$styleCaratula1UPAO);
+            }
+
 
             $caratulaSesion->addText("Asesor:",array('name'=>'Arial','bold'=>true,'size'=>12,'align'=>'justify'),$styleCaratula1UPAO);
             $caratulaSesion->addText($nombre_asesor,array('name'=>'Arial','bold'=>false,'size'=>12,'align'=>'justify'),$styleCaratula1UPAO);
@@ -1056,8 +1071,13 @@ class CursoTesisController extends Controller
             $nuevaSesion->addListItem("1. TITULO",0.5,$titulos,[\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER],$styleContenido);
             $nuevaSesion->addText("'".$titulo."'",null,$styleTitulo);
 
-            $nuevaSesion->addListItem("2. AUTOR",0.5,$titulos,[\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER],$styleContenido);
-            $nuevaSesion->addText($nombres,null,$styleContenido);
+            $nuevaSesion->addListItem("2. AUTORES",0.5,$titulos,[\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER],$styleContenido);
+            if (count($estudiantes_grupo)>1){
+                $nuevaSesion->addText($estudiante1,null,$styleContenido);
+                $nuevaSesion->addText($estudiante2,null,$styleContenido);
+            } else {
+                $nuevaSesion->addText($estudiante1,null,$styleContenido);
+            }
 
             $nuevaSesion->addListItem("3. ASESOR",0.5,$titulos,[\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER],$styleContenido);
             $nuevaSesion->addText($nombre_asesor,null,$styleContenido);
@@ -1438,19 +1458,19 @@ class CursoTesisController extends Controller
                                     ->leftJoin('detalle_grupo_investigacion as d_g_i','d_g_i.cod_matricula','=','e.cod_matricula')
                                     ->leftJoin('grupo_investigacion as g_i','g_i.id_grupo','=','d_g_i.id_grupo_inves')
                                     ->select('e.*','g_i.cod_docente','g_i.num_grupo','g_i.id_grupo')
-                                    ->where('e.cod_matricula','like','%'.$buscarAlumno.'%')->orderBy('e.apellidos')->paginate($this::PAGINATION5);
+                                    ->where('e.cod_matricula','like','%'.$buscarAlumno.'%')->orderBy('e.apellidos')->get();
             } else {
                 $grupo_estudiantes = DB::table('estudiante_ct2022 as e')
                                     ->leftJoin('detalle_grupo_investigacion as d_g_i','d_g_i.cod_matricula','=','e.cod_matricula')
                                     ->leftJoin('grupo_investigacion as g_i','g_i.id_grupo','=','d_g_i.id_grupo_inves')
                                     ->select('e.*','g_i.cod_docente','g_i.num_grupo','g_i.id_grupo')
-                                    ->where('e.apellidos','like','%'.$buscarAlumno.'%')->orderBy('e.apellidos')->paginate($this::PAGINATION5);
+                                    ->where('e.apellidos','like','%'.$buscarAlumno.'%')->orderBy('e.apellidos')->get();
             }
         }else{
             $grupo_estudiantes = DB::table('estudiante_ct2022 as e')
                                     ->join('detalle_grupo_investigacion as d_g_i','d_g_i.cod_matricula','=','e.cod_matricula')
                                     ->join('grupo_investigacion as g_i','g_i.id_grupo','=','d_g_i.id_grupo_inves')
-                                    ->select('e.*','g_i.cod_docente','g_i.num_grupo','g_i.id_grupo')->orderBy('g_i.num_grupo')->paginate($this::PAGINATION5);
+                                    ->select('e.*','g_i.cod_docente','g_i.num_grupo','g_i.id_grupo')->orderBy('g_i.num_grupo')->get();
         }
         //Code
         $lastGroup = 0;
@@ -1472,10 +1492,11 @@ class CursoTesisController extends Controller
                 }
             }
             $contador++;
-            if($contador == count($grupo_estudiantes)){
+            if($contador == sizeof($grupo_estudiantes)){
                 array_push($studentforGroups,$extraArray);
             }
         }
+        $studentforGroups = new Paginator($studentforGroups, $this::PAGINATION5);
         $asesores = DB::table('asesor_curso')->select('cod_docente','nombres')->get();
         return view('cursoTesis20221.director.asignarAsesorGrupos',['studentforGroups'=>$studentforGroups,'asesores'=>$asesores,'buscarAlumno'=>$buscarAlumno]);
     }
@@ -1731,13 +1752,44 @@ class CursoTesisController extends Controller
     //GRUPOS DE INVESTIGACION
     //HOSTING
     public function verAgregarGruposInv(){
-        $estudiantes = DB::table('estudiante_ct2022')->get();
+        $estudiantes = DB::table('estudiante_ct2022 as e')->leftJoin('detalle_grupo_investigacion as dg','e.cod_matricula','=','dg.cod_matricula')->where('dg.id_detalle_grupo',null)->get();
         $grupo = DB::table('grupo_investigacion')->get();
         $detalle_grupo = DB::table('detalle_grupo_investigacion as d_g')
                         ->join('grupo_investigacion as g_i','g_i.id_grupo','=','d_g.id_grupo_inves')
                         ->join('estudiante_ct2022 as e','e.cod_matricula','=','d_g.cod_matricula')
                         ->select('d_g.id_grupo_inves','g_i.num_grupo','d_g.cod_matricula','e.nombres','e.apellidos')->get();
-        return view("cursoTesis20221.director.crearGruposDeInvestigacion",["detalle_grupo"=>$detalle_grupo,'estudiantes'=>$estudiantes,'grupo'=>$grupo]);
+        //Recently added
+        $grupo_estudiantes = DB::table('estudiante_ct2022 as e')
+                                    ->join('detalle_grupo_investigacion as d_g_i','d_g_i.cod_matricula','=','e.cod_matricula')
+                                    ->join('grupo_investigacion as g_i','g_i.id_grupo','=','d_g_i.id_grupo_inves')
+                                    ->select('e.*','g_i.num_grupo','g_i.id_grupo')->orderBy('g_i.id_grupo')->get();
+        $lastGroup = 0;
+        $extraArray=[];
+        $studentforGroups=[];
+        $contador = 0;
+        foreach($grupo_estudiantes as $eachStudent){
+            if($lastGroup== 0){
+                array_push($extraArray,$eachStudent);
+                $lastGroup = $eachStudent->id_grupo;
+            }else{
+                if($lastGroup == $eachStudent->id_grupo){
+                    array_push($extraArray,$eachStudent);
+                }else{
+                    array_push($studentforGroups,$extraArray);
+                    $extraArray=[];
+                    array_push($extraArray,$eachStudent);
+                    $lastGroup = $eachStudent->id_grupo;
+                }
+            }
+            $contador++;
+            if($contador == sizeof($grupo_estudiantes)){
+                array_push($studentforGroups,$extraArray);
+            }
+        }
+        $studentforGroups = new Paginator($studentforGroups, $this::PAGINATION5);
+
+
+        return view("cursoTesis20221.director.crearGruposDeInvestigacion",["detalle_grupo"=>$detalle_grupo,'estudiantes'=>$estudiantes,'grupo'=>$grupo,'studentforGroups' => $studentforGroups]);
     }
 
     public function saveGruposInves(Request $request){
@@ -2078,7 +2130,12 @@ class CursoTesisController extends Controller
             /* CODIGO PARA GENERAR EL WORD DE LAS CORRECCIONES */
             $correccion = ObservacionesProy::where('cod_observaciones','=',$request->cod_observaciones)->get();
             $tesis = TesisCT2022::join('historial_observaciones','proyecto_tesis.cod_proyectotesis','=','historial_observaciones.cod_proyectotesis')->where('historial_observaciones.cod_historialObs',$correccion[0]->cod_historialObs)->first();
-            $estudiante = EstudianteCT2022::find($tesis->cod_matricula);
+
+            $estudiantes_grupo = DB::table('estudiante_ct2022 as e')
+                                    ->join('detalle_grupo_investigacion as d_g','d_g.cod_matricula','=','e.cod_matricula')
+                                    ->select('e.cod_matricula','e.nombres','e.apellidos')
+                                    ->where('d_g.id_grupo_inves',$tesis->id_grupo_inves)->get();
+
             $asesor = AsesorCurso::find($tesis->cod_docente);
             $recursosProy = recursos::where('cod_proyectotesis','=',$tesis->cod_proyectotesis)->get();
             $presupues = DB::table('presupuesto_proyecto')->join('presupuesto','presupuesto_proyecto.cod_presupuesto','=','presupuesto.cod_presupuesto')
@@ -2096,7 +2153,14 @@ class CursoTesisController extends Controller
             }
 
             $cod_matricula = $tesis->cod_matricula;
-            $nombreEgresado = $estudiante->nombres.' '.$estudiante->apellidos;
+            if (count($estudiantes_grupo)>1) {
+                $estudiante1 = $estudiantes_grupo[0]->nombres.' '.$estudiantes_grupo[0]->apellidos;
+                $estudiante2 = $estudiantes_grupo[1]->nombres.' '.$estudiantes_grupo[1]->apellidos;
+            }else{
+                $estudiante1 = $estudiantes_grupo[0]->nombres.' '.$estudiantes_grupo[0]->apellidos;
+            }
+
+
             $escuelaEgresado = "Contabilidad y Finanzas";
             $nombreAsesor = $asesor->nombres;
             $numObservacion = $correccion[$cantObserva]->observacionNum;
@@ -2161,7 +2225,11 @@ class CursoTesisController extends Controller
             $nuevaSesion->addText($numObservacion,$titulo,$styleTitulos);
 
             $nuevaSesion->addText('Codigo Egresado: '.$cod_matricula,$titulos,$styleFecha);
-            $nuevaSesion->addText('Egresado: '.$nombreEgresado,$titulos,$styleFecha);
+            if (count($estudiantes_grupo)>1){
+                $nuevaSesion->addText('Egresados: '.$estudiante1.' & '.$estudiante2,$titulos,$styleFecha);
+            } else {
+                $nuevaSesion->addText('Egresados: '.$estudiante1,$titulos,$styleFecha);
+            }
             $nuevaSesion->addText('Escuela: '.$escuelaEgresado,$titulos,$styleFecha);
             $nuevaSesion->addText('Asesor: '.$nombreAsesor,$titulos,$styleFecha);
 

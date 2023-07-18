@@ -86,10 +86,10 @@
                             @endphp
                         @endforeach
                         <input type="hidden" name="saveAsesor" id="saveAsesor">
-                        <input type="hidden" id="cantidadEstudiantes" value="{{count($grupo_estudiantes)}}">
+
                     </tbody>
                 </table>
-                {{$grupo_estudiantes->links()}}
+                {{$studentforGroups->links()}}
             </div>
             <div class="row" style="margin: 10px;">
                 <div class="col-12" style="text-align: right;">
