@@ -1412,12 +1412,25 @@ class CursoTesisController extends Controller
         $buscarAlumno = $request->buscarAlumno;
         if($buscarAlumno!=""){
             if (is_numeric($buscarAlumno)) {
-                $estudiantes = DB::table('estudiante_ct2022 as e')->leftJoin('proyecto_tesis as p','p.cod_matricula','=','e.cod_matricula')->select('e.*','p.cod_docente')->where('e.cod_matricula','like','%'.$buscarAlumno.'%')->orderBy('e.apellidos')->paginate($this::PAGINATION3);
+                $estudiantes = DB::table('estudiante_ct2022 as e')
+                ->leftJoin('proyecto_tesis as p','p.cod_matricula','=','e.cod_matricula')
+                ->select('e.*','p.cod_docente')
+                ->where('e.cod_matricula','like','%'.$buscarAlumno.'%')
+                ->orderBy('e.apellidos')
+                ->paginate($this::PAGINATION3);
             } else {
-                $estudiantes = DB::table('estudiante_ct2022 as e')->leftJoin('proyecto_tesis as p','p.cod_matricula','=','e.cod_matricula')->select('e.*','p.cod_docente')->where('e.apellidos','like','%'.$buscarAlumno.'%')->orderBy('e.apellidos')->paginate($this::PAGINATION3);
+                $estudiantes = DB::table('estudiante_ct2022 as e')
+                ->leftJoin('proyecto_tesis as p','p.cod_matricula','=','e.cod_matricula')
+                ->select('e.*','p.cod_docente')
+                ->where('e.apellidos','like','%'.$buscarAlumno.'%')
+                ->orderBy('e.apellidos')
+                ->paginate($this::PAGINATION3);
             }
         }else{
-            $estudiantes = DB::table('estudiante_ct2022 as e')->leftJoin('proyecto_tesis as p','p.cod_matricula','=','e.cod_matricula')->select('e.*','p.cod_docente')->orderBy('e.apellidos')->paginate($this::PAGINATION3);
+            $estudiantes = DB::table('estudiante_ct2022 as e')
+            ->leftJoin('proyecto_tesis as p','p.cod_matricula','=','e.cod_matricula')
+            ->select('e.*','p.cod_docente')
+            ->orderBy('e.apellidos')->paginate($this::PAGINATION3);
         }
         $asesores = DB::table('asesor_curso')->select('cod_docente','nombres')->get();
         return view('cursoTesis20221.director.asignarAsesor',['estudiantes'=>$estudiantes,'asesores'=>$asesores,'buscarAlumno'=>$buscarAlumno]);

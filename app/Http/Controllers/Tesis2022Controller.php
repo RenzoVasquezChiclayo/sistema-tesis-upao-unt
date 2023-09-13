@@ -600,23 +600,27 @@ class Tesis2022Controller extends Controller
         $buscar_estudiante = $request->buscar_estudiante;
         if($buscar_estudiante!=""){
             if (is_numeric($buscar_estudiante)) {
-                $estudiantes = DB::table('estudiante_ct2022 as e')->leftJoin('tesis_2022 as t','t.cod_matricula','=','e.cod_matricula')
+                $estudiantes = DB::table('estudiante_ct2022 as e')
+                ->leftJoin('tesis_2022 as t','t.cod_matricula','=','e.cod_matricula')
                 ->select('e.*', 't.cod_docente')
                 ->where('e.cod_matricula','like','%'.$buscar_estudiante.'%')
                 ->orderBy('e.apellidos')
                 ->paginate($this::PAG_ASIGNACION);
             } else {
-                $estudiantes = DB::table('estudiante_ct2022 as e')->leftJoin('tesis_2022 as t','t.cod_matricula','=','e.cod_matricula')
+                $estudiantes = DB::table('estudiante_ct2022 as e')
+                ->leftJoin('tesis_2022 as t','t.cod_matricula','=','e.cod_matricula')
                 ->select('e.*', 't.cod_docente')
-                ->where('e.apellidos','like','%'.$buscar_estudiante.'%')->orderBy('e.apellidos')->paginate($this::PAG_ASIGNACION);
+                ->where('e.apellidos','like','%'.$buscar_estudiante.'%')
+                ->orderBy('e.apellidos')->paginate($this::PAG_ASIGNACION);
             }
         }else{
-            $estudiantes = DB::table('estudiante_ct2022 as e')->leftJoin('tesis_2022 as t','t.cod_matricula','=','e.cod_matricula')
+            $estudiantes = DB::table('estudiante_ct2022 as e')
+            ->leftJoin('tesis_2022 as t','t.cod_matricula','=','e.cod_matricula')
             ->select('e.*','t.cod_docente')
             ->orderBy('e.apellidos')
             ->paginate($this::PAG_ASIGNACION);
         }
-        $asesores = AsesorCurso::all();
+        $asesores = DB::table('asesor_curso')->select('cod_docente','nombres')->get();
         return view('cursoTesis20221.director.tesis.asignarAsesorTesis',['estudiantes'=>$estudiantes,'asesores'=>$asesores,'buscar_estudiante'=>$buscar_estudiante]);
     }
 
