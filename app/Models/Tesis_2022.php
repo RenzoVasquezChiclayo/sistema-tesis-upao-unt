@@ -13,7 +13,7 @@ class Tesis_2022 extends Model
 
     protected $fillable = [
         'titulo',
-        'cod_matricula',
+        'id_grupo_inves',
 
         'cod_docente',
 

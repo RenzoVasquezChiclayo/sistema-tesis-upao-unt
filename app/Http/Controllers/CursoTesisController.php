@@ -96,12 +96,12 @@ class CursoTesisController extends Controller
                             ->where('estudiante_ct2022.cod_matricula',$id)
                             ->first();
            //Encontramos al autor
-        //dd($autor);
+
         if($autor->id_grupo == null){
             return view('cursoTesis20221.cursoTesis',['autor'=>$autor,'tesis'=>[]]);
         }
         $coautor = DB::table('detalle_grupo_investigacion as dg')->rightJoin('estudiante_ct2022 as e','e.cod_matricula','=','dg.cod_matricula')->select('e.*')->where('dg.id_grupo_inves',$autor->id_grupo)->where('e.cod_matricula','!=',$id)->first();
-        //dd($coautor);
+
         $tesis = TesisCT2022::where('id_grupo_inves','=',$autor->id_grupo)->get(); //Encontramos la tesis
         $asesor = DB::table('asesor_curso')->where('cod_docente',$tesis[0]->cod_docente)->first();  //Encontramos al asesor
         /* Traemos informacion de las tablas*/

@@ -23,40 +23,39 @@
                             @php
                                 $cont = 0;
                             @endphp
-                            @foreach ($estudiantes as $est)
-                                <tr>
-                                    <td>{{$est->cod_matricula}}</td>
-                                    <td>{{$est->dni}}</td>
-                                    <td>{{$est->apellidos.' '.$est->nombres}}.</td>
-                                    <td>
-                                        <select name="cboAsesor_{{$cont}}" id="cboAsesor_{{$cont}}" class="form-control" onchange="validarSeleccion({{$cont}});"
-                                        @if ($est->cod_docente != null)
-                                            disabled
-                                        @endif
-                                        >
-                                            <option value="0">-</option>
-                                            @foreach ($asesores as $ase)
-                                                <option value="{{$ase->cod_docente}}"
-                                                @if ($est->cod_docente == $ase->cod_docente)
-                                                    selected
-                                                @endif
-                                                >{{$ase->nombres}}</option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <input  class="btn btn-success" id="btnAsesor_{{$cont}}" type="button" value="+" onclick="guardarAsesor({{$cont}});" hidden>
-                                    </td>
-                                    @if ($est->cod_docente != null)
-                                            <td><a class="btn btn-warning" id="btnOpenEdit_{{$cont}}" onclick="openEdit({{$cont}})"><i class='bx bx-sm bx-edit-alt'></i></a></td>
-                                    @endif
-                                </tr>
-                                <input type="hidden" id="codEst_{{$cont}}" value="{{$est->cod_matricula}}">
+                            @foreach ($studentforGroups as $grupo)
+                            <tr>
+                                <td>{{$grupo[0]->num_grupo}}</td>
+                                <td>@if(count($grupo)>1){{$grupo[0]->apellidos.' '.$grupo[0]->nombres.' & '.$grupo[1]->apellidos.' '.$grupo[1]->nombres}}@else{{$grupo[0]->apellidos.' '.$grupo[0]->nombres}}@endif</td>
 
-                                @php
-                                    $cont++;
-                                @endphp
-                            @endforeach
+                                <td>
+                                    <select name="cboAsesor_{{$cont}}" id="cboAsesor_{{$cont}}" class="form-control" onchange="validarSeleccion({{$cont}});"
+                                    @if ($grupo[0]->cod_docente_tesis != null)
+                                        disabled
+                                    @endif
+                                    >
+                                        <option value="0">-</option>
+                                        @foreach ($asesores as $ase)
+                                            <option value="{{$ase->cod_docente}}"
+                                            @if ($grupo[0]->cod_docente_tesis == $ase->cod_docente)
+                                                selected
+                                            @endif
+                                            >{{$ase->nombres}}</option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                                <td>
+                                    <input  class="btn btn-success" id="btnAsesor_{{$cont}}" type="button" value="+" onclick="guardarAsesor({{$cont}});" hidden>
+                                </td>
+                                @if ($grupo[0]->cod_docente_tesis != null)
+                                        <td><a class="btn btn-warning" id="btnOpenEdit_{{$cont}}" onclick="openEdit({{$cont}})"><i class='bx bx-sm bx-edit-alt'></i></a></td>
+                                @endif
+                            </tr>
+                            <input type="hidden" id="codEst_{{$cont}}_grupo" value="{{$grupo[0]->id_grupo}}">
+                            @php
+                                $cont++;
+                            @endphp
+                        @endforeach
                             <input type="hidden" name="saveAsesor" id="saveAsesor">
                             <input type="hidden" id="cantidadEstudiantes" value="{{count($estudiantes)}}">
                         </tbody>
@@ -69,7 +68,7 @@
                     <a href="{{route('director.asignarAsesorTesis')}}" class="btn btn-danger">Volver</a>
                 </form>
                     <div>
-                        {{$estudiantes->links()}}
+                        {{$studentforGroups->links()}}
                     </div>
             </div>
         </div>
@@ -99,9 +98,9 @@
 
     asesor = document.getElementById('cboAsesor_'+cont).value;
 
-    codEstudiante = document.getElementById('codEst_'+cont).value;
+    idGrupo = document.getElementById(`codEst_${cont}_grupo`).value;
 
-    arregloAsesor[cont] = codEstudiante+'_'+asesor;
+    arregloAsesor[cont] = idGrupo+'_'+asesor;
 
     document.getElementById('saveAsesor').value = arregloAsesor;
 

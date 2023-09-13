@@ -6,13 +6,13 @@
         </a>
         <span class="tooltip">Perfil</span>
     </li>
-    <!-- <li>
+    <li>
         <a href="{{ route('user_reports') }}">
             <i class='bx bxs-report'></i>
             <span class="links_name">Reportes</span>
         </a>
         <span class="tooltip">Reportes</span>
-    </li> -->
+    </li>
 
     {{-- Nav para el Egresado --}}
     @if (auth()->user()->rol == 'estudiante')
@@ -193,7 +193,7 @@
             <span class="tooltip">Proyecto de Tesis</span>
         </li>
         <li>
-            <a href="{{ route('director.asignarAsesorTesis') }}">
+            <a href="{{ route('director.asignarAsesorGruposTesis') }}">
                 <i class='bx bx-sm bx-check-square'></i>
                 <span class="links_name">Tesis</span>
             </a>

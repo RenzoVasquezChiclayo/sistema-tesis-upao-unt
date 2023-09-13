@@ -224,7 +224,7 @@
                     </div>
 
                     <div class="col mb-3">
-                        <h5>Autor</h5>
+                        <h5>Autor(es)</h5>
                         <div class="row my-2">
                             <div class="row">
                                 <div style="width:auto;">
@@ -246,6 +246,31 @@
                                     value="{{$estudiante->apellidos}}" placeholder="Apellidos" readonly>
                             </div>
                         </div>
+                        {{-- HOSTING --}}
+                        @if ($coautor != null)
+                            <div class="row my-2">
+                                <div class="row">
+                                    <div style="width:auto;">
+                                        <input class="form-control" name="txtCodMatricula" id="txtCodMatricula" type="search"
+                                            value="{{$coautor->cod_matricula}}" placeholder="Codigo de Matricula" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- Informacion del egresado --}}
+                            <div class="row border-box">
+                                <div class="col-12 col-sm-6">
+                                    <label for="txtNombreAutor" class="form-label">Nombres</label>
+                                    <input class="form-control" name="txtNombreAutor" id="txtNombreAutor" type="text"
+                                        value="{{$coautor->nombres}}" placeholder="Nombres" readonly>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <label for="txtApellidoAutor" class="form-label">Apellidos</label>
+                                    <input class="form-control" name="txtApellidoAutor" id="txtApellidoAutor" type="text"
+                                        value="{{$coautor->apellidos}}" placeholder="Apellidos" readonly>
+                                </div>
+                            </div>
+                        @endif
+
                     </div>
                     <div class="col mb-3">
                         <h5>Asesor</h5>

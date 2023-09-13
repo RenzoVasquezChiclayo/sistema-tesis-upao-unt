@@ -24,7 +24,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::ejRdyeRrNvFi9CMQ',
+            '_route' => 'generated::mSoiYaLW6eP2GnyU',
           ),
           1 => NULL,
           2 => 
@@ -102,7 +102,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::SGiksRflJ5dqOSNv',
+            '_route' => 'generated::qRxSVIQa8Eb5qqpx',
           ),
           1 => NULL,
           2 => 
@@ -983,13 +983,13 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      '/asignar-asesor-tesis' => 
+      '/ver-asignar-asesor-grupos-tesis' => 
       array (
         0 => 
         array (
           0 => 
           array (
-            '_route' => 'director.asignarAsesorTesis',
+            '_route' => 'director.asignarAsesorGruposTesis',
           ),
           1 => NULL,
           2 => 
@@ -1003,13 +1003,13 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      '/save-asignacion-tesis' => 
+      '/save-asignar-asesor-grupos-tesis' => 
       array (
         0 => 
         array (
           0 => 
           array (
-            '_route' => 'director.saveAsignarAsesorTesis',
+            '_route' => 'director.saveAsesorAsignadoGruposTesis',
           ),
           1 => NULL,
           2 => 
@@ -1547,7 +1547,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::SQxJPiDEazG7YBMG',
+            '_route' => 'generated::Z2ipRqWRpcjYx65o',
           ),
           1 => NULL,
           2 => 
@@ -1583,7 +1583,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::SubojXXsIH9VEmJi',
+            '_route' => 'generated::6F5B2V8T2nTajWf9',
           ),
           1 => NULL,
           2 => 
@@ -1674,7 +1674,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::tVUIPtzPIkWnIdAl',
+            '_route' => 'generated::y8qJkB6wW5EqYdLp',
           ),
           1 => NULL,
           2 => 
@@ -1792,7 +1792,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::IGB5RZan2KtJ3817',
+            '_route' => 'generated::KS3wG0NFXq1FTMK7',
           ),
           1 => 
           array (
@@ -1824,7 +1824,7 @@ app('router')->setCompiledRoutes(
   ),
   'attributes' => 
   array (
-    'generated::ejRdyeRrNvFi9CMQ' => 
+    'generated::mSoiYaLW6eP2GnyU' => 
     array (
       'methods' => 
       array (
@@ -1845,7 +1845,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
         ),
-        'as' => 'generated::ejRdyeRrNvFi9CMQ',
+        'as' => 'generated::mSoiYaLW6eP2GnyU',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1970,7 +1970,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::SGiksRflJ5dqOSNv' => 
+    'generated::qRxSVIQa8Eb5qqpx' => 
     array (
       'methods' => 
       array (
@@ -1987,13 +1987,13 @@ app('router')->setCompiledRoutes(
         ),
         'uses' => 'O:47:"Laravel\\SerializableClosure\\SerializableClosure":1:{s:12:"serializable";O:46:"Laravel\\SerializableClosure\\Serializers\\Signed":2:{s:12:"serializable";s:297:"O:46:"Laravel\\SerializableClosure\\Serializers\\Native":5:{s:3:"use";a:0:{}s:8:"function";s:79:"function (\\Illuminate\\Http\\Request $request) {
     return $request->user();
-}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"000000001c5463e1000000003eb7341c";}";s:4:"hash";s:44:"JfXoLD8zM/9KsU6otKKtPxPglQjNfIKNctiJ+gBFGPI=";}}',
+}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"0000000015b9184e000000002e853b52";}";s:4:"hash";s:44:"8/3krTw7bjigGIZIwEAlO5fVNCE6UGHK1vZ/jUqzl1g=";}}',
         'namespace' => NULL,
         'prefix' => 'api',
         'where' => 
         array (
         ),
-        'as' => 'generated::SGiksRflJ5dqOSNv',
+        'as' => 'generated::qRxSVIQa8Eb5qqpx',
       ),
       'fallback' => false,
       'defaults' => 
@@ -3703,29 +3703,28 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'director.asignarAsesorTesis' => 
+    'director.asignarAsesorGruposTesis' => 
     array (
       'methods' => 
       array (
         0 => 'GET',
         1 => 'HEAD',
       ),
-      'uri' => 'asignar-asesor-tesis',
+      'uri' => 'ver-asignar-asesor-grupos-tesis',
       'action' => 
       array (
         'middleware' => 
         array (
           0 => 'web',
-          1 => 'auth',
         ),
-        'uses' => 'App\\Http\\Controllers\\Tesis2022Controller@showEstudentsForAsignacion',
-        'controller' => 'App\\Http\\Controllers\\Tesis2022Controller@showEstudentsForAsignacion',
+        'uses' => 'App\\Http\\Controllers\\Tesis2022Controller@showTablaAsignacionGruposTesis',
+        'controller' => 'App\\Http\\Controllers\\Tesis2022Controller@showTablaAsignacionGruposTesis',
         'namespace' => NULL,
         'prefix' => '',
         'where' => 
         array (
         ),
-        'as' => 'director.asignarAsesorTesis',
+        'as' => 'director.asignarAsesorGruposTesis',
       ),
       'fallback' => false,
       'defaults' => 
@@ -3741,27 +3740,27 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'director.saveAsignarAsesorTesis' => 
+    'director.saveAsesorAsignadoGruposTesis' => 
     array (
       'methods' => 
       array (
         0 => 'POST',
       ),
-      'uri' => 'save-asignacion-tesis',
+      'uri' => 'save-asignar-asesor-grupos-tesis',
       'action' => 
       array (
         'middleware' => 
         array (
           0 => 'web',
         ),
-        'uses' => 'App\\Http\\Controllers\\Tesis2022Controller@saveAsignacionTesis',
-        'controller' => 'App\\Http\\Controllers\\Tesis2022Controller@saveAsignacionTesis',
+        'uses' => 'App\\Http\\Controllers\\Tesis2022Controller@saveGrupoAsesorAsignadoTesis',
+        'controller' => 'App\\Http\\Controllers\\Tesis2022Controller@saveGrupoAsesorAsignadoTesis',
         'namespace' => NULL,
         'prefix' => '',
         'where' => 
         array (
         ),
-        'as' => 'director.saveAsignarAsesorTesis',
+        'as' => 'director.saveAsesorAsignadoGruposTesis',
       ),
       'fallback' => false,
       'defaults' => 
@@ -4845,7 +4844,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::SQxJPiDEazG7YBMG' => 
+    'generated::Z2ipRqWRpcjYx65o' => 
     array (
       'methods' => 
       array (
@@ -4865,7 +4864,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::SQxJPiDEazG7YBMG',
+        'as' => 'generated::Z2ipRqWRpcjYx65o',
       ),
       'fallback' => false,
       'defaults' => 
@@ -4918,7 +4917,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::SubojXXsIH9VEmJi' => 
+    'generated::6F5B2V8T2nTajWf9' => 
     array (
       'methods' => 
       array (
@@ -4938,7 +4937,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::SubojXXsIH9VEmJi',
+        'as' => 'generated::6F5B2V8T2nTajWf9',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5137,7 +5136,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::tVUIPtzPIkWnIdAl' => 
+    'generated::y8qJkB6wW5EqYdLp' => 
     array (
       'methods' => 
       array (
@@ -5157,7 +5156,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::tVUIPtzPIkWnIdAl',
+        'as' => 'generated::y8qJkB6wW5EqYdLp',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5173,7 +5172,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::IGB5RZan2KtJ3817' => 
+    'generated::KS3wG0NFXq1FTMK7' => 
     array (
       'methods' => 
       array (
@@ -5190,13 +5189,13 @@ app('router')->setCompiledRoutes(
         'uses' => 'O:47:"Laravel\\SerializableClosure\\SerializableClosure":1:{s:12:"serializable";O:46:"Laravel\\SerializableClosure\\Serializers\\Signed":2:{s:12:"serializable";s:295:"O:46:"Laravel\\SerializableClosure\\Serializers\\Native":5:{s:3:"use";a:0:{}s:8:"function";s:77:"function($comand){
     \\Illuminate\\Support\\Facades\\Artisan::call($comand);
 
-}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"000000001c5463b3000000003eb7341c";}";s:4:"hash";s:44:"lX+phanDO8cMTru4xQgU37E9BIAuYzPqQ0788csXIzs=";}}',
+}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"0000000015b9181c000000002e853b52";}";s:4:"hash";s:44:"aTl3V4MfhHq0r2UwCU2zAeQ1P766Dwk7c/yTUoj/YgE=";}}',
         'namespace' => NULL,
         'prefix' => '',
         'where' => 
         array (
         ),
-        'as' => 'generated::IGB5RZan2KtJ3817',
+        'as' => 'generated::KS3wG0NFXq1FTMK7',
       ),
       'fallback' => false,
       'defaults' => 

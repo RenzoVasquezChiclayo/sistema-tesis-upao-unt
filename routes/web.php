@@ -100,8 +100,10 @@ Route::delete('/deleteLinea',[AdminCursoController::class,'eliminarLineaInves'])
 Route::delete('/delete-fin-persigue',[AdminCursoController::class,'eliminarFinPersigue'])->name('director.deleteFinPersigue');
 Route::delete('/delete-dis-investiga',[AdminCursoController::class,'eliminarDisInvestiga'])->name('director.deleteDisInvestiga');
 //HOSTING
+
 Route::get('/ver-agregar-grupos',[CursoTesisController::class,'verAgregarGruposInv'])->name('director.verGrupos')->middleware('auth');
 Route::post('/save-grupos-inv',[CursoTesisController::class,'saveGruposInves'])->name('director.saveGruposInvestigacion');
+//PROYECTO TESIS
 Route::get('/ver-asignar-asesor-grupos',[CursoTesisController::class,'showTablaAsignacionGrupos'])->name('director.asignarAsesorGrupos');
 Route::post('/save-asignar-asesor-grupos',[CursoTesisController::class,'saveGrupoAsesorAsignado'])->name('director.saveAsesorAsignadoGrupos');
 //---
@@ -117,8 +119,8 @@ Route::get('/editarAsignacion',[CursoTesisController::class,'showAlumnosAsignado
 Route::post('/saveEdicion',[CursoTesisController::class,'saveEdicionAsignacion'])->name('director.saveEdicion');
 // Route::delete('/deleteAlumno',[CursoTesisController::class,'deleteAlumno'])->name('director.deleteAlumno');
 //Director: Tesis
-Route::get('/asignar-asesor-tesis',[Tesis2022Controller::class,'showEstudentsForAsignacion'])->name('director.asignarAsesorTesis')->middleware('auth');
-Route::post('/save-asignacion-tesis',[Tesis2022Controller::class,'saveAsignacionTesis'])->name('director.saveAsignarAsesorTesis');
+Route::get('/ver-asignar-asesor-grupos-tesis',[Tesis2022Controller::class,'showTablaAsignacionGruposTesis'])->name('director.asignarAsesorGruposTesis');
+Route::post('/save-asignar-asesor-grupos-tesis',[Tesis2022Controller::class,'saveGrupoAsesorAsignadoTesis'])->name('director.saveAsesorAsignadoGruposTesis');
 Route::get('/editar-asignacion-asesor',[Tesis2022Controller::class,'showEstudiantAsignado'])->name('director.editAsignacionAsesorTesis')->middleware('auth');
 Route::post('/save-edicion-asignar',[Tesis2022Controller::class,'saveEditarAsignacion'])->name('director.saveEditarAsignacion');
 // -----

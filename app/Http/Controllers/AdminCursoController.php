@@ -43,7 +43,8 @@ class AdminCursoController extends Controller
             //dd($grupo_inves);
             if ($grupo_inves != null) {
                 $existTesis = TesisCT2022::where('id_grupo_inves',$grupo_inves->id_grupo)->get();
-                // $existTesisII = Tesis_2022::where('cod_matricula',$grupo_inves->cod_matricula)->get();
+                //HOSTING
+                $existTesisII = Tesis_2022::where('id_grupo_inves',$grupo_inves->id_grupo)->get();
 
                 if($existTesis->count()==0){
                     $newTesis = new TesisCT2022();
@@ -65,11 +66,12 @@ class AdminCursoController extends Controller
                         $matriz->save();
                     }
                 }
-                // if ($existTesisII->count()==0) {
-                //     $newTesisII = new Tesis_2022();
-                //     $newTesisII->cod_matricula = $estudiante->cod_matricula;
-                //     $newTesisII->save();
-                // }
+                //HOSTING
+                if ($existTesisII->count()==0) {
+                    $newTesisII = new Tesis_2022();
+                    $newTesisII->id_grupo_inves = $grupo_inves->id_grupo;
+                    $newTesisII->save();
+                }
             }
 
 
