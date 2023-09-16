@@ -763,7 +763,6 @@ class CursoTesisController extends Controller
             $col_matriz[0]->escala_D = $request->d_esc;
             $col_matriz[0]->save();
 
-            dd("Aqui");
             $tesis->fecha = now();
             $tesis->save();
 
