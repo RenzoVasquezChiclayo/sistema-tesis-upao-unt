@@ -261,18 +261,22 @@ class Tesis2022Controller extends Controller
                     if (!file_exists($destinationPath)) {
                         mkdir($destinationPath,0777,true);
                     }
-                    for($j = 0; $j<sizeof($file);$j++){
-                        $posImg = $j;
-                        $listDetalle = Detalle_Archivo::where('cod_archivos',$historialArchivos->cod_archivos)->where('grupo','0')->where('tipo','resultados')->get();
-                        if(sizeof($listDetalle)>0) $posImg = sizeof($listDetalle);
-                        $filename = '0'.$posImg.'-'.$tesis->cod_matricula.'.jpg';
-                        $uploadSuccess = $file[$j]->move($destinationPath,$filename);
-                        $det_archivo->cod_archivos = $historialArchivos->cod_archivos;
-                        $det_archivo->tipo = 'resultados';
-                        $det_archivo->ruta = $filename;
-                        $det_archivo->grupo = 0;
-                        $det_archivo->save();
+                    //HOSTING
+                    if ($file != null) {
+                        for($j = 0; $j<sizeof($file);$j++){
+                            $posImg = $j;
+                            $listDetalle = Detalle_Archivo::where('cod_archivos',$historialArchivos->cod_archivos)->where('grupo','0')->where('tipo','resultados')->get();
+                            if(sizeof($listDetalle)>0) $posImg = sizeof($listDetalle);
+                            $filename = '0'.$posImg.'-'.$tesis->cod_matricula.'.jpg';
+                            $uploadSuccess = $file[$j]->move($destinationPath,$filename);
+                            $det_archivo->cod_archivos = $historialArchivos->cod_archivos;
+                            $det_archivo->tipo = 'resultados';
+                            $det_archivo->ruta = $filename;
+                            $det_archivo->grupo = 0;
+                            $det_archivo->save();
+                        }
                     }
+
                 }
             }
 
@@ -303,19 +307,23 @@ class Tesis2022Controller extends Controller
                             if (!file_exists($destinationPath)) {
                                 mkdir($destinationPath,0777,true);
                             }
-                            for($j = 0; $j<sizeof($file);$j++){
-                                $posImg = $j;
-                                $listDetalle = Detalle_Archivo::where('cod_archivos',$historialArchivos->cod_archivos)->where('grupo',$i)->where('tipo','anexos')->get();
-                                if(sizeof($listDetalle)>0) $posImg = sizeof($listDetalle);
-                                $det_archivo = new Detalle_Archivo();
-                                $filename = $i.$posImg.'-'.$tesis->cod_matricula.'.jpg';
-                                $uploadSuccess = $file[$j]->move($destinationPath,$filename);
-                                $det_archivo->cod_archivos = $historialArchivos->cod_archivos;
-                                $det_archivo->tipo = 'anexos';
-                                $det_archivo->ruta = $filename;
-                                $det_archivo->grupo = $i;
-                                $det_archivo->save();
+                            //HOSTING
+                            if ($file != null) {
+                                for($j = 0; $j<sizeof($file);$j++){
+                                    $posImg = $j;
+                                    $listDetalle = Detalle_Archivo::where('cod_archivos',$historialArchivos->cod_archivos)->where('grupo',$i)->where('tipo','anexos')->get();
+                                    if(sizeof($listDetalle)>0) $posImg = sizeof($listDetalle);
+                                    $det_archivo = new Detalle_Archivo();
+                                    $filename = $i.$posImg.'-'.$tesis->cod_matricula.'.jpg';
+                                    $uploadSuccess = $file[$j]->move($destinationPath,$filename);
+                                    $det_archivo->cod_archivos = $historialArchivos->cod_archivos;
+                                    $det_archivo->tipo = 'anexos';
+                                    $det_archivo->ruta = $filename;
+                                    $det_archivo->grupo = $i;
+                                    $det_archivo->save();
+                                }
                             }
+
                         }
                     }
                 }else{
@@ -582,7 +590,7 @@ class Tesis2022Controller extends Controller
                 $tesis->estado = 9;
             }else{
                 $tesis->estado = 1;
-                if ($asesor->correo != null) {
+                if ($asesor->correo != "") {
                     $estudiante = $tesis->apellidos." ".$tesis->nombres;
                     Mail::to($asesor->correo)->send(new EstadoEnviadoTesisMail($request->txttitulo,$estudiante,$tesis->cod_matricula));
                 }
