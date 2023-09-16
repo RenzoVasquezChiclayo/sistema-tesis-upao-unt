@@ -1125,10 +1125,14 @@ class Tesis2022Controller extends Controller
 
         $cod_Tesis = $request->cod_Tesis;
         $lineKeywords = "";
-        $tesis = Tesis_2022::join('asesor_curso','tesis_2022.cod_docente','=','asesor_curso.cod_docente')
-                            ->join('estudiante_ct2022','tesis_2022.cod_matricula','=','estudiante_ct2022.cod_matricula')
-                            ->select('tesis_2022.*','asesor_curso.*','estudiante_ct2022.nombres as nombresAutor','estudiante_ct2022.apellidos as apellidosAutor')
-                            ->where('cod_tesis',$cod_Tesis)->get();
+        //HOSTING
+        $tesis = DB::table('tesis_2022 as t')
+                            ->join('detalle_grupo_investigacion as d_g','d_g.id_grupo_inves','=','t.id_grupo_inves')
+                            ->join('estudiante_ct2022','estudiante_ct2022.cod_matricula','=','d_g.cod_matricula')
+                            ->join('asesor_curso','t.cod_docente','=','asesor_curso.cod_docente')
+                            ->select('t.*','estudiante_ct2022.nombres as nombresAutor','estudiante_ct2022.apellidos as apellidosAutor','estudiante_ct2022.correo as correoEstudi','asesor_curso.*')->where('asesor_curso.username','=',auth()->user()->name)
+                            ->where('t.cod_tesis',$cod_Tesis)->get();
+
             // Dedicatoria
             $dedicatoria = $tesis[0]->dedicatoria;
             // Agradecimiento
@@ -1148,8 +1152,16 @@ class Tesis2022Controller extends Controller
 
             // Introduccion
             $introduccion = $tesis[0]->introduccion;
+
+            //HOSTING
             /*Datos del Autor*/
-            $nombres =$tesis[0]->nombresAutor.' '.$tesis[0]->apellidosAutor;
+            if (count($tesis) > 1) {
+                $Autor1 = $tesis[0]->nombresAutor.' '.$tesis[0]->apellidosAutor;
+                $Autor2 = $tesis[1]->nombresAutor.' '.$tesis[1]->apellidosAutor;
+            }else{
+                $nombres =$tesis[0]->nombresAutor.' '.$tesis[0]->apellidosAutor;
+            }
+
 
             /*Datos del Asesor*/
             $orcid_asesor = $tesis[0]->orcid;
@@ -1312,8 +1324,14 @@ class Tesis2022Controller extends Controller
 
             $caratulaSesion->addLine($lineStyle);
 
+            //HOSTING
             $caratulaSesion->addText("Autor (es)",array('name'=>'Arial','bold'=>true,'size'=>12,'align'=>'justify'),$styleCaratula1UPAO);
-            $caratulaSesion->addText($nombres,array('name'=>'Arial','bold'=>false,'size'=>12,'align'=>'justify'),$styleCaratula1UPAO);
+            if (count($tesis)>1) {
+                $caratulaSesion->addText($Autor1,array('name'=>'Arial','bold'=>false,'size'=>12,'align'=>'justify'),$styleCaratula1UPAO);
+                $caratulaSesion->addText($Autor2,array('name'=>'Arial','bold'=>false,'size'=>12,'align'=>'justify'),$styleCaratula1UPAO);
+            }else{
+                $caratulaSesion->addText($nombres,array('name'=>'Arial','bold'=>false,'size'=>12,'align'=>'justify'),$styleCaratula1UPAO);
+            }
 
             $caratulaSesion->addText("Asesor:",array('name'=>'Arial','bold'=>true,'size'=>12,'align'=>'justify'),$styleCaratula1UPAO);
             $caratulaSesion->addText($nombre_asesor,array('name'=>'Arial','bold'=>false,'size'=>12,'align'=>'justify'),$styleCaratula1UPAO);
@@ -1365,8 +1383,14 @@ class Tesis2022Controller extends Controller
             $nuevaSesion->addListItem("1. TITULO",0.5,$titulos,[\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER],$styleContenido);
             $nuevaSesion->addText("'".$titulo."'",null,$styleTitulo);
 
-            $nuevaSesion->addListItem("2. AUTOR",0.5,$titulos,[\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER],$styleContenido);
-            $nuevaSesion->addText($nombres,null,$styleContenido);
+            //HOSTING
+            $nuevaSesion->addListItem("2. AUTOR(ES)",0.5,$titulos,[\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER],$styleContenido);
+            if (count($tesis)>1) {
+                $nuevaSesion->addText($Autor1,null,$styleContenido);
+                $nuevaSesion->addText($Autor2,null,$styleContenido);
+            }else{
+                $nuevaSesion->addText($nombres,null,$styleContenido);
+            }
 
             $nuevaSesion->addListItem("3. ASESOR",0.5,$titulos,[\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER],$styleContenido);
             $nuevaSesion->addText($nombre_asesor,null,$styleContenido);

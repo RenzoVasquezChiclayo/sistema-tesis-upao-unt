@@ -162,6 +162,7 @@ class CursoTesisController extends Controller
     }
 
     public function saveTesis(Request $request){
+
         $id = auth()->user()->name;
         $aux = explode('-',$id);
         $id = $aux[0];
@@ -188,6 +189,7 @@ class CursoTesisController extends Controller
         }
 
         try {
+
             /*Si el egresado tiene una observacion pendiente, solo se guardaran los cambios solicitados*/
             if(sizeof($observacionX)>0){
 
@@ -344,7 +346,6 @@ class CursoTesisController extends Controller
                 }
 
             }
-
 
             /* Recursos */
             $arregloTipo = [];
@@ -762,7 +763,7 @@ class CursoTesisController extends Controller
             $col_matriz[0]->escala_D = $request->d_esc;
             $col_matriz[0]->save();
 
-
+            dd("Aqui");
             $tesis->fecha = now();
             $tesis->save();
 
