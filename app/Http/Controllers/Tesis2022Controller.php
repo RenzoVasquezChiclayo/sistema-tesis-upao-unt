@@ -44,6 +44,9 @@ class Tesis2022Controller extends Controller
         $tesis = Tesis_2022::where('cod_matricula',$id)->first();
         $asesor = AsesorCurso::find($tesis->cod_docente);
 
+        //Traemos el proy de tesis del estudiante
+        $proyTesis = DB::table('proyecto_tesis as pyt')->select('pyt.*')->where('pyt.cod_matricula',$id)->first();
+
         $correciones = TObservacion::join('t_historial_observaciones','t_observacion.cod_historial_observacion','=','t_historial_observaciones.cod_historial_observacion')
                         ->select('t_observacion.*')->where('t_historial_observaciones.cod_tesis',$tesis->cod_tesis)
                         ->where('t_observacion.estado',1)->get();
@@ -62,7 +65,7 @@ class Tesis2022Controller extends Controller
         return view('cursoTesis20221.estudiante.tesis.tesis',['estudiante'=>$estudiante,'objetivos'=>$objetivos,
         'correciones' => $correciones,'detalles'=>$detalles,'asesor'=>$asesor,'tesis'=>$tesis,
         'tiporeferencia'=>$tiporeferencia,'keywords'=>$keywords, 'resultadosImg'=>$resultadosImg,
-        'anexosImg'=>$anexosImg, 'referencias'=>$referencias]);
+        'anexosImg'=>$anexosImg, 'referencias'=>$referencias, 'proyTesis'=>$proyTesis]);
     }
 
     public function estadoTesis(){
@@ -645,77 +648,10 @@ class Tesis2022Controller extends Controller
                 $estudiante = EstudianteCT2022::find($datos[0]);
                 //Crear una registro de Tesis para asignar el asesor.
                 $tesisFound = Tesis_2022::where('cod_matricula',$estudiante->cod_matricula)->first();
-                $proytesisFound = DB::table("proyecto_tesis as pyt")
-                                ->select("pyt.*")
-                                ->where("pyt.cod_matricula",$estudiante->cod_matricula)->first();
-                $objetivos_pyt = Objetivo::where('cod_proyectotesis','=',$proytesisFound->cod_proyectotesis)->latest('cod_objetivo')->get();
-                $referencias_pyt = referencias::where('cod_proyectotesis','=',$proytesisFound->cod_proyectotesis)->latest('cod_referencias')->get();
                 if($tesisFound==null){
                     $tesisFound = new Tesis_2022();
                     $tesisFound->cod_matricula = $estudiante->cod_matricula;
                 }
-
-                if ($proytesisFound != null) {
-                        try {
-                            $tesisFound->titulo = $proytesisFound->titulo;
-                            $tesisFound->real_problematica = $proytesisFound->real_problematica;
-                            $tesisFound->antecedentes = $proytesisFound->antecedentes;
-                            $tesisFound->justificacion = $proytesisFound->justificacion;
-                            $tesisFound->formulacion_prob = $proytesisFound->formulacion_prob;
-                            try {
-                                if($objetivos_pyt->count()!=0){
-                                    foreach ($objetivos_pyt as $obj) {
-                                        $objetivos_t = new TObjetivo();
-                                        $objetivos_t->tipo = $obj->tipo;
-                                        $objetivos_t->descripcion = $obj->descripcion;
-                                        $objetivos_t->cod_tesis = $tesisFound-> cod_tesis;
-                                        $objetivos_t->save();
-                                    }
-                                }
-                            } catch (\Throwable $th) {
-                                //throw $th;
-                            }
-                            $tesisFound->marco_teorico = $proytesisFound->marco_teorico;
-                            $tesisFound->marco_conceptual = $proytesisFound->marco_conceptual;
-                            $tesisFound->marco_legal = $proytesisFound->marco_legal;
-                            $tesisFound->form_hipotesis = $proytesisFound->form_hipotesis;
-                            $tesisFound->objeto_estudio = $proytesisFound->objeto_estudio;
-                            $tesisFound->poblacion = $proytesisFound->poblacion;
-                            $tesisFound->muestra = $proytesisFound->muestra;
-                            $tesisFound->metodos = $proytesisFound->metodos;
-                            $tesisFound->tecnicas_instrum = $proytesisFound->tecnicas_instrum;
-                            $tesisFound->instrumentacion = $proytesisFound->instrumentacion;
-                            $tesisFound->estg_metodologicas = $proytesisFound->estg_metodologicas;
-                            try {
-                                if($referencias_pyt->count()!=0){
-                                    foreach ($referencias_pyt as $ref) {
-                                        $referencias_t = new TReferencias();
-                                        $referencias_t->cod_tiporeferencia = $ref->cod_tiporeferencia;
-                                        $referencias_t->autor = $ref->autor;
-                                        $referencias_t->fPublicacion = $ref->fPublicacion;
-                                        $referencias_t->titulo= $ref->titulo;
-                                        $referencias_t->fuente = $ref->fuente;
-                                        $referencias_t->editorial =  $ref->editorial;
-                                        $referencias_t->title_cap = $ref->title_cap;
-                                        $referencias_t->num_capitulo = $ref->num_capitulo;
-                                        $referencias_t->title_revista = $ref->title_revista;
-                                        $referencias_t->volumen = $ref->volumen;
-                                        $referencias_t->name_web = $ref->name_web;
-                                        $referencias_t->name_periodista = $ref->name_periodista;
-                                        $referencias_t->name_institucion = $ref->name_institucion;
-                                        $referencias_t->subtitle = $ref->subtitle;
-                                        $referencias_t->name_editor = $ref->name_editor;
-                                        $referencias_t->cod_tesis = $tesisFound-> cod_tesis;
-                                        $referencias_t->save();
-                                    }
-                                }
-                            } catch (\Throwable $th) {
-                                //throw $th;
-                            }
-                        } catch (\Throwable $th) {
-                            //throw $th;
-                        }
-                    }
 
                 $tesisFound->cod_docente = $datos[1];
                 $tesisFound->fecha_create = now();

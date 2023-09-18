@@ -314,10 +314,10 @@ class CursoTesisController extends Controller
                 $tesis->estado = 9;
             }else{
                 $tesis->estado = 1;
-                if ($asesor->correo != null) {
-                    $estudiante = $tesis->apellidos." ".$tesis->nombres;
-                    Mail::to($asesor->correo)->send(new EstadoEnviadaMail($request->txttitulo,$estudiante,$tesis->cod_matricula));
-                }
+                // if ($asesor->correo != null) {
+                //     $estudiante = $tesis->apellidos." ".$tesis->nombres;
+                //     Mail::to($asesor->correo)->send(new EstadoEnviadaMail($request->txttitulo,$estudiante,$tesis->cod_matricula));
+                // }
 
             }
 
