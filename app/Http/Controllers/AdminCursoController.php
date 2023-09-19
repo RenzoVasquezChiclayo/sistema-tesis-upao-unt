@@ -79,8 +79,7 @@ class AdminCursoController extends Controller
         //     foreach ($proytesisFound as $key => $proy) {
         //         $objetivos_pyt = Objetivo::where('cod_proyectotesis', '=', $proy->cod_proyectotesis)->latest('cod_objetivo')->get();
         //         $referencias_pyt = referencias::where('cod_proyectotesis', '=', $proy->cod_proyectotesis)->latest('cod_referencias')->get();
-        //         $tesis = Tesis_2022::find($proy->cod_proyectotesis);
-        //         $tesis->titulo == $tesis->titulo;
+        //         $tesis = Tesis_2022::where("cod_matricula",$proy->cod_matricula)->first();
         //         $tesis->titulo = $proy->titulo;
         //         $tesis->real_problematica = $proy->real_problematica;
         //         $tesis->antecedentes = $proy->antecedentes;
