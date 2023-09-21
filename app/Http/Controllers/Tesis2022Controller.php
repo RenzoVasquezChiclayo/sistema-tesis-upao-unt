@@ -49,7 +49,7 @@ class Tesis2022Controller extends Controller
         //Encontramos al autor
 
         if($estudiante->id_grupo == null){
-            return view('cursoTesis20221.cursoTesis',['estudiante'=>$estudiante,'tesis'=>[]]);
+            return view('cursoTesis20221.estudiante.tesis.tesis',['estudiante'=>$estudiante,'tesis'=>[]]);
         }
         $coautor = DB::table('detalle_grupo_investigacion as dg')
                                     ->rightJoin('estudiante_ct2022 as e','e.cod_matricula','=','dg.cod_matricula')
@@ -92,7 +92,13 @@ class Tesis2022Controller extends Controller
                             ->join('detalle_grupo_investigacion as d_g','d_g.id_grupo_inves','=','g_i.id_grupo')
                             ->select('ac.nombres as nombre_asesor','tesis_2022.*')
                             ->where('d_g.cod_matricula','=',$estudiante->cod_matricula)->get();
-        $asesor = AsesorCurso::find($hTesis[0]->cod_docente);
+
+        if (count($hTesis)==0) {
+            return view('cursoTesis20221.estudiante.tesis.estadoTesis',['hTesis'=>[]]);
+        }else{
+            $asesor = AsesorCurso::find($hTesis[0]->cod_docente);
+        }
+
         return view('cursoTesis20221.estudiante.tesis.estadoTesis',['hTesis'=>$hTesis,'asesor'=>$asesor]);
     }
 
