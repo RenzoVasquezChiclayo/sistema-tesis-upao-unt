@@ -109,7 +109,7 @@ Route::post('/importarRegistro',[AdminCursoController::class,'importRegistroAlum
 Route::post('/importarRegistroAsesor',[AdminCursoController::class,'importRegistroAsesores'])->name('director.importarAsesores');
 Route::get('/editarAsignacion',[CursoTesisController::class,'showAlumnosAsignados'])->name('director.editarAsignacion')->middleware('auth');
 Route::post('/saveEdicion',[CursoTesisController::class,'saveEdicionAsignacion'])->name('director.saveEdicion');
-// Route::delete('/deleteAlumno',[CursoTesisController::class,'deleteAlumno'])->name('director.deleteAlumno');
+Route::delete('/deleteAlumno',[CursoTesisController::class,'deleteAlumno'])->name('director.deleteAlumno');
 //Director: Tesis
 Route::get('/asignar-asesor-tesis',[Tesis2022Controller::class,'showEstudentsForAsignacion'])->name('director.asignarAsesorTesis')->middleware('auth');
 Route::post('/save-asignacion-tesis',[Tesis2022Controller::class,'saveAsignacionTesis'])->name('director.saveAsignarAsesorTesis');

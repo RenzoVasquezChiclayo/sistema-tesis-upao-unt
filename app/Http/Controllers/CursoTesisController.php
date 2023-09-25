@@ -79,6 +79,7 @@ class CursoTesisController extends Controller
             return redirect()->route('admin.listar')->with('datos','oknotdelete');
         }
     }
+
     // -------------------------------------------------------------------
 
     public function index(){
@@ -1558,6 +1559,7 @@ class CursoTesisController extends Controller
 
         try {
             $alumno = EstudianteCT2022::find($request->cod_matricula);
+            $alumno->cod_matricula = $request->cod_matricula;
             $alumno->dni = $request->dni;
             $alumno->apellidos = $request->apellidos;
             $alumno->nombres = $request->nombres;
@@ -1567,6 +1569,7 @@ class CursoTesisController extends Controller
 
             return redirect()->route('director.listaAlumnos')->with('datos','ok');
         } catch (\Throwable $th) {
+            dd($th);
             return back()->with('datos','oknot');
         }
 

@@ -40,7 +40,7 @@ class Tesis2022Controller extends Controller
         $aux = explode('-',$id);
         $id = $aux[0];
 
-        $estudiante = EstudianteCT2022::find($id);
+        $estudiante = DB::table('estudiante_ct2022 as e')->select('e.*')->where('e.cod_matricula','like','%'.$id.'%')->first();
         $tesis = Tesis_2022::where('cod_matricula',$id)->first();
         $asesor = AsesorCurso::find($tesis->cod_docente);
 
@@ -593,10 +593,10 @@ class Tesis2022Controller extends Controller
                 $tesis->estado = 9;
             }else{
                 $tesis->estado = 1;
-                if ($asesor->correo != "") {
-                    $estudiante = $tesis->apellidos." ".$tesis->nombres;
-                    Mail::to($asesor->correo)->send(new EstadoEnviadoTesisMail($request->txttitulo,$estudiante,$tesis->cod_matricula));
-                }
+                // if ($asesor->correo != "") {
+                //     $estudiante = $tesis->apellidos." ".$tesis->nombres;
+                //     Mail::to($asesor->correo)->send(new EstadoEnviadoTesisMail($request->txttitulo,$estudiante,$tesis->cod_matricula));
+                // }
             }
             $tesis->fecha_update = now();
             $tesis->save();
@@ -645,7 +645,7 @@ class Tesis2022Controller extends Controller
         do {
             if ($posicion[$i]!=null) {
                 $datos = explode('_',$posicion[$i]);
-                $estudiante = EstudianteCT2022::find($datos[0]);
+                $estudiante = DB::table('estudiante_ct2022 as e')->select('e.*')->where('e.cod_matricula','like','%'.$datos[0].'%')->first();
                 //Crear una registro de Tesis para asignar el asesor.
                 $tesisFound = Tesis_2022::where('cod_matricula',$estudiante->cod_matricula)->first();
                 if($tesisFound==null){
@@ -899,11 +899,11 @@ class Tesis2022Controller extends Controller
             $tesis = Tesis_2022::find($idTesis);
             $tesis->estado = 2;
             $tesis->save();
-            if ($Tesis[0]->correoEstudi != null) {
-                $titulo = $Tesis[0]->titulo;
-                $asesor = $Tesis[0]->nombresAsesor;
-                Mail::to($Tesis[0]->correoEstudi)->send(new EstadoObservadoTesisMail($titulo,$asesor));
-            }
+            // if ($Tesis[0]->correoEstudi != null) {
+            //     $titulo = $Tesis[0]->titulo;
+            //     $asesor = $Tesis[0]->nombresAsesor;
+            //     Mail::to($Tesis[0]->correoEstudi)->send(new EstadoObservadoTesisMail($titulo,$asesor));
+            // }
 
         } catch (\Throwable $th) {
             return redirect()->route('asesor.revisar-tesis')->with('datos','oknot');

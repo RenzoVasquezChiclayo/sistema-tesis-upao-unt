@@ -75,67 +75,68 @@ class AdminCursoController extends Controller
         // if (auth()->user()->rol == 'd-CTesis2022-1') {
         //     $proytesisFound = DB::table("proyecto_tesis as pyt")
         //         ->select("pyt.*")->get();
-
         //     foreach ($proytesisFound as $key => $proy) {
         //         $objetivos_pyt = Objetivo::where('cod_proyectotesis', '=', $proy->cod_proyectotesis)->latest('cod_objetivo')->get();
         //         $referencias_pyt = referencias::where('cod_proyectotesis', '=', $proy->cod_proyectotesis)->latest('cod_referencias')->get();
         //         $tesis = Tesis_2022::where("cod_matricula",$proy->cod_matricula)->first();
-        //         $tesis->titulo = $proy->titulo;
-        //         $tesis->real_problematica = $proy->real_problematica;
-        //         $tesis->antecedentes = $proy->antecedentes;
-        //         $tesis->justificacion = $proy->justificacion;
-        //         $tesis->formulacion_prob = $proy->formulacion_prob;
-        //         try {
-        //             if ($objetivos_pyt->count() != 0) {
-        //                 foreach ($objetivos_pyt as $obj) {
-        //                     $objetivos_t = new TObjetivo();
-        //                     $objetivos_t->tipo = $obj->tipo;
-        //                     $objetivos_t->descripcion = $obj->descripcion;
-        //                     $objetivos_t->cod_tesis = $tesis->cod_tesis;
-        //                     $objetivos_t->save();
+        //         if ($tesis != null) {
+        //             $tesis->titulo = $proy->titulo;
+        //             $tesis->real_problematica = $proy->real_problematica;
+        //             $tesis->antecedentes = $proy->antecedentes;
+        //             $tesis->justificacion = $proy->justificacion;
+        //             $tesis->formulacion_prob = $proy->formulacion_prob;
+        //             try {
+        //                 if ($objetivos_pyt->count() != 0) {
+        //                     foreach ($objetivos_pyt as $obj) {
+        //                         $objetivos_t = new TObjetivo();
+        //                         $objetivos_t->tipo = $obj->tipo;
+        //                         $objetivos_t->descripcion = $obj->descripcion;
+        //                         $objetivos_t->cod_tesis = $tesis->cod_tesis;
+        //                         $objetivos_t->save();
+        //                     }
         //                 }
+        //             } catch (\Throwable $th) {
+        //                 //throw $th;
         //             }
-        //         } catch (\Throwable $th) {
-        //             //throw $th;
-        //         }
-        //         $tesis->marco_teorico = $tesis->marco_teorico;
-        //         $tesis->marco_conceptual = $tesis->marco_conceptual;
-        //         $tesis->marco_legal = $tesis->marco_legal;
-        //         $tesis->form_hipotesis = $tesis->form_hipotesis;
-        //         $tesis->objeto_estudio = $tesis->objeto_estudio;
-        //         $tesis->poblacion = $tesis->poblacion;
-        //         $tesis->muestra = $tesis->muestra;
-        //         $tesis->metodos = $tesis->metodos;
-        //         $tesis->tecnicas_instrum = $tesis->tecnicas_instrum;
-        //         $tesis->instrumentacion = $tesis->instrumentacion;
-        //         $tesis->estg_metodologicas = $tesis->estg_metodologicas;
-        //         try {
-        //             if ($referencias_pyt->count() != 0) {
-        //                 foreach ($referencias_pyt as $ref) {
-        //                     $referencias_t = new TReferencias();
-        //                     $referencias_t->cod_tiporeferencia = $ref->cod_tiporeferencia;
-        //                     $referencias_t->autor = $ref->autor;
-        //                     $referencias_t->fPublicacion = $ref->fPublicacion;
-        //                     $referencias_t->titulo = $ref->titulo;
-        //                     $referencias_t->fuente = $ref->fuente;
-        //                     $referencias_t->editorial =  $ref->editorial;
-        //                     $referencias_t->title_cap = $ref->title_cap;
-        //                     $referencias_t->num_capitulo = $ref->num_capitulo;
-        //                     $referencias_t->title_revista = $ref->title_revista;
-        //                     $referencias_t->volumen = $ref->volumen;
-        //                     $referencias_t->name_web = $ref->name_web;
-        //                     $referencias_t->name_periodista = $ref->name_periodista;
-        //                     $referencias_t->name_institucion = $ref->name_institucion;
-        //                     $referencias_t->subtitle = $ref->subtitle;
-        //                     $referencias_t->name_editor = $ref->name_editor;
-        //                     $referencias_t->cod_tesis = $tesis->cod_tesis;
-        //                     $referencias_t->save();
+        //             $tesis->marco_teorico = $tesis->marco_teorico;
+        //             $tesis->marco_conceptual = $tesis->marco_conceptual;
+        //             $tesis->marco_legal = $tesis->marco_legal;
+        //             $tesis->form_hipotesis = $tesis->form_hipotesis;
+        //             $tesis->objeto_estudio = $tesis->objeto_estudio;
+        //             $tesis->poblacion = $tesis->poblacion;
+        //             $tesis->muestra = $tesis->muestra;
+        //             $tesis->metodos = $tesis->metodos;
+        //             $tesis->tecnicas_instrum = $tesis->tecnicas_instrum;
+        //             $tesis->instrumentacion = $tesis->instrumentacion;
+        //             $tesis->estg_metodologicas = $tesis->estg_metodologicas;
+        //             try {
+        //                 if ($referencias_pyt->count() != 0) {
+        //                     foreach ($referencias_pyt as $ref) {
+        //                         $referencias_t = new TReferencias();
+        //                         $referencias_t->cod_tiporeferencia = $ref->cod_tiporeferencia;
+        //                         $referencias_t->autor = $ref->autor;
+        //                         $referencias_t->fPublicacion = $ref->fPublicacion;
+        //                         $referencias_t->titulo = $ref->titulo;
+        //                         $referencias_t->fuente = $ref->fuente;
+        //                         $referencias_t->editorial =  $ref->editorial;
+        //                         $referencias_t->title_cap = $ref->title_cap;
+        //                         $referencias_t->num_capitulo = $ref->num_capitulo;
+        //                         $referencias_t->title_revista = $ref->title_revista;
+        //                         $referencias_t->volumen = $ref->volumen;
+        //                         $referencias_t->name_web = $ref->name_web;
+        //                         $referencias_t->name_periodista = $ref->name_periodista;
+        //                         $referencias_t->name_institucion = $ref->name_institucion;
+        //                         $referencias_t->subtitle = $ref->subtitle;
+        //                         $referencias_t->name_editor = $ref->name_editor;
+        //                         $referencias_t->cod_tesis = $tesis->cod_tesis;
+        //                         $referencias_t->save();
+        //                     }
         //                 }
+        //             } catch (\Throwable $th) {
+        //                 //throw $th;
         //             }
-        //         } catch (\Throwable $th) {
-        //             //throw $th;
+        //             $tesis->save();
         //         }
-        //         $tesis->save();
         //     }
         // }
 

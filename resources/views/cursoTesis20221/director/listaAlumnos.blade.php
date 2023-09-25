@@ -32,6 +32,7 @@
                                 <td>DNI</td>
                                 <td>Nombre</td>
                                 <td>Editar</td>
+                                <td>Eliminar</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -50,17 +51,16 @@
                                             <a href="#" class="btn btn-warning" onclick="this.closest('#form-alumno').submit();"><i class='bx bx-sm bx-edit-alt'></i></a>
                                         </form>
                                     </td>
-                                    {{-- @if (auth()->user()->rol == 'administrador')
+                                    @if (auth()->user()->rol == 'd-CTesis2022-1')
                                         <td>
-                                            <form id="formAlumnoDelete" name="formAlumnoDelete" method="" action="">
+                                            <form id="formAlumnoDelete" name="formAlumnoDelete" method="post" action="{{ route('director.deleteAlumno') }}">
                                                 @method('DELETE')
                                                 @csrf
-
                                                 <input type="hidden" name="auxidDelete" value="{{$est->cod_matricula}}">
                                                 <a href="#" class="btn btn-danger btn-eliminar" onclick="alertaConfirmacion(this);"><i class='bx bx-message-square-x' ></i></a>
                                             </form>
                                         </td>
-                                    @endif --}}
+                                    @endif
 
                                 </tr>
                                 @php
@@ -108,7 +108,7 @@
         <script>
             Swal.fire({
             position: 'center',
-            icon: 'error',
+            icon: 'success',
             title: 'Alumno eliminado correctamente',
             showConfirmButton: false,
             timer: 1200
@@ -129,7 +129,21 @@
     function editarAlumno(formulario, contador){
         formulario.closest('#form-alumno'+contador).submit();
     }
-
+    function alertaConfirmacion(form){
+        Swal.fire({
+            title: 'Estas seguro?',
+            text: "No podras revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, eliminar!'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                form.closest('#formAlumnoDelete').submit();
+            }
+            })
+    }
 
 </script>
 @endsection

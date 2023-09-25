@@ -18,8 +18,8 @@ return new class extends Migration
         Schema::connection('mysql')->create('estudiante_ct2022', function (Blueprint $table) {
             $table->char('cod_matricula',10)->primary();
             $table->string('dni',8);
-            $table->string('apellidos',30);
-            $table->string('nombres',30);
+            $table->string('apellidos',60);
+            $table->string('nombres',50);
             //$table->char('cod_docente',4)->nullable();
         });
     }
