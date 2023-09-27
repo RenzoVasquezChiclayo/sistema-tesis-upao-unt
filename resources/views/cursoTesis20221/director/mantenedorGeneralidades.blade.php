@@ -194,7 +194,7 @@
             confirmButtonText: 'Confirmar!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    e.closest('#form-linea-inves').submit();
+                    e.closest('#formLineaInvesDelete').submit();
                 }
             });
         }

@@ -240,57 +240,58 @@ class AdminCursoController extends Controller
 
         // ESTUDIANTES
 
-        $proyTesis = DB::table('proyecto_tesis')
-                            ->where('cod_matricula',$id)->first();
-        if ($proyTesis != null) {
-            foreach ($proyTesis as $pt) {
-                if ($pt!=null) {
-                    $porcentaje += 100/33;
-                }
-            }
-        }
+        // $proyTesis = DB::table('proyecto_tesis')
+        //                     ->where('cod_matricula',$id)->first();
+        // if ($proyTesis != null) {
+        //     foreach ($proyTesis as $pt) {
+        //         if ($pt!=null) {
+        //             $porcentaje += 100/33;
+        //         }
+        //     }
+        // }
         // -------------------------------------------------------
 
         // ASESOR
 
-        $asesor = DB::table('asesor_curso as ac')->where('ac.username',$id)->first();
-        if ($asesor != null) {
-            $MyProyTesis = DB::table('proyecto_tesis as pt')
-                            ->where('pt.cod_docente',$asesor->cod_docente)->get();
-            $MyProyTesis->toArray();
-            for ($i=0; $i < count($MyProyTesis); $i++) {
-                foreach ($MyProyTesis[$i] as $atributo) {
-                    if ($atributo!=null) {
-                        $porcent += 100/33;
-                    }
-                }
-                $dato2 .= $MyProyTesis[$i]->cod_matricula.'_'.(int)$porcent.'-';
-                $porcent = 0;
-            }
-        }
+        // $asesor = DB::table('asesor_curso as ac')->where('ac.username',$id)->first();
+        // if ($asesor != null) {
+        //     $MyProyTesis = DB::table('proyecto_tesis as pt')
+        //                     ->where('pt.cod_docente',$asesor->cod_docente)->get();
+        //     $MyProyTesis->toArray();
+        //     for ($i=0; $i < count($MyProyTesis); $i++) {
+        //         foreach ($MyProyTesis[$i] as $atributo) {
+        //             if ($atributo!=null) {
+        //                 $porcent += 100/33;
+        //             }
+        //         }
+        //         $dato2 .= $MyProyTesis[$i]->cod_matricula.'_'.(int)$porcent.'-';
+        //         $porcent = 0;
+        //     }
+        // }
 
         // ----------------------------------------------------------
 
         // DIRECTOR
 
-        $totalEstudiantes = count(EstudianteCT2022::all());
+        // $totalEstudiantes = count(EstudianteCT2022::all());
 
-        $totalAsesores = count(AsesorCurso::all());
+        // $totalAsesores = count(AsesorCurso::all());
 
-        $AllProyTesis = DB::table('proyecto_tesis')->get();
-        $AllProyTesis->toArray();
-        for ($i=0; $i < count($AllProyTesis); $i++) {
-            foreach ($AllProyTesis[$i] as $atributo) {
-                if ($atributo!=null) {
-                    $porce += 100/33;
-                }
-            }
-            $dato .= $AllProyTesis[$i]->cod_matricula.'_'.(int)$porce.'-';
-            $porce = 0;
-        }
+        // $AllProyTesis = DB::table('proyecto_tesis')->get();
+        // $AllProyTesis->toArray();
+        // for ($i=0; $i < count($AllProyTesis); $i++) {
+        //     foreach ($AllProyTesis[$i] as $atributo) {
+        //         if ($atributo!=null) {
+        //             $porce += 100/33;
+        //         }
+        //     }
+        //     $dato .= $AllProyTesis[$i]->cod_matricula.'_'.(int)$porce.'-';
+        //     $porce = 0;
+        // }
         // ---------------------------------------------------------
-        return view('cursoTesis20221.reportes.listaReportes',['porcentaje'=>$porcentaje,'totalEstudiantes'=>$totalEstudiantes,
-                                'totalAsesores'=>$totalAsesores,'dato'=>$dato,'dato2'=>$dato2]);
+        // return view('cursoTesis20221.reportes.listaReportes',['porcentaje'=>$porcentaje,'totalEstudiantes'=>$totalEstudiantes,
+        //                         'totalAsesores'=>$totalAsesores,'dato'=>$dato,'dato2'=>$dato2]);
+        return view('cursoTesis20221.reportes.listaReportes');
     }
 
     public function descargarReporteProyT(Request $request){

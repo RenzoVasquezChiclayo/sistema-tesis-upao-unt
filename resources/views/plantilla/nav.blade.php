@@ -145,13 +145,6 @@
             </a>
             <span class="tooltip">Grupos de Investigacion</span>
         </li>
-        <!-- <li>
-            <a href="{{ route('director.asignarAsesorGrupos') }}">
-
-                <span class="links_name">Asignar Asesor a Grupos</span>
-            </a>
-            <span class="tooltip">Asignar Asesor a Grupos</span>
-        </li> -->
         <li>
             <a href="{{ route('director.listaAlumnos') }}">
                 <i class='bx bx-sm bx-list-ol'></i>

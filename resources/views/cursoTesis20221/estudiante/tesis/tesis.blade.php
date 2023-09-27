@@ -185,16 +185,16 @@
                             <h5>Titulo</h5>
                             <div class="col">
                                 <div class="row">
-                                    <div class="col-12 col-md-10">
+                                    <div class="col-12">
                                         <div class="row gy-1 gy-sm-0">
-                                            <div class="col-12 col-sm-9">
+                                            <div class="col-12 col-sm-11">
                                                 <input class="form-control" name="txttitulo" id="txttitulo" type="text"
                                                     value="@if ($tesis->titulo != null){{$tesis->titulo}}@endif"
                                                     placeholder="Ingrese el titulo de la tesis">
                                                 <span class="ps-2" id="validateTitle" name="validateTitle"
                                                     style="color: red"></span>
                                             </div>
-                                            <div class="col-12 col-sm-3">
+                                            <div class="col-12 col-sm-1">
                                                 <input type="button" value="Verificar" onclick="validaText();"
                                                     class="btn btn-success">
                                             </div>

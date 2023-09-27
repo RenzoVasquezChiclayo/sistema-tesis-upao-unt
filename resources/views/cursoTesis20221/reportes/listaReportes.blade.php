@@ -4,7 +4,7 @@
 @endsection
 @section('contenido')
     <h1>REPORTES</h1>
-    @if (auth()->user()->rol == 'CTesis2022-1')
+    {{-- @if (auth()->user()->rol == 'CTesis2022-1')
         <div class="row">
             <div class="col-3">
                 <h4>% Avance Proyecto de Tesis</h4>
@@ -49,8 +49,8 @@
                     <h2 class="card-title">{{$totalAsesores}}</h2>
                 </div>
             </div>
-        </div>
-        <input type="hidden" name="Codigo_Avance" id="Codigo_Avance" value="{{$dato}}">
+        </div> --}}
+        {{-- <input type="hidden" name="Codigo_Avance" id="Codigo_Avance" value="{{$dato}}">
         <input type="hidden" id="rol" value="d-CTesis2022-1">
         <div class="row">
             <div class="col-6">
@@ -76,10 +76,10 @@
                 </form>
             </div>
 
-        </div>
+        </div> --}}
 
 
-    @endif
+    {{-- @endif --}}
 
 
 @endsection

@@ -63,7 +63,7 @@
                     <div class="row" >
                         <input class="btn btn-success" type="submit" value="Guardar Edicion" id="saveAsignacion" hidden>
                     </div>
-                    <a href="{{route('director.asignar')}}" class="btn btn-danger">Volver</a>
+                    <a href="{{route('director.asignarAsesorGrupos')}}" class="btn btn-danger">Volver</a>
                 </form>
                 <div>
                     {{$studentforGroups->links()}}

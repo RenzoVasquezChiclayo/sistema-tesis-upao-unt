@@ -48,7 +48,7 @@
                     <tr>
                         <td>Numero de grupo</td>
                         <td>Estudiante(s)</td>
-                        <td>Acciones</td>
+                        {{-- <td>Acciones</td> --}}
                     </tr>
                 </thead>
                 <tbody>
@@ -64,10 +64,10 @@
                                     {{ $grupo[0]->apellidos . ' ' . $grupo[0]->nombres . ' & ' . $grupo[1]->apellidos . ' ' . $grupo[1]->nombres }}@else{{ $grupo[0]->apellidos . ' ' . $grupo[0]->nombres }}
                                 @endif
                             </td>
-                            <td>
+                            {{-- <td>
                                 <button type="button" class="btn btn-warning"><i class='bx bxs-edit bx-xs'></i></button>
                                 <button type="button" class="btn btn-danger"><i class='bx bxs-trash bx-xs'></i></button>
-                            </td>
+                            </td> --}}
                         </tr>
                         @php
                             $cont++;
