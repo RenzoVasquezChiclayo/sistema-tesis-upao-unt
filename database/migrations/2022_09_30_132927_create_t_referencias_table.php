@@ -23,14 +23,14 @@ return new class extends Migration
 
             $table->text('autor')->nullable();
             $table->string('fPublicacion',30)->nullable();
-            $table->string('titulo',60)->nullable();
+            $table->text('titulo')->nullable();
             $table->string('fuente',60)->nullable();
 
             $table->string('editorial',60)->nullable();
-            $table->string('title_cap',60)->nullable();
+            $table->text('title_cap')->nullable();
             $table->string('num_capitulo',25)->nullable();
 
-            $table->string('title_revista',60)->nullable();
+            $table->text('title_revista')->nullable();
             $table->string('volumen',25)->nullable();
 
             $table->string('name_web',60)->nullable();
@@ -39,7 +39,7 @@ return new class extends Migration
 
             $table->string('name_institucion',60)->nullable();
 
-            $table->string('subtitle',60)->nullable();
+            $table->text('subtitle')->nullable();
             $table->string('name_editor',60)->nullable();
 
             $table->integer('cod_tesis')->nullable();

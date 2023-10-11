@@ -40,8 +40,11 @@
                         <div class="col-7">
                             <input class="form-control" type="file" name="importAlumno" id="importAlumno">
                         </div>
-                        <div class="col-5">
+                        <div class="col-4">
                             <button class="btn btn-success" type="submit">Importar Registro</button>
+                            <a href="#" data-bs-toggle="tooltip" data-bs-title="El documento Excel debe tener las siguientes cabeceras: cod_matricula,dni,apellidos,nombres,correo">
+                              <i class='bx bx-info-circle'></i>
+                            </a>
                         </div>
                     </div>
             </form>
@@ -106,11 +109,24 @@
                     timer: 1500
                 })
             </script>
+    @elseif (session('datos') == 'exists')
+        <script>
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Ya existe un alumno con el mismo codigo de matricula',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        </script>
     @endif
     <script type="text/javascript">
         window.onload = function() {
             semestre = document.getElementById('semestre_academico').value;
             document.getElementById('semestre_hidden').value = semestre;
         }
+
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
     </script>
 @endsection

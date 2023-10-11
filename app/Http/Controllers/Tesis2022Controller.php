@@ -127,6 +127,7 @@ class Tesis2022Controller extends Controller
             $tesis->agradecimiento = $request->txtagradecimiento ?: null;
             if ($request->txtpresentacion != ""){ $tesis->presentacion = $request->txtpresentacion;}
             if ($request->txtresumen != ""){ $tesis->resumen = $request->txtresumen;}
+            if ($request->txtabstract != ""){ $tesis->abstract = $request->txtabstract;}
 
 
             if($request->list_keyword!=""){
@@ -239,19 +240,22 @@ class Tesis2022Controller extends Controller
                             if (!file_exists($destinationPath)) {
                                 mkdir($destinationPath,0777,true);
                             }
-                            for($j = 0; $j<sizeof($file);$j++){
-                                $posImg = $j;
-                                $listDetalle = Detalle_Archivo::where('cod_archivos',$historialArchivos->cod_archivos)->where('grupo',$i)->where('tipo','resultados')->get();
-                                if(sizeof($listDetalle)>0) $posImg = sizeof($listDetalle);
-                                $det_archivo = new Detalle_Archivo();
-                                $filename = $i.$posImg.'-'.$tesis->cod_matricula.'.jpg';
-                                $uploadSuccess = $file[$j]->move($destinationPath,$filename);
-                                $det_archivo->cod_archivos = $historialArchivos->cod_archivos;
-                                $det_archivo->tipo = 'resultados';
-                                $det_archivo->ruta = $filename;
-                                $det_archivo->grupo = $i;
-                                $det_archivo->save();
+                            if($file!=null){
+                                for($j = 0; $j<sizeof($file);$j++){
+                                    $posImg = $j;
+                                    $listDetalle = Detalle_Archivo::where('cod_archivos',$historialArchivos->cod_archivos)->where('grupo',$i)->where('tipo','resultados')->get();
+                                    if(sizeof($listDetalle)>0) $posImg = sizeof($listDetalle);
+                                    $det_archivo = new Detalle_Archivo();
+                                    $filename = $i.$posImg.'-'.$tesis->cod_matricula.'.jpg';
+                                    $uploadSuccess = $file[$j]->move($destinationPath,$filename);
+                                    $det_archivo->cod_archivos = $historialArchivos->cod_archivos;
+                                    $det_archivo->tipo = 'resultados';
+                                    $det_archivo->ruta = $filename;
+                                    $det_archivo->grupo = $i;
+                                    $det_archivo->save();
+                                }
                             }
+
                         }
                     }
                 }else{
@@ -339,18 +343,21 @@ class Tesis2022Controller extends Controller
                     if (!file_exists($destinationPath)) {
                         mkdir($destinationPath,0777,true);
                     }
-                    for($j = 0; $j<sizeof($file);$j++){
-                        $posImg = $j;
-                        $listDetalle = Detalle_Archivo::where('cod_archivos',$historialArchivos->cod_archivos)->where('grupo','0')->where('tipo','anexos')->get();
-                        if(sizeof($listDetalle)>0) $posImg = sizeof($listDetalle);
-                        $filename = '0'.$posImg.'-'.$tesis->cod_matricula.'.jpg';
-                        $uploadSuccess = $file[$j]->move($destinationPath,$filename);
-                        $det_archivo->cod_archivos = $historialArchivos->cod_archivos;
-                        $det_archivo->tipo = 'anexos';
-                        $det_archivo->ruta = $filename;
-                        $det_archivo->grupo = 0;
-                        $det_archivo->save();
+                    if($file!=null){
+                        for($j = 0; $j<sizeof($file);$j++){
+                            $posImg = $j;
+                            $listDetalle = Detalle_Archivo::where('cod_archivos',$historialArchivos->cod_archivos)->where('grupo','0')->where('tipo','anexos')->get();
+                            if(sizeof($listDetalle)>0) $posImg = sizeof($listDetalle);
+                            $filename = '0'.$posImg.'-'.$tesis->cod_matricula.'.jpg';
+                            $uploadSuccess = $file[$j]->move($destinationPath,$filename);
+                            $det_archivo->cod_archivos = $historialArchivos->cod_archivos;
+                            $det_archivo->tipo = 'anexos';
+                            $det_archivo->ruta = $filename;
+                            $det_archivo->grupo = 0;
+                            $det_archivo->save();
+                        }
                     }
+
                 }
             }
 
@@ -968,6 +975,8 @@ class Tesis2022Controller extends Controller
             $presentacion = $tesis[0]->presentacion;
             // Resumen
             $resumen = $tesis[0]->resumen;
+            //Abstract
+            $abstract = $tesis[0]->abstract;
             // Keywords
             $keywords = TDetalleKeyword::join('t_keyword','t_detalle_keyword.id_keyword','=','t_keyword.id_keyword')
                                         ->join('tesis_2022','t_keyword.cod_tesis','=','tesis_2022.cod_tesis')
@@ -1179,12 +1188,10 @@ class Tesis2022Controller extends Controller
             $SesionResumen->addListItem("RESUMEN",0.5,$titulos,[\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER],$styleContenido);
             $SesionResumen->addText($resumen,null,$styleContenido);
             $SesionResumen->addText("Palabras clave: ".$lineKeywords,null,$styleContenido);
+            $SesionResumen->addTextBreak(1);
+            $SesionResumen->addListItem("ABSTRACT",0.5,$titulos,[\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER],$styleContenido);
+            $SesionResumen->addText($abstract,null,$styleContenido);
 
-            // for ($i=0; $i < count($keywords); $i++) {
-            //     if (!empty($keywords[$i+1])) {
-            //         $SesionResumen->addText("Palabras clave: ".$keywords[$i]->keyword.', '.$keywords[$i+1]->keyword,null,$styleContenido);
-            //     }
-            // }
 
             $SesionIntroduccion = $word->addSection();
             $SesionIntroduccion->addListItem("INTRODUCCION",0.5,$titulos,[\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER],$styleContenido);

@@ -968,7 +968,7 @@
         function uploadProyecto(){
 
             let hayCorreccion = false;
-            for(let i=1; i<24;i++){
+            for(let i=1; i<28;i++){
                 if(array_chk[i] == 1){
                     if(document.getElementById('tachkCorregir'+i).value != ""){
                         hayCorreccion = true;

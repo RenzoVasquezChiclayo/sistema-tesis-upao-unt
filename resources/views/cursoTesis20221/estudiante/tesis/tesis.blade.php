@@ -413,6 +413,14 @@
 
                     </div>
                     <div class="row" style=" margin-bottom:20px;">
+                        <h5>Abstract</h5>
+                        <div class="row" style="margin-bottom:8px">
+                            <div class="col-12 col-md-10">
+                                <textarea class="form-control" name="txtabstract" id="txtabstract" >@if ($tesis->abstract != null){{$tesis->abstract}}@endif</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style=" margin-bottom:20px;">
                         <h5>Palabras claves</h5>
                         <div class="col col-sm-4">
                             <div class="input-group">

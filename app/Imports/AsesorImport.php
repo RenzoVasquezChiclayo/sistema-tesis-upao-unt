@@ -6,8 +6,9 @@ use App\Models\AsesorCurso;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class AsesorImport implements ToModel
+class AsesorImport implements ToModel, WithHeadingRow
 {
     public $semestre_academico;
 
@@ -17,17 +18,21 @@ class AsesorImport implements ToModel
     }
     public function model(array $row)
     {
+        $find_asesor = DB::table('asesor_curso')->where('cod_docente',$row['cod_docente'])->first();
 
-        return new AsesorCurso([
-            'cod_docente'=> $row[0],
-            'nombres'=> $row[1],
-            'orcid'=> $row[2],
-            'grado_academico'=> $row[3],
-            'titulo_profesional'=> $row[4],
-            'direccion'=> $row[5],
-            'correo' => $row[6],
-            'semestre_academico'=> $this->semestre_academico,
-        ]);
+        if ($find_asesor == null) {
+            return new AsesorCurso([
+                'cod_docente'=> $row['cod_docente'],
+                'nombres'=> $row['nombres'],
+                'orcid'=> $row['orcid'],
+                'grado_academico'=> $row['categoria'],
+                'titulo_profesional'=> $row['carrera'],
+                'direccion'=> $row['direccion']==null? "":$row['direccion'],
+                'correo' => $row['correo']==null? "":$row['correo'],
+                'semestre_academico'=> $this->semestre_academico,
+            ]);
+        }
+
     }
 
 }

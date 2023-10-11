@@ -30,6 +30,9 @@
                             </div>
                             <div class="col-5">
                                 <button class="btn btn-success" type="submit">Importar Registro</button>
+                                <a href="#" data-bs-toggle="tooltip" data-bs-title="El documento Excel debe tener las siguientes cabeceras: cod_docente,nombres,orcid,categoria,carrera,direccion,correo">
+                                    <i class='bx bx-info-circle'></i>
+                                  </a>
                             </div>
                         </div>
                 </form>
@@ -134,7 +137,8 @@
             contadorCaracteres.textContent = `${inputDireccion.value.length}/30`;
         });
 
-
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
     </script>
 @endsection

@@ -1865,11 +1865,11 @@ class CursoTesisController extends Controller
             $tesis->estado = 2;
             $tesis->save();
 
-            if ($cursoTesis[0]->correoEstudi != null) {
-                $titulo = $cursoTesis[0]->titulo;
-                $asesor = $cursoTesis[0]->nombresAsesor;
-                Mail::to($cursoTesis[0]->correoEstudi)->send(new EstadoObservadoMail($titulo,$asesor));
-            }
+            // if ($cursoTesis[0]->correoEstudi != null) {
+            //     $titulo = $cursoTesis[0]->titulo;
+            //     $asesor = $cursoTesis[0]->nombresAsesor;
+            //     Mail::to($cursoTesis[0]->correoEstudi)->send(new EstadoObservadoMail($titulo,$asesor));
+            // }
 
         } catch (\Throwable $th) {
             return redirect()->route('asesor.verObsEstudiante',$existHisto[0]->cod_historialObs)->with('datos','oknot');
