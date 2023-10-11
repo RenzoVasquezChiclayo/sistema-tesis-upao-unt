@@ -1315,7 +1315,12 @@ class Tesis2022Controller extends Controller
                     if (count($img_resultado)!=0) {
                         for ($j=0; $j < count($img_resultado); $j++) {
                             if ($img_resultado[$j]->grupo==$i) {
-                                $nuevaSesion->addImage("cursoTesis-2022/img/".$tesis[0]->cod_matricula."-Tesis/resultados/".$img_resultado[$j]->ruta,$styleImage);
+                                try {
+                                    $nuevaSesion->addImage("cursoTesis-2022/img/".$tesis[0]->cod_matricula."-Tesis/resultados/".$img_resultado[$j]->ruta,$styleImage);
+                                } catch (\Throwable $th) {
+                                    $nuevaSesion->addText("Imagen invalida",null,$styleContenido);
+                                }
+
                             }
                         }
                     }
