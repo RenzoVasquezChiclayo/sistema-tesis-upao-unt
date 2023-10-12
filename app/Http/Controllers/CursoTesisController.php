@@ -192,19 +192,28 @@ class CursoTesisController extends Controller
             if($request->listOldlrec!=""){
                 $deleteRecursos = explode(",",$request->listOldlrec);
                 for($i = 0; $i<sizeof($deleteRecursos);$i++){
-                    recursos::find($deleteRecursos[$i])->delete();
+                    $recursosDelete = recursos::find($deleteRecursos[$i]);
+                    if ($recursosDelete != null) {
+                        $recursosDelete->delete();
+                    }
                 }
             }
             if($request->listOldlvar!=""){
                 $deleteVariables = explode(",",$request->listOldlvar);
                 for($i = 0; $i<sizeof($deleteVariables);$i++){
-                    variableOP::find($deleteVariables[$i])->delete();
+                    $variableDelete = variableOP::find($deleteVariables[$i]);
+                    if ($variableDelete != null) {
+                        $variableDelete->delete();
+                    }
                 }
             }
             if($request->listOldlobj!=""){
                 $deleteObjetivos = explode(",",$request->listOldlobj);
                 for($i = 0; $i<sizeof($deleteObjetivos);$i++){
-                    Objetivo::find($deleteObjetivos[$i])->delete();
+                    $objetivoDelete = Objetivo::find($deleteObjetivos[$i]);
+                    if ($objetivoDelete != null) {
+                        $objetivoDelete->delete();
+                    }
                 }
             }
 

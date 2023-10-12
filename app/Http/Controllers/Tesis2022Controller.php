@@ -116,7 +116,10 @@ class Tesis2022Controller extends Controller
             if($request->listOldlobj!=""){
                 $deleteObjetivos = explode(",",$request->listOldlobj);
                 for($i = 0; $i<sizeof($deleteObjetivos);$i++){
-                    TObjetivo::find($deleteObjetivos[$i])->delete();
+                    $objDelete = TObjetivo::find($deleteObjetivos[$i]);
+                    if ($objDelete != null) {
+                        $objDelete->delete();
+                    }
                 }
             }
 
@@ -268,7 +271,6 @@ class Tesis2022Controller extends Controller
                     if (!file_exists($destinationPath)) {
                         mkdir($destinationPath,0777,true);
                     }
-                    //HOSTING
                     if ($file != null) {
                         for($j = 0; $j<sizeof($file);$j++){
                             $posImg = $j;
@@ -684,7 +686,7 @@ class Tesis2022Controller extends Controller
         do {
             if ($posicion[$i]!=null) {
                 $datos = explode('_',$posicion[$i]);
-                $estudiante = EstudianteCT2022::find($datos[0]);
+                $estudiante = DB::table('estudiante_ct2022 as e')->select('e.*')->where('e.cod_matricula','like','%'.$datos[0].'%')->first();
                 $tesis = Tesis_2022::where('cod_matricula',$estudiante->cod_matricula)->first();
                 $tesis->cod_docente = $datos[1];
                 $tesis->save();
@@ -1528,7 +1530,7 @@ class Tesis2022Controller extends Controller
         $nuevaSesion = $word->addSection();
 
         $nuevaSesion->addText($fecha,$titulo,$styleFecha);
-        $nuevaSesion->addText('OBSERVACIONES PROYECTO DE TESIS',$titulos,$styleTitulos);
+        $nuevaSesion->addText('OBSERVACIONES TESIS',$titulos,$styleTitulos);
         $nuevaSesion->addText($numObservacion,$titulo,$styleTitulos);
 
         $nuevaSesion->addText('Codigo Egresado: '.$cod_matricula,$titulos,$styleFecha);
