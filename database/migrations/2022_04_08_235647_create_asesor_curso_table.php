@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('asesor_curso', function (Blueprint $table) {
             $table->char('cod_docente',4)->primary();
             $table->string('nombres',50);
+            $table->string('apellidos',50);
             $table->string('grado_academico',30);
             $table->string('titulo_profesional',30);
             $table->string('direccion',45);

@@ -123,6 +123,13 @@
                 </a>
                 <span class="tooltip">Listar Usuarios</span>
             </li>
+            <li>
+                <a href="{{ route('admin.configurar') }}">
+                    <i class='bx bxs-cog'></i>
+                    <span class="links_name">Configuraciones Iniciales</span>
+                </a>
+                <span class="tooltip">Configuraciones Iniciales</span>
+            </li>
         @endif
         <li>
             <a href="{{ route('director.generalidades') }}">

@@ -218,19 +218,28 @@ class CursoTesisController extends Controller
             if($request->listOldlrec!=""){
                 $deleteRecursos = explode(",",$request->listOldlrec);
                 for($i = 0; $i<sizeof($deleteRecursos);$i++){
-                    recursos::find($deleteRecursos[$i])->delete();
+                    $recDelete = recursos::find($deleteRecursos[$i]);
+                    if($recDelete != null){
+                        $recDelete->delete();
+                    }
                 }
             }
             if($request->listOldlvar!=""){
                 $deleteVariables = explode(",",$request->listOldlvar);
                 for($i = 0; $i<sizeof($deleteVariables);$i++){
-                    variableOP::find($deleteVariables[$i])->delete();
+                    $varDelete = variableOP::find($deleteVariables[$i]);
+                    if($varDelete != null){
+                        $varDelete->delete();
+                    }
                 }
             }
             if($request->listOldlobj!=""){
                 $deleteObjetivos = explode(",",$request->listOldlobj);
                 for($i = 0; $i<sizeof($deleteObjetivos);$i++){
-                    Objetivo::find($deleteObjetivos[$i])->delete();
+                    $objDelete = Objetivo::find($deleteObjetivos[$i]);
+                    if($objDelete != null){
+                        $objDelete->delete();
+                    }
                 }
             }
 
@@ -1569,7 +1578,7 @@ class CursoTesisController extends Controller
         }
         $studentforGroups = new Paginator($studentforGroups, $this::PAGINATION5);
 
-        $asesores = AsesorCurso::all();
+        $asesores = DB::table('asesor_curso')->get();
         return view('cursoTesis20221.director.editarAsignacion',['estudiantes'=>$estudiantes,'asesores'=>$asesores, 'studentforGroups'=>$studentforGroups]);
     }
 
@@ -1596,7 +1605,8 @@ class CursoTesisController extends Controller
                 $i++;
             } while ($i<count($posicion));
         }catch(\Throwable $th) {
-            return back()->with('datos','oknot');
+            dd($th);
+            //return back()->with('datos','oknot');
         }
         return redirect()->route('director.editarAsignacion')->with('datos','ok');
     }
@@ -1638,21 +1648,28 @@ class CursoTesisController extends Controller
     }
     const PAGINATION2 = 10;
     public function listaAlumnos(Request $request){
+        $semestre = DB::table('configuraciones_iniciales as ci')->select('ci.*')->get();
+        $select_semestre = $request->filtrar_semestre;
         $buscarAlumno = $request->buscarAlumno;
         if($buscarAlumno!=""){
             if (is_numeric($buscarAlumno)) {
-                $estudiantes = DB::table('estudiante_ct2022')->select('estudiante_ct2022.*')->where('estudiante_ct2022.cod_matricula','like','%'.$buscarAlumno.'%')->orderBy('estudiante_ct2022.apellidos')->paginate($this::PAGINATION2);
+                    $estudiantes = DB::table('estudiante_ct2022')->select('estudiante_ct2022.*')->where('estudiante_ct2022.cod_matricula','like','%'.$buscarAlumno.'%')->orderBy('estudiante_ct2022.apellidos')->paginate($this::PAGINATION2);
             } else {
-                $estudiantes = DB::table('estudiante_ct2022')->select('estudiante_ct2022.*')->where('estudiante_ct2022.apellidos','like','%'.$buscarAlumno.'%')->orderBy('estudiante_ct2022.apellidos')->paginate($this::PAGINATION2);
+                    $estudiantes = DB::table('estudiante_ct2022')->select('estudiante_ct2022.*')->where('estudiante_ct2022.apellidos','like','%'.$buscarAlumno.'%')->orderBy('estudiante_ct2022.apellidos')->paginate($this::PAGINATION2);
             }
         }else{
-            $estudiantes = DB::table('estudiante_ct2022')->select('estudiante_ct2022.*')->orderBy('estudiante_ct2022.apellidos')->paginate($this::PAGINATION2);
+                $estudiantes = DB::table('estudiante_ct2022')->select('estudiante_ct2022.*')->orderBy('estudiante_ct2022.apellidos')->paginate($this::PAGINATION2);
         }
-        return view('cursoTesis20221.director.listaAlumnos',['estudiantes'=>$estudiantes,'buscarAlumno'=>$buscarAlumno]);
+        if ($select_semestre!=null) {
+            $estudiantes = DB::table('estudiante_ct2022')->select('estudiante_ct2022.*')->where('estudiante_ct2022.semestre_academico','like','%'.$select_semestre.'%')->orderBy('estudiante_ct2022.apellidos')->paginate($this::PAGINATION2);
+        }
+        return view('cursoTesis20221.director.listaAlumnos',['estudiantes'=>$estudiantes,'buscarAlumno'=>$buscarAlumno,'semestre'=>$semestre]);
     }
 
     const PAGINATION4 = 10;
     public function listaAsesores(Request $request){
+        $semestre = DB::table('configuraciones_iniciales as ci')->select('ci.*')->get();
+        $select_semestre = $request->filtrar_semestre;
         $buscarAsesor = $request->buscarAsesor;
         if($buscarAsesor!=""){
             if (is_numeric($buscarAsesor)) {
@@ -1663,7 +1680,10 @@ class CursoTesisController extends Controller
         }else{
             $asesores = DB::table('asesor_curso')->select('asesor_curso.*')->orderBy('asesor_curso.nombres')->paginate($this::PAGINATION4);
         }
-        return view('cursoTesis20221.director.listaAsesores',['asesores'=>$asesores,'buscarAsesor'=>$buscarAsesor]);
+        if ($select_semestre!=null) {
+            $asesores = DB::table('asesor_curso')->select('asesor_curso.*')->where('asesor_curso.semestre_academico','like','%'.$select_semestre.'%')->orderBy('asesor_curso.nombres')->paginate($this::PAGINATION2);
+        }
+        return view('cursoTesis20221.director.listaAsesores',['asesores'=>$asesores,'buscarAsesor'=>$buscarAsesor,'semestre'=>$semestre]);
     }
 
     public function verAlumnoEditar(Request $request){
@@ -1793,8 +1813,7 @@ class CursoTesisController extends Controller
                 }
             }
         } catch (\Throwable $th) {
-            dd($th);
-            //return redirect()->route('director.verGrupos')->with('datos','oknot');
+            return redirect()->route('director.verGrupos')->with('datos','oknot');
         }
 
         return redirect()->route('director.verGrupos')->with('datos','ok');
@@ -1853,7 +1872,6 @@ class CursoTesisController extends Controller
         $id_grupo = $request->id_grupo;
         $cursoTesis = DB::table('proyecto_tesis as p')
                             ->join('grupo_investigacion as g_i','g_i.id_grupo','=','p.id_grupo_inves')
-                            // ->join('estudiante_ct2022 as e','e.cod_matricula','=','p.cod_matricula')
                             ->join('asesor_curso as ac','ac.cod_docente','=','p.cod_docente')
                             ->select('p.*','ac.nombres as nombre_asesor','ac.*')
                             ->where('g_i.id_grupo',$id_grupo)->get();

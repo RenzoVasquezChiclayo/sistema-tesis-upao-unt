@@ -40,7 +40,7 @@
                                                 @if ($grupo[0]->cod_docente == $ase->cod_docente)
                                                     selected
                                                 @endif
-                                                >{{$ase->nombres}}</option>
+                                                >{{$ase->cod_docente}}_{{$ase->nombres}}</option>
                                             @endforeach
                                         </select>
                                     </td>

@@ -6,32 +6,35 @@
     <div class="row" style="display: flex; align-items:center; padding-top:15px;">
         <div class="col-10">
             <div class="row" style="text-align:center;">
-                <h3>Registro de Asesor(es)</h3>
+                <h3>Registro de Asesores</h3>
             </div>
             <div class="row border-box" style="margin-bottom: 50px;">
                 <form action="{{ route('director.importarAsesores') }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="row justify-content-end">
                         <div class="col-3">
-                            <h5>Semestre academico</h5>
+                            <h5>Semestre académico</h5>
                         </div>
                         <div class="col-2">
-                            <select class="form-select" name="semestre_academico" id="semestre_academico" required>
-                                <option value="2023-I">2023-I</option>
+                            <select class="form-select" name="semestre_academico" id="semestre_academico" onchange="select_semestre();" required>
+                                <option value="0">-</option>
+                                @foreach ($semestre as $sem)
+                                    <option value="{{ $sem->cod_config_ini }}">{{ $sem->year }}_{{ $sem->curso }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="col-12">
                         <h5>Importar un registro Excel</h5>
                     </div>
-                        <div class="row">
-                            <div class="col-7">
-                                <input class="form-control" type="file" name="importAsesor" id="importAsesor">
-                            </div>
-                            <div class="col-5">
-                                <button class="btn btn-success" type="submit">Importar Registro</button>
-                            </div>
+                    <div class="row">
+                        <div class="col-7">
+                            <input class="form-control" type="file" name="importAsesor" id="importAsesor">
                         </div>
+                        <div class="col-5">
+                            <button class="btn btn-success" type="submit">Importar Registro</button>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="row border-box">
@@ -47,8 +50,8 @@
                     </div>
                     <div class="col-6">
                         <label for="orcid">ORCID</label>
-                        <input class="form-control" minlength="19" maxlength="20" type="text" id="orcid" name="orcid"
-                            placeholder="Ingrese su codigo ORCID" required>
+                        <input class="form-control" minlength="19" maxlength="20" type="text" id="orcid"
+                            name="orcid" placeholder="Ingrese su codigo ORCID" required>
                     </div>
                     <div class="col-12">
                         <label for="apellidos">Apellidos</label>
@@ -61,7 +64,7 @@
                             placeholder="Ingrese su nombre" required>
                     </div>
                     <div class="col-12">
-                        <label for="gradoAcademico">Categoria</label>
+                        <label for="gradoAcademico">Categoría</label>
                         <select class="form-control" name="gradAcademico" id="gradAcademico" required>
                             <option value="0">NOMBRADO</option>
                             <option value="1">CONTRATADO</option>
@@ -77,7 +80,7 @@
                     </div>
 
                     <div class="col-12">
-                        <label for="direccion">Direccion</label>
+                        <label for="direccion">Dirección</label>
                         <div class="input-group">
                             <input type="text" class="form-control" id="direccion" name="direccion" maxlength="30">
                             <span class="input-group-text" id="contador-caracteres">0/30</span>
@@ -123,9 +126,10 @@
         </script>
     @endif
     <script type="text/javascript">
-        window.onload = function() {
-            semestre = document.getElementById('semestre_academico').value;
-            document.getElementById('semestre_hidden').value = semestre;
+        function select_semestre() {
+            semestre = document.getElementById('semestre_academico');
+            selected = semestre.options[semestre.selectedIndex].text;
+            document.getElementById('semestre_hidden').value = selected;
         }
         const inputDireccion = document.querySelector('#direccion');
         const contadorCaracteres = document.querySelector('#contador-caracteres');
@@ -133,8 +137,5 @@
         inputDireccion.addEventListener('input', () => {
             contadorCaracteres.textContent = `${inputDireccion.value.length}/30`;
         });
-
-
-
     </script>
 @endsection

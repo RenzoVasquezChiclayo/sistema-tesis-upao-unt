@@ -6,6 +6,7 @@ use App\Imports\AlumnosImport;
 use App\Imports\AsesorImport;
 
 use App\Models\AsesorCurso;
+use App\Models\Configuraciones_Iniciales;
 use App\Models\Diseno_Investigacion;
 use App\Models\EstudianteCT2022;
 use App\Models\Fin_Persigue;
@@ -66,7 +67,6 @@ class AdminCursoController extends Controller
                         $matriz->save();
                     }
                 }
-                //HOSTING
                 if ($existTesisII->count()==0) {
                     $newTesisII = new Tesis_2022();
                     $newTesisII->id_grupo_inves = $grupo_inves->id_grupo;
@@ -353,10 +353,12 @@ class AdminCursoController extends Controller
     }
 
     public function showAddEstudiante(){
-        return view('cursoTesis20221.director.agregarAlumno');
+        $semestre = DB::table('configuraciones_iniciales as ci')->select('ci.*')->get();
+        return view('cursoTesis20221.director.agregarAlumno',['semestre'=>$semestre]);
     }
     public function showAddAsesor(){
-        return view('cursoTesis20221.director.agregarAsesor');
+        $semestre = DB::table('configuraciones_iniciales as ci')->select('ci.*')->get();
+        return view('cursoTesis20221.director.agregarAsesor',['semestre'=>$semestre]);
     }
 
     public function importRegistroAlumnos(Request $request){
@@ -523,4 +525,30 @@ class AdminCursoController extends Controller
         return view('cursoTesis20221.asesor.verObservacionEstudiante',['observaciones'=>$observaciones,'estudiante'=>$estudiante]);
     }
 
+    public function configuraciones(Request $request){
+        return view('cursoTesis20221.administrador.configuraciones_iniciales');
+    }
+
+    public function saveConfiguraciones(Request $request){
+        $year = $request->year;
+        $curso = $request->curso;
+        $ciclo = $request->ciclo;
+        try {
+            if ($year!=null && $curso!=null && $ciclo!=null) {
+                $new_conf = new Configuraciones_Iniciales();
+                $new_conf->year = $year;
+                $new_conf->curso = $curso;
+                $new_conf->ciclo = $ciclo;
+                $new_conf->save();
+                return redirect()->route('admin.configurar')->with('datos','ok');
+            }else{
+                return redirect()->route('admin.configurar')->with('datos','okNotNull');
+            }
+        } catch (\Throwable $th) {
+            dd($th);
+            //return redirect()->route('admin.configurar')->with('datos','okNot');
+        }
+    }
+
 }
+

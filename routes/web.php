@@ -86,6 +86,8 @@ Route::get('/listar-usuarios',[CursoTesisController::class,'listarUsuario'])->na
 Route::post('/editar-usuario',[CursoTesisController::class,'editarUsuario'])->name('admin.editar')->middleware('auth');
 Route::post('/save-editar-usuario',[CursoTesisController::class,'saveEditarUsuario'])->name('admin.saveEditar');
 Route::delete('/delete-usuario',[CursoTesisController::class,'deleteUsuario'])->name('admin.deleteUser');
+Route::get('/configuraciones-iniciales',[AdminCursoController::class,'configuraciones'])->name('admin.configurar')->middleware('auth');
+Route::post('/save-configuraciones-iniciales',[AdminCursoController::class,'saveConfiguraciones'])->name('admin.saveconfigurar')->middleware('auth');
 
 
 // Rutas para el director Curso

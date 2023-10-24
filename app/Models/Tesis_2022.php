@@ -19,6 +19,7 @@ class Tesis_2022 extends Model
 
         'presentacion',
         'resumen',
+        'abstract',
         'introduccion',
         'dedicatoria',
         'agradecimiento',

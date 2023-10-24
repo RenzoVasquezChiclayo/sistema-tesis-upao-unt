@@ -146,7 +146,11 @@ class Tesis2022Controller extends Controller
             if($request->listOldlobj!=""){
                 $deleteObjetivos = explode(",",$request->listOldlobj);
                 for($i = 0; $i<sizeof($deleteObjetivos);$i++){
-                    TObjetivo::find($deleteObjetivos[$i])->delete();
+                    $objDelete = TObjetivo::find($deleteObjetivos[$i]);
+                    if($objDelete != null){
+                        $objDelete->delete();
+                    }
+
                 }
             }
 
@@ -155,6 +159,7 @@ class Tesis2022Controller extends Controller
             $tesis->agradecimiento = $request->txtagradecimiento ?: null;
             if ($request->txtpresentacion != ""){ $tesis->presentacion = $request->txtpresentacion;}
             if ($request->txtresumen != ""){ $tesis->resumen = $request->txtresumen;}
+            if ($request->txtabstract != ""){ $tesis->abstract = $request->txtabstract;}
 
 
             if($request->list_keyword!=""){
@@ -267,18 +272,20 @@ class Tesis2022Controller extends Controller
                             if (!file_exists($destinationPath)) {
                                 mkdir($destinationPath,0777,true);
                             }
-                            for($j = 0; $j<sizeof($file);$j++){
-                                $posImg = $j;
-                                $listDetalle = Detalle_Archivo::where('cod_archivos',$historialArchivos->cod_archivos)->where('grupo',$i)->where('tipo','resultados')->get();
-                                if(sizeof($listDetalle)>0) $posImg = sizeof($listDetalle);
-                                $det_archivo = new Detalle_Archivo();
-                                $filename = $i.$posImg.'-'.$tesis->id_grupo_inves.'.jpg';
-                                $uploadSuccess = $file[$j]->move($destinationPath,$filename);
-                                $det_archivo->cod_archivos = $historialArchivos->cod_archivos;
-                                $det_archivo->tipo = 'resultados';
-                                $det_archivo->ruta = $filename;
-                                $det_archivo->grupo = $i;
-                                $det_archivo->save();
+                            if($file!=null){
+                                for($j = 0; $j<sizeof($file);$j++){
+                                    $posImg = $j;
+                                    $listDetalle = Detalle_Archivo::where('cod_archivos',$historialArchivos->cod_archivos)->where('grupo',$i)->where('tipo','resultados')->get();
+                                    if(sizeof($listDetalle)>0) $posImg = sizeof($listDetalle);
+                                    $det_archivo = new Detalle_Archivo();
+                                    $filename = $i.$posImg.'-'.$tesis->id_grupo_inves.'.jpg';
+                                    $uploadSuccess = $file[$j]->move($destinationPath,$filename);
+                                    $det_archivo->cod_archivos = $historialArchivos->cod_archivos;
+                                    $det_archivo->tipo = 'resultados';
+                                    $det_archivo->ruta = $filename;
+                                    $det_archivo->grupo = $i;
+                                    $det_archivo->save();
+                                }
                             }
                         }
                     }
@@ -292,18 +299,21 @@ class Tesis2022Controller extends Controller
                     if (!file_exists($destinationPath)) {
                         mkdir($destinationPath,0777,true);
                     }
-                    for($j = 0; $j<sizeof($file);$j++){
-                        $posImg = $j;
-                        $listDetalle = Detalle_Archivo::where('cod_archivos',$historialArchivos->cod_archivos)->where('grupo','0')->where('tipo','resultados')->get();
-                        if(sizeof($listDetalle)>0) $posImg = sizeof($listDetalle);
-                        $filename = '0'.$posImg.'-'.$tesis->id_grupo_inves.'.jpg';
-                        $uploadSuccess = $file[$j]->move($destinationPath,$filename);
-                        $det_archivo->cod_archivos = $historialArchivos->cod_archivos;
-                        $det_archivo->tipo = 'resultados';
-                        $det_archivo->ruta = $filename;
-                        $det_archivo->grupo = 0;
-                        $det_archivo->save();
+                    if($file!=null){
+                        for($j = 0; $j<sizeof($file);$j++){
+                            $posImg = $j;
+                            $listDetalle = Detalle_Archivo::where('cod_archivos',$historialArchivos->cod_archivos)->where('grupo','0')->where('tipo','resultados')->get();
+                            if(sizeof($listDetalle)>0) $posImg = sizeof($listDetalle);
+                            $filename = '0'.$posImg.'-'.$tesis->id_grupo_inves.'.jpg';
+                            $uploadSuccess = $file[$j]->move($destinationPath,$filename);
+                            $det_archivo->cod_archivos = $historialArchivos->cod_archivos;
+                            $det_archivo->tipo = 'resultados';
+                            $det_archivo->ruta = $filename;
+                            $det_archivo->grupo = 0;
+                            $det_archivo->save();
+                        }
                     }
+
                 }
             }
 
@@ -334,19 +344,22 @@ class Tesis2022Controller extends Controller
                             if (!file_exists($destinationPath)) {
                                 mkdir($destinationPath,0777,true);
                             }
-                            for($j = 0; $j<sizeof($file);$j++){
-                                $posImg = $j;
-                                $listDetalle = Detalle_Archivo::where('cod_archivos',$historialArchivos->cod_archivos)->where('grupo',$i)->where('tipo','anexos')->get();
-                                if(sizeof($listDetalle)>0) $posImg = sizeof($listDetalle);
-                                $det_archivo = new Detalle_Archivo();
-                                $filename = $i.$posImg.'-'.$tesis->id_grupo_inves.'.jpg';
-                                $uploadSuccess = $file[$j]->move($destinationPath,$filename);
-                                $det_archivo->cod_archivos = $historialArchivos->cod_archivos;
-                                $det_archivo->tipo = 'anexos';
-                                $det_archivo->ruta = $filename;
-                                $det_archivo->grupo = $i;
-                                $det_archivo->save();
+                            if($file!=null){
+                                for($j = 0; $j<sizeof($file);$j++){
+                                    $posImg = $j;
+                                    $listDetalle = Detalle_Archivo::where('cod_archivos',$historialArchivos->cod_archivos)->where('grupo',$i)->where('tipo','anexos')->get();
+                                    if(sizeof($listDetalle)>0) $posImg = sizeof($listDetalle);
+                                    $det_archivo = new Detalle_Archivo();
+                                    $filename = $i.$posImg.'-'.$tesis->id_grupo_inves.'.jpg';
+                                    $uploadSuccess = $file[$j]->move($destinationPath,$filename);
+                                    $det_archivo->cod_archivos = $historialArchivos->cod_archivos;
+                                    $det_archivo->tipo = 'anexos';
+                                    $det_archivo->ruta = $filename;
+                                    $det_archivo->grupo = $i;
+                                    $det_archivo->save();
+                                }
                             }
+
                         }
                     }
                 }else{
@@ -359,18 +372,21 @@ class Tesis2022Controller extends Controller
                     if (!file_exists($destinationPath)) {
                         mkdir($destinationPath,0777,true);
                     }
-                    for($j = 0; $j<sizeof($file);$j++){
-                        $posImg = $j;
-                        $listDetalle = Detalle_Archivo::where('cod_archivos',$historialArchivos->cod_archivos)->where('grupo','0')->where('tipo','anexos')->get();
-                        if(sizeof($listDetalle)>0) $posImg = sizeof($listDetalle);
-                        $filename = '0'.$posImg.'-'.$tesis->id_grupo_inves.'.jpg';
-                        $uploadSuccess = $file[$j]->move($destinationPath,$filename);
-                        $det_archivo->cod_archivos = $historialArchivos->cod_archivos;
-                        $det_archivo->tipo = 'anexos';
-                        $det_archivo->ruta = $filename;
-                        $det_archivo->grupo = 0;
-                        $det_archivo->save();
+                    if($file != null){
+                        for($j = 0; $j<sizeof($file);$j++){
+                            $posImg = $j;
+                            $listDetalle = Detalle_Archivo::where('cod_archivos',$historialArchivos->cod_archivos)->where('grupo','0')->where('tipo','anexos')->get();
+                            if(sizeof($listDetalle)>0) $posImg = sizeof($listDetalle);
+                            $filename = '0'.$posImg.'-'.$tesis->id_grupo_inves.'.jpg';
+                            $uploadSuccess = $file[$j]->move($destinationPath,$filename);
+                            $det_archivo->cod_archivos = $historialArchivos->cod_archivos;
+                            $det_archivo->tipo = 'anexos';
+                            $det_archivo->ruta = $filename;
+                            $det_archivo->grupo = 0;
+                            $det_archivo->save();
+                        }
                     }
+
                 }
             }
 
@@ -714,58 +730,6 @@ class Tesis2022Controller extends Controller
     }
 
     //-------------------------------------------------------------------------
-    const PAG_ASIGNACION=10;
-    public function showEstudentsForAsignacion(Request $request){
-        $buscar_estudiante = $request->buscar_estudiante;
-        if($buscar_estudiante!=""){
-            if (is_numeric($buscar_estudiante)) {
-                $estudiantes = DB::table('estudiante_ct2022 as e')->leftJoin('tesis_2022 as t','t.cod_matricula','=','e.cod_matricula')
-                ->select('e.*', 't.cod_docente')
-                ->where('e.cod_matricula','like','%'.$buscar_estudiante.'%')
-                ->orderBy('e.apellidos')
-                ->paginate($this::PAG_ASIGNACION);
-            } else {
-                $estudiantes = DB::table('estudiante_ct2022 as e')->leftJoin('tesis_2022 as t','t.cod_matricula','=','e.cod_matricula')
-                ->select('e.*', 't.cod_docente')
-                ->where('e.apellidos','like','%'.$buscar_estudiante.'%')->orderBy('e.apellidos')->paginate($this::PAG_ASIGNACION);
-            }
-        }else{
-            $estudiantes = DB::table('estudiante_ct2022 as e')->leftJoin('tesis_2022 as t','t.cod_matricula','=','e.cod_matricula')
-            ->select('e.*','t.cod_docente')
-            ->orderBy('e.apellidos')
-            ->paginate($this::PAG_ASIGNACION);
-        }
-        $asesores = AsesorCurso::all();
-        return view('cursoTesis20221.director.tesis.asignarAsesorTesis',['estudiantes'=>$estudiantes,'asesores'=>$asesores,'buscar_estudiante'=>$buscar_estudiante]);
-    }
-
-    public function saveAsignacionTesis(Request $request){
-
-        $asesor_asignado = $request->saveAsesor;
-        $posicion = explode(',',$asesor_asignado);
-        $i = 0;
-        do {
-            if ($posicion[$i]!=null) {
-                $datos = explode('_',$posicion[$i]);
-                $estudiante = EstudianteCT2022::find($datos[0]);
-                //Crear una registro de Tesis para asignar el asesor.
-                $tesisFound = Tesis_2022::where('cod_matricula',$estudiante->cod_matricula)->first();
-                if($tesisFound==null){
-                    $tesisFound = new Tesis_2022();
-                    $tesisFound->cod_matricula = $estudiante->cod_matricula;
-
-                }
-                //dd($datos);
-                $tesisFound->cod_docente = $datos[1];
-                $tesisFound->fecha_create = now();
-                $tesisFound->fecha_update = now();
-                $tesisFound->save();
-            }
-            $i++;
-        } while ($i<count($posicion));
-
-        return redirect()->route('director.asignarAsesorTesis')->with('datos','ok');
-    }
 
     public function showEstudiantAsignado(){
         $estudiantes = DB::table('estudiante_ct2022 as e')->leftJoin('detalle_grupo_investigacion as dg','dg.cod_matricula','=','e.cod_matricula')->join('grupo_investigacion as gi','gi.id_grupo','=','dg.id_grupo_inves')->select('e.*','gi.cod_docente_tesis','gi.id_grupo','gi.num_grupo')->where('gi.cod_docente_tesis','!=',null)->orderBy('gi.id_grupo')->get();
@@ -1147,6 +1111,8 @@ class Tesis2022Controller extends Controller
             $presentacion = $tesis[0]->presentacion;
             // Resumen
             $resumen = $tesis[0]->resumen;
+            // Abstract
+            $abstract = $tesis[0]->abstact;
             // Keywords
             $keywords = TDetalleKeyword::join('t_keyword','t_detalle_keyword.id_keyword','=','t_keyword.id_keyword')
                                         ->join('tesis_2022','t_keyword.cod_tesis','=','tesis_2022.cod_tesis')
@@ -1372,6 +1338,9 @@ class Tesis2022Controller extends Controller
             $SesionResumen->addListItem("RESUMEN",0.5,$titulos,[\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER],$styleContenido);
             $SesionResumen->addText($resumen,null,$styleContenido);
             $SesionResumen->addText("Palabras clave: ".$lineKeywords,null,$styleContenido);
+            $caratulaSesion->addTextBreak(1);
+            $SesionResumen->addListItem("ABSTRACT",0.5,$titulos,[\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER],$styleContenido);
+            $SesionResumen->addText($abstract,null,$styleContenido);
 
             // for ($i=0; $i < count($keywords); $i++) {
             //     if (!empty($keywords[$i+1])) {
@@ -1715,7 +1684,7 @@ class Tesis2022Controller extends Controller
         $nuevaSesion = $word->addSection();
 
         $nuevaSesion->addText($fecha,$titulo,$styleFecha);
-        $nuevaSesion->addText('OBSERVACIONES PROYECTO DE TESIS',$titulos,$styleTitulos);
+        $nuevaSesion->addText('OBSERVACIONES TESIS',$titulos,$styleTitulos);
         $nuevaSesion->addText($numObservacion,$titulo,$styleTitulos);
 
         $nuevaSesion->addText('Codigo Egresado: '.$cod_matricula,$titulos,$styleFecha);
