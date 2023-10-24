@@ -21,6 +21,10 @@
     .btn-modificaciones:hover{
         background-color: rgba(223, 190, 43, 0.651);
     }
+    .btn-no-border {
+      border: transparent;
+      box-shadow: none;
+    }
   </style>
 </head>
 

@@ -6,6 +6,7 @@ use App\Imports\AlumnosImport;
 use App\Imports\AsesorImport;
 
 use App\Models\AsesorCurso;
+use App\Models\Categoria_Docente;
 use App\Models\Diseno_Investigacion;
 use App\Models\EstudianteCT2022;
 use App\Models\Fin_Persigue;
@@ -13,6 +14,7 @@ use App\Models\MatrizOperacional;
 use App\Models\Objetivo;
 use App\Models\ObservacionesProy;
 use App\Models\ObservacionesProyCurso;
+use App\Models\Grado_Academico;
 use App\Models\referencias;
 use App\Models\Tesis_2022;
 use App\Models\TesisCT2022;
@@ -67,7 +69,6 @@ class AdminCursoController extends Controller
                 $newTesisII->cod_matricula = $estudiante->cod_matricula;
                 $newTesisII->save();
             }
-
         }
 
         //FUNCION PROVICIONAL PARA COPIAR LOS DATOS DEL PROY TESIS A LA TESIS DE LOS ESTUDIANTES
@@ -533,8 +534,8 @@ class AdminCursoController extends Controller
             $newEstudiante = new EstudianteCT2022();
             $newEstudiante->cod_matricula = $request->cod_matricula;
             $newEstudiante->dni = $request->dni;
-            $newEstudiante->apellidos = $request->apellidos;
-            $newEstudiante->nombres = $request->nombres;
+            $newEstudiante->apellidos = strtoupper($request->apellidos);
+            $newEstudiante->nombres = strtoupper($request->nombres);
             $newEstudiante->correo = $request->correo;
             $newEstudiante->semestre_academico = $semestre_academico;
             $newEstudiante->save();
@@ -571,4 +572,118 @@ class AdminCursoController extends Controller
         $estudiante = TesisCT2022::join('historial_observaciones', 'proyecto_tesis.cod_proyectotesis', '=', 'historial_observaciones.cod_proyectotesis')->select('proyecto_tesis.*')->where('historial_observaciones.cod_historialObs', $cod_historialObs)->get();
         return view('cursoTesis20221.asesor.verObservacionEstudiante', ['observaciones' => $observaciones, 'estudiante' => $estudiante]);
     }
+    //Nuevas actualizaciones octubre 2023
+    // CATEGORIAS
+
+    public function ver_agregar_categoria()
+    {
+        return view('cursoTesis20221.administrador.categoria.agregar_categoria_docente');
+    }
+
+    public function saveCategorias(Request $request)
+    {
+        try {
+            $descripcion = $request->descripcion;
+            $newCategoria = new Categoria_Docente();
+            $newCategoria->descripcion = strtoupper($descripcion);
+            $newCategoria->save();
+            return redirect()->route('admin.categoriasDocente')->with('datos', 'ok');
+        } catch (\Throwable $th) {
+            return redirect()->route('admin.categoriasDocente')->with('datos', 'oknot');
+        }
+    }
+
+    public function lista_agregar_categoria(Request $request)
+    {
+        $buscarCategoria = $request->buscarCategoria;
+        if ($buscarCategoria != null) {
+            $lista_categorias = DB::table('categoria_docente')->where('categoria_docente.descripcion', 'like', '%' . $buscarCategoria . '%')->paginate($this::PAGINATION);
+        } else {
+            $lista_categorias = DB::table('categoria_docente')->select('*')->paginate($this::PAGINATION);
+        }
+        return view('cursoTesis20221.administrador.categoria.listar_categoria_docente', ['lista_categorias' => $lista_categorias]);
+    }
+
+    public function ver_editar_categoria(Request $request)
+    {
+        try {
+            $cod_categoria = $request->auxidcategoria;
+            $find_categoria = DB::table('categoria_docente')->where('cod_categoria', $cod_categoria)->first();
+            return view('cursoTesis20221.administrador.categoria.editar_categoria_docente', ['find_categoria' => $find_categoria]);
+        } catch (\Throwable $th) {
+            dd($th);
+        }
+    }
+
+    public function save_editar_categoria(Request $request)
+    {
+        try {
+            $cod_categoria = $request->auxidcategoria;
+            $descripcion = $request->descripcion;
+            $find_categoria = Categoria_Docente::where('cod_categoria', $cod_categoria)->first();
+            $find_categoria->descripcion = $descripcion;
+            $find_categoria->save();
+            return redirect()->route('admin.listarcategoriasDocente')->with('datos', 'ok');
+        } catch (\Throwable $th) {
+            return redirect()->route('admin.listarcategoriasDocente')->with('datos', 'oknot');
+        }
+    }
+
+    public function delete_categoria(Request $request)
+    {
+        try {
+            $cod_categoria = $request->auxidcategoria;
+            $find_categoria = Categoria_Docente::where('cod_categoria', $cod_categoria)->first();
+            $find_categoria->estado = 0;
+            $find_categoria->save();
+            return redirect()->route('admin.listarcategoriasDocente')->with('datos', 'okdelete');
+        } catch (\Throwable $th) {
+            return redirect()->route('admin.listarcategoriasDocente')->with('datos', 'oknotdelete');
+        }
+    }
+
+    //GRADO ACADEMICO
+
+    public function verAgregarGrado(Request $request)
+    {
+        $grados_academicos = DB::table('grado_academico')->select('*')->paginate($this::PAGINATION);
+
+        $buscarGrado = $request->get('buscarGrado');
+        $grados_academicos = DB::connection('mysql')->table('grado_academico as ga')->select('ga.*')->where('ga.descripcion', 'like', '%' . $buscarGrado . '%')->paginate($this::PAGINATION);
+
+        return view('cursoTesis20221.administrador.grado_academico.agregar_grado_academico', ['grados_academicos' => $grados_academicos]);
+    }
+
+    public function saveGradoAcademico(Request $request)
+    {
+        try {
+            $codGradoAcademico = $request->cod_grado_academico;
+            if ($codGradoAcademico != "") {
+                $grado = Grado_Academico::find($codGradoAcademico);
+                $grado->descripcion = $request->descripcion;
+                $grado->save();
+            } else {
+                $grado = new Grado_Academico();
+                $grado->descripcion = $request->descripcion;
+                $grado->save();
+            }
+            return redirect()->route('admin.verAgregarGrado')->with('datos', 'ok');
+        } catch (\Throwable $th) {
+            return redirect()->route('admin.verAgregarGrado')->with('datos', 'oknot');
+        }
+    }
+
+    public function deleteGradoAcademico(Request $request)
+    {
+        try {
+            $cod_grado = $request->aux_grado_academico;
+            $find_grado = Grado_Academico::where('cod_grado_academico', $cod_grado)->first();
+            $find_grado->estado = 0;
+            $find_grado->save();
+            return redirect()->route('admin.verAgregarGrado')->with('datos', 'okdelete');
+        } catch (\Throwable $th) {
+            return redirect()->route('admin.verAgregarGrado')->with('datos', 'oknotdelete');
+        }
+    }
+
 }

@@ -123,6 +123,20 @@
                 </a>
                 <span class="tooltip">Listar Usuarios</span>
             </li>
+            <li>
+                <a href="{{ route('admin.listarcategoriasDocente') }}">
+                    <i class='bx bx-sm bx-list-ol'></i>
+                    <span class="links_name">Listar Categorias Docente</span>
+                </a>
+                <span class="tooltip">Listar Categorias Docente</span>
+            </li>
+            <li>
+                <a href="{{ route('admin.verAgregarGrado') }}">
+                    <i class='bx bx-sm bx-list-ol'></i>
+                    <span class="links_name">Listar Grado Académico</span>
+                </a>
+                <span class="tooltip">Listar Grado Académico</span>
+            </li>
         @endif
         <li>
             <a href="{{ route('director.generalidades') }}">

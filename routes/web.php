@@ -87,6 +87,18 @@ Route::post('/editar-usuario',[CursoTesisController::class,'editarUsuario'])->na
 Route::post('/save-editar-usuario',[CursoTesisController::class,'saveEditarUsuario'])->name('admin.saveEditar');
 Route::delete('/delete-usuario',[CursoTesisController::class,'deleteUsuario'])->name('admin.deleteUser');
 
+Route::get('/ver-agregar-categorias',[AdminCursoController::class,'ver_agregar_categoria'])->name('admin.categoriasDocente')->middleware('auth');
+Route::post('/save-categorias',[AdminCursoController::class,'saveCategorias'])->name('admin.saveCategorias')->middleware('auth');
+Route::get('/listar-categorias',[AdminCursoController::class,'lista_agregar_categoria'])->name('admin.listarcategoriasDocente')->middleware('auth');
+Route::post('/ver-editar-categorias',[AdminCursoController::class,'ver_editar_categoria'])->name('admin.EditarcategoriasDocente')->middleware('auth');
+Route::post('/save-editar-categorias',[AdminCursoController::class,'save_editar_categoria'])->name('admin.saveEditarCategorias')->middleware('auth');
+
+Route::post('/delete-categoria',[AdminCursoController::class,'delete_categoria'])->name('admin.deleteCategoria')->middleware('auth');
+
+//----
+Route::get('/ver-grado-academico',[AdminCursoController::class,'verAgregarGrado'])->name('admin.verAgregarGrado');
+Route::post('/save-grado-academico',[AdminCursoController::class,'saveGradoAcademico'])->name('admin.guardarGradoAcademico');
+Route::post('/delete-grado-academico',[AdminCursoController::class,'deleteGradoAcademico'])->name('admin.deleteGrado');
 
 // Rutas para el director Curso
 
@@ -122,6 +134,10 @@ Route::post('/saveEditAlumno',[CursoTesisController::class,'editEstudiante'])->n
 Route::get('/listaAsesores',[CursoTesisController::class,'listaAsesores'])->name('director.listaAsesores')->middleware('auth');
 Route::post('/verAsesorEditar',[CursoTesisController::class,'verAsesorEditar'])->name('director.verAsesorEditar');
 Route::post('/saveEditAsesor',[CursoTesisController::class,'editAsesor'])->name('director.editAsesor');
+
+// ------
+
+
 
 //Rutas para el asesor Curso
 Route::get('/verEstudiantes',[CursoTesisController::class,'showEstudiantes'])->name('asesor.showEstudiantes')->middleware('auth');

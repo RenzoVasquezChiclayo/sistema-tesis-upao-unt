@@ -2186,5 +2186,7 @@ class CursoTesisController extends Controller
         return redirect()->route('asesor.verObsEstudiante',$codHistObserva->cod_historialObs)->with('datos','okDesaprobado');
     }
 
+
+
     // He cambiado lo de tesis a Tesis2022 Controller.
 }
