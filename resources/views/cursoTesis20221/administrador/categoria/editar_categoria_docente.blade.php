@@ -16,18 +16,21 @@
     </style>
 @endsection
 @section('contenido')
+<div class="card-header">
+    Editar Categoria
+</div>
+<div class="card-body">
     <div class="row" style="display: flex; align-items:center;">
-
-        <div class="col-10">
-            <h3>Editar Categoria</h3>
             <div class="row border-box">
                 <form action="{{ route('admin.saveEditarCategorias') }}" method="POST">
                     @csrf
                     <input type="hidden" name="auxidcategoria" value="{{$find_categoria->cod_categoria}}">
-                    <div class="col-6">
-                        <label for="cod_matricula">Descripcion</label>
-                        <input class="form-control" type="text" id="descripcion" name="descripcion"
-                            placeholder="Ingrese nombre de la categoria" value="{{ $find_categoria->descripcion }}" autofocus required>
+                    <div class="row justify-content-around align-items-center">
+                        <div class="col-md-4">
+                            <label for="cod_matricula">Descripcion</label>
+                            <input class="form-control" type="text" id="descripcion" name="descripcion"
+                                placeholder="Ingrese nombre de la categoria" value="{{ $find_categoria->descripcion }}" autofocus required>
+                        </div>
                     </div>
                     <div class="col-12" style="margin-top: 10px;">
                         <button class="btn btn-warning" type="submit">Editar</button>
@@ -35,8 +38,9 @@
                     </div>
                 </form>
             </div>
-        </div>
     </div>
+</div>
+
 @endsection
 @section('js')
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

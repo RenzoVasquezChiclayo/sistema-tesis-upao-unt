@@ -3,86 +3,92 @@
     Lista Categorias Docente
 @endsection
 @section('contenido')
-    <div class="row">
-        <div class="col-12">
-            <div class="row" style="display: flex; align-items:center;">
-                <div class="col-12">
-                    <div class="row" style="margin: 10px;">
-                        <div class="col-8 col-md-5 col-lg-3">
-                            <a href="{{ route('admin.categoriasDocente') }}" class="btn btn-success"><i
-                                    class='bx bx-sm bx-message-square-add'></i>Agregar Categoria</a>
+    <div class="card-header">
+        Lista Categorias
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="row" style="display: flex; align-items:center;">
+                    <div class="col-12">
+                        <div class="row justify-content-around align-items-center" style="margin: 10px;">
+                            <div class="col-8 col-md-5 col-lg-3">
+                                <a href="{{ route('admin.categoriasDocente') }}" class="btn btn-success"><i
+                                        class='bx bx-sm bx-message-square-add'></i>Agregar Categoria</a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row mb-3" style="display:flex; align-items:right; justify-content:right;">
-                        <div class="col col-sm-8 col-md-6 col-lg-4 col-xl-3">
-                            <form id="" name="" method="get">
-                                <div class="row">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" name="buscarCategoria"
-                                            placeholder="Categoria" value="" aria-describedby="btn-search">
-                                        <button class="btn btn-outline-primary" type="submit"
-                                            id="btn-search">Buscar</button>
+                        <div class="row mb-3" style="display:flex; align-items:right; justify-content:right;">
+                            <div class="col col-sm-8 col-md-6 col-lg-4">
+                                <form id="" name="" method="get">
+                                    <div class="row">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="buscarCategoria"
+                                                placeholder="Categoria" value="" aria-describedby="btn-search">
+                                            <button class="btn btn-outline-primary" type="submit"
+                                                id="btn-search">Buscar</button>
+                                        </div>
                                     </div>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
-                    </div>
-                    <div class="table-responsive">
-                        <table id="table-proyecto" class="table table-striped table-responsive-md">
-                            <thead>
-                                <tr>
-                                    <td>Id</td>
-                                    <td>Descripcion</td>
-                                    <td>Estado</td>
-                                    <td>Editar</td>
-                                    <td>Eliminar</td>
-                                </tr>
-                            </thead>
-                            @foreach ($lista_categorias as $l_u)
-                                <tr>
-                                    <td>{{ $l_u->cod_categoria }}</td>
-                                    <td>{{ $l_u->descripcion }}</td>
-                                    <td>{{ $l_u->estado }}</td>
-                                    <td>
-                                        <div class="row">
-                                            <div class="col-3">
-                                                <form id="form-categoria" method="post"
-                                                    action="{{ route('admin.EditarcategoriasDocente') }}">
-                                                    @csrf
-                                                    <input type="hidden" name="auxidcategoria"
-                                                        value="{{ $l_u->cod_categoria }}">
-                                                    <a href="#" class="btn btn-warning"
-                                                        onclick="this.closest('#form-categoria').submit();"><i
-                                                            class='bx bx-sm bx-edit-alt'></i></a>
-                                                </form>
-                                            </div>
+                        <div class="table-responsive">
+                            <table id="table-proyecto" class="table table-striped table-responsive-md">
+                                <thead>
+                                    <tr>
+                                        <td>Id</td>
+                                        <td>Descripcion</td>
+                                        <td>Estado</td>
+                                        <td>Editar</td>
+                                        <td>Eliminar</td>
+                                    </tr>
+                                </thead>
+                                @foreach ($lista_categorias as $l_u)
+                                    <tr>
+                                        <td>{{ $l_u->cod_categoria }}</td>
+                                        <td>{{ $l_u->descripcion }}</td>
+                                        <td>{{ $l_u->estado }}</td>
+                                        <td>
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <form id="form-categoria" method="post"
+                                                        action="{{ route('admin.EditarcategoriasDocente') }}">
+                                                        @csrf
+                                                        <input type="hidden" name="auxidcategoria"
+                                                            value="{{ $l_u->cod_categoria }}">
+                                                        <a href="#" class="btn btn-warning"
+                                                            onclick="this.closest('#form-categoria').submit();"><i
+                                                                class='bx bx-sm bx-edit-alt'></i></a>
+                                                    </form>
+                                                </div>
 
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="row">
-                                            <div class="col-3">
-                                                <form id="formCategoriaDelete" name="formCategoriaDelete" action="{{ route('admin.deleteCategoria') }}" method="post">
-                                                    @csrf
-                                                    <input type="hidden" name="auxidcategoria"
-                                                        value="{{ $l_u->cod_categoria }}">
-                                                    <a href="#" class="btn btn-danger btn-eliminar"
-                                                        onclick="alertaConfirmacion(this);"><i
-                                                            class='bx bx-message-square-x'></i></a>
-                                                </form>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                        {{ $lista_categorias->links() }}
-                    </div>
+                                        </td>
+                                        <td>
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <form id="formCategoriaDelete" name="formCategoriaDelete"
+                                                        action="{{ route('admin.deleteCategoria') }}" method="post">
+                                                        @csrf
+                                                        <input type="hidden" name="auxidcategoria"
+                                                            value="{{ $l_u->cod_categoria }}">
+                                                        <a href="#" class="btn btn-danger btn-eliminar"
+                                                            onclick="alertaConfirmacion(this);"><i
+                                                                class='bx bx-message-square-x'></i></a>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                            {{ $lista_categorias->links() }}
+                        </div>
 
+                    </div>
                 </div>
-            </div>
 
+            </div>
         </div>
     </div>
 @endsection

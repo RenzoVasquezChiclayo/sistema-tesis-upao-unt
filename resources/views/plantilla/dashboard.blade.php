@@ -60,10 +60,12 @@
             </div>
         </div>
     </nav>
-    <div class="content">
-      <div class="container-fluid">
-            @yield('contenido')
-      </div>
+    <div class="content d-flex align-items-center">
+        <div class="container-fluid">
+            <div class="card text-center shadow bg-white rounded">
+                @yield('contenido')
+            </div>
+        </div>
     </div>
     <div class="bottom-fixed">
         <strong>Copyright &copy; 2022.</strong> By: Rios Reyes & Vasquez Chiclayo & Dr. Juan Carlos Miranda Robles.

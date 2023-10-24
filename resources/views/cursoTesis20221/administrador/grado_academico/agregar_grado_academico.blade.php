@@ -16,19 +16,23 @@
     </style>
 @endsection
 @section('contenido')
-    <div class="row" style="display: flex; align-items:center;">
+    <div class="card-header">
+        Registrar Grado Academico
+    </div>
+    <div class="card-body">
+        <div class="row" style="display: flex; align-items:center;">
 
-        <div class="col-10">
-            <h3>Registro de Grado Académico</h3>
             <div class="row border-box">
                 <!-- TODO: Modify the route -->
                 <form action="{{ route('admin.guardarGradoAcademico') }}" method="POST">
                     @csrf
-                    <div class="col-6">
-                        <input type="number" id="cod_grado_academico" name="cod_grado_academico" hidden>
-                        <label for="grado_academico">Descripción</label>
-                        <input class="form-control" type="text" id="descripcion" name="descripcion"
-                            placeholder="Ingrese el grado académico" autofocus required>
+                    <div class="row justify-content-around align-items-center">
+                        <div class="col-md-5">
+                            <input type="number" id="cod_grado_academico" name="cod_grado_academico" hidden>
+                            <label for="grado_academico">Descripción</label>
+                            <input class="form-control" type="text" id="descripcion" name="descripcion"
+                                placeholder="Ingrese el grado académico" autofocus required>
+                        </div>
                     </div>
                     <div class="col-12" style="margin-top: 10px;">
                         <button id="btn_save" class="btn btn-success" type="submit">Registrar</button>
@@ -51,52 +55,56 @@
                     </form>
                 </div>
             </div>
-            <div class="col-12">
-                <h4>Lista de grados académicos</h4>
+            <div class="card text-center shadow bg-white rounded">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="table-proyecto" class="table table-striped table-responsive-md">
+                            <thead>
+                                <tr>
+                                    <td>Id</td>
+                                    <td>Descripcion</td>
+                                    <td>Estado</td>
+                                    <td>Opciones</td>
+                                </tr>
+                            </thead>
+                            @foreach ($grados_academicos as $grado)
+                                <tr>
+                                    <td>{{ $grado->cod_grado_academico }}</td>
+                                    <td>{{ $grado->descripcion }}</td>
+                                    <td>{{ $grado->estado }}</td>
+                                    <td>
+                                        <div class="row">
+                                            <form id="formGradoDelete" name="formGradoDelete" method="post"
+                                            action="{{ route('admin.deleteGrado') }}">
+                                                <a href="#" class="btn btn-warning"
+                                                    onclick="editGradoAcademico({{ $grado->cod_grado_academico }});"><i
+                                                        class='bx bx-sm bx-edit-alt'></i></a>
+                                        </form>
+                                        <form id="formGradoDelete" name="formGradoDelete" method="post"
+                                            action="{{ route('admin.deleteGrado') }}">
+                                            @method('DELETE')
+                                            @csrf
+                                            <input type="hidden" name="aux_grado_academico"
+                                                value="{{ $grado->cod_grado_academico }}">
+                                            <a href="#" class="btn btn-danger btn-eliminar"
+                                                onclick="alertaConfirmacion(this);"><i
+                                                    class='bx bx-message-square-x'></i></a>
+                                        </form>
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+                            @endforeach
+                        </table>
+                    </div>
+                </div>
+
             </div>
-            <div class="table-responsive">
-                <table id="table-proyecto" class="table table-striped table-responsive-md">
-                    <thead>
-                        <tr>
-                            <td>Id</td>
-                            <td>Descripcion</td>
-                            <td>Estado</td>
-                            <td>Opciones</td>
-                        </tr>
-                    </thead>
-                    @foreach ($grados_academicos as $grado)
-                        <tr>
-                            <td>{{ $grado->cod_grado_academico }}</td>
-                            <td>{{ $grado->descripcion }}</td>
-                            <td>{{ $grado->estado }}</td>
-                            <td> </td>
-                            <td>
-                                <div class="row">
-                                    <a href="#" class="btn btn-warning"
-                                        onclick="editGradoAcademico({{ $grado->cod_grado_academico }});"><i
-                                            class='bx bx-sm bx-edit-alt'></i></a>i></a>
-                                    </form>
-                                </div>
-                                >
-                                <form id="formGradoDelete" name="formGradoDelete" method="post"
-                                    action="{{ route('admin.deleteGrado') }}">
-                                    @method('DELETE')
-                                    @csrf
-                                    <input type="hidden" name="aux_grado_academico"
-                                        value="{{ $grado->cod_grado_academico }}">
-                                    <a href="#" class="btn btn-danger btn-eliminar"
-                                        onclick="alertaConfirmacion(this);"><i class='bx bx-message-square-x'></i></a>
-                                </form>i></a>
-                                </form>
-            </div>
+
+
+            {{ $grados_academicos->links() }}
         </div>
-        </td>
-        </tr>
-        @endforeach
-        </table>
-        {{ $grados_academicos->links() }}
-    </div>
-    </div>
     </div>
 @endsection
 @section('js')

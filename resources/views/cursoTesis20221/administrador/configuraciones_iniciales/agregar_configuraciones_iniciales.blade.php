@@ -7,7 +7,7 @@
         Configuraciones Iniciales
     </div>
     <div class="card-body">
-        <div class="row">
+        <div class="row justify-content-around align-items-center">
             <form id="formconfig" method="post" action="{{ route('admin.saveconfigurar') }}">
                 @csrf
                 <div class="row">

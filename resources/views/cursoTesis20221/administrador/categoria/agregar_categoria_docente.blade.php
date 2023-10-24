@@ -16,24 +16,27 @@
     </style>
 @endsection
 @section('contenido')
-    <div class="row" style="display: flex; align-items:center;">
+    <div class="card-header">
+        Registrar Categoria
+    </div>
+    <div class="card-body">
+        <div class="row" style="display: flex; align-items:center;">
 
-        <div class="col-10">
-            <h3>Registro de Categorias</h3>
-            <div class="row border-box">
-                <form action="{{ route('admin.saveCategorias') }}" method="POST">
-                    @csrf
-                    <div class="col-6">
+            <form action="{{ route('admin.saveCategorias') }}" method="POST">
+                @csrf
+                <div class="row justify-content-around align-items-center">
+                    <div class="col-md-4">
                         <label for="cod_matricula">Descripcion</label>
                         <input class="form-control" type="text" id="descripcion" name="descripcion"
                             placeholder="Ingrese nombre de la categoria" autofocus required>
                     </div>
-                    <div class="col-12" style="margin-top: 10px;">
-                        <button class="btn btn-success" type="submit">Registrar</button>
-                        <a href="{{ route('user_information') }}" type="button" class="btn btn-danger">Cancelar</a>
-                    </div>
-                </form>
-            </div>
+                </div>
+
+                <div class="col-12" style="margin-top: 10px;">
+                    <button class="btn btn-success" type="submit">Registrar</button>
+                    <a href="{{ route('user_information') }}" type="button" class="btn btn-danger">Cancelar</a>
+                </div>
+            </form>
         </div>
     </div>
 @endsection
@@ -61,7 +64,5 @@
             })
         </script>
     @endif
-    <script type="text/javascript">
-
-    </script>
+    <script type="text/javascript"></script>
 @endsection
