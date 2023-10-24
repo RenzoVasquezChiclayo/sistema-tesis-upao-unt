@@ -124,6 +124,13 @@
                 <span class="tooltip">Listar Usuarios</span>
             </li>
             <li>
+                <a href="{{ route('admin.verConfiguraciones') }}">
+                    <i class='bx bxs-cog'></i>
+                    <span class="links_name">Configuraciones Iniciales</span>
+                </a>
+                <span class="tooltip">Configuraciones Iniciales</span>
+            </li>
+            <li>
                 <a href="{{ route('admin.listarcategoriasDocente') }}">
                     <i class='bx bx-sm bx-list-ol'></i>
                     <span class="links_name">Listar Categorias Docente</span>

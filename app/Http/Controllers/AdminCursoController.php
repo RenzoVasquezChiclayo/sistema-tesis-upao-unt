@@ -7,6 +7,7 @@ use App\Imports\AsesorImport;
 
 use App\Models\AsesorCurso;
 use App\Models\Categoria_Docente;
+use App\Models\Configuraciones_Iniciales;
 use App\Models\Diseno_Investigacion;
 use App\Models\EstudianteCT2022;
 use App\Models\Fin_Persigue;
@@ -573,6 +574,82 @@ class AdminCursoController extends Controller
         return view('cursoTesis20221.asesor.verObservacionEstudiante', ['observaciones' => $observaciones, 'estudiante' => $estudiante]);
     }
     //Nuevas actualizaciones octubre 2023
+
+    // CONFIGURACIONES INICIALES
+
+    public function verConfiguracionesIniciales(){
+        try {
+            $lista_configuraciones = DB::table('configuraciones_iniciales')->select('*')->paginate($this::PAGINATION);
+            return view('cursoTesis20221.administrador.configuraciones_iniciales.agregar_configuraciones_iniciales',['lista_configuraciones'=>$lista_configuraciones]);
+        } catch (\Throwable $th) {
+            dd($th);
+        }
+
+    }
+
+    public function saveConfiguracionesIniciales(Request $request){
+        try {
+            $año = $request->year;
+            $curso = $request->curso;
+            $ciclo = $request->ciclo;
+            if ($año != "" && $curso != "" && $ciclo != "") {
+                $new_configuracion = new Configuraciones_Iniciales();
+                $new_configuracion->año = $año;
+                $new_configuracion->curso = strtoupper($curso);
+                $new_configuracion->ciclo = $ciclo;
+                $new_configuracion->save();
+                return redirect()->route('admin.verConfiguraciones')->with('datos','ok');
+            }else{
+                return redirect()->route('admin.verConfiguraciones')->with('datos','okNotNull');
+            }
+        } catch (\Throwable $th) {
+            return redirect()->route('admin.verConfiguraciones')->with('datos','okNot');
+        }
+    }
+
+    public function ver_editar_configuraciones(Request $request)
+    {
+        try {
+            $cod_configuracion = $request->auxid;
+            $find_configuracion = DB::table('configuraciones_iniciales')->where('cod_configuraciones', $cod_configuracion)->first();
+            return view('cursoTesis20221.administrador.configuraciones_iniciales.editar_configuraciones_iniciales', ['find_configuracion' => $find_configuracion]);
+        } catch (\Throwable $th) {
+            dd($th);
+        }
+    }
+
+    public function save_editar_configuraciones(Request $request){
+        try {
+            $cod_configuraciones = $request->auxid;
+            $año = $request->year;
+            $curso = $request->curso;
+            $ciclo = $request->ciclo;
+            $find_configuracion = Configuraciones_Iniciales::where('cod_configuraciones', $cod_configuraciones)->first();
+            $find_configuracion->año = $año;
+            $find_configuracion->curso = strtoupper($curso);
+            $find_configuracion->ciclo = $ciclo;
+            $find_configuracion->save();
+            return redirect()->route('admin.verConfiguraciones')->with('datos','ok');
+        } catch (\Throwable $th) {
+            dd($th);
+            return redirect()->route('admin.verConfiguraciones')->with('datos','okNot');
+        }
+    }
+
+    public function delete_configuraciones(Request $request)
+    {
+        try {
+            $cod_configuraciones = $request->auxidDelete;
+            $find_configuraciones = Configuraciones_Iniciales::where('cod_configuraciones', $cod_configuraciones)->first();
+            $find_configuraciones->estado = 0;
+            $find_configuraciones->save();
+            return redirect()->route('admin.verConfiguraciones')->with('datos','okDelete');
+        } catch (\Throwable $th) {
+            return redirect()->route('admin.verConfiguraciones')->with('datos','okNotDelete');
+        }
+    }
+    //
+
     // CATEGORIAS
 
     public function ver_agregar_categoria()
