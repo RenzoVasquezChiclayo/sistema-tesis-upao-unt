@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\Estudiante_Semestre;
 use App\Models\EstudianteCT2022;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -21,14 +22,20 @@ class AlumnosImport implements ToModel, WithHeadingRow
         $find_student = DB::table('estudiante_ct2022')->where('cod_matricula',$row['cod_matricula'])->first();
 
         if ($find_student == null) {
-            return new EstudianteCT2022([
+            $new_estudiante = new EstudianteCT2022([
                 'cod_matricula' => $row['cod_matricula'],
                 'dni' => $row['dni'],
                 'apellidos' => $row['apellidos'],
                 'nombres' => $row['nombres'],
                 'correo' => $row['correo']==null? "":$row['correo'],
-                'semestre_academico'=> $this->semestre_academico,
             ]);
+            $new_estudiante->save();
+            $new_estudiante_semestre = new Estudiante_Semestre([
+                'cod_matricula' => $row['cod_matricula'],
+                'cod_configuraciones'=> $this->semestre_academico,
+            ]);
+            $new_estudiante_semestre->save();
+            return $new_estudiante;
         }
 
 

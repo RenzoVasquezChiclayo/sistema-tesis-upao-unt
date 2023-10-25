@@ -170,16 +170,18 @@ class AdminCursoController extends Controller
     {
         $buscarpor_semestre = $request->buscarpor_semestre;
 
-        if ($buscarpor_semestre != "") {
-            $lineasInves = DB::table('tipoinvestigacion')->select('tipoinvestigacion.*')->where('tipoinvestigacion.semestre_academico', 'like', '%' . $buscarpor_semestre . '%')->paginate($this::PAGINATION);
-            $fin_persigue = DB::table('fin_persigue')->select('fin_persigue.*')->where('fin_persigue.semestre_academico', 'like', '%' . $buscarpor_semestre . '%')->paginate($this::PAGINATION);
-            $diseno_investigacion = DB::table('diseno_investigacion')->select('diseno_investigacion.*')->where('diseno_investigacion.semestre_academico', 'like', '%' . $buscarpor_semestre . '%')->paginate($this::PAGINATION);
+        if ($buscarpor_semestre > 0) {
+            $lineasInves = DB::table('tipoinvestigacion')->select('tipoinvestigacion.*')->where('tipoinvestigacion.cod_semestre_academico', 'like', '%' . $buscarpor_semestre . '%')->paginate($this::PAGINATION);
+            $fin_persigue = DB::table('fin_persigue')->select('fin_persigue.*')->where('fin_persigue.cod_semestre_academico', 'like', '%' . $buscarpor_semestre . '%')->paginate($this::PAGINATION);
+            $diseno_investigacion = DB::table('diseno_investigacion')->select('diseno_investigacion.*')->where('diseno_investigacion.cod_semestre_academico', 'like', '%' . $buscarpor_semestre . '%')->paginate($this::PAGINATION);
+            $semestre_academico = DB::table('configuraciones_iniciales')->select('*')->where('estado',1)->get();
         } else {
             $lineasInves = DB::table('tipoinvestigacion')->select('tipoinvestigacion.*')->get();
             $fin_persigue = DB::table('fin_persigue')->select('fin_persigue.*')->get();
             $diseno_investigacion = DB::table('diseno_investigacion')->select('diseno_investigacion.*')->get();
+            $semestre_academico = DB::table('configuraciones_iniciales')->select('*')->where('estado',1)->get();
         }
-        return view('cursoTesis20221.director.mantenedorGeneralidades', ['lineasInves' => $lineasInves, 'fin_persigue' => $fin_persigue, 'diseno_investigacion' => $diseno_investigacion, 'buscarpor_semestre' => $buscarpor_semestre]);
+        return view('cursoTesis20221.director.mantenedorGeneralidades', ['lineasInves' => $lineasInves, 'fin_persigue' => $fin_persigue, 'diseno_investigacion' => $diseno_investigacion, 'buscarpor_semestre' => $buscarpor_semestre,'semestre_academico'=>$semestre_academico]);
     }
 
     public function agregarGeneralidades()
@@ -429,14 +431,14 @@ class AdminCursoController extends Controller
 
     public function showAddEstudiante()
     {
-        $semestre_academico = DB::table('configuraciones_iniciales')->select('*')->get();
+        $semestre_academico = DB::table('configuraciones_iniciales')->select('*')->where('estado',1)->get();
         return view('cursoTesis20221.director.agregarAlumno',['semestre_academico'=>$semestre_academico]);
     }
     public function showAddAsesor()
     {
-        $grados_academicos = DB::table('grado_academico')->select('*')->get();
-        $categorias = DB::table('categoria_docente')->select('*')->get();
-        $semestre_academico = DB::table('configuraciones_iniciales')->select('*')->get();
+        $grados_academicos = DB::table('grado_academico')->select('*')->where('estado',1)->get();
+        $categorias = DB::table('categoria_docente')->select('*')->where('estado',1)->get();
+        $semestre_academico = DB::table('configuraciones_iniciales')->select('*')->where('estado',1)->get();
         return view('cursoTesis20221.director.agregarAsesor',['grados_academicos'=>$grados_academicos,'categorias'=>$categorias,'semestre_academico'=>$semestre_academico]);
     }
 
@@ -467,6 +469,7 @@ class AdminCursoController extends Controller
                 Excel::import(new AsesorImport($semestre), $path);
                 return back()->with('datos', 'ok');
             } catch (\Throwable $th) {
+                dd($th);
                 return back()->with('datos', 'oknot');
             }
         } else {
@@ -638,14 +641,14 @@ class AdminCursoController extends Controller
         }
     }
 
-    public function delete_configuraciones(Request $request)
+    public function changeStatusConfiguraciones(Request $request)
     {
         try {
-            $cod_configuraciones = $request->auxidDelete;
+            $cod_configuraciones = $request->aux_configuraciones;
             $find_configuraciones = Configuraciones_Iniciales::where('cod_configuraciones', $cod_configuraciones)->first();
-            $find_configuraciones->estado = 0;
+            $find_configuraciones->estado = ($find_configuraciones->estado == 1) ? 0 : 1;
             $find_configuraciones->save();
-            return redirect()->route('admin.verConfiguraciones')->with('datos','okDelete');
+            return redirect()->route('admin.verConfiguraciones');
         } catch (\Throwable $th) {
             return redirect()->route('admin.verConfiguraciones')->with('datos','okNotDelete');
         }
@@ -708,14 +711,14 @@ class AdminCursoController extends Controller
         }
     }
 
-    public function delete_categoria(Request $request)
+    public function changeStatusCategoria(Request $request)
     {
         try {
-            $cod_categoria = $request->auxidcategoria;
+            $cod_categoria = $request->aux_categoria;
             $find_categoria = Categoria_Docente::where('cod_categoria', $cod_categoria)->first();
-            $find_categoria->estado = 0;
+            $find_categoria->estado = ($find_categoria->estado == 1) ? 0 : 1;
             $find_categoria->save();
-            return redirect()->route('admin.listarcategoriasDocente')->with('datos', 'okdelete');
+            return redirect()->route('admin.listarcategoriasDocente');
         } catch (\Throwable $th) {
             return redirect()->route('admin.listarcategoriasDocente')->with('datos', 'oknotdelete');
         }
@@ -736,32 +739,25 @@ class AdminCursoController extends Controller
     public function saveGradoAcademico(Request $request)
     {
         try {
+            $description = strtoupper(trim($request->descripcion));
             $codGradoAcademico = $request->cod_grado_academico;
+
             if ($codGradoAcademico != "") {
                 $grado = Grado_Academico::find($codGradoAcademico);
-                $grado->descripcion = $request->descripcion;
+                $grado->descripcion = $description;
                 $grado->save();
             } else {
+                $existGrado = Grado_Academico::where('descripcion',$description)->first();
+                if($existGrado != null){
+                    return redirect()->route('admin.verAgregarGrado')->with('datos','duplicate');
+                }
                 $grado = new Grado_Academico();
-                $grado->descripcion = $request->descripcion;
+                $grado->descripcion = $description;
                 $grado->save();
             }
             return redirect()->route('admin.verAgregarGrado')->with('datos', 'ok');
         } catch (\Throwable $th) {
             return redirect()->route('admin.verAgregarGrado')->with('datos', 'oknot');
-        }
-    }
-
-    public function deleteGradoAcademico(Request $request)
-    {
-        try {
-            $cod_grado = $request->aux_grado_academico;
-            $find_grado = Grado_Academico::where('cod_grado_academico', $cod_grado)->first();
-            $find_grado->estado = 0;
-            $find_grado->save();
-            return redirect()->route('admin.verAgregarGrado')->with('datos', 'okdelete');
-        } catch (\Throwable $th) {
-            return redirect()->route('admin.verAgregarGrado')->with('datos', 'oknotdelete');
         }
     }
 
@@ -771,7 +767,7 @@ class AdminCursoController extends Controller
             $find_grado = Grado_Academico::where('cod_grado_academico', $cod_grado)->first();
             $find_grado->estado = ($find_grado->estado == 1) ? 0 : 1;
             $find_grado->save();
-            return redirect()->route('admin.verAgregarGrado')->with('datos', 'okdelete');
+            return redirect()->route('admin.verAgregarGrado');
         }catch(\Throwable $th){
             return redirect()->route('admin.verAgregarGrado')->with('datos', 'oknotdelete');
         }

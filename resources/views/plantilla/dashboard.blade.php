@@ -10,6 +10,7 @@
 
   <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
   <link rel="stylesheet" href="../plantilla/css/sidebar.css">
+  <link rel="stylesheet" href="../plantilla/css/components.css">
 
   @yield('css')
   <style type="text/css">

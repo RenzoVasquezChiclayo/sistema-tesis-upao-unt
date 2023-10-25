@@ -72,19 +72,21 @@
                                     <td>{{ $grado->cod_grado_academico }}</td>
                                     <td>{{ $grado->descripcion }}</td>
                                     <td>
-                                        <form id="formChangeStatus" name="formChangeStatus" method="post"
-                                            action="{{ route('admin.changeStatusGrado') }}">
-                                            @csrf
-                                            <input type="text" name="aux_grado_academico"
-                                                value="{{ $grado->cod_grado_academico }}" hidden>
-                                            <div class="form-check form-switch" style="width: fit-content">
-                                                <input class="form-check-input" type="checkbox" role="switch"
-                                                    id="flexSwitchCheckDefault" onclick="updateState(this);"
-                                                    @if ($grado->estado == 1) checked @endif>
-                                                <label class="form-check-label"
-                                                    for="flexSwitchCheckDefault">Activado</label>
-                                            </div>
-                                        </form>
+                                        <div class="container-center">
+                                            <form class="form-fit" id="formChangeStatus" name="formChangeStatus" method="post"
+                                                action="{{ route('admin.changeStatusGrado') }}">
+                                                @csrf
+                                                <input type="text" name="aux_grado_academico"
+                                                    value="{{ $grado->cod_grado_academico }}" hidden>
+                                                <div class="form-check form-switch" style="width: fit-content">
+                                                    <input class="form-check-input" type="checkbox" role="switch"
+                                                        id="flexSwitchCheckDefault" onclick="updateState(this);"
+                                                        @if ($grado->estado == 1) checked @endif>
+                                                    <label class="form-check-label"
+                                                        for="flexSwitchCheckDefault">Activado</label>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </td>
                                     <td>
                                         <div class="row" style="display: flex;">
@@ -93,19 +95,6 @@
                                                     onclick="editGradoAcademico({{ $grado->cod_grado_academico }}, '{{ $grado->descripcion }}');">
                                                     <i class='bx bx-sm bx-edit-alt'></i>
                                                 </a>
-                                            </div>
-                                            <div class="col-auto">
-                                                <form id="formGradoDelete" name="formGradoDelete" method="post"
-                                                    action="{{ route('admin.deleteGrado') }}">
-                                                    @method('DELETE')
-                                                    @csrf
-                                                    <input type="hidden" name="aux_grado_academico"
-                                                        value="{{ $grado->cod_grado_academico }}">
-                                                    <a href="#" class="btn btn-danger btn-eliminar"
-                                                        onclick="alertaConfirmacion(this);">
-                                                        <i class='bx bx-sm bxs-trash'></i>
-                                                    </a>
-                                                </form>
                                             </div>
                                         </div>
                                     </td>
@@ -144,6 +133,16 @@
                 timer: 1500
             })
         </script>
+    @elseif (session('datos') == 'duplicate')
+        <script>
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'El grado académico ya existe!',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        </script>
     @endif
     <script type="text/javascript">
         function editGradoAcademico(code, description) {
@@ -151,23 +150,6 @@
             inputCodeGrado.value = code;
             document.getElementById("descripcion").value = description;
             document.getElementById("btn_save").textContent = "Edit";
-        }
-
-
-        function alertaConfirmacion(form) {
-            Swal.fire({
-                title: 'Estas Seguro que deseas eliminar?',
-                text: "No podras revertirlo",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Confirmar!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.closest('#formGradoDelete').submit();
-                }
-            });
         }
 
         function updateState(form) {

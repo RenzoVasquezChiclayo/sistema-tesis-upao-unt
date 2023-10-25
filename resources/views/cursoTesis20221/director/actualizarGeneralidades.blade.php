@@ -29,7 +29,6 @@
                         <div class="col-md-6">
                             <h5>Semestre academico</h5>
                             <select class="form-select" name="semestre_academico" id="semestre_academico" required>
-                                <option value="0">-</option>
                                 @foreach ($semestre_academico as $s_a)
                                     <option value="{{ $s_a->cod_configuraciones }}">{{$s_a->año}}_{{$s_a->curso}}</option>
                                 @endforeach
@@ -85,7 +84,7 @@
                                                 <div class="col-lg-8">
                                                     <h6>Descripcion:</h6>
                                                     <input class="form-control" type="text" name="linea_investigacion"
-                                                        id="linea_investigacion">
+                                                        id="linea_investigacion" >
                                                 </div>
                                             </div>
                                         </div>
@@ -312,5 +311,7 @@
             document.getElementById('filad_i' + indice).remove();
 
         }
+
+
     </script>
 @endsection

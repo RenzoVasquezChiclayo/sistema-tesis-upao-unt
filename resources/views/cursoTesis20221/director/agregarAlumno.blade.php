@@ -31,7 +31,6 @@
                         </div>
                         <div class="col-2">
                             <select class="form-select" onchange="select_semestre();" name="semestre_academico" id="semestre_academico" required>
-                                <option value="0">-</option>
                                 @foreach ($semestre_academico as $s_a)
                                     <option value="{{ $s_a->cod_configuraciones }}">{{$s_a->año}}_{{$s_a->curso}}</option>
                                 @endforeach
@@ -146,16 +145,20 @@
             })
         </script>
     @endif
-    <script type="text/javascript">
-        function select_semestre(){
-            semestre = document.getElementById('semestre_academico').value;
-            if (semestre != '0') {
-                document.getElementById('semestre_hidden').value = semestre;
-            }else{
-                alert('Seleccione otra opcion de semestre academico');
-            }
-        }
 
+    <script type="text/javascript">
+        window.onload = function(){
+            semestre = document.getElementById('semestre_academico').value;
+            document.getElementById('semestre_hidden').value = semestre;
+        }
+        function select_semestre(){
+                    semestre = document.getElementById('semestre_academico').value;
+                    if (semestre != '0') {
+                        document.getElementById('semestre_hidden').value = semestre;
+                    }else{
+                        alert('Seleccione otra opcion de semestre academico');
+                    }
+                }
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
         const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
     </script>

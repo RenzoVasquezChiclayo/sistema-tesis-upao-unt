@@ -21,12 +21,12 @@ return new class extends Migration
             $table->dropColumn('titulo_profesional');
 
             //New columns
-            $table->integer('cod_grado_academico')->after('orcid');
+            $table->integer('cod_grado_academico')->nullable()->after('orcid');
             $table->foreign('cod_grado_academico')
                     ->references('cod_grado_academico')
                     ->on('grado_academico')
                     ->onDelete('cascade');
-            $table->integer('cod_categoria')->after('cod_grado_academico');
+            $table->integer('cod_categoria')->nullable()->after('cod_grado_academico');
             $table->foreign('cod_categoria')
                     ->references('cod_categoria')
                     ->on('categoria_docente')

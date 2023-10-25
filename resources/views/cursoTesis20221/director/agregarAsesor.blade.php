@@ -17,7 +17,6 @@
                         </div>
                         <div class="col-2">
                             <select class="form-select" onchange="select_semestre(this);" name="semestre_academico" id="semestre_academico" required>
-                                <option value="0">-</option>
                                 @foreach ($semestre_academico as $s_a)
                                     <option value="{{ $s_a->cod_configuraciones }}">{{$s_a->año}}_{{$s_a->curso}}</option>
                                 @endforeach
@@ -50,7 +49,7 @@
                     <div class="row border-box">
                         <form class="row g-3 needs-validation" action="{{ route('director.addAsesor') }}" method="POST" novalidate>
                             @csrf
-                            <input type="text" name="semestre_hidden" id="semestre_hidden">
+                            <input type="hidden" name="semestre_hidden" id="semestre_hidden">
                             <div class="row justify-content-around align-items-center">
                                 <div class="col-4">
                                     <label for="cod_docente">Codigo Institucional</label>
@@ -147,14 +146,18 @@
         </script>
     @endif
     <script type="text/javascript">
-        function select_semestre(){
+        window.onload = function(){
             semestre = document.getElementById('semestre_academico').value;
-            if (semestre != '0') {
-                document.getElementById('semestre_hidden').value = semestre;
-            }else{
-                alert('Seleccione otra opcion de semestre academico');
-            }
+            document.getElementById('semestre_hidden').value = semestre;
         }
+        function select_semestre(){
+                    semestre = document.getElementById('semestre_academico').value;
+                    if (semestre != '0') {
+                        document.getElementById('semestre_hidden').value = semestre;
+                    }else{
+                        alert('Seleccione otra opcion de semestre academico');
+                    }
+                }
 
         const inputDireccion = document.querySelector('#direccion');
         const contadorCaracteres = document.querySelector('#contador-caracteres');

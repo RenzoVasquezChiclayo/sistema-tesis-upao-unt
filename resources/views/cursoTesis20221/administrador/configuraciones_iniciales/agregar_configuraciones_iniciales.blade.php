@@ -45,7 +45,6 @@
                             <td>Ciclo</td>
                             <td>Estado</td>
                             <td>Editar</td>
-                            <td>Eliminar</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -58,7 +57,22 @@
                                 <td>{{ $l_c->año }}</td>
                                 <td>{{ $l_c->curso }}</td>
                                 <td>{{ $l_c->ciclo }}</td>
-                                <td>{{ $l_c->estado }}</td>
+                                <td>
+                                    <div class="container-center">
+                                        <form class="form-fit" id="formChangeStatus" name="formChangeStatus" method="post"
+                                        action="{{ route('admin.changeStatusConfiguraciones') }}" >
+                                            @csrf
+                                            <input type="text" name="aux_configuraciones"
+                                                value="{{ $l_c->cod_configuraciones}}" hidden>
+                                            <div class="form-check form-switch" style="width: fit-content">
+                                                <input class="form-check-input" type="checkbox" role="switch"
+                                                    id="flexSwitchCheckDefault" onclick="updateState(this);"
+                                                    @if ($l_c->estado == 1) checked @endif>
+                                                <label class="form-check-label" for="flexSwitchCheckDefault">Activado</label>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
                                 <td>
                                     <form id="form-configuracion" method="post"
                                         action="{{ route('admin.verConfiguracionEditar') }}">
@@ -69,17 +83,6 @@
                                                 class='bx bx-sm bx-edit-alt'></i></a>
                                     </form>
                                 </td>
-                                <td>
-                                    <form id="formConfiguracionDelete" name="formConfiguracionDelete" method="post"
-                                        action="{{ route('admin.deleteconfiguraciones') }}">
-                                        @csrf
-                                        <input type="hidden" name="auxidDelete" value="{{ $l_c->cod_configuraciones }}">
-                                        <a href="#" class="btn btn-danger btn-eliminar"
-                                            onclick="alertaConfirmacion(this);"><i
-                                                class='bx bx-sm bxs-trash'></i></a>
-                                    </form>
-                                </td>
-
                             </tr>
                             @php
                                 $cont++;
@@ -125,6 +128,9 @@
                     form.closest('#formConfiguracionDelete').submit();
                 }
             })
+        }
+        function updateState(form) {
+            form.closest('#formChangeStatus').submit();
         }
     </script>
     @if (session('datos') == 'okNotNull')

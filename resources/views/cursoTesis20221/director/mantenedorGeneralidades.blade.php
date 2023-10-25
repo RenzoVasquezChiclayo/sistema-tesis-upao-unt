@@ -21,7 +21,10 @@
                             <div class="row">
                                 <div class="input-group">
                                     <select class="form-select" name="buscarpor_semestre" id="buscarpor_semestre">
-                                        <option value="20231">2023-I</option>
+                                    <option value="0">-</option>
+                                        @foreach ($semestre_academico as $s_a)
+                                            <option value="{{ $s_a->cod_configuraciones }}">{{$s_a->año}}_{{$s_a->curso}}</option>
+                                        @endforeach
                                     </select>
                                     <button class="btn btn-primary" type="submit" id="btn-search">Buscar</button>
                                 </div>

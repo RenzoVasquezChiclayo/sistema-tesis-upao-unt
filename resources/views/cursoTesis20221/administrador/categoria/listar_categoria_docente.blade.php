@@ -39,14 +39,29 @@
                                         <td>Descripcion</td>
                                         <td>Estado</td>
                                         <td>Editar</td>
-                                        <td>Eliminar</td>
                                     </tr>
                                 </thead>
                                 @foreach ($lista_categorias as $l_u)
                                     <tr>
                                         <td>{{ $l_u->cod_categoria }}</td>
                                         <td>{{ $l_u->descripcion }}</td>
-                                        <td>{{ $l_u->estado }}</td>
+                                        <td>
+                                            <div class="container-center">
+                                                <form class="form-fit" id="formChangeStatus" name="formChangeStatus" method="post"
+                                                action="{{ route('admin.changeStatusCategoria') }}">
+                                                    @csrf
+                                                    <input type="text" name="aux_categoria"
+                                                        value="{{ $l_u->cod_categoria }}" hidden>
+                                                    <div class="form-check form-switch" style="width: fit-content">
+                                                        <input class="form-check-input" type="checkbox" role="switch"
+                                                            id="flexSwitchCheckDefault" onclick="updateState(this);"
+                                                            @if ($l_u->estado == 1) checked @endif>
+                                                        <label class="form-check-label"
+                                                            for="flexSwitchCheckDefault">Activado</label>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </td>
                                         <td>
                                             <div class="row">
                                                 <div class="col-3">
@@ -61,21 +76,6 @@
                                                     </form>
                                                 </div>
 
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="row">
-                                                <div class="col-3">
-                                                    <form id="formCategoriaDelete" name="formCategoriaDelete"
-                                                        action="{{ route('admin.deleteCategoria') }}" method="post">
-                                                        @csrf
-                                                        <input type="hidden" name="auxidcategoria"
-                                                            value="{{ $l_u->cod_categoria }}">
-                                                        <a href="#" class="btn btn-danger btn-eliminar"
-                                                            onclick="alertaConfirmacion(this);"><i
-                                                                class='bx bx-sm bxs-trash'></i></a>
-                                                    </form>
-                                                </div>
                                             </div>
                                         </td>
                                     </tr>
@@ -154,6 +154,10 @@
                     form.closest('#formCategoriaDelete').submit();
                 }
             });
+        }
+
+        function updateState(form) {
+            form.closest('#formChangeStatus').submit();
         }
     </script>
 @endsection
