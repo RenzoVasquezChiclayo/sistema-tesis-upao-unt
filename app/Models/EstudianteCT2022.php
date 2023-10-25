@@ -19,7 +19,6 @@ class EstudianteCT2022 extends Model
         'apellidos',
         'nombres',
         'correo',
-        'semestre_academico',
         'estado'
     ];
     /*Delete cod docente*/

@@ -30,9 +30,11 @@
                             <h5>Semestre academico</h5>
                         </div>
                         <div class="col-2">
-                            <select class="form-select" name="semestre_academico" id="semestre_academico" required>
-                                <option value="2023-I">2023-I</option>
-                                <option value="2023-II">2023-II</option>
+                            <select class="form-select" onchange="select_semestre();" name="semestre_academico" id="semestre_academico" required>
+                                <option value="0">-</option>
+                                @foreach ($semestre_academico as $s_a)
+                                    <option value="{{ $s_a->cod_configuraciones }}">{{$s_a->año}}_{{$s_a->curso}}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -145,9 +147,13 @@
         </script>
     @endif
     <script type="text/javascript">
-        window.onload = function() {
+        function select_semestre(){
             semestre = document.getElementById('semestre_academico').value;
-            document.getElementById('semestre_hidden').value = semestre;
+            if (semestre != '0') {
+                document.getElementById('semestre_hidden').value = semestre;
+            }else{
+                alert('Seleccione otra opcion de semestre academico');
+            }
         }
 
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')

@@ -13,8 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('estudiante_ct2022', function (Blueprint $table) {
-            $table->string('semestre_academico',30);
+        Schema::table('tesis_2022', function (Blueprint $table) {
+            $table->char('cod_asesor',4)->nullable();
+            $table->foreign('cod_asesor')
+                    ->references('cod_docente')
+                    ->on('asesor_curso')
+                    ->onDelete('cascade');
         });
     }
 

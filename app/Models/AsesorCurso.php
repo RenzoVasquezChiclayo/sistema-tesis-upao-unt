@@ -24,7 +24,6 @@ class AsesorCurso extends Model
         'correo',
         //Fines del curso
         'username',
-        'semestre_academico',
         'estado'
     ];
 

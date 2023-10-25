@@ -4,7 +4,7 @@
 @endsection
 @section('contenido')
     <div class="card-header">
-        Configuraciones Iniciales
+        Semestre Academico
     </div>
     <div class="card-body">
         <div class="row justify-content-around align-items-center">
@@ -76,7 +76,7 @@
                                         <input type="hidden" name="auxidDelete" value="{{ $l_c->cod_configuraciones }}">
                                         <a href="#" class="btn btn-danger btn-eliminar"
                                             onclick="alertaConfirmacion(this);"><i
-                                                class='bx bx-message-square-x'></i></a>
+                                                class='bx bx-sm bxs-trash'></i></a>
                                     </form>
                                 </td>
 

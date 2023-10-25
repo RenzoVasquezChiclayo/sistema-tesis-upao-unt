@@ -88,7 +88,7 @@ body {
 
 .sidebar ul li {
     position: relative;
-    height: 50px;
+    height: fit-content;
     width: 100%;
     margin: 0 5px;
     list-style: none;
@@ -126,7 +126,7 @@ body {
     top: 50%;
 }
 
-.sidebar ul li a {
+.sidebar ul li .cstm-a {
     color: rgb(184, 179, 179);
     display: flex;
     margin-left: -35px;
@@ -136,7 +136,7 @@ body {
     border-radius: 12px;
     white-space: nowrap;
 }
-.sidebar ul li a:hover {
+.sidebar ul li .cstm-a:hover {
     color: #fff;
     background: #3b4bc4;
 }
@@ -163,10 +163,28 @@ body {
 /* Custom accordion option */
 .cstm-collapse{
     background: white;
-    padding: 0px 10px 0px 10px;
+    margin-left: -35px;
+    align-items: center;
+    transition: all 0.1s ease;
+    white-space: nowrap;
 }
 
+.cstm-collapse a{
+    color: #343a40;
+    display: flex;
+    padding: 0px 10px 0px 10px;
+    width: 100%;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.1s ease;
+    white-space: nowrap;
+}
 
+.cstm-collapse a:hover {
+    color: #fff;
+    background: #3b4bc4;
+}
+/* Until this */
 
 .home_content {
     position: absolute;
@@ -219,4 +237,3 @@ body {
     padding-top: 8px;
     padding-left: 10px;
 }
-no

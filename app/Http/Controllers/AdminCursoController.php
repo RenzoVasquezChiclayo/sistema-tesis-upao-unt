@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Imports\AlumnosImport;
 use App\Imports\AsesorImport;
-
+use App\Models\Asesor_Semestre;
 use App\Models\AsesorCurso;
 use App\Models\Categoria_Docente;
 use App\Models\Configuraciones_Iniciales;
 use App\Models\Diseno_Investigacion;
+use App\Models\Estudiante_Semestre;
 use App\Models\EstudianteCT2022;
 use App\Models\Fin_Persigue;
 use App\Models\MatrizOperacional;
@@ -187,9 +188,10 @@ class AdminCursoController extends Controller
         $linea_investigacion = DB::table('tipoinvestigacion')->select('tipoinvestigacion.*')->get();
         $fin_persigue = DB::table('fin_persigue')->select('fin_persigue.*')->get();
         $diseno_investigacion = DB::table('diseno_investigacion')->select('diseno_investigacion.*')->get();
+        $semestre_academico = DB::table('configuraciones_iniciales')->select('*')->get();
         return view('cursoTesis20221.director.actualizarGeneralidades', [
             'escuela' => $escuela,
-            'linea_investigacion' => $linea_investigacion, 'fin_persigue' => $fin_persigue, 'diseno_investigacion' => $diseno_investigacion
+            'linea_investigacion' => $linea_investigacion, 'fin_persigue' => $fin_persigue, 'diseno_investigacion' => $diseno_investigacion,'semestre_academico'=>$semestre_academico
         ]);
     }
 
@@ -269,7 +271,7 @@ class AdminCursoController extends Controller
                     $new_linea_inves->cod_tinvestigacion = $datos[$i][0];
                     $new_linea_inves->descripcion = $datos[$i][1];
                     $new_linea_inves->cod_escuela = $cod_escuela;
-                    $new_linea_inves->semestre_academico = $semestre_aca;
+                    $new_linea_inves->cod_semestre_academico = $semestre_aca;
                     $new_linea_inves->save();
                 }
             }
@@ -278,7 +280,7 @@ class AdminCursoController extends Controller
                     $new_fin_persigue = new Fin_Persigue();
                     $new_fin_persigue->descripcion = $fin_persigue[$i];
                     $new_fin_persigue->cod_escuela = $cod_escuela;
-                    $new_fin_persigue->semestre_academico = $semestre_aca;
+                    $new_fin_persigue->cod_semestre_academico = $semestre_aca;
                     $new_fin_persigue->save();
                 }
             }
@@ -287,7 +289,7 @@ class AdminCursoController extends Controller
                     $new_diseno_investigacion = new Diseno_Investigacion();
                     $new_diseno_investigacion->descripcion = $diseno_investigacion[$i];
                     $new_diseno_investigacion->cod_escuela = $cod_escuela;
-                    $new_diseno_investigacion->semestre_academico = $semestre_aca;
+                    $new_diseno_investigacion->cod_semestre_academico = $semestre_aca;
                     $new_diseno_investigacion->save();
                 }
             }
@@ -427,13 +429,15 @@ class AdminCursoController extends Controller
 
     public function showAddEstudiante()
     {
-        return view('cursoTesis20221.director.agregarAlumno');
+        $semestre_academico = DB::table('configuraciones_iniciales')->select('*')->get();
+        return view('cursoTesis20221.director.agregarAlumno',['semestre_academico'=>$semestre_academico]);
     }
     public function showAddAsesor()
     {
         $grados_academicos = DB::table('grado_academico')->select('*')->get();
         $categorias = DB::table('categoria_docente')->select('*')->get();
-        return view('cursoTesis20221.director.agregarAsesor',['grados_academicos'=>$grados_academicos,'categorias'=>$categorias]);
+        $semestre_academico = DB::table('configuraciones_iniciales')->select('*')->get();
+        return view('cursoTesis20221.director.agregarAsesor',['grados_academicos'=>$grados_academicos,'categorias'=>$categorias,'semestre_academico'=>$semestre_academico]);
     }
 
     public function importRegistroAlumnos(Request $request)
@@ -495,9 +499,12 @@ class AdminCursoController extends Controller
                 $newAsesor->cod_categoria = $request->categoria;
                 $newAsesor->direccion = $request->direccion;
                 $newAsesor->correo = $request->correo;
-                $newAsesor->semestre_academico = $semestre_academico;
                 $newAsesor->save();
 
+                $new_asesor_semestre = new Asesor_Semestre();
+                $new_asesor_semestre->cod_docente = $request->cod_docente;
+                $new_asesor_semestre->cod_configuraciones = $semestre_academico;
+                $new_asesor_semestre->save();
                 return redirect()->route('director.veragregarAsesor')->with('datos', 'ok');
             }else{
                 return redirect()->route('director.veragregarAsesor')->with('datos', 'oknot');
@@ -530,9 +537,12 @@ class AdminCursoController extends Controller
             $newEstudiante->apellidos = strtoupper($request->apellidos);
             $newEstudiante->nombres = strtoupper($request->nombres);
             $newEstudiante->correo = $request->correo;
-            $newEstudiante->semestre_academico = $semestre_academico;
             $newEstudiante->save();
 
+            $new_asesor_semestre = new Estudiante_Semestre();
+            $new_asesor_semestre->cod_matricula = $request->cod_matricula;
+            $new_asesor_semestre->cod_configuraciones = $semestre_academico;
+            $new_asesor_semestre->save();
             return redirect()->route('director.veragregar')->with('datos', 'ok');
         }
         return redirect()->route('director.veragregar')->with('datos', 'oknot');

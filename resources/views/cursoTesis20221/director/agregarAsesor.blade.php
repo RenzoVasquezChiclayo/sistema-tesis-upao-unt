@@ -16,8 +16,11 @@
                             <h5>Semestre academico</h5>
                         </div>
                         <div class="col-2">
-                            <select class="form-select" name="semestre_academico" id="semestre_academico" required>
-                                <option value="2023-I">2023-I</option>
+                            <select class="form-select" onchange="select_semestre(this);" name="semestre_academico" id="semestre_academico" required>
+                                <option value="0">-</option>
+                                @foreach ($semestre_academico as $s_a)
+                                    <option value="{{ $s_a->cod_configuraciones }}">{{$s_a->año}}_{{$s_a->curso}}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -47,7 +50,7 @@
                     <div class="row border-box">
                         <form class="row g-3 needs-validation" action="{{ route('director.addAsesor') }}" method="POST" novalidate>
                             @csrf
-                            <input type="hidden" name="semestre_hidden" id="semestre_hidden">
+                            <input type="text" name="semestre_hidden" id="semestre_hidden">
                             <div class="row justify-content-around align-items-center">
                                 <div class="col-4">
                                     <label for="cod_docente">Codigo Institucional</label>
@@ -62,15 +65,16 @@
                                 </div>
                             </div>
                             <div class="row justify-content-around align-items-center">
-                                <div class="col-md-4">
-                                    <label for="apellidos">Apellidos</label>
-                                    <input class="form-control" type="text" id="apellidos" name="apellidos"
-                                        placeholder="Ingrese sus apellidos" required>
-                                </div>
+
                                 <div class="col-md-4">
                                     <label for="nombres">Nombres</label>
                                     <input class="form-control" type="text" id="nombres" name="nombres"
                                         placeholder="Ingrese su nombre" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="apellidos">Apellidos</label>
+                                    <input class="form-control" type="text" id="apellidos" name="apellidos"
+                                        placeholder="Ingrese sus apellidos" required>
                                 </div>
                                 <div class="col-md-3">
                                     <label for="gradoAcademico">Grado Academico</label>
@@ -143,10 +147,15 @@
         </script>
     @endif
     <script type="text/javascript">
-        window.onload = function() {
+        function select_semestre(){
             semestre = document.getElementById('semestre_academico').value;
-            document.getElementById('semestre_hidden').value = semestre;
+            if (semestre != '0') {
+                document.getElementById('semestre_hidden').value = semestre;
+            }else{
+                alert('Seleccione otra opcion de semestre academico');
+            }
         }
+
         const inputDireccion = document.querySelector('#direccion');
         const contadorCaracteres = document.querySelector('#contador-caracteres');
 

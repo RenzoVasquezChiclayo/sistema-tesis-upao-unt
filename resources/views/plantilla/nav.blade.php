@@ -1,13 +1,13 @@
 @auth
     <li>
-        <a href="{{ route('user_information') }}">
+        <a class="cstm-a" href="{{ route('user_information') }}">
             <i class='bx bx-sm bx-user-circle'></i>
             <span class="links_name">Perfil</span>
         </a>
         <span class="tooltip">Perfil</span>
     </li>
     <li>
-        <a href="{{ route('user_reports') }}">
+        <a class="cstm-a" href="{{ route('user_reports') }}">
             <i class='bx bxs-report'></i>
             <span class="links_name">Reportes</span>
         </a>
@@ -17,14 +17,14 @@
     {{-- Nav para el Egresado --}}
     @if (auth()->user()->rol == 'estudiante')
         <li>
-            <a href="{{ route('egresadoindex') }}">
+            <a class="cstm-a" href="{{ route('egresadoindex') }}">
                 <i class='bx bx-sm bx-memory-card'></i>
                 <span class="links_name">Formato del Egresado</span>
             </a>
             <span class="tooltip">Egresado</span>
         </li>
         <li>
-            <a href="{{ route('index') }}">
+            <a class="cstm-a" href="{{ route('index') }}">
                 <i class='bx bx-sm bx-book-bookmark'></i>
                 <span class="links_name">Proyecto de Tesis</span>
             </a>
@@ -33,7 +33,7 @@
         {{-- Para obtener las propiedades del user --}}
         {{-- auth()->user()->name --}}
         <li>
-            <a href="{{ route('verRegistroHistorial') }}">
+            <a class="cstm-a" href="{{ route('verRegistroHistorial') }}">
                 <i class='bx bx-sm bx-history'></i>
                 <span class="links_name">Historial de Correcciones</span>
             </a>
@@ -43,7 +43,7 @@
     {{-- Nav para el Director de escuela --}}
     @elseif (auth()->user()->rol == 'director')
         <li>
-            <a href="{{ route('director.formatos') }}">
+            <a class="cstm-a" href="{{ route('director.formatos') }}">
                 <i class='bx bx-sm bx-memory-card'></i>
                 <span class="links_name">Formatos de titulos</span>
             </a>
@@ -53,14 +53,14 @@
     {{-- Nav para el Asesor de las tesis --}}
     @elseif (auth()->user()->rol == 'asesor')
         <li>
-            <a href="{{ route('asesor.proyectos') }}">
+            <a class="cstm-a" href="{{ route('asesor.proyectos') }}">
                 <i class="nav-icon fas fa-graduation-cap"></i>
                 <span class="links_name">Proyectos de tesis</span>
             </a>
             <span class="tooltip">Proyectos de tesis</span>
         </li>
         <li>
-            <a href="{{ route('asesor.historial_observaciones') }}">
+            <a class="cstm-a" href="{{ route('asesor.historial_observaciones') }}">
                 <i class='bx bx-sm bx-history'></i>
                 <span class="links_name">Historial de Observaciones</span>
             </a>
@@ -70,7 +70,7 @@
     {{-- Nav para los Docentes, vista Silabo --}}
     @elseif (auth()->user()->rol == 'docente')
         <li>
-            <a href="{{ route('docente.showSilabos') }}">
+            <a class="cstm-a" href="{{ route('docente.showSilabos') }}">
                 <i class="nav-icon fas fa-graduation-cap"></i>
                 <span class="links_name">Silabo</span>
             </a>
@@ -81,34 +81,34 @@
     @elseif (auth()->user()->rol == 'CTesis2022-1')
 
         <li>
-            <a href="{{ route('curso.tesis20221') }}">
+            <a class="cstm-a" href="{{ route('curso.tesis20221') }}">
                 <i class='bx bx-sm bx-book-bookmark'></i>
                 <span class="links_name">Proyecto Tesis</span>
             </a>
             <span class="tooltip">Proyecto Tesis</span>
         </li>
         <li>
-            <a href="{{ route('curso.estado-proyecto') }}">
+            <a class="cstm-a" href="{{ route('curso.estado-proyecto') }}">
                 <i class='bx bx-sm bx-battery'></i>
                 <span class="links_name">Estado del Proyecto</span>
             </a>
             <span class="tooltip">Estado del Proyecto</span>
         </li>
         <li>
-            <a href="{{ route('curso.registro-tesis') }}">
+            <a class="cstm-a" href="{{ route('curso.registro-tesis') }}">
                 <i class='bx bxs-graduation'></i>
                 <span class="links_name">Tesis</span>
             </a>
             <span class="tooltip">Tesis</span>
         </li>
         <li>
-            <a href="{{ route('curso.estado-tesis') }}">
+            <a class="cstm-a" href="{{ route('curso.estado-tesis') }}">
                 <i class='bx bx-sm bx-battery'></i>
                 <span class="links_name">Estado de la Tesis</span>
             </a>
             <span class="tooltip">Estado de la Tesis</span>
         </li>
-        {{-- <a href="{{route('curso.verHistorialObs')}}" >
+        {{-- <a class="cstm-a" href="{{route('curso.verHistorialObs')}}" >
         <i class="nav-icon fas fa-graduation-cap"></i>
         <span class="links_name">Historial de Correcciones</span>
     </a> --}}
@@ -118,31 +118,31 @@
         @if (auth()->user()->rol == 'administrador')
 
             <li data-toggle="collapse" data-target="#usuarios" class="collapsed active">
-                {{-- <a href="{{ route('admin.listar') }}">
+                {{-- <a class="cstm-a" href="{{ route('admin.listar') }}">
                     <i class='bx bxs-user'></i>
                     <span class="links_name">Listar Usuarios</span>
                 </a>
                 <span class="tooltip">Listar Usuarios</span> --}}
             </li>
             <ul class="sub-menu collapse" id="usuarios">
-                <li class="active"><a href="{{ route('admin.listar') }}">Listar Usuario</a></li>
+                <li class="active"><a class="cstm-a" href="{{ route('admin.listar') }}">Listar Usuario</a></li>
             </ul>
             <li>
-                <a href="{{ route('admin.verConfiguraciones') }}">
+                <a class="cstm-a" href="{{ route('admin.verConfiguraciones') }}">
                     <i class='bx bxs-cog'></i>
-                    <span class="links_name">Configuraciones Iniciales</span>
+                    <span class="links_name">Semestre Académico</span>
                 </a>
-                <span class="tooltip">Configuraciones Iniciales</span>
+                <span class="tooltip">Semestre Académico</span>
             </li>
             <li>
-                <a href="{{ route('admin.listarcategoriasDocente') }}">
+                <a class="cstm-a" href="{{ route('admin.listarcategoriasDocente') }}">
                     <i class='bx bx-sm bx-list-ol'></i>
                     <span class="links_name">Listar Categorias Docente</span>
                 </a>
                 <span class="tooltip">Listar Categorias Docente</span>
             </li>
             <li>
-                <a href="{{ route('admin.verAgregarGrado') }}">
+                <a class="cstm-a" href="{{ route('admin.verAgregarGrado') }}">
                     <i class='bx bx-sm bx-list-ol'></i>
                     <span class="links_name">Listar Grado Académico</span>
                 </a>
@@ -150,100 +150,103 @@
             </li>
         @endif
         <li>
-            <a href="{{ route('director.generalidades') }}">
+            <a class="cstm-a" data-bs-toggle="collapse" href="#collapseGeneral" role="button" aria-expanded="false" aria-controls="collapseGeneral">
+                <i class='bx bx-sm bx-check-square'></i>
+                <span class="links_name">General</span>
+            </a>
+            <div class="cstm-collapse collapse" id="collapseGeneral">
+                <a href="{{ route('director.generalidades') }}">
+                    <span class="links_name">Generalidades</span>
+                </a>
+                <a href="{{ route('director.mantenedorlineaInves') }}">
+                    <span class="links_name">Mantenedor Generalidades</span>
+                </a>
+            </div>
+        </li>
+        <!-- <li>
+            <a class="cstm-a" href="{{ route('director.generalidades') }}">
 
                 <span class="links_name">Generalidades</span>
             </a>
             <span class="tooltip">Generalidades</span>
         </li>
         <li>
-            <a href="{{ route('director.mantenedorlineaInves') }}">
+            <a class="cstm-a" href="{{ route('director.mantenedorlineaInves') }}">
 
                 <span class="links_name">Mantenedor Generalidades</span>
             </a>
             <span class="tooltip">Mantenedor Generalidades</span>
-        </li>
+        </li> -->
         <li>
-            <a href="{{ route('director.listaAlumnos') }}">
+            <a class="cstm-a" data-bs-toggle="collapse" href="#collapseAlumno" role="button" aria-expanded="false" aria-controls="collapseAlumno">
+                <i class='bx bx-sm bx-check-square'></i>
+                <span class = "links_name">Alumno</span>
+            </a>
+            <div class="cstm-collapse collapse" id="collapseAlumno">
+                <a href="{{ route('director.listaAlumnos') }}">
+                    <span class="links_name">Lista Alumnos</span>
+                </a>
+                <a href="{{ route('director.veragregar') }}">
+                    <span class="links_name">Agregar Alumno</span>
+                </a>
+            </div>
+        </li>
+        <!-- <li>
+            <a class="cstm-a" href="{{ route('director.listaAlumnos') }}">
                 <i class='bx bx-sm bx-list-ol'></i>
                 <span class="links_name">Lista Alumnos</span>
             </a>
             <span class="tooltip">Lista Alumnos</span>
-        </li>
+        </li> -->
         <li>
-            <a href="{{ route('director.listaAsesores') }}">
+            <a class="cstm-a" data-bs-toggle="collapse" href="#collapseAsesor" role="button" aria-expanded="false" aria-controls="collapseAsesor">
+                <i class='bx bx-sm bx-check-square'></i>
+                <span class = "links_name">Asesor</span>
+            </a>
+            <div class="cstm-collapse collapse" id="collapseAsesor">
+                <a href="{{ route('director.listaAsesores') }}">
+                    <span class="links_name">Lista Asesores</span>
+                </a>
+                <a href="{{ route('director.veragregarAsesor') }}">
+                    <span class="links_name">Agregar Asesor</span>
+                </a>
+            </div>
+        </li>
+        <!-- <li>
+            <a class="cstm-a" href="{{ route('director.listaAsesores') }}">
                 <i class='bx bx-sm bx-list-ol'></i>
                 <span class="links_name">Lista Asesores</span>
             </a>
             <span class="tooltip">Lista Asesores</span>
         </li>
         <li>
-            <a href="{{ route('director.veragregarAsesor') }}">
+            <a class="cstm-a" href="{{ route('director.veragregarAsesor') }}">
                 <i class='bx bx-sm bx-message-square-add'></i>
                 <span class="links_name">Agregar Asesor</span>
             </a>
             <span class="tooltip">Asesor</span>
         </li>
         <li>
-            <a href="{{ route('director.veragregar') }}">
+            <a class="cstm-a" href="{{ route('director.veragregar') }}">
                 <i class='bx bx-sm bx-message-square-add'></i>
                 <span class="links_name">Agregar Alumno</span>
             </a>
             <span class="tooltip">Alumno</span>
-        </li>
+        </li> -->
         <li>
-            <div class="links_name" style="border: solid white; border-width: 1px 0px 0px 0px; margin-left:15px;">
-                <p style="color: white;">Asignar Asesor</p>
-            </div>
-        </li>
-        <li>
-            <a href="{{ route('director.asignar') }}">
+            <a class="cstm-a" href="{{ route('director.asignar') }}">
                 <i class='bx bx-sm bx-check-square'></i>
                 <span class="links_name">Proyecto de Tesis</span>
             </a>
             <span class="tooltip">Proyecto de Tesis</span>
         </li>
         <li>
-            <a href="{{ route('director.asignarAsesorTesis') }}">
+            <a class="cstm-a" href="{{ route('director.asignarAsesorTesis') }}">
                 <i class='bx bx-sm bx-check-square'></i>
                 <span class="links_name">Tesis</span>
             </a>
             <span class="tooltip">Tesis</span>
         </li>
-        <li>
-            <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                <i class='bx bx-sm bx-check-square'></i>
-                <span class = "links_name">Options</span>
-            </a>
-            <div class="cstm-collapse collapse" id="collapseExample">
-                <a href="#">Option 1</a>
-                <a href="#">Option 2</a>
-                <a href="#">Option 3</a>
-            </div>
-        </li>
-        <li hidden>
-            <a href="#">
-                <!-- <i class='bx bx-sm bx-check-square'></i> -->
-                <div class="cstm-accordion accordion links_name" id="accordionExample">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="headingOne">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            <i class='bx bx-sm bx-check-square'></i> Options
-                            </button>
-                        </h2>
-                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                            <div class="accordion-body">
-                                <div>Option 1</div>
-                                <div>Option 2</div>
-                                <div>Option 3</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-
-        </li>
-
 
         {{-- Nav para el Asesor del curso TESIS I --}}
     @elseif (auth()->user()->rol == 'a-CTesis2022-1')

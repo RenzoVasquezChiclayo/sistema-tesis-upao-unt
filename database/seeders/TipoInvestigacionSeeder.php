@@ -15,22 +15,22 @@ class TipoInvestigacionSeeder extends Seeder
      */
     public function run()
     {
-        DB::connection('mysql')->table('tipoinvestigacion')->insert(
-            [
-                'cod_tinvestigacion'=>'0001',
-                'descripcion'=>'CONTABILIDAD',
-                'cod_escuela'=>'0001',
-                'semestre_academico'=>'2023-I'
-            ]
-        );
-        DB::connection('mysql')->table('tipoinvestigacion')->insert(
-            [
-                'cod_tinvestigacion'=>'0002',
-                'descripcion'=>'FINANZAS',
-                'cod_escuela'=>'0001',
-                'semestre_academico'=>'2023-I'
-            ]
-        );
+        // DB::connection('mysql')->table('tipoinvestigacion')->insert(
+        //     [
+        //         'cod_tinvestigacion'=>'0001',
+        //         'descripcion'=>'CONTABILIDAD',
+        //         'cod_escuela'=>'0001',
+        //         'semestre_academico'=>'2023-I'
+        //     ]
+        // );
+        // DB::connection('mysql')->table('tipoinvestigacion')->insert(
+        //     [
+        //         'cod_tinvestigacion'=>'0002',
+        //         'descripcion'=>'FINANZAS',
+        //         'cod_escuela'=>'0001',
+        //         'semestre_academico'=>'2023-I'
+        //     ]
+        // );
 
 
     }

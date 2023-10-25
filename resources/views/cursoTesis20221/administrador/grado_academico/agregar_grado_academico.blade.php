@@ -73,25 +73,28 @@
                                     <td>{{ $grado->descripcion }}</td>
                                     <td>{{ $grado->estado }}</td>
                                     <td>
-                                        <div class="row">
-                                            <form id="formGradoDelete" name="formGradoDelete" method="post"
-                                            action="{{ route('admin.deleteGrado') }}">
-                                                <a href="#" class="btn btn-warning"
-                                                    onclick="editGradoAcademico({{ $grado->cod_grado_academico }});"><i
-                                                        class='bx bx-sm bx-edit-alt'></i></a>
-                                        </form>
-                                        <form id="formGradoDelete" name="formGradoDelete" method="post"
-                                            action="{{ route('admin.deleteGrado') }}">
-                                            @method('DELETE')
-                                            @csrf
-                                            <input type="hidden" name="aux_grado_academico"
-                                                value="{{ $grado->cod_grado_academico }}">
-                                            <a href="#" class="btn btn-danger btn-eliminar"
-                                                onclick="alertaConfirmacion(this);"><i
-                                                    class='bx bx-message-square-x'></i></a>
-                                        </form>
+                                        <div class="row" style="display: flex;">
+                                            <div class="col-auto">
+                                                <form id="formGradoDelete" name="formGradoDelete" method="post"
+                                                action="{{ route('admin.deleteGrado') }}">
+                                                    <a href="#" class="btn btn-warning"
+                                                        onclick="editGradoAcademico({{ $grado->cod_grado_academico }});"><i
+                                                            class='bx bx-sm bx-edit-alt'></i></a>
+                                                </form>
+                                            </div>
+                                            <div class="col-auto">
+                                                <form id="formGradoDelete" name="formGradoDelete" method="post"
+                                                action="{{ route('admin.deleteGrado') }}">
+                                                    @method('DELETE')
+                                                    @csrf
+                                                    <input type="hidden" name="aux_grado_academico"
+                                                        value="{{ $grado->cod_grado_academico }}">
+                                                    <a href="#" class="btn btn-danger btn-eliminar"
+                                                        onclick="alertaConfirmacion(this);"><i
+                                                            class='bx bx-sm bxs-trash'></i></a>
+                                                </form>
+                                            </div>
                                         </div>
-
                                     </td>
 
                                 </tr>

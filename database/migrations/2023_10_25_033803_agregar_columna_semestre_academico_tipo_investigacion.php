@@ -13,8 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('asesor_curso', function (Blueprint $table) {
-            $table->string('semestre_academico',30);
+        Schema::table('tipoinvestigacion', function (Blueprint $table) {
+            $table->integer('cod_semestre_academico');
+            $table->foreign('cod_semestre_academico')
+                    ->references('cod_configuraciones')
+                    ->on('configuraciones_iniciales')
+                    ->onDelete('cascade');
         });
     }
 

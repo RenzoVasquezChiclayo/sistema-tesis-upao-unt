@@ -1568,8 +1568,9 @@ class CursoTesisController extends Controller
     public function verAsesorEditar(Request $request){
 
         $asesor = DB::table('asesor_curso')->select('asesor_curso.*')->where('asesor_curso.cod_docente','=',$request->auxid)->get();
-
-        return view('cursoTesis20221.director.editarAsesor',['asesor'=>$asesor]);
+        $grados_academicos = DB::table('grado_academico')->select('*')->get();
+        $categorias = DB::table('categoria_docente')->select('*')->get();
+        return view('cursoTesis20221.director.editarAsesor',['asesor'=>$asesor,'grados_academicos'=>$grados_academicos,'categorias'=>$categorias]);
     }
 
     public function editEstudiante(Request $request){
@@ -1597,8 +1598,10 @@ class CursoTesisController extends Controller
         try {
             $asesor = AsesorCurso::find($request->cod_docente);
             $asesor->nombres = $request->nombres;
+            $asesor->apellidos = $request->apellidos;
             $asesor->orcid = $request->orcid;
-            $asesor->grado_academico = $request->gradAcademico;
+            $asesor->cod_grado_academico = $request->gradAcademico;
+            $asesor->cod_categoria = $request->categoria;
             $asesor->direccion = $request->direccion;
             $asesor->correo = $request->correo;
 

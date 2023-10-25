@@ -14,7 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::table('fin_persigue', function (Blueprint $table) {
-            $table->string('semestre_academico',30);
+            $table->integer('cod_semestre_academico');
+            $table->foreign('cod_semestre_academico')
+                    ->references('cod_configuraciones')
+                    ->on('configuraciones_iniciales')
+                    ->onDelete('cascade');
         });
     }
 

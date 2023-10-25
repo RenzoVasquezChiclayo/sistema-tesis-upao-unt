@@ -73,7 +73,7 @@
                                                             value="{{ $l_u->cod_categoria }}">
                                                         <a href="#" class="btn btn-danger btn-eliminar"
                                                             onclick="alertaConfirmacion(this);"><i
-                                                                class='bx bx-message-square-x'></i></a>
+                                                                class='bx bx-sm bxs-trash'></i></a>
                                                     </form>
                                                 </div>
                                             </div>
