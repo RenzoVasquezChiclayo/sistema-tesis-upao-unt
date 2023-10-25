@@ -37,7 +37,7 @@
                     <div class="col-12" style="margin-top: 10px;">
                         <button id="btn_save" class="btn btn-success" type="submit">Registrar</button>
 
-                        <a href="{{ route('user_information') }}" type="button"
+                        <a href="{{ route('admin.verAgregarGrado') }}" type="sub"
                             class="btn btn-no-border btn-outline-danger">Cancelar</a>
                     </div>
                 </form>
@@ -71,27 +71,40 @@
                                 <tr>
                                     <td>{{ $grado->cod_grado_academico }}</td>
                                     <td>{{ $grado->descripcion }}</td>
-                                    <td>{{ $grado->estado }}</td>
+                                    <td>
+                                        <form id="formChangeStatus" name="formChangeStatus" method="post"
+                                            action="{{ route('admin.changeStatusGrado') }}">
+                                            @csrf
+                                            <input type="text" name="aux_grado_academico"
+                                                value="{{ $grado->cod_grado_academico }}" hidden>
+                                            <div class="form-check form-switch" style="width: fit-content">
+                                                <input class="form-check-input" type="checkbox" role="switch"
+                                                    id="flexSwitchCheckDefault" onclick="updateState(this);"
+                                                    @if ($grado->estado == 1) checked @endif>
+                                                <label class="form-check-label"
+                                                    for="flexSwitchCheckDefault">Activado</label>
+                                            </div>
+                                        </form>
+                                    </td>
                                     <td>
                                         <div class="row" style="display: flex;">
                                             <div class="col-auto">
-                                                <form id="formGradoDelete" name="formGradoDelete" method="post"
-                                                action="{{ route('admin.deleteGrado') }}">
-                                                    <a href="#" class="btn btn-warning"
-                                                        onclick="editGradoAcademico({{ $grado->cod_grado_academico }});"><i
-                                                            class='bx bx-sm bx-edit-alt'></i></a>
-                                                </form>
+                                                <a href="#" class="btn btn-warning"
+                                                    onclick="editGradoAcademico({{ $grado->cod_grado_academico }}, '{{ $grado->descripcion }}');">
+                                                    <i class='bx bx-sm bx-edit-alt'></i>
+                                                </a>
                                             </div>
                                             <div class="col-auto">
                                                 <form id="formGradoDelete" name="formGradoDelete" method="post"
-                                                action="{{ route('admin.deleteGrado') }}">
+                                                    action="{{ route('admin.deleteGrado') }}">
                                                     @method('DELETE')
                                                     @csrf
                                                     <input type="hidden" name="aux_grado_academico"
                                                         value="{{ $grado->cod_grado_academico }}">
                                                     <a href="#" class="btn btn-danger btn-eliminar"
-                                                        onclick="alertaConfirmacion(this);"><i
-                                                            class='bx bx-sm bxs-trash'></i></a>
+                                                        onclick="alertaConfirmacion(this);">
+                                                        <i class='bx bx-sm bxs-trash'></i>
+                                                    </a>
                                                 </form>
                                             </div>
                                         </div>
@@ -104,8 +117,6 @@
                 </div>
 
             </div>
-
-
             {{ $grados_academicos->links() }}
         </div>
     </div>
@@ -132,31 +143,35 @@
                 showConfirmButton: false,
                 timer: 1500
             })
-
-            function editGradoAcademico(code) {
-
-            }
-            const inputCodeGrado = document.getElementById("cod_grado_academico");
-            inputCodeGrado.value = code;
-
-            document.getElementById("btn_save").textContent = "Edit"; < /scrip
-
-            function alertaConfirmacion(form) {
-                Swal.fire({
-                    title: 'Estas Seguro que deseas eliminar?',
-                    text: "No podras revertirlo",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Confirmar!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.closest('#formGradoDelete').submit();
-                    }
-                });
-            }
         </script>
     @endif
-    <script type="text/javascript"></script>
+    <script type="text/javascript">
+        function editGradoAcademico(code, description) {
+            const inputCodeGrado = document.getElementById("cod_grado_academico");
+            inputCodeGrado.value = code;
+            document.getElementById("descripcion").value = description;
+            document.getElementById("btn_save").textContent = "Edit";
+        }
+
+
+        function alertaConfirmacion(form) {
+            Swal.fire({
+                title: 'Estas Seguro que deseas eliminar?',
+                text: "No podras revertirlo",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Confirmar!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.closest('#formGradoDelete').submit();
+                }
+            });
+        }
+
+        function updateState(form) {
+            form.closest('#formChangeStatus').submit();
+        }
+    </script>
 @endsection

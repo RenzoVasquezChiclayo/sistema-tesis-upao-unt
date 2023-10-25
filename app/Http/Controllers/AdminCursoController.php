@@ -765,4 +765,16 @@ class AdminCursoController extends Controller
         }
     }
 
+    public function changeStatusGrado(Request $request){
+        try{
+            $cod_grado = $request->aux_grado_academico;
+            $find_grado = Grado_Academico::where('cod_grado_academico', $cod_grado)->first();
+            $find_grado->estado = ($find_grado->estado == 1) ? 0 : 1;
+            $find_grado->save();
+            return redirect()->route('admin.verAgregarGrado')->with('datos', 'okdelete');
+        }catch(\Throwable $th){
+            return redirect()->route('admin.verAgregarGrado')->with('datos', 'oknotdelete');
+        }
+    }
+
 }

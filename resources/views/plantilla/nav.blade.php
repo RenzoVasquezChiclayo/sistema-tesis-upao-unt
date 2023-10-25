@@ -163,20 +163,6 @@
                 </a>
             </div>
         </li>
-        <!-- <li>
-            <a class="cstm-a" href="{{ route('director.generalidades') }}">
-
-                <span class="links_name">Generalidades</span>
-            </a>
-            <span class="tooltip">Generalidades</span>
-        </li>
-        <li>
-            <a class="cstm-a" href="{{ route('director.mantenedorlineaInves') }}">
-
-                <span class="links_name">Mantenedor Generalidades</span>
-            </a>
-            <span class="tooltip">Mantenedor Generalidades</span>
-        </li> -->
         <li>
             <a class="cstm-a" data-bs-toggle="collapse" href="#collapseAlumno" role="button" aria-expanded="false" aria-controls="collapseAlumno">
                 <i class='bx bx-sm bx-check-square'></i>
@@ -191,13 +177,6 @@
                 </a>
             </div>
         </li>
-        <!-- <li>
-            <a class="cstm-a" href="{{ route('director.listaAlumnos') }}">
-                <i class='bx bx-sm bx-list-ol'></i>
-                <span class="links_name">Lista Alumnos</span>
-            </a>
-            <span class="tooltip">Lista Alumnos</span>
-        </li> -->
         <li>
             <a class="cstm-a" data-bs-toggle="collapse" href="#collapseAsesor" role="button" aria-expanded="false" aria-controls="collapseAsesor">
                 <i class='bx bx-sm bx-check-square'></i>
@@ -212,27 +191,6 @@
                 </a>
             </div>
         </li>
-        <!-- <li>
-            <a class="cstm-a" href="{{ route('director.listaAsesores') }}">
-                <i class='bx bx-sm bx-list-ol'></i>
-                <span class="links_name">Lista Asesores</span>
-            </a>
-            <span class="tooltip">Lista Asesores</span>
-        </li>
-        <li>
-            <a class="cstm-a" href="{{ route('director.veragregarAsesor') }}">
-                <i class='bx bx-sm bx-message-square-add'></i>
-                <span class="links_name">Agregar Asesor</span>
-            </a>
-            <span class="tooltip">Asesor</span>
-        </li>
-        <li>
-            <a class="cstm-a" href="{{ route('director.veragregar') }}">
-                <i class='bx bx-sm bx-message-square-add'></i>
-                <span class="links_name">Agregar Alumno</span>
-            </a>
-            <span class="tooltip">Alumno</span>
-        </li> -->
         <li>
             <a class="cstm-a" href="{{ route('director.asignar') }}">
                 <i class='bx bx-sm bx-check-square'></i>

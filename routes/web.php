@@ -98,7 +98,8 @@ Route::post('/delete-categoria',[AdminCursoController::class,'delete_categoria']
 //----
 Route::get('/ver-grado-academico',[AdminCursoController::class,'verAgregarGrado'])->name('admin.verAgregarGrado');
 Route::post('/save-grado-academico',[AdminCursoController::class,'saveGradoAcademico'])->name('admin.guardarGradoAcademico');
-Route::post('/delete-grado-academico',[AdminCursoController::class,'deleteGradoAcademico'])->name('admin.deleteGrado');
+Route::post('/change-status-grado',[AdminCursoController::class,'changeStatusGrado'])->name('admin.changeStatusGrado');
+Route::delete('/delete-grado-academico',[AdminCursoController::class,'deleteGradoAcademico'])->name('admin.deleteGrado');
 
 //----
 Route::get('/ver-configuraciones-iniciales',[AdminCursoController::class,'verConfiguracionesIniciales'])->name('admin.verConfiguraciones');
