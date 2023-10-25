@@ -1540,12 +1540,20 @@ class CursoTesisController extends Controller
         $buscarAsesor = $request->buscarAsesor;
         if($buscarAsesor!=""){
             if (is_numeric($buscarAsesor)) {
-                $asesores = DB::table('asesor_curso')->select('asesor_curso.*')->where('asesor_curso.cod_docente','like','%'.$buscarAsesor.'%')->orderBy('asesor_curso.nombres')->paginate($this::PAGINATION4);
+                $asesores = DB::table('asesor_curso')
+                            ->join('grado_academico','grado_academico.cod_grado_academico','asesor_curso.cod_grado_academico')
+                            ->join('categoria_docente','categoria_docente.cod_categoria','asesor_curso.cod_categoria')
+                            ->select('asesor_curso.*','grado_academico.descripcion as DescGrado','categoria_docente.descripcion as DescCat')
+                            ->where('asesor_curso.cod_docente','like','%'.$buscarAsesor.'%')->orderBy('asesor_curso.nombres')->paginate($this::PAGINATION4);
             } else {
-                $asesores = DB::table('asesor_curso')->select('asesor_curso.*')->where('asesor_curso.apellidos','like','%'.$buscarAsesor.'%')->orderBy('asesor_curso.nombres')->paginate($this::PAGINATION4);
+                $asesores = DB::table('asesor_curso')->join('grado_academico','grado_academico.cod_grado_academico','asesor_curso.cod_grado_academico')
+                ->join('categoria_docente','categoria_docente.cod_categoria','asesor_curso.cod_categoria')
+                            ->select('asesor_curso.*','grado_academico.descripcion as DescGrado','categoria_docente.descripcion as DescCat')->where('asesor_curso.apellidos','like','%'.$buscarAsesor.'%')->orderBy('asesor_curso.nombres')->paginate($this::PAGINATION4);
             }
         }else{
-            $asesores = DB::table('asesor_curso')->select('asesor_curso.*')->orderBy('asesor_curso.nombres')->paginate($this::PAGINATION4);
+            $asesores = DB::table('asesor_curso')->join('grado_academico','grado_academico.cod_grado_academico','asesor_curso.cod_grado_academico')
+            ->join('categoria_docente','categoria_docente.cod_categoria','asesor_curso.cod_categoria')
+                            ->select('asesor_curso.*','grado_academico.descripcion as DescGrado','categoria_docente.descripcion as DescCat')->orderBy('asesor_curso.nombres')->paginate($this::PAGINATION4);
         }
         return view('cursoTesis20221.director.listaAsesores',['asesores'=>$asesores,'buscarAsesor'=>$buscarAsesor]);
     }

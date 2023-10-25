@@ -431,7 +431,9 @@ class AdminCursoController extends Controller
     }
     public function showAddAsesor()
     {
-        return view('cursoTesis20221.director.agregarAsesor');
+        $grados_academicos = DB::table('grado_academico')->select('*')->get();
+        $categorias = DB::table('categoria_docente')->select('*')->get();
+        return view('cursoTesis20221.director.agregarAsesor',['grados_academicos'=>$grados_academicos,'categorias'=>$categorias]);
     }
 
     public function importRegistroAlumnos(Request $request)
@@ -470,53 +472,43 @@ class AdminCursoController extends Controller
 
     public function agregarAsesor(Request $request)
     {
+        try {
+            $data = $request->validate([
+                'cod_docente' => 'required',
+                'apellidos' => 'required',
+                'nombres' => 'required',
+                'categoria' => 'required',
+                'gradAcademico' => 'required',
+                'direccion' => 'required',
 
-        $data = $request->validate([
-            'cod_docente' => 'required',
-            'apellidos' => 'required',
-            'nombres' => 'required',
-            'carrera' => 'required',
-            'gradAcademico' => 'required',
-            'direccion' => 'required',
+            ]);
+            $semestre_academico = $request->semestre_hidden;
+            $existAsesor = AsesorCurso::where('cod_docente', $request->cod_docente)->get();
 
-        ]);
-        $semestre_academico = $request->semestre_hidden;
-        $existAsesor = AsesorCurso::where('cod_docente', $request->cod_docente)->get();
+            if ($existAsesor->count() == 0) {
+                $newAsesor = new AsesorCurso();
+                $newAsesor->cod_docente = $request->cod_docente;
+                $newAsesor->apellidos = strtoupper($request->apellidos);
+                $newAsesor->nombres = strtoupper($request->nombres);
+                $newAsesor->orcid = $request->orcid;
+                $newAsesor->cod_grado_academico = $request->gradAcademico;
+                $newAsesor->cod_categoria = $request->categoria;
+                $newAsesor->direccion = $request->direccion;
+                $newAsesor->correo = $request->correo;
+                $newAsesor->semestre_academico = $semestre_academico;
+                $newAsesor->save();
 
-        if ($existAsesor->count() == 0) {
-            $newAsesor = new AsesorCurso();
-            $newAsesor->cod_docente = $request->cod_docente;
-            $newAsesor->nombres = strtoupper($request->apellidos) . ' ' . strtoupper($request->nombres);
-            $newAsesor->orcid = $request->orcid;
-            switch ($request->gradAcademico) {
-                case 0:
-                    $newAsesor->grado_academico = 'NOMBRADO';
-                    break;
-                case 1:
-                    $newAsesor->grado_academico = 'CONTRATADO';
-                    break;
+                return redirect()->route('director.veragregarAsesor')->with('datos', 'ok');
+            }else{
+                return redirect()->route('director.veragregarAsesor')->with('datos', 'oknot');
             }
-            switch ($request->carrera) {
-                case 0:
-                    $newAsesor->titulo_profesional = 'CONTABILIDAD Y FINANZAS';
-                    break;
-                case 1:
-                    $newAsesor->titulo_profesional = 'ADMINISTRACION';
-                    break;
-                case 2:
-                    $newAsesor->titulo_profesional = 'ECONOMIA';
-                    break;
-            }
-            $newAsesor->direccion = $request->direccion;
-            $newAsesor->correo = $request->correo;
-            $newAsesor->semestre_academico = $semestre_academico;
-            $newAsesor->save();
-
-            return redirect()->route('director.veragregarAsesor')->with('datos', 'ok');
+        } catch (\Throwable $th) {
+            dd($th);
         }
 
 
-        return redirect()->route('director.veragregarAsesor')->with('datos', 'oknot');
+
+
     }
 
 

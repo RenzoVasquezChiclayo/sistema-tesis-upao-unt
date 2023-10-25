@@ -116,13 +116,17 @@
     {{-- Nav para el Director del curso TESIS I --}}
     @elseif (auth()->user()->rol == 'd-CTesis2022-1' || auth()->user()->rol == 'administrador')
         @if (auth()->user()->rol == 'administrador')
-            <li>
-                <a href="{{ route('admin.listar') }}">
+
+            <li data-toggle="collapse" data-target="#usuarios" class="collapsed active">
+                {{-- <a href="{{ route('admin.listar') }}">
                     <i class='bx bxs-user'></i>
                     <span class="links_name">Listar Usuarios</span>
                 </a>
-                <span class="tooltip">Listar Usuarios</span>
+                <span class="tooltip">Listar Usuarios</span> --}}
             </li>
+            <ul class="sub-menu collapse" id="usuarios">
+                <li class="active"><a href="{{ route('admin.listar') }}">Listar Usuario</a></li>
+            </ul>
             <li>
                 <a href="{{ route('admin.verConfiguraciones') }}">
                     <i class='bx bxs-cog'></i>
@@ -206,6 +210,40 @@
             </a>
             <span class="tooltip">Tesis</span>
         </li>
+        <li>
+            <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                <i class='bx bx-sm bx-check-square'></i>
+                <span class = "links_name">Options</span>
+            </a>
+            <div class="cstm-collapse collapse" id="collapseExample">
+                <a href="#">Option 1</a>
+                <a href="#">Option 2</a>
+                <a href="#">Option 3</a>
+            </div>
+        </li>
+        <li hidden>
+            <a href="#">
+                <!-- <i class='bx bx-sm bx-check-square'></i> -->
+                <div class="cstm-accordion accordion links_name" id="accordionExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <i class='bx bx-sm bx-check-square'></i> Options
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <div>Option 1</div>
+                                <div>Option 2</div>
+                                <div>Option 3</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+        </li>
+
 
         {{-- Nav para el Asesor del curso TESIS I --}}
     @elseif (auth()->user()->rol == 'a-CTesis2022-1')

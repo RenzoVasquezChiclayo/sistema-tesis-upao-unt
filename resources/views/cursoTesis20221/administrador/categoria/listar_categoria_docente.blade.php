@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table id="table-proyecto" class="table table-striped table-responsive-md">
+                            <table id="table-proyecto" class="table table-striped table-responsive-md" style="font-size: 14px;">
                                 <thead>
                                     <tr>
                                         <td>Id</td>

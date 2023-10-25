@@ -19,7 +19,7 @@ class AsesorCurso extends Model
         'apellidos',
         'orcid',
         'cod_grado_academico',
-        'cod_categoira',
+        'cod_categoria',
         'direccion',
         'correo',
         //Fines del curso
