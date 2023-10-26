@@ -16,6 +16,16 @@ class AlumnosImport implements ToModel, WithHeadingRow
     {
         $this->semestre_academico = $semestre_academico;
     }
+    public function rules(): array
+        {
+            return [
+                'cod_matricula' => 'required',
+                'dni' => 'required',
+                'apellidos' => 'required',
+                'nombres' => 'required',
+                'correo' => 'nullable',
+            ];
+        }
     public function model(array $row)
     {
 
@@ -27,7 +37,7 @@ class AlumnosImport implements ToModel, WithHeadingRow
                 'dni' => $row['dni'],
                 'apellidos' => $row['apellidos'],
                 'nombres' => $row['nombres'],
-                'correo' => $row['correo']==null? "":$row['correo'],
+                'correo' => $row['correo'],
             ]);
             $new_estudiante->save();
             $new_estudiante_semestre = new Estudiante_Semestre([

@@ -624,21 +624,21 @@ class Tesis2022Controller extends Controller
             if (is_numeric($buscar_estudiante)) {
                 $estudiantes = DB::table('estudiante_ct2022 as e')
                 ->leftJoin('tesis_2022 as t','t.cod_matricula','=','e.cod_matricula')
-                ->select('e.*', 't.cod_docente')
+                ->select('e.*', 't.cod_docente','t.cod_asesor')
                 ->where('e.cod_matricula','like','%'.$buscar_estudiante.'%')
                 ->orderBy('e.apellidos')
                 ->paginate($this::PAG_ASIGNACION);
             } else {
                 $estudiantes = DB::table('estudiante_ct2022 as e')
                 ->leftJoin('tesis_2022 as t','t.cod_matricula','=','e.cod_matricula')
-                ->select('e.*', 't.cod_docente')
+                ->select('e.*', 't.cod_docente','t.cod_asesor')
                 ->where('e.apellidos','like','%'.$buscar_estudiante.'%')
                 ->orderBy('e.apellidos')->paginate($this::PAG_ASIGNACION);
             }
         }else{
             $estudiantes = DB::table('estudiante_ct2022 as e')
             ->leftJoin('tesis_2022 as t','t.cod_matricula','=','e.cod_matricula')
-            ->select('e.*','t.cod_docente')
+            ->select('e.*','t.cod_docente','t.cod_asesor')
             ->orderBy('e.apellidos')
             ->paginate($this::PAG_ASIGNACION);
         }
@@ -662,7 +662,8 @@ class Tesis2022Controller extends Controller
                     $tesisFound->cod_matricula = $estudiante->cod_matricula;
                 }
 
-                $tesisFound->cod_docente = $datos[1];
+                $tesisFound->cod_asesor = $datos[1];
+                $tesisFound->cod_docente = $datos[2];
                 $tesisFound->fecha_create = now();
                 $tesisFound->fecha_update = now();
                 $tesisFound->save();

@@ -20,7 +20,7 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3 justify-content-end align-items-center">
-                                    {{-- <div class="col-md-3">
+                                    <div class="col-md-3">
                                         <h5>Filtrar</h5>
                                         <form id="filtrarAlumno" name="filtrarAlumno" method="get">
                                             <div class="row">
@@ -28,10 +28,10 @@
                                                     <select class="form-select" name="filtrar_semestre"
                                                         id="filtrar_semestre" required>
                                                         @foreach ($semestre as $sem)
-                                                    <option value="{{ $sem->year }}_{{ $sem->curso }}">
-                                                        {{ $sem->year }}_{{ $sem->curso }}
-                                                    </option>
-                                                @endforeach
+                                                            <option value="{{ $sem->cod_configuraciones }}" @if($sem->cod_configuraciones == $filtrarSemestre) selected @endif>
+                                                                {{ $sem->año }}_{{ $sem->curso }}
+                                                            </option>
+                                                        @endforeach
                                                     </select>
                                                     <button class="btn btn-outline-primary" type="submit"
                                                         id="btn-search">Filtrar</button>
@@ -39,16 +39,17 @@
                                             </div>
                                         </form>
 
-                                    </div> --}}
+                                    </div>
                                     <div class="col col-sm-8 col-md-6">
                                         <h5>Buscar alumno</h5>
                                         <form id="listAlumno" name="listAlumno" method="get">
                                             <div class="row">
+                                                <input name="semestre" id="semestre" type="text" hidden>
                                                 <div class="input-group">
                                                     <input type="text" class="form-control" name="buscarAlumno"
                                                         placeholder="Codigo de matricula o Apellidos"
                                                         value="{{ $buscarAlumno }}" aria-describedby="btn-search">
-                                                    <button class="btn btn-outline-primary" type="submit"
+                                                    <button class="btn btn-outline-primary" type="button" onclick="saveStateSemestre(this);"
                                                         id="btn-search">Buscar</button>
                                                 </div>
                                             </div>
@@ -113,7 +114,7 @@
                                 </tbody>
                             </table>
                             @if (!empty($estudiantes))
-                                {{ $estudiantes->links() }}
+                                {{ $estudiantes->appends(request()->input())->links() }}
                             @endif
 
                         </div>
@@ -170,6 +171,7 @@
         </script>
     @endif
     <script type="text/javascript">
+
         function editarAlumno(formulario, contador) {
             formulario.closest('#form-alumno' + contador).submit();
         }
@@ -188,6 +190,13 @@
                     form.closest('#formAlumnoDelete').submit();
                 }
             })
+        }
+
+        function saveStateSemestre(form){
+            const semestreSelect = document.getElementById("filtrar_semestre");
+            const selectedSemestre = semestreSelect.options[semestreSelect.selectedIndex];
+            document.getElementById("semestre").value = selectedSemestre.value;
+            form.closest("#listAlumno").submit();
         }
     </script>
 @endsection

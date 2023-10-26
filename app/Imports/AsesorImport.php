@@ -22,10 +22,13 @@ class AsesorImport implements ToModel, WithHeadingRow, WithValidation
     public function rules(): array
         {
             return [
-                'cod_grado_academico' => 'required', // Assuming 'cod_matricula' is a required field
-                'cod_categoria' => 'nullable', // 'dni' can be nullable in the Excel file
-                'direccion' => 'required', // Assuming 'apellidos' is a required field
-                'correo' => 'required', // Assuming 'nombres' is a required field
+                'cod_docente' => 'required',
+                'nombres' => 'required',
+                'apellidos' => 'required',
+                'orcid' => 'required',
+                'cod_grado_academico' => 'nullable',
+                'cod_categoria' => 'nullable',
+                'correo' => 'nullable',
             ];
         }
     public function model(array $row)
@@ -37,10 +40,11 @@ class AsesorImport implements ToModel, WithHeadingRow, WithValidation
             $new_asesor = new AsesorCurso([
                 'cod_docente'=> $row['cod_docente'],
                 'nombres'=> $row['nombres'],
+                'apellidos'=> $row['apellidos'],
                 'orcid'=> $row['orcid'],
                 'cod_grado_academico'=> $row['grado_academico'],
                 'cod_categoria'=> $row['categoria'],
-                'direccion'=> $row['direccion'],
+                'direccion'=> $row['direccion']==null? "":$row['direccion'],
                 'correo' => $row['correo'],
             ]);
             $new_asesor->save();

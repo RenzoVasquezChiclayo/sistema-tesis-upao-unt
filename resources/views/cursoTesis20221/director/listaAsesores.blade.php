@@ -20,7 +20,7 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3" style="display:flex; align-items:right; justify-content:right;">
-                                    {{-- <div class="col-md-3">
+                                    <div class="col-md-3">
                                         <h5>Filtrar</h5>
                                         <form id="filtrarAlumno" name="filtrarAlumno" method="get">
                                             <div class="row">
@@ -28,8 +28,8 @@
                                                     <select class="form-select" name="filtrar_semestre"
                                                         id="filtrar_semestre" required>
                                                         @foreach ($semestre as $sem)
-                                                    <option value="{{ $sem->year }}_{{ $sem->curso }}">
-                                                        {{ $sem->year }}_{{ $sem->curso }}
+                                                    <option value="{{ $sem->cod_configuraciones }}" @if($sem->cod_configuraciones == $filtrarSemestre) selected @endif>
+                                                        {{ $sem->año }}_{{ $sem->curso }}
                                                     </option>
                                                 @endforeach
                                                     </select>
@@ -39,16 +39,17 @@
                                             </div>
                                         </form>
 
-                                    </div> --}}
+                                    </div>
                                     <div class="col col-sm-8 col-md-6">
                                         <h5>Buscar asesor</h5>
                                         <form id="listAsesor" name="listAsesor" method="get">
                                             <div class="row">
+                                                <input name="semestre" id="semestre" type="text" hidden>
                                                 <div class="input-group">
                                                     <input type="text" class="form-control" name="buscarAsesor"
                                                         placeholder="Codigo o Apellidos" value="{{ $buscarAsesor }}"
                                                         aria-describedby="btn-search">
-                                                    <button class="btn btn-outline-primary" type="submit"
+                                                    <button class="btn btn-outline-primary" type="button" onclick="saveStateSemestre(this);"
                                                         id="btn-search">Buscar</button>
                                                 </div>
                                             </div>
@@ -76,7 +77,7 @@
                                     @foreach ($asesores as $ase)
                                         <tr>
                                             <td>{{ $ase->cod_docente }}</td>
-                                            <td>{{ $ase->DescGrado }}. {{ $ase->nombres }} {{ $ase->apellidos }}</td>
+                                            <td>{{ $ase->DescGrado }}. {{ $ase->apellidos }} {{ $ase->nombres }}</td>
                                             <td>{{ $ase->orcid }}</td>
                                             <td>{{ $ase->DescCat }}</td>
                                             <td>
@@ -110,7 +111,9 @@
                                     <input type="hidden" id="cantidadAsesores" value="{{ count($asesores) }}">
                                 </tbody>
                             </table>
-                            {{ $asesores->links() }}
+                            @if (!empty($asesores))
+                                {{ $asesores->appends(request()->input())->links() }}
+                            @endif
                         </div>
 
                     </div>
@@ -147,6 +150,12 @@
     <script type="text/javascript">
         function editarAsesor(formulario, contador) {
             formulario.closest('#form-asesor' + contador).submit();
+        }
+        function saveStateSemestre(form){
+            const semestreSelect = document.getElementById("filtrar_semestre");
+            const selectedSemestre = semestreSelect.options[semestreSelect.selectedIndex];
+            document.getElementById("semestre").value = selectedSemestre.value;
+            form.closest("#listAsesor").submit();
         }
     </script>
 @endsection

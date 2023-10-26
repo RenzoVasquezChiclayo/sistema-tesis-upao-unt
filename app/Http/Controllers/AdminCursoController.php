@@ -9,8 +9,10 @@ use App\Models\AsesorCurso;
 use App\Models\Categoria_Docente;
 use App\Models\Configuraciones_Iniciales;
 use App\Models\Diseno_Investigacion;
+use App\Models\Escuela;
 use App\Models\Estudiante_Semestre;
 use App\Models\EstudianteCT2022;
+use App\Models\Facultad;
 use App\Models\Fin_Persigue;
 use App\Models\MatrizOperacional;
 use App\Models\Objetivo;
@@ -186,7 +188,7 @@ class AdminCursoController extends Controller
 
     public function agregarGeneralidades()
     {
-        $escuela = DB::table('escuela')->select('escuela.*')->get();
+        $escuela = DB::table('escuela')->select('escuela.*')->where('estado',1)->get();
         $linea_investigacion = DB::table('tipoinvestigacion')->select('tipoinvestigacion.*')->get();
         $fin_persigue = DB::table('fin_persigue')->select('fin_persigue.*')->get();
         $diseno_investigacion = DB::table('diseno_investigacion')->select('diseno_investigacion.*')->get();
@@ -653,6 +655,114 @@ class AdminCursoController extends Controller
             return redirect()->route('admin.verConfiguraciones')->with('datos','okNotDelete');
         }
     }
+    //
+
+    // FACULTAD
+
+    public function verAgregarFacultad(Request $request)
+    {
+        $facultad = DB::table('facultad')->select('*')->paginate($this::PAGINATION);
+
+        $buscarFacultad = $request->get('buscarFacultad');
+        $facultad = DB::connection('mysql')->table('facultad as f')->select('f.*')->where('f.nombre', 'like', '%' . $buscarFacultad . '%')->paginate($this::PAGINATION);
+        return view('cursoTesis20221.administrador.facultad.agregar_facultad', ['facultad'=>$facultad]);
+    }
+
+    public function saveFacultad(Request $request)
+    {
+        try {
+            $description = strtoupper(trim($request->descripcion));
+            $aux_codFacultad = $request->aux_cod_facultad;
+            $codFacultad = $request->cod_facultad;
+            if ($aux_codFacultad != "") {
+                $facultad = Facultad::find($aux_codFacultad);
+                $facultad->nombre = $description;
+                $facultad->save();
+            } else {
+                $existFacultad = Facultad::where('nombre',$description)->first();
+                if($existFacultad != null){
+                    return redirect()->route('admin.verFacultad')->with('datos','duplicate');
+                }
+                $facultad = new Facultad();
+                $facultad->cod_facultad = $codFacultad;
+                $facultad->nombre = strtoupper($description);
+                $facultad->save();
+            }
+            return redirect()->route('admin.verFacultad')->with('datos', 'ok');
+        } catch (\Throwable $th) {
+            dd($th);
+            return redirect()->route('admin.verFacultad')->with('datos', 'oknot');
+        }
+    }
+
+    public function changeStatusFacultad(Request $request){
+        try{
+            $cod_facultad = $request->aux_facultad;
+            $find_facultad = Facultad::where('cod_facultad', $cod_facultad)->first();
+            $find_facultad->estado = ($find_facultad->estado == 1) ? 0 : 1;
+            $find_facultad->save();
+            return redirect()->route('admin.verFacultad');
+        }catch(\Throwable $th){
+            return redirect()->route('admin.verFacultad')->with('datos', 'oknotdelete');
+        }
+    }
+
+    //
+
+    // ESCUELA
+
+    public function verAgregarEscuela(Request $request)
+    {
+        $escuela = DB::table('escuela')->select('*')->paginate($this::PAGINATION);
+
+        $buscarEscuela = $request->get('buscarEscuela');
+        $escuela = DB::connection('mysql')->table('escuela as e')->select('e.*')->where('e.nombre', 'like', '%' . $buscarEscuela . '%')->paginate($this::PAGINATION);
+        $facultad = DB::table('facultad as f')->select('f.*')->where('estado',1)->get();
+        return view('cursoTesis20221.administrador.escuela.agregar_escuela', ['escuela' => $escuela,'facultad'=>$facultad]);
+    }
+
+    public function saveEscuela(Request $request)
+    {
+        try {
+            $description = strtoupper(trim($request->descripcion));
+            $auxcodEscuela = $request->aux_cod_escuela;
+            $codEscuela = $request->cod_escuela;
+            $cod_Facultad = $request->facultad;
+            if ($auxcodEscuela != "") {
+                $escuela = Escuela::find($auxcodEscuela);
+                $escuela->nombre = $description;
+                $escuela->cod_facultad = $cod_Facultad;
+                $escuela->save();
+            } else {
+                $existEscuela = Escuela::where('nombre',$description)->first();
+                if($existEscuela != null){
+                    return redirect()->route('admin.verEscuela')->with('datos','duplicate');
+                }
+                $escuela = new Escuela();
+                $escuela->cod_escuela = $codEscuela;
+                $escuela->nombre = strtoupper($description);
+                $escuela->cod_facultad = $cod_Facultad;
+                $escuela->save();
+            }
+            return redirect()->route('admin.verEscuela')->with('datos', 'ok');
+        } catch (\Throwable $th) {
+            dd($th);
+            return redirect()->route('admin.verEscuela')->with('datos', 'oknot');
+        }
+    }
+
+    public function changeStatusEscuela(Request $request){
+        try{
+            $cod_escuela = $request->aux_escuela;
+            $find_escuela = Escuela::where('cod_escuela', $cod_escuela)->first();
+            $find_escuela->estado = ($find_escuela->estado == 1) ? 0 : 1;
+            $find_escuela->save();
+            return redirect()->route('admin.verEscuela');
+        }catch(\Throwable $th){
+            return redirect()->route('admin.verEscuela')->with('datos', 'oknotdelete');
+        }
+    }
+
     //
 
     // CATEGORIAS

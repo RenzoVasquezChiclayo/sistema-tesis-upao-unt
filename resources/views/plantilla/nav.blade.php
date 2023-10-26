@@ -161,6 +161,12 @@
                 <a href="{{ route('director.mantenedorlineaInves') }}">
                     <span class="links_name">Mantenedor Generalidades</span>
                 </a>
+                <a href="{{ route('admin.verFacultad') }}">
+                    <span class="links_name">Facultad</span>
+                </a>
+                <a href="{{ route('admin.verEscuela') }}">
+                    <span class="links_name">Escuela</span>
+                </a>
             </div>
         </li>
         <li>
