@@ -11,10 +11,12 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 class AlumnosImport implements ToModel, WithHeadingRow
 {
     public $semestre_academico;
+    public $escuela;
 
-    public function __construct($semestre_academico)
+    public function __construct($semestre_academico,$escuela)
     {
         $this->semestre_academico = $semestre_academico;
+        $this->escuela = $escuela;
     }
     public function rules(): array
         {
@@ -24,6 +26,7 @@ class AlumnosImport implements ToModel, WithHeadingRow
                 'apellidos' => 'required',
                 'nombres' => 'required',
                 'correo' => 'nullable',
+                'escuela' => 'required',
             ];
         }
     public function model(array $row)
@@ -38,6 +41,7 @@ class AlumnosImport implements ToModel, WithHeadingRow
                 'apellidos' => $row['apellidos'],
                 'nombres' => $row['nombres'],
                 'correo' => $row['correo'],
+                'cod_escuela' => $this->escuela,
             ]);
             $new_estudiante->save();
             $new_estudiante_semestre = new Estudiante_Semestre([

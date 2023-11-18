@@ -27,6 +27,7 @@
     </style>
 @endsection
 @section('contenido')
+<div class="card-body">
     <div class="row">
         <div class="col-12">
             <div class="row box-center">
@@ -60,38 +61,41 @@
             <div class="row box-center">
                 <div class="col-10 ">
                     <div class="row">
-                        <table id="table-formato" class="table table-bordered table-striped table-responsive-md">
-                            <thead>
-                                <tr>
-                                    <td>Codigo Matricula</td>
-                                    <td>Egresado</td>
-                                    <td>Escuela</td>
-                                    <td>Ultima Observacion</td>
-                                    <td style="text-align:center;">Ver Observacion</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($estudiantes as $estudiante)
-                                    <tr
-                                    @if ($estudiante->estado == 3)
-                                        style= "background-color: #7BF96E;"
-                                    @elseif ($estudiante->estado == 4)
-                                        style= "background-color: #FA6A56;"
-                                    @endif
-                                    >
-                                        <td>{{$estudiante->cod_matricula}}</td>
-                                        <td>{{$estudiante->apellidos.', '.$estudiante->nombres}}</td>
-                                        <td>Contabilidad y Finanzas</td>
-                                        <td>{{$estudiante->fecha}}</td>
-                                        <td style="text-align:center;">
-                                            <a href="{{route('asesor.verObsEstudiante',$estudiante->cod_historialObs)}}"><i class='bx bx-sm bx-show'></i></a>
-
-                                        </td>
+                        <div class="table-responsive">
+                            <table id="table-formato" class="table table-bordered table-striped table-responsive-md">
+                                <thead>
+                                    <tr>
+                                        <td>Codigo Matricula</td>
+                                        <td>Egresado</td>
+                                        <td>Escuela</td>
+                                        <td>Ultima Observacion</td>
+                                        <td style="text-align:center;">Ver Observacion</td>
                                     </tr>
-                                @endforeach
+                                </thead>
+                                <tbody>
+                                    @foreach ($estudiantes as $estudiante)
+                                        <tr
+                                        @if ($estudiante->estado == 3)
+                                            style= "background-color: #7BF96E;"
+                                        @elseif ($estudiante->estado == 4)
+                                            style= "background-color: #FA6A56;"
+                                        @endif
+                                        >
+                                            <td>{{$estudiante->cod_matricula}}</td>
+                                            <td>{{$estudiante->apellidos.', '.$estudiante->nombres}}</td>
+                                            <td>Contabilidad y Finanzas</td>
+                                            <td>{{$estudiante->fecha}}</td>
+                                            <td style="text-align:center;">
+                                                <a href="{{route('asesor.verObsEstudiante',$estudiante->cod_historialObs)}}"><i class='bx bx-sm bx-show'></i></a>
 
-                            </tbody>
-                        </table>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
+                                </tbody>
+                            </table>
+                        </div>
+
                         {{$estudiantes->links()}}
                     </div>
 
@@ -101,6 +105,8 @@
         </div>
 
     </div>
+</div>
+
 @endsection
 @section('js')
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

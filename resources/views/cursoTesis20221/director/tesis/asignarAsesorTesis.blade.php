@@ -3,13 +3,12 @@
     Asignacion Asesor Tesis
 @endsection
 @section('contenido')
-    <div class="row" style="display:flex; align-items:center;">
+<div class="card-header">
+    Asignar asesor para tesis
+</div>
+<div class="card-body">
+    <div class="row justify-content-around align-items-center">
         <div class="col-12">
-            <div class="row">
-                <div class="col text-center">
-                    <h1 class="p-3">Asignar asesor para tesis</h1>
-                </div>
-            </div>
             <div class="row"
                 style="display:flex; align-items:right; justify-content:right; margin-bottom:10px; margin-top:10px;">
                 <div class="col col-sm-8 col-md-6 col-lg-4 col-xl-3">
@@ -114,6 +113,8 @@
             </form>
         </div>
     </div>
+</div>
+
 @endsection
 @section('js')
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

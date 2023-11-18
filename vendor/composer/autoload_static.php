@@ -623,6 +623,7 @@ class ComposerStaticInit6fc7bbb644c22bc597ae731b005a3a06
         'App\\Mail\\EstadoObservadoTesisMail' => __DIR__ . '/../..' . '/app/Mail/EstadoObservadoTesisMail.php',
         'App\\Models\\Archivo_Tesis_ct2022' => __DIR__ . '/../..' . '/app/Models/Archivo_Tesis_ct2022.php',
         'App\\Models\\AsesorCurso' => __DIR__ . '/../..' . '/app/Models/AsesorCurso.php',
+        'App\\Models\\Asesor_Escuela' => __DIR__ . '/../..' . '/app/Models/Asesor_Escuela.php',
         'App\\Models\\Asesor_Semestre' => __DIR__ . '/../..' . '/app/Models/Asesor_Semestre.php',
         'App\\Models\\CamposEstudiante' => __DIR__ . '/../..' . '/app/Models/CamposEstudiante.php',
         'App\\Models\\Categoria_Docente' => __DIR__ . '/../..' . '/app/Models/Categoria_Docente.php',

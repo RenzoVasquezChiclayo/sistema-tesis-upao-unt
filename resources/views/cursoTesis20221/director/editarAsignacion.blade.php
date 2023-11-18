@@ -3,80 +3,84 @@
     Editar Asesor Asignado
 @endsection
 @section('contenido')
-<div class="row">
-    <div class="col-12">
-        <div class="row" style="display: flex; align-items:center;">
-            <div class="col-12">
-
-                <h1>EDITAR</h1>
-                <form action="{{route('director.saveEdicion')}}" method="post">
-                    @csrf
-                    <table id="table-proyecto" class="table table-striped table-responsive-md">
-                        <thead>
-                            <tr>
-                                <td>Numero Matricula</td>
-                                <td>DNI</td>
-                                <td>Nombre</td>
-                                <td>Asignar</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php
-                                $cont = 0;
-                            @endphp
-                            @foreach ($estudiantes as $est)
+<div class="card-header">
+    Editar asignacion de asesor de tesis
+</div>
+<div class="card-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="row" style="display: flex; align-items:center;">
+                <div class="col-12">
+                    <form action="{{route('director.saveEdicion')}}" method="post">
+                        @csrf
+                        <table id="table-proyecto" class="table table-striped table-responsive-md">
+                            <thead>
                                 <tr>
-                                    <td>{{$est->cod_matricula}}</td>
-                                    <td>{{$est->dni}}</td>
-                                    <td>{{$est->nombres.' '.$est->apellidos}}.</td>
-                                    <td>
-                                        <select name="cboAsesor_{{$cont}}" id="cboAsesor_{{$cont}}" class="form-control" onchange="validarSeleccion({{$cont}});"
-                                        @if ($est->cod_docente != null)
-                                            disabled
-                                        @endif
-                                        >
-                                            <option value="0">-</option>
-                                            @foreach ($asesores as $ase)
-                                                <option value="{{$ase->cod_docente}}"
-                                                @if ($est->cod_docente == $ase->cod_docente)
-                                                    selected
-                                                @endif
-                                                >{{$ase->nombres}}</option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <input  class="btn btn-success" id="btnAsesor_{{$cont}}" type="button" value="+" onclick="guardarAsesor({{$cont}});" hidden>
-                                    </td>
-                                    @if ($est->cod_docente != null)
-                                            <td><a class="btn btn-warning" id="btnOpenEdit_{{$cont}}" onclick="openEdit({{$cont}})"><i class='bx bx-sm bx-edit-alt'></i></a></td>
-                                    @endif
+                                    <td>Numero Matricula</td>
+                                    <td>DNI</td>
+                                    <td>Nombre</td>
+                                    <td>Asignar</td>
                                 </tr>
-                                <input type="hidden" id="codEst_{{$cont}}" value="{{$est->cod_matricula}}">
-
+                            </thead>
+                            <tbody>
                                 @php
-                                    $cont++;
+                                    $cont = 0;
                                 @endphp
-                            @endforeach
-                            <input type="hidden" name="saveAsesor" id="saveAsesor">
-                            <input type="hidden" id="cantidadEstudiantes" value="{{count($estudiantes)}}">
-                        </tbody>
-                    </table>
+                                @foreach ($estudiantes as $est)
+                                    <tr>
+                                        <td>{{$est->cod_matricula}}</td>
+                                        <td>{{$est->dni}}</td>
+                                        <td>{{$est->nombres.' '.$est->apellidos}}.</td>
+                                        <td>
+                                            <select name="cboAsesor_{{$cont}}" id="cboAsesor_{{$cont}}" class="form-control" onchange="validarSeleccion({{$cont}});"
+                                            @if ($est->cod_docente != null)
+                                                disabled
+                                            @endif
+                                            >
+                                                <option value="0">-</option>
+                                                @foreach ($asesores as $ase)
+                                                    <option value="{{$ase->cod_docente}}"
+                                                    @if ($est->cod_docente == $ase->cod_docente)
+                                                        selected
+                                                    @endif
+                                                    >{{$ase->nombres}}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input  class="btn btn-success" id="btnAsesor_{{$cont}}" type="button" value="+" onclick="guardarAsesor({{$cont}});" hidden>
+                                        </td>
+                                        @if ($est->cod_docente != null)
+                                                <td><a class="btn btn-warning" id="btnOpenEdit_{{$cont}}" onclick="openEdit({{$cont}})"><i class='bx bx-sm bx-edit-alt'></i></a></td>
+                                        @endif
+                                    </tr>
+                                    <input type="hidden" id="codEst_{{$cont}}" value="{{$est->cod_matricula}}">
 
-                    <div class="row" >
-                        <input class="btn btn-success" type="submit" value="Guardar Edicion" id="saveAsignacion" hidden>
+                                    @php
+                                        $cont++;
+                                    @endphp
+                                @endforeach
+                                <input type="hidden" name="saveAsesor" id="saveAsesor">
+                                <input type="hidden" id="cantidadEstudiantes" value="{{count($estudiantes)}}">
+                            </tbody>
+                        </table>
 
-                    </div>
-                    <a href="{{route('director.asignar')}}" class="btn btn-danger">Volver</a>
-                </form>
-                    <div>
-                        {{$estudiantes->links()}}
-                    </div>
+                        <div class="row" >
+                            <input class="btn btn-success" type="submit" value="Guardar Edicion" id="saveAsignacion" hidden>
+
+                        </div>
+                        <a href="{{route('director.asignar')}}" class="btn btn-danger">Volver</a>
+                    </form>
+                        <div>
+                            {{$estudiantes->links()}}
+                        </div>
+                </div>
             </div>
-        </div>
 
+        </div>
     </div>
 </div>
+
 
 @endsection
 @section('js')

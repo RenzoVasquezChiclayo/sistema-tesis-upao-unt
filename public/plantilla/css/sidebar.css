@@ -95,6 +95,8 @@ body {
     line-height: 50px;
 }
 
+
+
 .sidebar ul li .tooltip {
     position: absolute;
     left: 100px;
@@ -212,13 +214,17 @@ body {
 }
 .aOnline {
     color: #fff;
-    border-radius: 12px;
+    border-radius: 50px;
     border-bottom: 0.3px solid #fff;
+
 }
 .aOnline:hover {
     color: #fff;
     background-color: gray;
+
 }
+
+
 
 .sidebar.active ~ .navcustom {
     width: calc(100% - 240px);

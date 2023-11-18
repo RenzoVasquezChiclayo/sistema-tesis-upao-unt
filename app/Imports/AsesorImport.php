@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\Asesor_Escuela;
 use App\Models\Asesor_Semestre;
 use App\Models\AsesorCurso;
 use App\Models\Estudiante_Semestre;
@@ -14,10 +15,12 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 class AsesorImport implements ToModel, WithHeadingRow, WithValidation
 {
     public $semestre_academico;
+    public $escuela;
 
-    public function __construct($semestre_academico)
+    public function __construct($semestre_academico,$escuela)
     {
         $this->semestre_academico = $semestre_academico;
+        $this->escuela = $escuela;
     }
     public function rules(): array
         {
@@ -48,6 +51,12 @@ class AsesorImport implements ToModel, WithHeadingRow, WithValidation
                 'correo' => $row['correo'],
             ]);
             $new_asesor->save();
+
+            $new_asesor_escuela = new Asesor_Escuela([
+                'cod_docente' => $row['cod_docente'],
+                'cod_escuela'=> $this->escuela,
+            ]);
+            $new_asesor_escuela->save();
 
             $new_asesor_semestre = new Asesor_Semestre([
                 'cod_docente' => $row['cod_docente'],

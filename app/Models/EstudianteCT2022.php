@@ -19,6 +19,7 @@ class EstudianteCT2022 extends Model
         'apellidos',
         'nombres',
         'correo',
+        'cod_escuela',
         'estado'
     ];
     /*Delete cod docente*/

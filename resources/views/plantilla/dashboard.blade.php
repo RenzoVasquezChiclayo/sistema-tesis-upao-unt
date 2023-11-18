@@ -26,6 +26,7 @@
       border: transparent;
       box-shadow: none;
     }
+
   </style>
 </head>
 
@@ -51,7 +52,7 @@
                         <a class="nav-link dropdown-toggle aOnline" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Online
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <ul class="dropdown-menu" style="position: relative; z-index: 1000;" aria-labelledby="navbarDropdownMenuLink">
                             <li>
                                 @include('plantilla.logout')
                             </li>

@@ -3,11 +3,14 @@
     Editar Asignacion
 @endsection
 @section('contenido')
-    <div class="row">
+<div class="card-header">
+    Editar asignacion de asesor de tesis
+</div>
+<div class="card-body">
+    <div class="row justify-content-around align-items-center">
         <div class="col-12">
             <div class="row" style="display: flex; align-items:center;">
                 <div class="col-12">
-                    <h1>EDITAR ASIGNACION DE ASESOR DE TESIS</h1>
                     <form action="{{ route('director.saveEditarAsignacion') }}" method="post">
                         @csrf
                         <table id="table-proyecto" class="table table-striped table-responsive-md">
@@ -91,6 +94,8 @@
 
         </div>
     </div>
+</div>
+
 @endsection
 @section('js')
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

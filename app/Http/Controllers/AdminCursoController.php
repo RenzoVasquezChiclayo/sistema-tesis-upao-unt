@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Imports\AlumnosImport;
 use App\Imports\AsesorImport;
+use App\Models\Asesor_Escuela;
 use App\Models\Asesor_Semestre;
 use App\Models\AsesorCurso;
 use App\Models\Categoria_Docente;
@@ -148,7 +149,7 @@ class AdminCursoController extends Controller
 
         $usuario = User::where('name', $id . '-C')->first();
         $estudiante = DB::table('estudiante_ct2022 as E')->where('E.cod_matricula', $id)->first();
-        $asesor = DB::table('asesor_curso as A')->where('A.username', $id)->first();
+        $asesor = DB::table('asesor_curso as A')->leftjoin('grado_academico as ga','A.cod_grado_academico','ga.cod_grado_academico')->leftjoin('categoria_docente as cd','A.cod_categoria','cd.cod_categoria')->select('A.*','ga.descripcion as DescGrado','cd.descripcion as DescCat')->where('A.username', $id)->first();
         $img = 'profile-notfound.jpg';
 
         return view('user.informacion', ['usuario' => $usuario, 'img' => $img, 'estudiante' => $estudiante, 'asesor' => $asesor]);
@@ -433,25 +434,28 @@ class AdminCursoController extends Controller
 
     public function showAddEstudiante()
     {
+        $escuela = DB::table('escuela')->select('*')->where('estado',1)->get();
         $semestre_academico = DB::table('configuraciones_iniciales')->select('*')->where('estado',1)->get();
-        return view('cursoTesis20221.director.agregarAlumno',['semestre_academico'=>$semestre_academico]);
+        return view('cursoTesis20221.director.agregarAlumno',['semestre_academico'=>$semestre_academico,'escuela'=>$escuela]);
     }
     public function showAddAsesor()
     {
         $grados_academicos = DB::table('grado_academico')->select('*')->where('estado',1)->get();
         $categorias = DB::table('categoria_docente')->select('*')->where('estado',1)->get();
         $semestre_academico = DB::table('configuraciones_iniciales')->select('*')->where('estado',1)->get();
-        return view('cursoTesis20221.director.agregarAsesor',['grados_academicos'=>$grados_academicos,'categorias'=>$categorias,'semestre_academico'=>$semestre_academico]);
+        $escuela = DB::table('escuela')->select('*')->where('estado',1)->get();
+        return view('cursoTesis20221.director.agregarAsesor',['grados_academicos'=>$grados_academicos,'categorias'=>$categorias,'semestre_academico'=>$semestre_academico,'escuela'=>$escuela]);
     }
 
     public function importRegistroAlumnos(Request $request)
     {
         if ($request->hasFile('importAlumno')) {
             try {
+                $escuela = $request->escuela;
                 $semestre = $request->semestre_academico;
                 $path = $request->file('importAlumno');
 
-                Excel::import(new AlumnosImport($semestre), $path);
+                Excel::import(new AlumnosImport($semestre,$escuela), $path);
 
                 return back()->with('datos', 'ok');
             } catch (\Throwable $th) {
@@ -467,8 +471,9 @@ class AdminCursoController extends Controller
         if ($request->hasFile('importAsesor')) {
             try {
                 $semestre = $request->semestre_academico;
+                $escuela = $request->escuela;
                 $path = $request->file('importAsesor');
-                Excel::import(new AsesorImport($semestre), $path);
+                Excel::import(new AsesorImport($semestre,$escuela), $path);
                 return back()->with('datos', 'ok');
             } catch (\Throwable $th) {
                 dd($th);
@@ -492,6 +497,7 @@ class AdminCursoController extends Controller
 
             ]);
             $semestre_academico = $request->semestre_hidden;
+            $escuela = $request->escuela_hidden;
             $existAsesor = AsesorCurso::where('cod_docente', $request->cod_docente)->get();
 
             if ($existAsesor->count() == 0) {
@@ -506,6 +512,11 @@ class AdminCursoController extends Controller
                 $newAsesor->correo = $request->correo;
                 $newAsesor->save();
 
+                $new_asesor_escuela = new Asesor_Escuela();
+                $new_asesor_escuela->cod_docente = $request->cod_docente;
+                $new_asesor_escuela->cod_escuela = $escuela;
+                $new_asesor_escuela->save();
+
                 $new_asesor_semestre = new Asesor_Semestre();
                 $new_asesor_semestre->cod_docente = $request->cod_docente;
                 $new_asesor_semestre->cod_configuraciones = $semestre_academico;
@@ -517,8 +528,6 @@ class AdminCursoController extends Controller
         } catch (\Throwable $th) {
             dd($th);
         }
-
-
 
 
     }
@@ -534,6 +543,7 @@ class AdminCursoController extends Controller
 
         ]);
         $semestre_academico = $request->semestre_hidden;
+        $escuela = $request->escuela_hidden;
         $existEstudiante = EstudianteCT2022::where('cod_matricula', $request->cod_matricula)->get();
         if ($existEstudiante->count() == 0) {
             $newEstudiante = new EstudianteCT2022();
@@ -542,6 +552,7 @@ class AdminCursoController extends Controller
             $newEstudiante->apellidos = strtoupper($request->apellidos);
             $newEstudiante->nombres = strtoupper($request->nombres);
             $newEstudiante->correo = $request->correo;
+            $newEstudiante->cod_escuela = $escuela;
             $newEstudiante->save();
 
             $new_asesor_semestre = new Estudiante_Semestre();

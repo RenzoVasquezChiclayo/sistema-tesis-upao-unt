@@ -17,7 +17,7 @@
 @endsection
 @section('contenido')
     <div class="card-header">
-        Registrar Estudiante
+        Registrar Estudiante de Contabilidad
     </div>
     <div class="card-body">
         <div class="row justify-content-around align-items-center">
@@ -25,11 +25,17 @@
             <div class="row border-box" style="margin-bottom: 30px;">
                 <form action="{{ route('director.importarAlumnos') }}" method="post" enctype="multipart/form-data">
                     @csrf
-                    <div class="row justify-content-end">
+                    <div class="row justify-content-center" style="margin-bottom: 20px;">
                         <div class="col-3">
-                            <h5>Semestre academico</h5>
+                            <h5>Escuela</h5>
+                            <select class="form-select" onchange="select_escuela();" name="escuela" id="escuela" required>
+                                @foreach ($escuela as $e)
+                                    <option value="{{ $e->cod_escuela }}">{{$e->nombre}}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col-2">
+                            <h5>Semestre academico</h5>
                             <select class="form-select" onchange="select_semestre();" name="semestre_academico" id="semestre_academico" required>
                                 @foreach ($semestre_academico as $s_a)
                                     <option value="{{ $s_a->cod_configuraciones }}">{{$s_a->año}}_{{$s_a->curso}}</option>
@@ -63,6 +69,7 @@
                         <form action="{{ route('director.addEstudiante') }}" method="POST">
                             @csrf
                             <input type="hidden" name="semestre_hidden" id="semestre_hidden">
+                            <input type="hidden" name="escuela_hidden" id="escuela_hidden">
                             <div class="row justify-content-around align-items-center">
                                 <div class="col-md-4">
                                     <label for="cod_matricula">Codigo de Matricula</label>
@@ -150,6 +157,9 @@
         window.onload = function(){
             semestre = document.getElementById('semestre_academico').value;
             document.getElementById('semestre_hidden').value = semestre;
+
+            escuela = document.getElementById('escuela').value;
+            document.getElementById('escuela_hidden').value = escuela;
         }
         function select_semestre(){
                     semestre = document.getElementById('semestre_academico').value;
@@ -157,6 +167,14 @@
                         document.getElementById('semestre_hidden').value = semestre;
                     }else{
                         alert('Seleccione otra opcion de semestre academico');
+                    }
+                }
+        function select_escuela(){
+                    escuela = document.getElementById('escuela').value;
+                    if (escuela != '0') {
+                        document.getElementById('escuela_hidden').value = escuela;
+                    }else{
+                        alert('Seleccione otra opcion de escuela');
                     }
                 }
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')

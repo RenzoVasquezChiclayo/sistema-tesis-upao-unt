@@ -13,6 +13,10 @@
 </style>
 @endsection
 @section('contenido')
+<div class="card-header">
+    Estado del proyecto de tesis
+</div>
+<div class="card-body">
     <div class="row" style="display:flex; align-items:center; justify-content: center;">
         <div class="col-12">
             <div class="row">
@@ -25,57 +29,58 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="row box-center">
-                            <div class="col-10">
-                                <h5><b>Estado del Proyecto de Tesis</b></h5>
+                            <div class="col-12">
                                 <div class="row">
-                                    <table id="table-formato" class="table table-bordered table-responsive-md" style="table-border-color: red;">
-                                        <thead>
-                                            <tr>
-                                                <td>Fecha</td>
-                                                <td>Titulo</td>
-                                                <td>Asesor</td>
-                                                <td>Estado</td>
-                                                <td style="text-align: center">Descargar</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @php
-                                                $estado = 'sin iniciar';
-                                                switch($hTesis[0]->estado){
-                                                    case 1:
-                                                        $estado = 'Sin revisar';
-                                                        break;
-                                                    case 2:
-                                                        $estado = 'Revisado';
-                                                        break;
-                                                    case 3:
-                                                        $estado = 'Aprobado';
-                                                        break;
-                                                    case 4:
-                                                        $estado = 'Desaprobado';
-                                                        break;
-                                                    case 9:
-                                                        $estado = 'Guardado';
-                                                        break;
-                                                }
-                                            @endphp
-                                            <tr>
-                                                <td>{{$hTesis[0]->fecha}}</td>
-                                                <td>{{$hTesis[0]->titulo}}</td>
-                                                <td>{{$hTesis[0]->nombre_asesor}}</td>
-                                                <td>{{$estado}}</td>
-                                                <td style="text-align: center;">
-                                                    @if($hTesis[0]->estado!=0)
-                                                        <form id="proyecto-download" action="{{route('curso.descargaTesis')}}" method="POST">
-                                                            @csrf
-                                                            <input type="hidden" name="cod_cursoTesis" value="{{$hTesis[0]->cod_proyectotesis}}">
-                                                            <a href="#" onclick="this.closest('#proyecto-download').submit()" @if($hTesis[0]->estado == 0) hidden @endif><i class='bx bx-sm bx-download'></i></a>
-                                                        </form>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                    <div class="table-responsive">
+                                        <table id="table-formato" class="table table-bordered table-responsive-md" style="table-border-color: red;">
+                                            <thead>
+                                                <tr>
+                                                    <td>Fecha</td>
+                                                    <td>Titulo</td>
+                                                    <td>Asesor</td>
+                                                    <td>Estado</td>
+                                                    <td style="text-align: center">Descargar</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @php
+                                                    $estado = 'sin iniciar';
+                                                    switch($hTesis[0]->estado){
+                                                        case 1:
+                                                            $estado = 'Sin revisar';
+                                                            break;
+                                                        case 2:
+                                                            $estado = 'Revisado';
+                                                            break;
+                                                        case 3:
+                                                            $estado = 'Aprobado';
+                                                            break;
+                                                        case 4:
+                                                            $estado = 'Desaprobado';
+                                                            break;
+                                                        case 9:
+                                                            $estado = 'Guardado';
+                                                            break;
+                                                    }
+                                                @endphp
+                                                <tr>
+                                                    <td>{{$hTesis[0]->fecha}}</td>
+                                                    <td>{{$hTesis[0]->titulo}}</td>
+                                                    <td>{{$hTesis[0]->nombre_asesor}}</td>
+                                                    <td>{{$estado}}</td>
+                                                    <td style="text-align: center;">
+                                                        @if($hTesis[0]->estado!=0)
+                                                            <form id="proyecto-download" action="{{route('curso.descargaTesis')}}" method="POST">
+                                                                @csrf
+                                                                <input type="hidden" name="cod_cursoTesis" value="{{$hTesis[0]->cod_proyectotesis}}">
+                                                                <a href="#" onclick="this.closest('#proyecto-download').submit()" @if($hTesis[0]->estado == 0) hidden @endif><i class='bx bx-sm bx-download'></i></a>
+                                                            </form>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -86,6 +91,8 @@
             @include('cards.avisoCard')
         @endif
     </div>
+</div>
+
 @endsection
 @section('js')
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

@@ -42,8 +42,8 @@ class Tesis2022Controller extends Controller
 
         $estudiante = DB::table('estudiante_ct2022 as e')->select('e.*')->where('e.cod_matricula','like','%'.$id.'%')->first();
         $tesis = Tesis_2022::where('cod_matricula',$id)->first();
-        $asesor = AsesorCurso::find($tesis->cod_docente);
-
+        $asesor = DB::table('asesor_curso')->leftjoin('grado_academico as ga', 'asesor_curso.cod_grado_academico', 'ga.cod_grado_academico')->leftjoin('categoria_docente as cd', 'asesor_curso.cod_categoria', 'cd.cod_categoria')->select('asesor_curso.*', 'ga.descripcion as DescGrado', 'cd.descripcion as DescCat')->where('cod_docente', $tesis->cod_asesor)->first();  //Encontramos al asesor
+        $docente = DB::table('asesor_curso')->leftjoin('grado_academico as ga', 'asesor_curso.cod_grado_academico', 'ga.cod_grado_academico')->leftjoin('categoria_docente as cd', 'asesor_curso.cod_categoria', 'cd.cod_categoria')->select('asesor_curso.*', 'ga.descripcion as DescGrado', 'cd.descripcion as DescCat')->where('cod_docente', $tesis->cod_docente)->first();  //Encontramos al docente
         //Traemos el proy de tesis del estudiante
         $proyTesis = DB::table('proyecto_tesis as pyt')->select('pyt.*')->where('pyt.cod_matricula',$id)->first();
 
@@ -65,7 +65,7 @@ class Tesis2022Controller extends Controller
         return view('cursoTesis20221.estudiante.tesis.tesis',['estudiante'=>$estudiante,'objetivos'=>$objetivos,
         'correciones' => $correciones,'detalles'=>$detalles,'asesor'=>$asesor,'tesis'=>$tesis,
         'tiporeferencia'=>$tiporeferencia,'keywords'=>$keywords, 'resultadosImg'=>$resultadosImg,
-        'anexosImg'=>$anexosImg, 'referencias'=>$referencias, 'proyTesis'=>$proyTesis]);
+        'anexosImg'=>$anexosImg, 'referencias'=>$referencias, 'proyTesis'=>$proyTesis, 'docente'=>$docente]);
     }
 
     public function estadoTesis(){
@@ -83,7 +83,8 @@ class Tesis2022Controller extends Controller
         $tesis = Tesis_2022::join('estudiante_ct2022 as ES','tesis_2022.cod_matricula','=','ES.cod_matricula')
                         ->select('tesis_2022.*','ES.*')
                         ->where('tesis_2022.cod_tesis','=',$request->txtcod_tesis)->first();
-        $asesor = DB::table('asesor_curso')->where('cod_docente',$tesis->cod_docente)->first();  //Encontramos al asesor
+        $asesor = DB::table('asesor_curso')->where('cod_docente',$tesis->cod_asesor)->first();  //Encontramos al asesor
+        $docente = DB::table('asesor_curso')->where('cod_docente',$tesis->cod_docente)->first();  //Encontramos al asesor
         $observacionX = TObservacion::join('t_historial_observaciones','t_observacion.cod_historial_observacion','=','t_historial_observaciones.cod_historial_observacion')
                 ->select('t_observacion.*')->where('t_historial_observaciones.cod_Tesis',$tesis->cod_tesis)
                 ->where('t_observacion.estado',1)->get();
@@ -699,10 +700,18 @@ class Tesis2022Controller extends Controller
     }
 
     public function showEstudiantesTesis(){
-
-        $estudiantes = DB::table('estudiante_ct2022')->join('tesis_2022 as t','estudiante_ct2022.cod_matricula','=','t.cod_matricula')
+        $estudiantes = DB::table('estudiante_ct2022')
+                            ->join('tesis_2022 as t','estudiante_ct2022.cod_matricula','=','t.cod_matricula')
                             ->join('asesor_curso as ac','t.cod_docente','=','ac.cod_docente')
                             ->select('estudiante_ct2022.*','t.estado','t.cod_tesis')->where('ac.username','=',auth()->user()->name)->get();
+        if(count($estudiantes)==0){
+            $estudiantes = DB::table('estudiante_ct2022')
+            ->join('tesis_2022 as t','estudiante_ct2022.cod_matricula','=','t.cod_matricula')
+            ->join('asesor_curso as ac','t.cod_asesor','=','ac.cod_docente')
+            ->select('estudiante_ct2022.*','t.estado','t.cod_tesis')->where('ac.username','=',auth()->user()->name)->get();
+
+            return view('cursoTesis20221.asesor.tesis.lista-estudiantes-tesis',['estudiantes'=>$estudiantes]);
+        }
 
         return view('cursoTesis20221.asesor.tesis.lista-estudiantes-tesis',['estudiantes'=>$estudiantes]);
     }
@@ -714,9 +723,9 @@ class Tesis2022Controller extends Controller
         $cod_matricula = $request->cod_matricula;
         $Tesis = DB::table('tesis_2022 as t')
                             ->join('estudiante_ct2022 as et','et.cod_matricula','=','t.cod_matricula')
-                            ->join('asesor_curso as ac','t.cod_docente','=','ac.cod_docente')
-                            ->select('t.*','et.nombres as nombresAutor','et.apellidos as apellidosAutor','ac.*')->where('et.cod_matricula',$cod_matricula)->get();
-
+                            ->select('t.*','et.nombres as nombresAutor','et.apellidos as apellidosAutor')->where('et.cod_matricula',$cod_matricula)->get();
+        $asesor = AsesorCurso::find($Tesis[0]->cod_asesor);
+        $docente = AsesorCurso::find($Tesis[0]->cod_docente);
         $objetivos = DB::table('t_objetivo')->where('cod_tesis','=',$Tesis[0]->cod_tesis)->get();
         $t_keywords = DB::table('t_keyword')->where('cod_tesis','=',$Tesis[0]->cod_tesis)->get();
         $referencias = DB::table('t_referencias')->where('cod_tesis','=',$Tesis[0]->cod_tesis)->get();
@@ -743,7 +752,7 @@ class Tesis2022Controller extends Controller
 
         $observaciones = TObservacion::join('t_historial_observaciones as ho','ho.cod_historial_observacion','=','t_observacion.cod_historial_observacion')->select('t_observacion.*')->where('ho.cod_tesis',$Tesis[0]->cod_tesis)->get();
 
-        return view('cursoTesis20221.asesor.tesis.progreso-estudiante',['Tesis'=>$Tesis,'keywords'=>$keywords,'objetivos'=>$objetivos,'$observaciones' => $observaciones,'camposFull'=>$camposFull,'referencias'=>$referencias, 'resultadosImg'=>$resultadosImg, 'anexosImg'=>$anexosImg]);
+        return view('cursoTesis20221.asesor.tesis.progreso-estudiante',['Tesis'=>$Tesis,'keywords'=>$keywords,'objetivos'=>$objetivos,'$observaciones' => $observaciones,'camposFull'=>$camposFull,'referencias'=>$referencias, 'resultadosImg'=>$resultadosImg, 'anexosImg'=>$anexosImg, 'asesor'=>$asesor,'docente'=>$docente]);
 
     }
 

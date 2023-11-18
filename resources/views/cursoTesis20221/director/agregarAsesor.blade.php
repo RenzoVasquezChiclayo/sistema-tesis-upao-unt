@@ -11,14 +11,23 @@
             <div class="row border-box" style="margin-bottom: 30px;">
                 <form action="{{ route('director.importarAsesores') }}" method="post" enctype="multipart/form-data">
                     @csrf
-                    <div class="row justify-content-end">
+                    <div class="row justify-content-center" style="margin-bottom: 20px;">
                         <div class="col-3">
-                            <h5>Semestre academico</h5>
+                            <h5>Escuela</h5>
+                            <select class="form-select" onchange="select_escuela(this);" name="escuela" id="escuela"
+                                required>
+                                @foreach ($escuela as $e)
+                                    <option value="{{ $e->cod_escuela }}">{{ $e->nombre }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col-2">
-                            <select class="form-select" onchange="select_semestre(this);" name="semestre_academico" id="semestre_academico" required>
+                            <h5>Semestre academico</h5>
+                            <select class="form-select" onchange="select_semestre(this);" name="semestre_academico"
+                                id="semestre_academico" required>
                                 @foreach ($semestre_academico as $s_a)
-                                    <option value="{{ $s_a->cod_configuraciones }}">{{$s_a->año}}_{{$s_a->curso}}</option>
+                                    <option value="{{ $s_a->cod_configuraciones }}">{{ $s_a->año }}_{{ $s_a->curso }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
@@ -47,15 +56,17 @@
                 <div class="card-body">
                     <h5 class="card-title">Registrar por asesor</h5>
                     <div class="row border-box">
-                        <form class="row g-3 needs-validation" action="{{ route('director.addAsesor') }}" method="POST" novalidate>
+                        <form class="row g-3 needs-validation" action="{{ route('director.addAsesor') }}" method="POST"
+                            novalidate>
                             @csrf
                             <input type="hidden" name="semestre_hidden" id="semestre_hidden">
+                            <input type="hidden" name="escuela_hidden" id="escuela_hidden">
                             <div class="row justify-content-around align-items-center">
                                 <div class="col-4">
                                     <label for="cod_docente">Codigo Institucional</label>
-                                    <input class="form-control" minlength="4" maxlength="4" type="text" id="cod_docente"
-                                        onkeypress="return (event.charCode >= 48 && event.charCode <= 57)" name="cod_docente"
-                                        placeholder="Ingrese su codigo de docente" autofocus required>
+                                    <input class="form-control" minlength="4" maxlength="4" type="text"
+                                        id="cod_docente" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)"
+                                        name="cod_docente" placeholder="Ingrese su codigo de docente" autofocus required>
                                 </div>
                                 <div class="col-4">
                                     <label for="orcid">ORCID</label>
@@ -79,7 +90,7 @@
                                     <label for="gradoAcademico">Grado Academico</label>
                                     <select class="form-control" name="gradAcademico" id="gradAcademico" required>
                                         @foreach ($grados_academicos as $g_a)
-                                            <option value="{{$g_a->cod_grado_academico}}">{{$g_a->descripcion}}</option>
+                                            <option value="{{ $g_a->cod_grado_academico }}">{{ $g_a->descripcion }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -89,7 +100,7 @@
                                     <label for="categoria">Categoria</label>
                                     <select class="form-control" name="categoria" id="categoria" required>
                                         @foreach ($categorias as $c)
-                                            <option value="{{$c->cod_categoria}}">{{$c->descripcion}}</option>
+                                            <option value="{{ $c->cod_categoria }}">{{ $c->descripcion }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -97,21 +108,24 @@
                                 <div class="col-md-4">
                                     <label for="direccion">Direccion</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="direccion" name="direccion" maxlength="30">
+                                        <input type="text" class="form-control" id="direccion" name="direccion"
+                                            maxlength="30">
                                         <span class="input-group-text" id="contador-caracteres">0/30</span>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="correo">Correo Institucional</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="correo" name="correo" maxlength="80">
+                                        <input type="text" class="form-control" id="correo" name="correo"
+                                            maxlength="80">
                                     </div>
                                 </div>
                             </div>
 
                             <div class="col-12" style="margin-top: 10px;">
                                 <button class="btn btn-success" type="submit">Registrar</button>
-                                <a href="{{ route('user_information') }}" type="button" class="btn btn-danger">Cancelar</a>
+                                <a href="{{ route('user_information') }}" type="button"
+                                    class="btn btn-danger">Cancelar</a>
                             </div>
                         </form>
                     </div>
@@ -146,18 +160,31 @@
         </script>
     @endif
     <script type="text/javascript">
-        window.onload = function(){
+        window.onload = function() {
             semestre = document.getElementById('semestre_academico').value;
             document.getElementById('semestre_hidden').value = semestre;
+
+            escuela = document.getElementById('escuela').value;
+            document.getElementById('escuela_hidden').value = escuela;
         }
-        function select_semestre(){
-                    semestre = document.getElementById('semestre_academico').value;
-                    if (semestre != '0') {
-                        document.getElementById('semestre_hidden').value = semestre;
-                    }else{
-                        alert('Seleccione otra opcion de semestre academico');
-                    }
-                }
+
+        function select_semestre() {
+            semestre = document.getElementById('semestre_academico').value;
+            if (semestre != '0') {
+                document.getElementById('semestre_hidden').value = semestre;
+            } else {
+                alert('Seleccione otra opcion de semestre academico');
+            }
+        }
+
+        function select_escuela() {
+            escuela = document.getElementById('escuela').value;
+            if (escuela != '0') {
+                document.getElementById('escuela_hidden').value = escuela;
+            } else {
+                alert('Seleccione otra opcion de escuela');
+            }
+        }
 
         const inputDireccion = document.querySelector('#direccion');
         const contadorCaracteres = document.querySelector('#contador-caracteres');

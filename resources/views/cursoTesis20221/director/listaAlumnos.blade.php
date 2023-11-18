@@ -66,6 +66,7 @@
                                         <td>Numero Matricula</td>
                                         <td>DNI</td>
                                         <td>Nombre</td>
+                                        <td>Escuela</td>
                                         <td>Editar</td>
                                     </tr>
                                 </thead>
@@ -78,6 +79,7 @@
                                             <td>{{ $est->cod_matricula }}</td>
                                             <td>{{ $est->dni }}</td>
                                             <td>{{ $est->apellidos . ' ' . $est->nombres }}.</td>
+                                            <td>{{ $est->nombreEscuela }}</td>
                                             <td>
                                                 <form id="form-alumno" method="post"
                                                     action="{{ route('director.verAlumnoEditar') }}">

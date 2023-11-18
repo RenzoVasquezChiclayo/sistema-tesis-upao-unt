@@ -20,7 +20,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <h5>Escuela</h5>
-                            <select class="form-select" name="escuela" id="escuela">
+                            <select class="form-select" name="escuela" id="escuela" required>
                                 @foreach ($escuela as $esc)
                                     <option value="{{ $esc->cod_escuela }}">{{ $esc->nombre }}</option>
                                 @endforeach

@@ -39,6 +39,7 @@ return array(
     'App\\Mail\\EstadoObservadoTesisMail' => $baseDir . '/app/Mail/EstadoObservadoTesisMail.php',
     'App\\Models\\Archivo_Tesis_ct2022' => $baseDir . '/app/Models/Archivo_Tesis_ct2022.php',
     'App\\Models\\AsesorCurso' => $baseDir . '/app/Models/AsesorCurso.php',
+    'App\\Models\\Asesor_Escuela' => $baseDir . '/app/Models/Asesor_Escuela.php',
     'App\\Models\\Asesor_Semestre' => $baseDir . '/app/Models/Asesor_Semestre.php',
     'App\\Models\\CamposEstudiante' => $baseDir . '/app/Models/CamposEstudiante.php',
     'App\\Models\\Categoria_Docente' => $baseDir . '/app/Models/Categoria_Docente.php',

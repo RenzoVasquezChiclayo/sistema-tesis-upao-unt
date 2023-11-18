@@ -52,7 +52,8 @@ class Tesis_2022 extends Model
         'fecha_create',
         'fecha_update',
         'estado',
-        'condicion'
+        'condicion',
+        'cod_asesor',
     ];
 
     public function estudiante(){

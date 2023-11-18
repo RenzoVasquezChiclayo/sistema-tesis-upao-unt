@@ -59,13 +59,13 @@
                                             <p>{{ $asesor->nombres }}</p>
                                         </div>
                                         <div class="col-10 col-md-6" style="text-align: left; margin-bottom:15px;">
-                                            <h5>Condicion</h5>
-                                            <p>{{ $asesor->grado_academico }}</p>
+                                            <h5>Grado Academico</h5>
+                                            <p>{{ $asesor->DescGrado }}</p>
                                         </div>
 
                                         <div class="col-10 col-md-6" style="text-align: left; margin-bottom:15px;">
-                                            <h5>Escuela</h5>
-                                            <p>{{ $asesor->titulo_profesional }}</p>
+                                            <h5>Categoria</h5>
+                                            <p>{{ $asesor->DescCat }}</p>
                                         </div>
                                         <div class="col-10 col-md-6" style="text-align: left; margin-bottom:15px;">
                                             <h5>Direccion</h5>

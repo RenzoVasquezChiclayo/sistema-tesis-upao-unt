@@ -123,19 +123,41 @@
                     <div class="row border-box card-box">
                         <div class="item-card">
                             <label for="txtNombreAsesor" class="form-label">Apellidos y Nombres</label>
-                            <input class="form-control" name="txtNombreAsesor" id="txtNombreAsesor" type="text" value="{{$Tesis[0]->nombres}}" readonly>
+                            <input class="form-control" name="txtNombreAsesor" id="txtNombreAsesor" type="text" value="{{$asesor->nombres}}" readonly>
                         </div>
                         <div class="item-card">
                             <label for="cboGrAcademicoAsesor" class="form-label">Grado Academico</label>
-                            <input class="form-control" name="txtGrAcademicoAsesor" id="txtGrAcademicoAsesor" type="text" value="{{$Tesis[0]->grado_academico}}" readonly>
+                            <input class="form-control" name="txtGrAcademicoAsesor" id="txtGrAcademicoAsesor" type="text" value="{{$asesor->grado_academico}}" readonly>
                         </div>
                         <div class="item-card">
                             <label for="txtTProfesional" class="form-label">Titulo Profesional</label>
-                            <input class="form-control" name="txtTProfesional" id="txtTProfesional" type="text" value="{{$Tesis[0]->titulo_profesional}}" readonly>
+                            <input class="form-control" name="txtTProfesional" id="txtTProfesional" type="text" value="{{$asesor->titulo_profesional}}" readonly>
                         </div>
                         <div class="item-card">
                             <label for="txtDireccionAsesor" class="form-label">Dirección laboral y/o domiciliaria</label>
-                            <input class="form-control" name="txtDireccionAsesor" id="txtDireccionAsesor" type="text" value="{{$Tesis[0]->direccion}}" readonly>
+                            <input class="form-control" name="txtDireccionAsesor" id="txtDireccionAsesor" type="text" value="{{$asesor->direccion}}" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom:20px; padding-right:12px;">
+                    <h5>Docente</h5>
+
+                    <div class="row border-box card-box">
+                        <div class="item-card">
+                            <label for="txtNombreAsesor" class="form-label">Apellidos y Nombres</label>
+                            <input class="form-control" name="txtNombreAsesor" id="txtNombreAsesor" type="text" value="{{$docente->nombres}}" readonly>
+                        </div>
+                        <div class="item-card">
+                            <label for="cboGrAcademicoAsesor" class="form-label">Grado Academico</label>
+                            <input class="form-control" name="txtGrAcademicoAsesor" id="txtGrAcademicoAsesor" type="text" value="{{$docente->grado_academico}}" readonly>
+                        </div>
+                        <div class="item-card">
+                            <label for="txtTProfesional" class="form-label">Titulo Profesional</label>
+                            <input class="form-control" name="txtTProfesional" id="txtTProfesional" type="text" value="{{$docente->titulo_profesional}}" readonly>
+                        </div>
+                        <div class="item-card">
+                            <label for="txtDireccionAsesor" class="form-label">Dirección laboral y/o domiciliaria</label>
+                            <input class="form-control" name="txtDireccionAsesor" id="txtDireccionAsesor" type="text" value="{{$docente->direccion}}" readonly>
                         </div>
                     </div>
                 </div>
