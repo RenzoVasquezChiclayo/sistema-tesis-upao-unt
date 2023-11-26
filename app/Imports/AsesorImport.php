@@ -16,11 +16,13 @@ class AsesorImport implements ToModel, WithHeadingRow, WithValidation
 {
     public $semestre_academico;
     public $escuela;
+    public $cont;
 
     public function __construct($semestre_academico,$escuela)
     {
         $this->semestre_academico = $semestre_academico;
         $this->escuela = $escuela;
+        $this->cont = 0;
     }
     public function rules(): array
         {
@@ -64,6 +66,22 @@ class AsesorImport implements ToModel, WithHeadingRow, WithValidation
             ]);
             $new_asesor_semestre->save();
             return $new_asesor;
+        }else {
+            $find_ases_semes = DB::table('asesor_semestre as as')->where('as.cod_docente',$find_asesor->cod_docente)->get();
+            foreach ($find_ases_semes as $key => $f_a_s) {
+                if ($f_a_s->cod_configuraciones == $this->semestre_academico) {
+                    $this->cont += 1;
+                }
+            }
+            if ($this->cont == 0) {
+                $new_asesor_semestre = new Asesor_Semestre([
+                    'cod_docente' => $row['cod_docente'],
+                    'cod_configuraciones'=> $this->semestre_academico,
+                ]);
+                $new_asesor_semestre->save();
+                return $new_asesor_semestre;
+            }
+
         }
 
     }

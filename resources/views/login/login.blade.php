@@ -10,7 +10,7 @@
         body{
             background-size: 100% 210%;
             background-repeat:no-repeat;
-            background-image: url('/plantilla/img/fondo-unt.jpg');
+            background-image: url('/plantilla/img/fondo-upao.jpg');
         }
 
         .login-form{width:400px;}
@@ -57,7 +57,7 @@
                 <form action="{{route('login.verificate')}}" method="post">
                     @csrf
                     <div class="login-userinput" align="center" style="padding-top:20px">
-                        <img src="../login/img/escuela_contabilidad.png" alt="">
+                        <img src="../login/img/logo-upao.png" alt="">
                     </div>
                     <div class="login-userinput">
                         <input type="text" class="form-control" id="name" name="name" placeholder="Usuario" value="{{old('name')}}" autofocus required>

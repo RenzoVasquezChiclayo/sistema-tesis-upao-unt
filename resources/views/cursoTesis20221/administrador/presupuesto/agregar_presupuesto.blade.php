@@ -1,6 +1,6 @@
 @extends('plantilla.dashboard')
 @section('titulo')
-    Agregar Grado Académico
+    Agregar Presupuesto
 @endsection
 @section('css')
     <style type="text/css">
@@ -17,27 +17,31 @@
 @endsection
 @section('contenido')
     <div class="card-header">
-        Registrar Grado Academico
+        Registrar Presupuesto
     </div>
     <div class="card-body">
         <div class="row" style="display: flex; align-items:center;">
 
             <div class="row border-box">
                 <!-- TODO: Modify the route -->
-                <form action="{{ route('admin.guardarGradoAcademico') }}" method="POST">
+                <form action="{{ route('admin.guardarPresupuesto') }}" method="POST">
                     @csrf
+                    <input type="hidden" id="aux_cod_presupuesto" name="aux_cod_presupuesto">
                     <div class="row justify-content-around align-items-center">
+                        <div class="col-md-3">
+                            <label for="CodeUniversal">CodeUniversal</label>
+                            <input class="form-control" type="text" id="cod_codeUniversal" name="cod_codeUniversal" placeholder="Ingrese codigo" autofocus required>
+                        </div>
                         <div class="col-md-5">
-                            <input type="number" id="cod_grado_academico" name="cod_grado_academico" hidden>
-                            <label for="grado_academico">Descripción</label>
+                            <label for="facultad">Denominacion</label>
                             <input class="form-control" type="text" id="descripcion" name="descripcion"
-                                placeholder="Ingrese el grado académico" autofocus required>
+                                placeholder="Ingrese la denominacion" autofocus required>
                         </div>
                     </div>
                     <div class="col-12" style="margin-top: 10px;">
                         <button id="btn_save" class="btn btn-success" type="submit">Registrar</button>
 
-                        <a href="{{ route('admin.verAgregarGrado') }}" type="sub"
+                        <a href="{{ route('admin.verPresupuesto') }}" type="sub"
                             class="btn btn-no-border btn-outline-danger">Cancelar</a>
                     </div>
                 </form>
@@ -47,7 +51,7 @@
                     <form id="" name="" method="get">
                         <div class="row">
                             <div class="input-group">
-                                <input type="text" class="form-control" name="buscarGrado" placeholder="Grado académico"
+                                <input type="text" class="form-control" name="buscarPresupuesto" placeholder="Codigo del Presupuesto"
                                     value="" aria-describedby="btn-search">
                                 <button class="btn btn-outline-primary" type="submit" id="btn-search">Buscar</button>
                             </div>
@@ -61,56 +65,37 @@
                         <table id="table-proyecto" class="table table-striped table-responsive-md">
                             <thead>
                                 <tr>
-                                    <td>Id</td>
+                                    <td>CodeUniversal</td>
                                     <td>Descripcion</td>
-                                    <td>Estado</td>
                                     <td>Opciones</td>
                                 </tr>
                             </thead>
-                            @foreach ($grados_academicos as $grado)
+                            @foreach ($presupuesto as $p)
                                 <tr>
-                                    <td>{{ $grado->cod_grado_academico }}</td>
-                                    <td>{{ $grado->descripcion }}</td>
+                                    <td>{{ $p->codeUniversal }}</td>
+                                    <td>{{ $p->denominacion }}</td>
                                     <td>
-                                        <div class="container-center">
-                                            <form class="form-fit" id="formChangeStatus" name="formChangeStatus"
-                                                method="post" action="{{ route('admin.changeStatusGrado') }}">
-                                                @csrf
-                                                <input type="text" name="aux_grado_academico"
-                                                    value="{{ $grado->cod_grado_academico }}" hidden>
-                                                <div class="form-check form-switch" style="width: fit-content">
-                                                    <input class="form-check-input" type="checkbox" role="switch"
-                                                        id="flexSwitchCheckDefault" onclick="updateState(this);"
-                                                        @if ($grado->estado == 1) checked @endif>
-                                                    <label class="form-check-label"
-                                                        for="flexSwitchCheckDefault">Activado</label>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="row" style="display: flex;">
+                                        <div class="row justify-content-center" style="display: flex;">
                                             <div class="col-auto">
                                                 <a href="#" class="btn btn-warning"
-                                                    onclick="editGradoAcademico({{ $grado->cod_grado_academico }}, '{{ $grado->descripcion }}');">
+                                                    onclick="editPresupuesto('{{ $p->cod_presupuesto }}','{{ $p->codeUniversal }}', '{{ $p->denominacion }}');">
                                                     <i class='bx bx-sm bx-edit-alt'></i>
                                                 </a>
                                             </div>
                                             <div class="col-auto">
-                                                <form id="form-delete-grado" method="post"
-                                                    action="{{ route('admin.delete_grado') }}">
+                                                <form id="form-delete-presupuesto" method="post"
+                                                    action="{{ route('admin.delete_presupuesto') }}">
                                                     @method('DELETE')
                                                     @csrf
-                                                    <input type="hidden" name="auxidgrado"
-                                                        value="{{ $grado->cod_grado_academico }}">
+                                                    <input type="hidden" name="auxidpresupuesto"
+                                                        value="{{ $p->cod_presupuesto }}">
                                                     <a href="#" class="btn btn-danger"
                                                         onclick="alertaConfirmacion(this);"><i
                                                             class='bx bx-message-square-x'></i></a>
                                                 </form>
-
-                                                </a>
                                             </div>
                                         </div>
+
                                     </td>
 
                                 </tr>
@@ -120,7 +105,7 @@
                 </div>
 
             </div>
-            {{ $grados_academicos->links() }}
+            {{ $presupuesto->links() }}
         </div>
     </div>
 @endsection
@@ -147,26 +132,6 @@
                 timer: 1500
             })
         </script>
-    @elseif (session('datos') == 'okdelete')
-        <script>
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Grado academico eliminado correctamente',
-                showConfirmButton: false,
-                timer: 1500
-            })
-        </script>
-    @elseif (session('datos') == 'oknotdelete')
-        <script>
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Error al eliminar grado academico',
-                showConfirmButton: false,
-                timer: 1500
-            })
-        </script>
     @elseif (session('datos') == 'duplicate')
         <script>
             Swal.fire({
@@ -179,17 +144,13 @@
         </script>
     @endif
     <script type="text/javascript">
-        function editGradoAcademico(code, description) {
-            const inputCodeGrado = document.getElementById("cod_grado_academico");
-            inputCodeGrado.value = code;
+        function editPresupuesto(cod,code, description) {
+            const inputAuxCodePresupuesto = document.getElementById("aux_cod_presupuesto");
+            inputAuxCodePresupuesto.value = cod;
+            document.getElementById("cod_codeUniversal").value = code;
             document.getElementById("descripcion").value = description;
-            document.getElementById("btn_save").textContent = "Edit";
+            document.getElementById("btn_save").textContent = "Editar";
         }
-
-        function updateState(form) {
-            form.closest('#formChangeStatus').submit();
-        }
-
         function alertaConfirmacion(form) {
             Swal.fire({
                 title: 'Estas Seguro que deseas eliminar?',
@@ -201,7 +162,7 @@
                 confirmButtonText: 'Confirmar!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    form.closest('#form-delete-grado').submit();
+                    form.closest('#form-delete-presupuesto').submit();
                 }
             });
         }

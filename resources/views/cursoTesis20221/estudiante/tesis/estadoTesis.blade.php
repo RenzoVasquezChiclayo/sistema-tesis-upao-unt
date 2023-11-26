@@ -57,7 +57,7 @@
                                                 <tr>
                                                     <td>{{$hTesis[0]->fecha_update}}</td>
                                                     <td>{{$hTesis[0]->titulo}}</td>
-                                                    <td>@if ($asesor!=null){{$asesor->nombres}}@endif</td>
+                                                    <td>@if ($asesor!=null){{$asesor->nombres." ".$asesor->apellidos}}@endif</td>
                                                     <td>{{$estado}}</td>
                                                     <td style="text-align: center;">
                                                         @if($hTesis[0]->estado!=0)

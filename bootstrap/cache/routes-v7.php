@@ -24,7 +24,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::M9H0M0Dh3CDQq8l7',
+            '_route' => 'generated::B5uSNttTRVo0b43t',
           ),
           1 => NULL,
           2 => 
@@ -102,7 +102,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::ZNAzBUVn2bjQCcJb',
+            '_route' => 'generated::pwyyfpQaBLNoiMdA',
           ),
           1 => NULL,
           2 => 
@@ -659,6 +659,83 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
+      '/ver-presupuesto' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'admin.verPresupuesto',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/save-presupuesto' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'admin.guardarPresupuesto',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/change-status-presupuesto' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'admin.changeStatusPresupuesto',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/delete-presupuesto' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'admin.delete_presupuesto',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'DELETE' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
       '/ver-agregar-categorias' => 
       array (
         0 => 
@@ -775,6 +852,25 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
+      '/delete-categoria' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'admin.delete_categoria',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'DELETE' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
       '/ver-grado-academico' => 
       array (
         0 => 
@@ -826,6 +922,25 @@ app('router')->setCompiledRoutes(
           2 => 
           array (
             'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/delete-grado' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'admin.delete_grado',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'DELETE' => 0,
           ),
           3 => NULL,
           4 => false,
@@ -1874,7 +1989,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::vt763kpRGAlrUwnv',
+            '_route' => 'generated::oXm8HaZIMOgNIfEG',
           ),
           1 => NULL,
           2 => 
@@ -1910,7 +2025,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::EJOdIwru9A6quZCz',
+            '_route' => 'generated::I6AVG9HIQ79U4n1L',
           ),
           1 => NULL,
           2 => 
@@ -2001,7 +2116,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::ZBAvQqp5IZwkYePp',
+            '_route' => 'generated::spyGPyCLLcVqRjMI',
           ),
           1 => NULL,
           2 => 
@@ -2119,7 +2234,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::QGleTH8fLmUf9t10',
+            '_route' => 'generated::6R6ClOmsSGQmZzdg',
           ),
           1 => 
           array (
@@ -2151,7 +2266,7 @@ app('router')->setCompiledRoutes(
   ),
   'attributes' => 
   array (
-    'generated::M9H0M0Dh3CDQq8l7' => 
+    'generated::B5uSNttTRVo0b43t' => 
     array (
       'methods' => 
       array (
@@ -2172,7 +2287,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
         ),
-        'as' => 'generated::M9H0M0Dh3CDQq8l7',
+        'as' => 'generated::B5uSNttTRVo0b43t',
       ),
       'fallback' => false,
       'defaults' => 
@@ -2297,7 +2412,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::ZNAzBUVn2bjQCcJb' => 
+    'generated::pwyyfpQaBLNoiMdA' => 
     array (
       'methods' => 
       array (
@@ -2314,13 +2429,13 @@ app('router')->setCompiledRoutes(
         ),
         'uses' => 'O:47:"Laravel\\SerializableClosure\\SerializableClosure":1:{s:12:"serializable";O:46:"Laravel\\SerializableClosure\\Serializers\\Signed":2:{s:12:"serializable";s:297:"O:46:"Laravel\\SerializableClosure\\Serializers\\Native":5:{s:3:"use";a:0:{}s:8:"function";s:79:"function (\\Illuminate\\Http\\Request $request) {
     return $request->user();
-}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"0000000022d376e100000000492c9f69";}";s:4:"hash";s:44:"u3Se80P6fnAW60nqrIKIn1yQvv1ogyldxOUQ+cAiJXw=";}}',
+}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"000000005631ed6500000000200ae7b9";}";s:4:"hash";s:44:"RsND3M8hNiLTy8SyOS1Y08gIGUX8jDz22GlwISaki0g=";}}',
         'namespace' => NULL,
         'prefix' => 'api',
         'where' => 
         array (
         ),
-        'as' => 'generated::ZNAzBUVn2bjQCcJb',
+        'as' => 'generated::pwyyfpQaBLNoiMdA',
       ),
       'fallback' => false,
       'defaults' => 
@@ -3404,6 +3519,152 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
+    'admin.verPresupuesto' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'ver-presupuesto',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+        ),
+        'uses' => 'App\\Http\\Controllers\\AdminCursoController@verAgregarPresupuesto',
+        'controller' => 'App\\Http\\Controllers\\AdminCursoController@verAgregarPresupuesto',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'admin.verPresupuesto',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'admin.guardarPresupuesto' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'save-presupuesto',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+        ),
+        'uses' => 'App\\Http\\Controllers\\AdminCursoController@savePresupuesto',
+        'controller' => 'App\\Http\\Controllers\\AdminCursoController@savePresupuesto',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'admin.guardarPresupuesto',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'admin.changeStatusPresupuesto' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'change-status-presupuesto',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+        ),
+        'uses' => 'App\\Http\\Controllers\\AdminCursoController@changeStatusPresupuesto',
+        'controller' => 'App\\Http\\Controllers\\AdminCursoController@changeStatusPresupuesto',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'admin.changeStatusPresupuesto',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'admin.delete_presupuesto' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'DELETE',
+      ),
+      'uri' => 'delete-presupuesto',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+        ),
+        'uses' => 'App\\Http\\Controllers\\AdminCursoController@delete_presupuesto',
+        'controller' => 'App\\Http\\Controllers\\AdminCursoController@delete_presupuesto',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'admin.delete_presupuesto',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
     'admin.categoriasDocente' => 
     array (
       'methods' => 
@@ -3628,6 +3889,43 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
+    'admin.delete_categoria' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'DELETE',
+      ),
+      'uri' => 'delete-categoria',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+        ),
+        'uses' => 'App\\Http\\Controllers\\AdminCursoController@delete_categoria',
+        'controller' => 'App\\Http\\Controllers\\AdminCursoController@delete_categoria',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'admin.delete_categoria',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
     'admin.verAgregarGrado' => 
     array (
       'methods' => 
@@ -3722,6 +4020,43 @@ app('router')->setCompiledRoutes(
         array (
         ),
         'as' => 'admin.changeStatusGrado',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'admin.delete_grado' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'DELETE',
+      ),
+      'uri' => 'delete-grado',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+        ),
+        'uses' => 'App\\Http\\Controllers\\AdminCursoController@delete_grado',
+        'controller' => 'App\\Http\\Controllers\\AdminCursoController@delete_grado',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'admin.delete_grado',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5796,7 +6131,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::vt763kpRGAlrUwnv' => 
+    'generated::oXm8HaZIMOgNIfEG' => 
     array (
       'methods' => 
       array (
@@ -5816,7 +6151,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::vt763kpRGAlrUwnv',
+        'as' => 'generated::oXm8HaZIMOgNIfEG',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5869,7 +6204,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::EJOdIwru9A6quZCz' => 
+    'generated::I6AVG9HIQ79U4n1L' => 
     array (
       'methods' => 
       array (
@@ -5889,7 +6224,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::EJOdIwru9A6quZCz',
+        'as' => 'generated::I6AVG9HIQ79U4n1L',
       ),
       'fallback' => false,
       'defaults' => 
@@ -6088,7 +6423,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::ZBAvQqp5IZwkYePp' => 
+    'generated::spyGPyCLLcVqRjMI' => 
     array (
       'methods' => 
       array (
@@ -6108,7 +6443,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::ZBAvQqp5IZwkYePp',
+        'as' => 'generated::spyGPyCLLcVqRjMI',
       ),
       'fallback' => false,
       'defaults' => 
@@ -6124,7 +6459,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::QGleTH8fLmUf9t10' => 
+    'generated::6R6ClOmsSGQmZzdg' => 
     array (
       'methods' => 
       array (
@@ -6141,13 +6476,13 @@ app('router')->setCompiledRoutes(
         'uses' => 'O:47:"Laravel\\SerializableClosure\\SerializableClosure":1:{s:12:"serializable";O:46:"Laravel\\SerializableClosure\\Serializers\\Signed":2:{s:12:"serializable";s:295:"O:46:"Laravel\\SerializableClosure\\Serializers\\Native":5:{s:3:"use";a:0:{}s:8:"function";s:77:"function($comand){
     \\Illuminate\\Support\\Facades\\Artisan::call($comand);
 
-}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"0000000022d3768200000000492c9f69";}";s:4:"hash";s:44:"FmTzdEeShLwsKg72OZwDYmL2zmht3k2x4OXvdXuFCKU=";}}',
+}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"000000005631ed0000000000200ae7b9";}";s:4:"hash";s:44:"ErFoK9foeSLc8tl8zP6Tq7GzLsvhJxudZPjS9JrgAgw=";}}',
         'namespace' => NULL,
         'prefix' => '',
         'where' => 
         array (
         ),
-        'as' => 'generated::QGleTH8fLmUf9t10',
+        'as' => 'generated::6R6ClOmsSGQmZzdg',
       ),
       'fallback' => false,
       'defaults' => 

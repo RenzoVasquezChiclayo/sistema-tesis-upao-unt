@@ -117,7 +117,6 @@ class CursoTesisController extends Controller
         }
 
         $presupuestoProy = Presupuesto_Proyecto::where('cod_proyectotesis', '=', $tesis[0]->cod_proyectotesis)->get();
-
         $recursos = recursos::where('cod_proyectotesis', '=', $tesis[0]->cod_proyectotesis)->get();
 
         $objetivos = Objetivo::where('cod_proyectotesis', '=', $tesis[0]->cod_proyectotesis)->get();
@@ -146,7 +145,7 @@ class CursoTesisController extends Controller
         $aux = explode('-', $id);
         $id = $aux[0];
         $estudiante = EstudianteCT2022::find($id);
-        $hTesis = TesisCT2022::join('asesor_curso as ac', 'ac.cod_docente', '=', 'proyecto_tesis.cod_docente')->select('ac.nombres as nombre_asesor', 'proyecto_tesis.*')->where('cod_matricula', '=', $estudiante->cod_matricula)->get();
+        $hTesis = TesisCT2022::join('asesor_curso as ac', 'ac.cod_docente', '=', 'proyecto_tesis.cod_docente')->select('ac.nombres as nombre_asesor','ac.apellidos as apellidos_asesor' , 'proyecto_tesis.*')->where('cod_matricula', '=', $estudiante->cod_matricula)->get();
         return view('cursoTesis20221.estadoProyecto', ['hTesis' => $hTesis]);
     }
 
@@ -780,62 +779,125 @@ class CursoTesisController extends Controller
 
             //INMEDIATAMENTE AGREGAMOS LA INFORMACION A LA TESIS
             $proytesisFound = DB::table("proyecto_tesis as pyt")
-                ->select("pyt.*")->get();
-            foreach ($proytesisFound as $key => $proy) {
-                $objetivos_pyt = Objetivo::where('cod_proyectotesis', '=', $proy->cod_proyectotesis)->latest('cod_objetivo')->get();
-                $referencias_pyt = referencias::where('cod_proyectotesis', '=', $proy->cod_proyectotesis)->latest('cod_referencias')->get();
-                $tesisFound = Tesis_2022::where("cod_matricula", $proy->cod_matricula)->first();
+                ->select("pyt.*")->where('cod_matricula',$estudiante->cod_matricula)->first();
+                //$referencias_pyt = referencias::where('cod_proyectotesis', '=', $proy->cod_proyectotesis)->latest('cod_referencias')->get();
+                $tesisFound = Tesis_2022::where("cod_matricula", $proytesisFound->cod_matricula)->first();
                 if ($tesisFound != null) {
-                    $tesisFound->titulo = $proy->titulo;
-                    $tesisFound->real_problematica = $proy->real_problematica;
-                    $tesisFound->antecedentes = $proy->antecedentes;
-                    $tesisFound->justificacion = $proy->justificacion;
-                    $tesisFound->formulacion_prob = $proy->formulacion_prob;
+                    $tesisFound->titulo = $proytesisFound->titulo;
+                    $tesisFound->real_problematica = $proytesisFound->real_problematica;
+                    $tesisFound->antecedentes = $proytesisFound->antecedentes;
+                    $tesisFound->justificacion = $proytesisFound->justificacion;
+                    $tesisFound->formulacion_prob = $proytesisFound->formulacion_prob;
                     try {
-                        if ($objetivos_pyt->count() != 0) {
-                            foreach ($objetivos_pyt as $obj) {
+                        if (!empty($arreglodescripcionObj)) {
+                            for ($i = 0; $i <= count($arregloTipoObj) - 1; $i++) {
                                 $objetivos_t = new TObjetivo();
-                                $objetivos_t->tipo = $obj->tipo;
-                                $objetivos_t->descripcion = $obj->descripcion;
+                                $objetivos_t->tipo = $arregloTipoObj[$i];
+                                $objetivos_t->descripcion = $arreglodescripcionObj[$i];
                                 $objetivos_t->cod_tesis = $tesisFound->cod_tesis;
                                 $objetivos_t->save();
                             }
                         }
+
                     } catch (\Throwable $th) {
                         dd($th);
                     }
-                    $tesisFound->marco_teorico = $proy->marco_teorico;
-                    $tesisFound->marco_conceptual = $proy->marco_conceptual;
-                    $tesisFound->marco_legal = $proy->marco_legal;
-                    $tesisFound->form_hipotesis = $proy->form_hipotesis;
-                    $tesisFound->objeto_estudio = $proy->objeto_estudio;
-                    $tesisFound->poblacion = $proy->poblacion;
-                    $tesisFound->muestra = $proy->muestra;
-                    $tesisFound->metodos = $proy->metodos;
-                    $tesisFound->tecnicas_instrum = $proy->tecnicas_instrum;
-                    $tesisFound->instrumentacion = $proy->instrumentacion;
-                    $tesisFound->estg_metodologicas = $proy->estg_metodologicas;
+                    $tesisFound->marco_teorico = $proytesisFound->marco_teorico;
+                    $tesisFound->marco_conceptual = $proytesisFound->marco_conceptual;
+                    $tesisFound->marco_legal = $proytesisFound->marco_legal;
+                    $tesisFound->form_hipotesis = $proytesisFound->form_hipotesis;
+                    $tesisFound->objeto_estudio = $proytesisFound->objeto_estudio;
+                    $tesisFound->poblacion = $proytesisFound->poblacion;
+                    $tesisFound->muestra = $proytesisFound->muestra;
+                    $tesisFound->metodos = $proytesisFound->metodos;
+                    $tesisFound->tecnicas_instrum = $proytesisFound->tecnicas_instrum;
+                    $tesisFound->instrumentacion = $proytesisFound->instrumentacion;
+                    $tesisFound->estg_metodologicas = $proytesisFound->estg_metodologicas;
                     try {
-                        if ($referencias_pyt->count() != 0) {
-                            foreach ($referencias_pyt as $ref) {
-                                $referencias_t = new TReferencias();
-                                $referencias_t->cod_tiporeferencia = $ref->cod_tiporeferencia;
-                                $referencias_t->autor = $ref->autor;
-                                $referencias_t->fPublicacion = $ref->fPublicacion;
-                                $referencias_t->titulo = $ref->titulo;
-                                $referencias_t->fuente = $ref->fuente;
-                                $referencias_t->editorial =  $ref->editorial;
-                                $referencias_t->title_cap = $ref->title_cap;
-                                $referencias_t->num_capitulo = $ref->num_capitulo;
-                                $referencias_t->title_revista = $ref->title_revista;
-                                $referencias_t->volumen = $ref->volumen;
-                                $referencias_t->name_web = $ref->name_web;
-                                $referencias_t->name_periodista = $ref->name_periodista;
-                                $referencias_t->name_institucion = $ref->name_institucion;
-                                $referencias_t->subtitle = $ref->subtitle;
-                                $referencias_t->name_editor = $ref->name_editor;
-                                $referencias_t->cod_tesis = $tesisFound->cod_tesis;
-                                $referencias_t->save();
+                        $aux1 = 0;
+                        $aux2 = 0;
+                        $aux3 = 0;
+                        $aux4 = 0;
+                        $aux5 = 0;
+                        $aux6 = 0;
+                        if (!empty($autorApa)) {
+                            for ($i = 0; $i <= count($autorApa) - 1; $i++) {
+                                $referencias = new TReferencias();
+                                $referencias->cod_tiporeferencia = $arregloTipoRef[$i];
+                                $referencias->autor = $arregloA[$i];
+                                $referencias->fPublicacion = $arreglofP[$i];
+                                $referencias->titulo = $arregloT[$i];
+                                $referencias->fuente = $arregloF[$i];
+                                if ($arregloTipoRef[$i] == 1) {
+                                    if (empty($arregloE[$aux1]) == 1) {
+                                        $referencias->editorial = " ";
+                                    } else {
+                                        $referencias->editorial = $arregloE[$aux1];
+                                    }
+                                    if (empty($arregloTC[$aux1]) == 1) {
+                                        $referencias->title_cap = " ";
+                                    } else {
+                                        $referencias->title_cap = $arregloTC[$aux1];
+                                    }
+                                    if (empty($arregloNumC[$aux1]) == 1) {
+                                        $referencias->num_capitulo = " ";
+                                    } else {
+                                        $referencias->num_capitulo = $arregloNumC[$aux1];
+                                    }
+                                    $aux1++;
+                                }
+                                if ($arregloTipoRef[$i] == 2) {
+                                    if (empty($arregloTR[$aux2]) == 1) {
+                                        $referencias->title_revista = " ";
+                                    } else {
+                                        $referencias->title_revista = $arregloTR[$aux2];
+                                    }
+                                    if (empty($arregloVR[$aux2]) == 1) {
+                                        $referencias->volumen = " ";
+                                    } else {
+                                        $referencias->volumen = $arregloVR[$aux2];
+                                    }
+                                    $aux2++;
+                                }
+                                if ($arregloTipoRef[$i] == 3) {
+                                    if (empty($arregloNW[$aux3]) == 1) {
+                                        $referencias->name_web = " ";
+                                    } else {
+                                        $referencias->name_web = $arregloNW[$aux3];
+                                    }
+                                    $aux3++;
+                                }
+                                if ($arregloTipoRef[$i] == 4) {
+                                    if (empty($arregloNP[$aux4]) == 1) {
+                                        $referencias->name_periodista = " ";
+                                    } else {
+                                        $referencias->name_periodista = $arregloNP[$aux4];
+                                    }
+                                    $aux4++;
+                                }
+                                if ($arregloTipoRef[$i] == 5) {
+                                    if (empty($arregloNI[$aux5]) == 1) {
+                                        $referencias->name_institucion = " ";
+                                    } else {
+                                        $referencias->name_institucion = $arregloNI[$aux5];
+                                    }
+                                    $aux5++;
+                                }
+                                if ($arregloTipoRef[$i] == 6) {
+                                    if (empty($arregloST[$aux6]) == 1) {
+                                        $referencias->subtitle = " ";
+                                    } else {
+                                        $referencias->subtitle = $arregloST[$aux6];
+                                    }
+                                    if (empty($arregloNE[$aux6]) == 1) {
+                                        $referencias->name_editor = " ";
+                                    } else {
+                                        $referencias->name_editor = $arregloNE[$aux6];
+                                    }
+                                    $aux6++;
+                                }
+                                $referencias->cod_tesis = $tesisFound->cod_tesis;
+                                $referencias->save();
                             }
                         }
                     } catch (\Throwable $th) {
@@ -843,7 +905,6 @@ class CursoTesisController extends Controller
                     }
                     $tesisFound->save();
                 }
-            }
             return redirect()->route('curso.estado-proyecto')->with('datos', 'ok');
         } catch (\Throwable $th) {
             //dd($th);
@@ -913,16 +974,22 @@ class CursoTesisController extends Controller
 
         $tesis = TesisCT2022::where('cod_proyectotesis', $cod_cursoTesis)->get();
         $estudiante = EstudianteCT2022::find($tesis[0]->cod_matricula);
-        $asesor = AsesorCurso::find($tesis[0]->cod_docente);
+        //$asesor = AsesorCurso::find($tesis[0]->cod_docente);
+        $asesor = DB::table('asesor_curso')
+        ->leftjoin('grado_academico as ga', 'asesor_curso.cod_grado_academico', 'ga.cod_grado_academico')
+        ->leftjoin('categoria_docente as cd', 'asesor_curso.cod_categoria', 'cd.cod_categoria')
+        ->select('asesor_curso.*', 'ga.descripcion as DescGrado', 'cd.descripcion as DescCat')
+        ->where('cod_docente', $tesis[0]->cod_docente)->first();
+        //dd($asesor);
         /*Datos del Autor*/
         $nombres = $estudiante->nombres . ' ' . $estudiante->apellidos;
 
         /*Datos del Asesor*/
-        $nombre_asesor = $asesor->nombres;
+        $nombre_asesor = $asesor->nombres." ".$asesor->apellidos;
 
         $orcid_asesor = $asesor->orcid;
-        $grado_asesor = $asesor->grado_academico;
-        $titulo_asesor = $asesor->titulo_profesional;
+        $grado_asesor = $asesor->DescGrado;
+        $categoria_asesor = $asesor->DescCat;
         $direccion_asesor = $asesor->direccion;
 
         /*Proyecto de Investigacion y/o Tesis*/
@@ -1145,9 +1212,8 @@ class CursoTesisController extends Controller
         $nuevaSesion->addText($nombres, null, $styleContenido);
 
         $nuevaSesion->addListItem("3. ASESOR", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
-        $nuevaSesion->addText($nombre_asesor, null, $styleContenido);
-        $nuevaSesion->addText($grado_asesor, null, $styleContenido);
-        $nuevaSesion->addText($titulo_asesor, null, $styleContenido);
+        $nuevaSesion->addText($grado_asesor.". ".$nombre_asesor, null, $styleContenido);
+        $nuevaSesion->addText($categoria_asesor, null, $styleContenido);
         $nuevaSesion->addText($direccion_asesor, null, $styleContenido);
 
         $nuevaSesion->addListItem("4. TIPO DE INVESTIGACION", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
@@ -1536,7 +1602,7 @@ class CursoTesisController extends Controller
                 ->select('e.*', 'p.cod_docente')
                 ->orderBy('e.apellidos')->paginate($this::PAGINATION3);
         }
-        $asesores = DB::table('asesor_curso')->select('cod_docente', 'nombres')->get();
+        $asesores = DB::table('asesor_curso')->select('cod_docente', 'nombres','apellidos')->get();
         return view('cursoTesis20221.director.asignarAsesor', ['estudiantes' => $estudiantes, 'asesores' => $asesores, 'buscarAlumno' => $buscarAlumno]);
     }
 

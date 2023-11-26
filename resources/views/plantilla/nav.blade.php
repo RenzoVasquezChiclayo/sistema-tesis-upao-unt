@@ -167,6 +167,9 @@
                 <a href="{{ route('admin.verEscuela') }}">
                     <span class="links_name">Escuela</span>
                 </a>
+                <a href="{{ route('admin.verPresupuesto') }}">
+                    <span class="links_name">Presupuesto</span>
+                </a>
             </div>
         </li>
         <li>
@@ -215,34 +218,33 @@
         {{-- Nav para el Asesor del curso TESIS I --}}
     @elseif (auth()->user()->rol == 'a-CTesis2022-1')
         <li>
-            <a href="{{ route('asesor.showEstudiantes') }}">
+            <a class="cstm-a" href="{{ route('asesor.showEstudiantes') }}">
                 <i class='bx bx-sm bx-group'></i>
                 <span class="links_name">Estudiantes Proyecto</span>
             </a>
             <span class="tooltip">Estudiantes</span>
         </li>
         <li>
-            <a href="{{ route('asesor.verHistoObs') }}">
+            <a class="cstm-a" href="{{ route('asesor.verHistoObs') }}">
                 <i class='bx bx-sm bx-history'></i>
                 <span class="links_name">Historial Proyecto</span>
             </a>
             <span class="tooltip">Observaciones</span>
         </li>
         <li>
-            <a href="{{ route('asesor.estudiantes-tesis') }}">
+            <a class="cstm-a" href="{{ route('asesor.estudiantes-tesis') }}">
                 <i class='bx bx-sm bx-group'></i>
                 <span class="links_name">Estudiantes Tesis</span>
             </a>
             <span class="tooltip">Estudiantes</span>
         </li>
         <li>
-            <a href="{{ route('asesor.ver-estudsiantes-obs') }}">
+            <a class="cstm-a" href="{{ route('asesor.ver-estudsiantes-obs') }}">
                 <i class='bx bx-sm bx-history'></i>
                 <span class="links_name">Historial Tesis</span>
             </a>
             <span class="tooltip">Estudiantes</span>
         </li>
-
 
         {{-- Nav para la Secretaria, agregara estudiantes --}}
         {{-- @elseif (auth()->user()->rol == 'secretaria')

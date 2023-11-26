@@ -109,7 +109,7 @@
                                     <label for="direccion">Direccion</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control" id="direccion" name="direccion"
-                                            maxlength="30">
+                                            maxlength="30" required>
                                         <span class="input-group-text" id="contador-caracteres">0/30</span>
                                     </div>
                                 </div>
@@ -117,7 +117,7 @@
                                     <label for="correo">Correo Institucional</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control" id="correo" name="correo"
-                                            maxlength="80">
+                                            maxlength="80" required>
                                     </div>
                                 </div>
                             </div>

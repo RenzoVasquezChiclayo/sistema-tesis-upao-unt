@@ -38,7 +38,7 @@
                                         <td>Id</td>
                                         <td>Descripcion</td>
                                         <td>Estado</td>
-                                        <td>Editar</td>
+                                        <td>Opcion</td>
                                     </tr>
                                 </thead>
                                 @foreach ($lista_categorias as $l_u)
@@ -63,7 +63,7 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <div class="row">
+                                            <div class="row justify-content-center">
                                                 <div class="col-3">
                                                     <form id="form-categoria" method="post"
                                                         action="{{ route('admin.EditarcategoriasDocente') }}">
@@ -75,7 +75,17 @@
                                                                 class='bx bx-sm bx-edit-alt'></i></a>
                                                     </form>
                                                 </div>
-
+                                                <div class="col-3">
+                                                    <form id="form-delete-categoria" method="post"
+                                                        action="{{ route('admin.delete_categoria') }}">
+                                                        @method('DELETE')
+                                                        @csrf
+                                                        <input type="hidden" name="auxidcategoria"
+                                                            value="{{ $l_u->cod_categoria }}">
+                                                        <a href="#" class="btn btn-danger"
+                                                            onclick="alertaConfirmacion(this);"><i class='bx bx-message-square-x' ></i></a>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </td>
                                     </tr>
@@ -151,7 +161,7 @@
                 confirmButtonText: 'Confirmar!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    form.closest('#formCategoriaDelete').submit();
+                    form.closest('#form-delete-categoria').submit();
                 }
             });
         }

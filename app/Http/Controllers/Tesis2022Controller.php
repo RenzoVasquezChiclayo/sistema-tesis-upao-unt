@@ -74,7 +74,7 @@ class Tesis2022Controller extends Controller
         $id = $aux[0];
         $estudiante = EstudianteCT2022::find($id);
         $hTesis = Tesis_2022::where('cod_matricula','=',$estudiante->cod_matricula)->get();
-        $asesor = AsesorCurso::find($hTesis[0]->cod_docente);
+        $asesor = DB::table('asesor_curso')->select('asesor_curso.*')->where('cod_docente', $hTesis[0]->cod_docente)->first();
         return view('cursoTesis20221.estudiante.tesis.estadoTesis',['hTesis'=>$hTesis,'asesor'=>$asesor]);
     }
 
@@ -643,7 +643,7 @@ class Tesis2022Controller extends Controller
             ->orderBy('e.apellidos')
             ->paginate($this::PAG_ASIGNACION);
         }
-        $asesores = DB::table('asesor_curso')->select('cod_docente','nombres')->get();
+        $asesores = DB::table('asesor_curso')->select('cod_docente','nombres','apellidos')->get();
         return view('cursoTesis20221.director.tesis.asignarAsesorTesis',['estudiantes'=>$estudiantes,'asesores'=>$asesores,'buscar_estudiante'=>$buscar_estudiante]);
     }
 
@@ -724,8 +724,8 @@ class Tesis2022Controller extends Controller
         $Tesis = DB::table('tesis_2022 as t')
                             ->join('estudiante_ct2022 as et','et.cod_matricula','=','t.cod_matricula')
                             ->select('t.*','et.nombres as nombresAutor','et.apellidos as apellidosAutor')->where('et.cod_matricula',$cod_matricula)->get();
-        $asesor = AsesorCurso::find($Tesis[0]->cod_asesor);
-        $docente = AsesorCurso::find($Tesis[0]->cod_docente);
+        $asesor = DB::table('asesor_curso')->leftjoin('grado_academico as ga', 'asesor_curso.cod_grado_academico', 'ga.cod_grado_academico')->leftjoin('categoria_docente as cd', 'asesor_curso.cod_categoria', 'cd.cod_categoria')->select('asesor_curso.*', 'ga.descripcion as DescGrado', 'cd.descripcion as DescCat')->where('cod_docente', $Tesis[0]->cod_asesor)->first();  //Encontramos al asesor
+        $docente = DB::table('asesor_curso')->leftjoin('grado_academico as ga', 'asesor_curso.cod_grado_academico', 'ga.cod_grado_academico')->leftjoin('categoria_docente as cd', 'asesor_curso.cod_categoria', 'cd.cod_categoria')->select('asesor_curso.*', 'ga.descripcion as DescGrado', 'cd.descripcion as DescCat')->where('cod_docente', $Tesis[0]->cod_docente)->first();  //Encontramos al docente
         $objetivos = DB::table('t_objetivo')->where('cod_tesis','=',$Tesis[0]->cod_tesis)->get();
         $t_keywords = DB::table('t_keyword')->where('cod_tesis','=',$Tesis[0]->cod_tesis)->get();
         $referencias = DB::table('t_referencias')->where('cod_tesis','=',$Tesis[0]->cod_tesis)->get();
@@ -975,10 +975,14 @@ class Tesis2022Controller extends Controller
 
         $cod_Tesis = $request->cod_Tesis;
         $lineKeywords = "";
-        $tesis = Tesis_2022::join('asesor_curso','tesis_2022.cod_docente','=','asesor_curso.cod_docente')
-                            ->join('estudiante_ct2022','tesis_2022.cod_matricula','=','estudiante_ct2022.cod_matricula')
-                            ->select('tesis_2022.*','asesor_curso.*','estudiante_ct2022.nombres as nombresAutor','estudiante_ct2022.apellidos as apellidosAutor')
+        $tesis = Tesis_2022::join('estudiante_ct2022','tesis_2022.cod_matricula','=','estudiante_ct2022.cod_matricula')
+                            ->select('tesis_2022.*','estudiante_ct2022.nombres as nombresAutor','estudiante_ct2022.apellidos as apellidosAutor')
                             ->where('cod_tesis',$cod_Tesis)->get();
+            $asesor = DB::table('asesor_curso')
+            ->leftjoin('grado_academico as ga', 'asesor_curso.cod_grado_academico', 'ga.cod_grado_academico')
+            ->leftjoin('categoria_docente as cd', 'asesor_curso.cod_categoria', 'cd.cod_categoria')
+            ->select('asesor_curso.*', 'ga.descripcion as DescGrado', 'cd.descripcion as DescCat')
+            ->where('cod_docente', $tesis[0]->cod_asesor)->first();
             // Dedicatoria
             $dedicatoria = $tesis[0]->dedicatoria;
             // Agradecimiento
@@ -1004,11 +1008,11 @@ class Tesis2022Controller extends Controller
             $nombres =$tesis[0]->nombresAutor.' '.$tesis[0]->apellidosAutor;
 
             /*Datos del Asesor*/
-            $orcid_asesor = $tesis[0]->orcid;
-            $nombre_asesor = $tesis[0]->nombres;
-            $grado_asesor = $tesis[0]->grado_academico;
-            $titulo_asesor = $tesis[0]->titulo_profesional;
-            $direccion_asesor =$tesis[0]->direccion;
+            $orcid_asesor = $asesor->orcid;
+            $nombre_asesor = $asesor->nombres.' '.$asesor->apellidos;
+            $grado_asesor = $asesor->DescGrado;
+            $categoria_asesor = $asesor->DescCat;
+            $direccion_asesor =$asesor->direccion;
 
             /*Proyecto de Investigacion y/o Tesis*/
             $titulo = $tesis[0]->titulo;
@@ -1219,9 +1223,8 @@ class Tesis2022Controller extends Controller
             $nuevaSesion->addText($nombres,null,$styleContenido);
 
             $nuevaSesion->addListItem("3. ASESOR",0.5,$titulos,[\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER],$styleContenido);
-            $nuevaSesion->addText($nombre_asesor,null,$styleContenido);
-            $nuevaSesion->addText($grado_asesor,null,$styleContenido);
-            $nuevaSesion->addText($titulo_asesor,null,$styleContenido);
+            $nuevaSesion->addText($grado_asesor." ".$nombre_asesor,null,$styleContenido);
+            $nuevaSesion->addText($categoria_asesor,null,$styleContenido);
             $nuevaSesion->addText($direccion_asesor,null,$styleContenido);
 
 

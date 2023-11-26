@@ -58,7 +58,7 @@
                                             <option value="0">-</option>
                                             @foreach ($asesores as $ase)
                                                 <option value="{{ $ase->cod_docente }}"
-                                                    @if ($est->cod_asesor == $ase->cod_docente) selected @endif>{{ $ase->nombres }}
+                                                    @if ($est->cod_asesor == $ase->cod_docente) selected @endif>{{ $ase->nombres." ".$ase->apellidos}}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -70,7 +70,7 @@
                                             <option value="0">-</option>
                                             @foreach ($asesores as $ase)
                                                 <option value="{{ $ase->cod_docente }}"
-                                                    @if ($est->cod_docente == $ase->cod_docente) selected @endif>{{ $ase->nombres }}
+                                                    @if ($est->cod_docente == $ase->cod_docente) selected @endif>{{ $ase->nombres." ".$ase->apellidos}}
                                                 </option>
                                             @endforeach
                                         </select>

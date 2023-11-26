@@ -97,6 +97,13 @@ Route::get('/ver-escuela',[AdminCursoController::class,'verAgregarEscuela'])->na
 Route::post('/save-escuela',[AdminCursoController::class,'saveEscuela'])->name('admin.guardarEscuela');
 Route::post('/change-status-escuela',[AdminCursoController::class,'changeStatusEscuela'])->name('admin.changeStatusEscuela');
 //
+
+//----
+Route::get('/ver-presupuesto',[AdminCursoController::class,'verAgregarPresupuesto'])->name('admin.verPresupuesto');
+Route::post('/save-presupuesto',[AdminCursoController::class,'savePresupuesto'])->name('admin.guardarPresupuesto');
+Route::delete('/delete-presupuesto',[AdminCursoController::class,'delete_presupuesto'])->name('admin.delete_presupuesto')->middleware('auth');
+//
+
 //----
 Route::get('/ver-agregar-categorias',[AdminCursoController::class,'ver_agregar_categoria'])->name('admin.categoriasDocente')->middleware('auth');
 Route::post('/save-categorias',[AdminCursoController::class,'saveCategorias'])->name('admin.saveCategorias')->middleware('auth');
@@ -104,11 +111,13 @@ Route::get('/listar-categorias',[AdminCursoController::class,'lista_agregar_cate
 Route::post('/ver-editar-categorias',[AdminCursoController::class,'ver_editar_categoria'])->name('admin.EditarcategoriasDocente')->middleware('auth');
 Route::post('/save-editar-categorias',[AdminCursoController::class,'save_editar_categoria'])->name('admin.saveEditarCategorias')->middleware('auth');
 Route::post('/change-status-categoria',[AdminCursoController::class,'changeStatusCategoria'])->name('admin.changeStatusCategoria')->middleware('auth');
+Route::delete('/delete-categoria',[AdminCursoController::class,'delete_categoria'])->name('admin.delete_categoria')->middleware('auth');
 
 //----
 Route::get('/ver-grado-academico',[AdminCursoController::class,'verAgregarGrado'])->name('admin.verAgregarGrado');
 Route::post('/save-grado-academico',[AdminCursoController::class,'saveGradoAcademico'])->name('admin.guardarGradoAcademico');
 Route::post('/change-status-grado',[AdminCursoController::class,'changeStatusGrado'])->name('admin.changeStatusGrado');
+Route::delete('/delete-grado',[AdminCursoController::class,'delete_grado'])->name('admin.delete_grado')->middleware('auth');
 //----
 Route::get('/ver-configuraciones-iniciales',[AdminCursoController::class,'verConfiguracionesIniciales'])->name('admin.verConfiguraciones');
 Route::post('/save-configuraciones-iniciales',[AdminCursoController::class,'saveConfiguracionesIniciales'])->name('admin.saveconfigurar');

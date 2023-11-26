@@ -43,7 +43,7 @@
                                                     @if ($est->cod_docente == $ase->cod_docente)
                                                         selected
                                                     @endif
-                                                    >{{$ase->nombres}}</option>
+                                                    >{{$ase->nombres." ".$ase->apellidos}}</option>
                                                 @endforeach
                                             </select>
                                         </td>
