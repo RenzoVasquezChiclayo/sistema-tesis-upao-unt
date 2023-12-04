@@ -1,10 +1,10 @@
 @extends('plantilla.dashboard')
 @section('titulo')
-    Agregar Asesor
+    Agregar Asesores y Docentes
 @endsection
 @section('contenido')
     <div class="card-header">
-        Registrar Asesor
+        Registrar Asesores y Docentes
     </div>
     <div class="card-body">
         <div class="row justify-content-around align-items-center">
@@ -54,7 +54,7 @@
             </div>
             <div class="card text-center shadow bg-white rounded">
                 <div class="card-body">
-                    <h5 class="card-title">Registrar por asesor</h5>
+                    <h5 class="card-title">Registrar por asesor y docente</h5>
                     <div class="row border-box">
                         <form class="row g-3 needs-validation" action="{{ route('director.addAsesor') }}" method="POST"
                             novalidate>
@@ -143,7 +143,7 @@
             Swal.fire({
                 position: 'center',
                 icon: 'success',
-                title: 'Asesor agregado correctamente',
+                title: 'Asesor y Docente agregado correctamente',
                 showConfirmButton: false,
                 timer: 1500
             })
@@ -153,7 +153,7 @@
             Swal.fire({
                 position: 'center',
                 icon: 'error',
-                title: 'Error al agregar el asesor',
+                title: 'Error al agregar el asesor y docente',
                 showConfirmButton: false,
                 timer: 1500
             })

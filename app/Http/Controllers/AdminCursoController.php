@@ -9,6 +9,7 @@ use App\Models\Asesor_Semestre;
 use App\Models\AsesorCurso;
 use App\Models\Categoria_Docente;
 use App\Models\Configuraciones_Iniciales;
+use App\Models\Cronograma;
 use App\Models\Diseno_Investigacion;
 use App\Models\Escuela;
 use App\Models\Estudiante_Semestre;
@@ -951,6 +952,66 @@ class AdminCursoController extends Controller
             return redirect()->route('admin.verAgregarGrado')->with('datos', 'oknotdelete');
         }
     }
+
+    // CRONOGRAMA
+
+    public function verAgregarCronograma(Request $request)
+    {
+        $cronograma = DB::table('cronograma as c')->join('escuela as e','c.cod_escuela','=','e.cod_escuela')
+                            ->join('configuraciones_iniciales as ci','ci.cod_configuraciones','c.cod_configuraciones')
+                            ->select('*')->paginate($this::PAGINATION);
+        $escuela = DB::table('escuela')->where('estado', 1)->get();
+        $semestre = DB::table('configuraciones_iniciales as c_i')->select('c_i.*')->where('c_i.estado', 1)->orderBy('c_i.cod_configuraciones', 'desc')->get();
+        $buscarCronograma = $request->get('buscarCronograma');
+
+        $cronograma = DB::connection('mysql')->table('cronograma as c')->join('escuela as e','c.cod_escuela','=','e.cod_escuela')
+                            ->join('configuraciones_iniciales as ci','ci.cod_configuraciones','c.cod_configuraciones')
+                            ->select('*')->where('c.actividad', 'like', '%' . $buscarCronograma . '%')->paginate($this::PAGINATION);
+        return view('cursoTesis20221.administrador.cronograma.agregar_cronograma', ['cronograma' => $cronograma,'escuela'=>$escuela,'semestre'=>$semestre]);
+    }
+
+    public function saveCronograma(Request $request)
+    {
+        try {
+            $description = $request->descripcion;
+            $escuela = $request->escuela;
+            $semestre = $request->semestre_academico;
+            $aux_codCronograma = $request->aux_cod_cronograma;
+            if ($aux_codCronograma != "") {
+                $cronograma = Cronograma::find($aux_codCronograma);
+                $cronograma->actividad = $description;
+                $cronograma->cod_escuela = $escuela;
+                $cronograma->cod_configuraciones = $semestre;
+                $cronograma->save();
+            } else {
+                $existCronograma = Cronograma::where('actividad', $description)->first();
+                if ($existCronograma != null) {
+                    return redirect()->route('admin.verCronograma')->with('datos', 'duplicate');
+                }
+                $cronograma = new Cronograma();
+                $cronograma->actividad = $description;
+                $cronograma->cod_escuela = $escuela;
+                $cronograma->cod_configuraciones = $semestre;
+                $cronograma->save();
+            }
+            return redirect()->route('admin.verCronograma')->with('datos', 'ok');
+        } catch (\Throwable $th) {
+            dd($th);
+            return redirect()->route('admin.verCronograma')->with('datos', 'oknot');
+        }
+    }
+
+    public function delete_cronograma(Request $request){
+        try {
+            $cod_cronograma = $request->auxidcronograma;
+            $find_cronograma = Cronograma::where('cod_cronograma', $cod_cronograma)->first();
+            $find_cronograma->delete();
+            return redirect()->route('admin.verCronograma')->with('datos', 'okdelete');
+        } catch (\Throwable $th) {
+            return redirect()->route('admin.verCronograma')->with('datos', 'oknotdelete');
+        }
+    }
+    //
 
     // PRESUPUESTO
 

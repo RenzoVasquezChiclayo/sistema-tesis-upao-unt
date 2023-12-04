@@ -628,6 +628,8 @@ class ComposerStaticInit6fc7bbb644c22bc597ae731b005a3a06
         'App\\Models\\CamposEstudiante' => __DIR__ . '/../..' . '/app/Models/CamposEstudiante.php',
         'App\\Models\\Categoria_Docente' => __DIR__ . '/../..' . '/app/Models/Categoria_Docente.php',
         'App\\Models\\Configuraciones_Iniciales' => __DIR__ . '/../..' . '/app/Models/Configuraciones_Iniciales.php',
+        'App\\Models\\Cronograma' => __DIR__ . '/../..' . '/app/Models/Cronograma.php',
+        'App\\Models\\Cronograma_Proyecto' => __DIR__ . '/../..' . '/app/Models/Cronograma_Proyecto.php',
         'App\\Models\\Detalle_Archivo' => __DIR__ . '/../..' . '/app/Models/Detalle_Archivo.php',
         'App\\Models\\Detalle_Observaciones' => __DIR__ . '/../..' . '/app/Models/Detalle_Observaciones.php',
         'App\\Models\\Diseno_Investigacion' => __DIR__ . '/../..' . '/app/Models/Diseno_Investigacion.php',

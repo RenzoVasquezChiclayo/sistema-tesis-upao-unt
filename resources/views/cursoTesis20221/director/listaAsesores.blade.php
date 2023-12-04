@@ -4,7 +4,7 @@
 @endsection
 @section('contenido')
     <div class="card-header">
-        Lista de asesores
+        Lista de asesores y docentes
     </div>
     <div class="card-body">
         <div class="row justify-content-around align-items-center">

@@ -100,7 +100,7 @@
                         <div class="col-md-4">
                             <div class="card text-center shadow bg-white rounded">
                                 <div class="card-body">
-                                    <h5 class="card-title">De acuerdo al fin que persigue</h5>
+                                    <h5 class="card-title">De acuerdo a la orientacion o finalidad</h5>
                                     <div class="row">
                                         <div>
                                             <div class="table-responsive">
@@ -148,7 +148,7 @@
                         <div class="col-md-4">
                             <div class="card text-center shadow bg-white rounded">
                                 <div class="card-body">
-                                    <h5 class="card-title">De acuerdo al diseño de investigacion</h5>
+                                    <h5 class="card-title">De acuerdo a la tecnica de contrastacion</h5>
                                     <div class="row">
                                         <div>
                                             <div class="table-responsive">

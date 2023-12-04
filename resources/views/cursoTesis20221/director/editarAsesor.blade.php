@@ -1,10 +1,10 @@
 @extends('plantilla.dashboard')
 @section('titulo')
-    Editar Asesor
+    Editar Asesor y Docente
 @endsection
 @section('contenido')
 <div class="card-header">
-    Editar Asesor
+    Editar Asesor y Docente
 </div>
 <div class="card-body">
     <div class="row justify-content-around align-items-center">

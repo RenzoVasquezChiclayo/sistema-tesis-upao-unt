@@ -136,7 +136,7 @@
                             <div class="item-card">
                                 <label for="txtNombreAsesor" class="form-label">Apellidos y Nombres</label>
                                 <input class="form-control" name="txtNombreAsesor" id="txtNombreAsesor" type="text"
-                                    value="{{ $cursoTesis[0]->nombre_asesor }}" readonly>
+                                    value="{{ $cursoTesis[0]->nombre_asesor.' '.$cursoTesis[0]->apellidos_asesor }}" readonly>
                             </div>
                             <div class="item-card">
                                 <label for="cboGrAcademicoAsesor" class="form-label">Grado Academico</label>
@@ -261,12 +261,12 @@
                                             <div class="col-12">
                                                 <input class="form-control" name="txtMesesEjecucion" id="txtMesesEjecucion"
                                                     type="text" value="{{ $cursoTesis[0]->meses_ejecucion }}" readonly>
-                                                <input type="hidden" id="valuesMesesPart"
-                                                    value="{{ $cursoTesis[0]->t_ReparacionInstrum }},{{ $cursoTesis[0]->t_RecoleccionDatos }},{{ $cursoTesis[0]->t_AnalisisDatos }},{{ $cursoTesis[0]->t_ElaboracionInfo }}">
+                                                {{-- <input type="hidden" id="valuesMesesPart"
+                                                    value="{{ $cursoTesis[0]->t_ReparacionInstrum }},{{ $cursoTesis[0]->t_RecoleccionDatos }},{{ $cursoTesis[0]->t_AnalisisDatos }},{{ $cursoTesis[0]->t_ElaboracionInfo }}"> --}}
                                             </div>
-                                            <input type="text" name="datosCronograma" id=" "
+                                            {{-- <input type="text" name="datosCronograma" id=" "
                                                 value="{{ $cursoTesis[0]->t_ReparacionInstrum }}/{{ $cursoTesis[0]->t_RecoleccionDatos }}/{{ $cursoTesis[0]->t_AnalisisDatos }}/{{ $cursoTesis[0]->t_ElaboracionInfo }}"
-                                                hidden>
+                                                hidden> --}}
                                         </div>
 
                                     </div>
@@ -306,7 +306,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-
                                     <tr id="1Tr">
 
                                         <td>Preparación de instrumentos de recolección de datos</td>

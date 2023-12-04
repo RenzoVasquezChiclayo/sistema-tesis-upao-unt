@@ -21,6 +21,8 @@ use App\Models\Archivo_Tesis_ct2022;
 use App\Models\MatrizOperacional;
 use App\Models\Tesis_2022;
 use App\Models\User;
+use App\Models\Cronograma;
+use App\Models\Cronograma_Proyecto;
 use App\Models\variableOP;
 use App\Models\Fin_Persigue;
 use App\Models\Diseno_Investigacion;
@@ -103,9 +105,12 @@ class CursoTesisController extends Controller
         $tinvestigacion = TipoInvestigacion::all();
         $fin_persigue = Fin_Persigue::all();
         $diseno_investigacion = Diseno_Investigacion::all();
+        $cronograma = Cronograma::all();
+        $cronogramas_py = Cronograma_Proyecto::where("cod_proyectotesis",$tesis[0]->cod_proyectotesis)->get();
         $presupuestos = Presupuesto::all();
         $tiporeferencia = TipoReferencia::all();
         $referencias = referencias::where('cod_proyectotesis', '=', $tesis[0]->cod_proyectotesis)->get(); //Por si existen referencias
+
 
         //Verificaremos que se hayan dado las observaciones y las enviaremos
         $correciones = ObservacionesProy::join('historial_observaciones', 'observaciones_proy.cod_historialObs', '=', 'historial_observaciones.cod_historialObs')
@@ -135,7 +140,7 @@ class CursoTesisController extends Controller
             'presupuestos' => $presupuestos, 'fin_persigue' => $fin_persigue, 'diseno_investigacion' => $diseno_investigacion, 'tiporeferencia' => $tiporeferencia, 'tesis' => $tesis, 'asesor' => $asesor,
             'correciones' => $correciones, 'recursos' => $recursos, 'objetivos' => $objetivos, 'variableop' => $variableop,
             'presupuestoProy' => $presupuestoProy, 'detalles' => $detalles, 'tinvestigacion' => $tinvestigacion, 'campos' => $campos,
-            'referencias' => $referencias, 'detalleHistorial' => $detalleHistorial, 'matriz' => $matriz
+            'referencias' => $referencias, 'detalleHistorial' => $detalleHistorial, 'matriz' => $matriz, 'cronograma' => $cronograma, 'cronogramas_py' => $cronogramas_py
         ]);
     }
 
@@ -145,7 +150,7 @@ class CursoTesisController extends Controller
         $aux = explode('-', $id);
         $id = $aux[0];
         $estudiante = EstudianteCT2022::find($id);
-        $hTesis = TesisCT2022::join('asesor_curso as ac', 'ac.cod_docente', '=', 'proyecto_tesis.cod_docente')->select('ac.nombres as nombre_asesor','ac.apellidos as apellidos_asesor' , 'proyecto_tesis.*')->where('cod_matricula', '=', $estudiante->cod_matricula)->get();
+        $hTesis = TesisCT2022::join('asesor_curso as ac', 'ac.cod_docente', '=', 'proyecto_tesis.cod_docente')->select('ac.nombres as nombre_asesor', 'ac.apellidos as apellidos_asesor', 'proyecto_tesis.*')->where('cod_matricula', '=', $estudiante->cod_matricula)->get();
         return view('cursoTesis20221.estadoProyecto', ['hTesis' => $hTesis]);
     }
 
@@ -252,9 +257,16 @@ class CursoTesisController extends Controller
                 }
             }
 
-            if ($request->txtti_finpersigue != "" && $request->txtti_disinvestigacion != "") {
+            if ($request->txtti_finpersigue != "") {
                 $tesis->ti_finpersigue = $request->txtti_finpersigue;
+            }
+
+            if ($request->txtti_disinvestigacion != "") {
                 $tesis->ti_disinvestigacion = $request->txtti_disinvestigacion;
+            }
+
+            if ($request->txtunidad_academica != "") {
+                $tesis->unidad_academica = $request->txtunidad_academica;
             }
 
             //Desarrollo del proyecto
@@ -268,23 +280,70 @@ class CursoTesisController extends Controller
                 $tesis->meses_ejecucion = $request->txtmeses_ejecucion;
             }
 
+            if ($request->txtfecha_inicio != "") {
+                $tesis->fecha_inicio = $request->txtfecha_inicio;
+            }
+
+            if ($request->txtfecha_termino != "") {
+                $tesis->fecha_termino = $request->txtfecha_termino;
+            }
+
             //Cronograma de trabajo
             if ($request->listMonths != "") {
-                $cronograma = $request->listMonths;
-                $cronograma = explode("_", $cronograma);
-                $last = $cronograma[0];
-                for ($i = 0; $i < sizeof($cronograma); $i++) {
-                    if ($cronograma[$i] == "1a") {
-                        $tesis->t_ReparacionInstrum = $last . "-" . $cronograma[$i - 1];
-                        $last = $cronograma[$i + 1];
-                    } else if ($cronograma[$i] == "2a") {
-                        $tesis->t_RecoleccionDatos = $last . "-" . $cronograma[$i - 1];
-                        $last = $cronograma[$i + 1];
-                    } else if ($cronograma[$i] == "3a") {
-                        $tesis->t_AnalisisDatos = $last . "-" . $cronograma[$i - 1];
-                        $last = $cronograma[$i + 1];
-                    } else if ($cronograma[$i] == "4a") {
-                        $tesis->t_ElaboracionInfo = $last . "-" . $cronograma[$i - 1];
+                $cod_cronograma = $request->cod_cronograma; //[123,343,434]
+                $cronograma = $request->listMonths; //1_2_4_1a_2_3_2a_4_3a_5_4a
+                //dd($cronograma);
+                $cronograma = explode("_", $cronograma); //[1,2,1a,2,3,2a,4,3a,5,4a]
+                $sucesivos = true;
+                $inicioSucesivo = null;
+                $finSucesivo = null;
+                $string_extra = ""; // 1-2, 4 ---- 1-6 ----- 1,3,5
+                $contador = 0;
+                foreach ($cronograma as $c) {
+                    if (strpos($c, 'a') !== false) {
+                        $contador++;
+                    }
+                }
+                $exi = 0;
+                for ($j = 0; $j < $contador; $j++) {
+                    $new_activity = new Cronograma_Proyecto();
+                    for ($i = $exi; $i < sizeof($cronograma); $i++) {
+                        if (stripos($cronograma[$i], "a") !== false) {
+                            if ($finSucesivo != null) {
+                                $string_extra .= $inicioSucesivo."-".$finSucesivo;
+                            } else {
+                                $string_extra .= $inicioSucesivo;
+                            }
+                            $new_activity->descripcion = $string_extra;
+                            $new_activity->cod_cronograma = $cod_cronograma[$j];
+                            $new_activity->cod_proyectotesis = $tesis->cod_proyectotesis;
+                            $new_activity->save();
+                            $string_extra = "";
+                            $inicioSucesivo = null;
+                            $finSucesivo = null;
+                            $exi = $i + 1;
+
+                            break;
+                        } else {
+                            if ($i > $exi && (int)$cronograma[$i] != (int)$cronograma[$i - 1] + 1) {
+                                $sucesivos = false;
+                                if ($inicioSucesivo == $cronograma[$i - 1]) {
+                                    $string_extra .= $inicioSucesivo.","; //1,3 ---- 4
+                                } else {
+                                    $string_extra .= $inicioSucesivo."-".$cronograma[$i - 1].",";
+                                }
+                                $inicioSucesivo = $cronograma[$i];
+                                $finSucesivo = null;
+                            }
+                            if ($sucesivos === true) {
+                                if ($inicioSucesivo == null) {
+                                    $inicioSucesivo = $cronograma[$i];
+                                }
+                                $finSucesivo = $cronograma[$i];
+                            } else {
+                                $sucesivos = true;
+                            }
+                        }
                     }
                 }
             }
@@ -357,6 +416,10 @@ class CursoTesisController extends Controller
             }
             if ($request->txttecnicas_instrum != "") {
                 $tesis->tecnicas_instrum = $request->txttecnicas_instrum;
+            }
+
+            if ($request->txtdis_contrastacion != "") {
+                $tesis->diseño_contrastacion = $request->txtdis_contrastacion;
             }
 
             /*Instrumentacion*/
@@ -779,135 +842,134 @@ class CursoTesisController extends Controller
 
             //INMEDIATAMENTE AGREGAMOS LA INFORMACION A LA TESIS
             $proytesisFound = DB::table("proyecto_tesis as pyt")
-                ->select("pyt.*")->where('cod_matricula',$estudiante->cod_matricula)->first();
-                //$referencias_pyt = referencias::where('cod_proyectotesis', '=', $proy->cod_proyectotesis)->latest('cod_referencias')->get();
-                $tesisFound = Tesis_2022::where("cod_matricula", $proytesisFound->cod_matricula)->first();
-                if ($tesisFound != null) {
-                    $tesisFound->titulo = $proytesisFound->titulo;
-                    $tesisFound->real_problematica = $proytesisFound->real_problematica;
-                    $tesisFound->antecedentes = $proytesisFound->antecedentes;
-                    $tesisFound->justificacion = $proytesisFound->justificacion;
-                    $tesisFound->formulacion_prob = $proytesisFound->formulacion_prob;
-                    try {
-                        if (!empty($arreglodescripcionObj)) {
-                            for ($i = 0; $i <= count($arregloTipoObj) - 1; $i++) {
-                                $objetivos_t = new TObjetivo();
-                                $objetivos_t->tipo = $arregloTipoObj[$i];
-                                $objetivos_t->descripcion = $arreglodescripcionObj[$i];
-                                $objetivos_t->cod_tesis = $tesisFound->cod_tesis;
-                                $objetivos_t->save();
-                            }
+                ->select("pyt.*")->where('cod_matricula', $estudiante->cod_matricula)->first();
+            //$referencias_pyt = referencias::where('cod_proyectotesis', '=', $proy->cod_proyectotesis)->latest('cod_referencias')->get();
+            $tesisFound = Tesis_2022::where("cod_matricula", $proytesisFound->cod_matricula)->first();
+            if ($tesisFound != null) {
+                $tesisFound->titulo = $proytesisFound->titulo;
+                $tesisFound->real_problematica = $proytesisFound->real_problematica;
+                $tesisFound->antecedentes = $proytesisFound->antecedentes;
+                $tesisFound->justificacion = $proytesisFound->justificacion;
+                $tesisFound->formulacion_prob = $proytesisFound->formulacion_prob;
+                try {
+                    if (!empty($arreglodescripcionObj)) {
+                        for ($i = 0; $i <= count($arregloTipoObj) - 1; $i++) {
+                            $objetivos_t = new TObjetivo();
+                            $objetivos_t->tipo = $arregloTipoObj[$i];
+                            $objetivos_t->descripcion = $arreglodescripcionObj[$i];
+                            $objetivos_t->cod_tesis = $tesisFound->cod_tesis;
+                            $objetivos_t->save();
                         }
-
-                    } catch (\Throwable $th) {
-                        dd($th);
                     }
-                    $tesisFound->marco_teorico = $proytesisFound->marco_teorico;
-                    $tesisFound->marco_conceptual = $proytesisFound->marco_conceptual;
-                    $tesisFound->marco_legal = $proytesisFound->marco_legal;
-                    $tesisFound->form_hipotesis = $proytesisFound->form_hipotesis;
-                    $tesisFound->objeto_estudio = $proytesisFound->objeto_estudio;
-                    $tesisFound->poblacion = $proytesisFound->poblacion;
-                    $tesisFound->muestra = $proytesisFound->muestra;
-                    $tesisFound->metodos = $proytesisFound->metodos;
-                    $tesisFound->tecnicas_instrum = $proytesisFound->tecnicas_instrum;
-                    $tesisFound->instrumentacion = $proytesisFound->instrumentacion;
-                    $tesisFound->estg_metodologicas = $proytesisFound->estg_metodologicas;
-                    try {
-                        $aux1 = 0;
-                        $aux2 = 0;
-                        $aux3 = 0;
-                        $aux4 = 0;
-                        $aux5 = 0;
-                        $aux6 = 0;
-                        if (!empty($autorApa)) {
-                            for ($i = 0; $i <= count($autorApa) - 1; $i++) {
-                                $referencias = new TReferencias();
-                                $referencias->cod_tiporeferencia = $arregloTipoRef[$i];
-                                $referencias->autor = $arregloA[$i];
-                                $referencias->fPublicacion = $arreglofP[$i];
-                                $referencias->titulo = $arregloT[$i];
-                                $referencias->fuente = $arregloF[$i];
-                                if ($arregloTipoRef[$i] == 1) {
-                                    if (empty($arregloE[$aux1]) == 1) {
-                                        $referencias->editorial = " ";
-                                    } else {
-                                        $referencias->editorial = $arregloE[$aux1];
-                                    }
-                                    if (empty($arregloTC[$aux1]) == 1) {
-                                        $referencias->title_cap = " ";
-                                    } else {
-                                        $referencias->title_cap = $arregloTC[$aux1];
-                                    }
-                                    if (empty($arregloNumC[$aux1]) == 1) {
-                                        $referencias->num_capitulo = " ";
-                                    } else {
-                                        $referencias->num_capitulo = $arregloNumC[$aux1];
-                                    }
-                                    $aux1++;
-                                }
-                                if ($arregloTipoRef[$i] == 2) {
-                                    if (empty($arregloTR[$aux2]) == 1) {
-                                        $referencias->title_revista = " ";
-                                    } else {
-                                        $referencias->title_revista = $arregloTR[$aux2];
-                                    }
-                                    if (empty($arregloVR[$aux2]) == 1) {
-                                        $referencias->volumen = " ";
-                                    } else {
-                                        $referencias->volumen = $arregloVR[$aux2];
-                                    }
-                                    $aux2++;
-                                }
-                                if ($arregloTipoRef[$i] == 3) {
-                                    if (empty($arregloNW[$aux3]) == 1) {
-                                        $referencias->name_web = " ";
-                                    } else {
-                                        $referencias->name_web = $arregloNW[$aux3];
-                                    }
-                                    $aux3++;
-                                }
-                                if ($arregloTipoRef[$i] == 4) {
-                                    if (empty($arregloNP[$aux4]) == 1) {
-                                        $referencias->name_periodista = " ";
-                                    } else {
-                                        $referencias->name_periodista = $arregloNP[$aux4];
-                                    }
-                                    $aux4++;
-                                }
-                                if ($arregloTipoRef[$i] == 5) {
-                                    if (empty($arregloNI[$aux5]) == 1) {
-                                        $referencias->name_institucion = " ";
-                                    } else {
-                                        $referencias->name_institucion = $arregloNI[$aux5];
-                                    }
-                                    $aux5++;
-                                }
-                                if ($arregloTipoRef[$i] == 6) {
-                                    if (empty($arregloST[$aux6]) == 1) {
-                                        $referencias->subtitle = " ";
-                                    } else {
-                                        $referencias->subtitle = $arregloST[$aux6];
-                                    }
-                                    if (empty($arregloNE[$aux6]) == 1) {
-                                        $referencias->name_editor = " ";
-                                    } else {
-                                        $referencias->name_editor = $arregloNE[$aux6];
-                                    }
-                                    $aux6++;
-                                }
-                                $referencias->cod_tesis = $tesisFound->cod_tesis;
-                                $referencias->save();
-                            }
-                        }
-                    } catch (\Throwable $th) {
-                        dd($th);
-                    }
-                    $tesisFound->save();
+                } catch (\Throwable $th) {
+                    dd($th);
                 }
+                $tesisFound->marco_teorico = $proytesisFound->marco_teorico;
+                $tesisFound->marco_conceptual = $proytesisFound->marco_conceptual;
+                $tesisFound->marco_legal = $proytesisFound->marco_legal;
+                $tesisFound->form_hipotesis = $proytesisFound->form_hipotesis;
+                $tesisFound->objeto_estudio = $proytesisFound->objeto_estudio;
+                $tesisFound->poblacion = $proytesisFound->poblacion;
+                $tesisFound->muestra = $proytesisFound->muestra;
+                $tesisFound->metodos = $proytesisFound->metodos;
+                $tesisFound->tecnicas_instrum = $proytesisFound->tecnicas_instrum;
+                $tesisFound->instrumentacion = $proytesisFound->instrumentacion;
+                $tesisFound->estg_metodologicas = $proytesisFound->estg_metodologicas;
+                try {
+                    $aux1 = 0;
+                    $aux2 = 0;
+                    $aux3 = 0;
+                    $aux4 = 0;
+                    $aux5 = 0;
+                    $aux6 = 0;
+                    if (!empty($autorApa)) {
+                        for ($i = 0; $i <= count($autorApa) - 1; $i++) {
+                            $referencias = new TReferencias();
+                            $referencias->cod_tiporeferencia = $arregloTipoRef[$i];
+                            $referencias->autor = $arregloA[$i];
+                            $referencias->fPublicacion = $arreglofP[$i];
+                            $referencias->titulo = $arregloT[$i];
+                            $referencias->fuente = $arregloF[$i];
+                            if ($arregloTipoRef[$i] == 1) {
+                                if (empty($arregloE[$aux1]) == 1) {
+                                    $referencias->editorial = " ";
+                                } else {
+                                    $referencias->editorial = $arregloE[$aux1];
+                                }
+                                if (empty($arregloTC[$aux1]) == 1) {
+                                    $referencias->title_cap = " ";
+                                } else {
+                                    $referencias->title_cap = $arregloTC[$aux1];
+                                }
+                                if (empty($arregloNumC[$aux1]) == 1) {
+                                    $referencias->num_capitulo = " ";
+                                } else {
+                                    $referencias->num_capitulo = $arregloNumC[$aux1];
+                                }
+                                $aux1++;
+                            }
+                            if ($arregloTipoRef[$i] == 2) {
+                                if (empty($arregloTR[$aux2]) == 1) {
+                                    $referencias->title_revista = " ";
+                                } else {
+                                    $referencias->title_revista = $arregloTR[$aux2];
+                                }
+                                if (empty($arregloVR[$aux2]) == 1) {
+                                    $referencias->volumen = " ";
+                                } else {
+                                    $referencias->volumen = $arregloVR[$aux2];
+                                }
+                                $aux2++;
+                            }
+                            if ($arregloTipoRef[$i] == 3) {
+                                if (empty($arregloNW[$aux3]) == 1) {
+                                    $referencias->name_web = " ";
+                                } else {
+                                    $referencias->name_web = $arregloNW[$aux3];
+                                }
+                                $aux3++;
+                            }
+                            if ($arregloTipoRef[$i] == 4) {
+                                if (empty($arregloNP[$aux4]) == 1) {
+                                    $referencias->name_periodista = " ";
+                                } else {
+                                    $referencias->name_periodista = $arregloNP[$aux4];
+                                }
+                                $aux4++;
+                            }
+                            if ($arregloTipoRef[$i] == 5) {
+                                if (empty($arregloNI[$aux5]) == 1) {
+                                    $referencias->name_institucion = " ";
+                                } else {
+                                    $referencias->name_institucion = $arregloNI[$aux5];
+                                }
+                                $aux5++;
+                            }
+                            if ($arregloTipoRef[$i] == 6) {
+                                if (empty($arregloST[$aux6]) == 1) {
+                                    $referencias->subtitle = " ";
+                                } else {
+                                    $referencias->subtitle = $arregloST[$aux6];
+                                }
+                                if (empty($arregloNE[$aux6]) == 1) {
+                                    $referencias->name_editor = " ";
+                                } else {
+                                    $referencias->name_editor = $arregloNE[$aux6];
+                                }
+                                $aux6++;
+                            }
+                            $referencias->cod_tesis = $tesisFound->cod_tesis;
+                            $referencias->save();
+                        }
+                    }
+                } catch (\Throwable $th) {
+                    dd($th);
+                }
+                $tesisFound->save();
+            }
             return redirect()->route('curso.estado-proyecto')->with('datos', 'ok');
         } catch (\Throwable $th) {
-            //dd($th);
+            dd($th);
             return redirect()->route('curso.tesis20221')->with('datos', 'oknot');
         }
 
@@ -976,16 +1038,16 @@ class CursoTesisController extends Controller
         $estudiante = EstudianteCT2022::find($tesis[0]->cod_matricula);
         //$asesor = AsesorCurso::find($tesis[0]->cod_docente);
         $asesor = DB::table('asesor_curso')
-        ->leftjoin('grado_academico as ga', 'asesor_curso.cod_grado_academico', 'ga.cod_grado_academico')
-        ->leftjoin('categoria_docente as cd', 'asesor_curso.cod_categoria', 'cd.cod_categoria')
-        ->select('asesor_curso.*', 'ga.descripcion as DescGrado', 'cd.descripcion as DescCat')
-        ->where('cod_docente', $tesis[0]->cod_docente)->first();
+            ->leftjoin('grado_academico as ga', 'asesor_curso.cod_grado_academico', 'ga.cod_grado_academico')
+            ->leftjoin('categoria_docente as cd', 'asesor_curso.cod_categoria', 'cd.cod_categoria')
+            ->select('asesor_curso.*', 'ga.descripcion as DescGrado', 'cd.descripcion as DescCat')
+            ->where('cod_docente', $tesis[0]->cod_docente)->first();
         //dd($asesor);
         /*Datos del Autor*/
         $nombres = $estudiante->nombres . ' ' . $estudiante->apellidos;
 
         /*Datos del Asesor*/
-        $nombre_asesor = $asesor->nombres." ".$asesor->apellidos;
+        $nombre_asesor = $asesor->nombres . " " . $asesor->apellidos;
 
         $orcid_asesor = $asesor->orcid;
         $grado_asesor = $asesor->DescGrado;
@@ -1021,7 +1083,7 @@ class CursoTesisController extends Controller
         $institucion = $tesis[0]->institucion;
         $meses_ejecucion = $tesis[0]->meses_ejecucion;
 
-        //Cronograma
+        /*!TODO: Cronograma
         $reparacionInstrum = $tesis[0]->t_ReparacionInstrum;
         $reparacionInstrum = explode("-", $reparacionInstrum);
 
@@ -1035,7 +1097,7 @@ class CursoTesisController extends Controller
 
         $elaboracionInfo = $tesis[0]->t_ElaboracionInfo;
         $elaboracionInfo = explode("-", $elaboracionInfo);
-
+        */
         //Economico
         $financiamiento = $tesis[0]->financiamiento;
 
@@ -1212,7 +1274,7 @@ class CursoTesisController extends Controller
         $nuevaSesion->addText($nombres, null, $styleContenido);
 
         $nuevaSesion->addListItem("3. ASESOR", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
-        $nuevaSesion->addText($grado_asesor.". ".$nombre_asesor, null, $styleContenido);
+        $nuevaSesion->addText($grado_asesor . ". " . $nombre_asesor, null, $styleContenido);
         $nuevaSesion->addText($categoria_asesor, null, $styleContenido);
         $nuevaSesion->addText($direccion_asesor, null, $styleContenido);
 
@@ -1245,7 +1307,7 @@ class CursoTesisController extends Controller
         $cronogramaTable->addCell(1500)->addText('MES INICIO', $titulos);
         $cronogramaTable->addCell(1500)->addText('MES TERMINO', $titulos);
 
-
+        /* !TODO:
         $cronogramaTable->addRow(400);
         $cronogramaTable->addCell(3500)->addText('Preparacion de instrumentos de recoleccion de datos', $titulos);
         for ($i = 0; $i <= count($reparacionInstrum) - 1; $i++) {
@@ -1270,6 +1332,7 @@ class CursoTesisController extends Controller
         for ($i = 0; $i <= count($elaboracionInfo) - 1; $i++) {
             $cronogramaTable->addCell(2000)->addText($elaboracionInfo[$i]);
         }
+        */
 
 
         /* ------------------------------------------ */
@@ -1584,14 +1647,14 @@ class CursoTesisController extends Controller
             if (is_numeric($buscarAlumno)) {
                 $estudiantes = DB::table('estudiante_ct2022 as e')
                     ->leftJoin('proyecto_tesis as p', 'p.cod_matricula', '=', 'e.cod_matricula')
-                    ->select('e.*', 'p.cod_docente')
+                    ->select('e.*', 'p.cod_docente', 'p.cod_asesor')
                     ->where('e.cod_matricula', 'like', '%' . $buscarAlumno . '%')
                     ->orderBy('e.apellidos')
                     ->paginate($this::PAGINATION3);
             } else {
                 $estudiantes = DB::table('estudiante_ct2022 as e')
                     ->leftJoin('proyecto_tesis as p', 'p.cod_matricula', '=', 'e.cod_matricula')
-                    ->select('e.*', 'p.cod_docente')
+                    ->select('e.*', 'p.cod_docente', 'p.cod_asesor')
                     ->where('e.apellidos', 'like', '%' . $buscarAlumno . '%')
                     ->orderBy('e.apellidos')
                     ->paginate($this::PAGINATION3);
@@ -1599,10 +1662,10 @@ class CursoTesisController extends Controller
         } else {
             $estudiantes = DB::table('estudiante_ct2022 as e')
                 ->leftJoin('proyecto_tesis as p', 'p.cod_matricula', '=', 'e.cod_matricula')
-                ->select('e.*', 'p.cod_docente')
+                ->select('e.*', 'p.cod_docente', 'p.cod_asesor')
                 ->orderBy('e.apellidos')->paginate($this::PAGINATION3);
         }
-        $asesores = DB::table('asesor_curso')->select('cod_docente', 'nombres','apellidos')->get();
+        $asesores = DB::table('asesor_curso')->select('cod_docente', 'nombres', 'apellidos')->get();
         return view('cursoTesis20221.director.asignarAsesor', ['estudiantes' => $estudiantes, 'asesores' => $asesores, 'buscarAlumno' => $buscarAlumno]);
     }
 
@@ -1620,6 +1683,7 @@ class CursoTesisController extends Controller
         $asesorAsignado = $request->saveAsesor;
 
         $posicion = explode(',', $asesorAsignado);
+        dd($posicion);
         $i = 0;
         do {
             if ($posicion[$i] != null) {
@@ -1632,6 +1696,7 @@ class CursoTesisController extends Controller
                         $proyectoTesis->cod_matricula = $estudiante->cod_matricula;
                     }
                     $proyectoTesis->cod_docente = $datos[1];
+                    $proyectoTesis->cod_asesor = $datos[2];
                     $proyectoTesis->save();
                     $proyectoTesis = TesisCT2022::where('cod_matricula', $estudiante->cod_matricula)->first();
                     $campo = new CamposEstudiante();
@@ -1678,8 +1743,17 @@ class CursoTesisController extends Controller
         $asesor = AsesorCurso::where('username', auth()->user()->name)->get();
         $estudiantes = DB::table('estudiante_ct2022')
             ->join('proyecto_tesis', 'estudiante_ct2022.cod_matricula', '=', 'proyecto_tesis.cod_matricula')
+            ->join('asesor_curso as ac', 'proyecto_tesis.cod_docente', 'ac.cod_docente')
             ->select('estudiante_ct2022.*', 'proyecto_tesis.cod_docente', 'proyecto_tesis.estado', 'proyecto_tesis.cod_proyectotesis')
             ->where('proyecto_tesis.cod_docente', $asesor[0]->cod_docente)->get();
+        if (count($estudiantes) == 0) {
+            $estudiantes = DB::table('estudiante_ct2022')
+                ->join('proyecto_tesis', 'estudiante_ct2022.cod_matricula', '=', 'proyecto_tesis.cod_matricula')
+                ->join('asesor_curso as ac', 'proyecto_tesis.cod_asesor', 'ac.cod_docente')
+                ->select('estudiante_ct2022.*', 'proyecto_tesis.cod_asesor', 'proyecto_tesis.estado', 'proyecto_tesis.cod_proyectotesis')
+                ->where('proyecto_tesis.cod_asesor', $asesor[0]->cod_docente)->get();
+            return view('cursoTesis20221.asesor.showEstudiantes', ['estudiantes' => $estudiantes]);
+        }
 
         return view('cursoTesis20221.asesor.showEstudiantes', ['estudiantes' => $estudiantes]);
     }
@@ -1905,10 +1979,10 @@ class CursoTesisController extends Controller
         $cod_matricula = $request->cod_matricula;
         $cursoTesis = DB::table('proyecto_tesis as p')
             ->join('estudiante_ct2022 as e', 'e.cod_matricula', '=', 'p.cod_matricula')
-            ->join('asesor_curso as ac', 'ac.cod_docente', '=', 'p.cod_docente')
+            ->join('asesor_curso as ac', 'ac.cod_docente', '=', 'p.cod_asesor')
             ->leftjoin('grado_academico as ga', 'ac.cod_grado_academico', 'ga.cod_grado_academico')
             ->leftjoin('categoria_docente as cd', 'ac.cod_categoria', 'cd.cod_categoria')
-            ->select('p.*', 'e.nombres as nombresAutor', 'e.apellidos as apellidosAutor', 'ac.nombres as nombre_asesor', 'ac.*', 'ga.descripcion as DescGrado', 'cd.descripcion as DescCat')
+            ->select('p.*', 'e.nombres as nombresAutor', 'e.apellidos as apellidosAutor', 'ac.nombres as nombre_asesor', 'ac.apellidos as apellidos_asesor', 'ac.*', 'ga.descripcion as DescGrado', 'cd.descripcion as DescCat')
             ->where('e.cod_matricula', $cod_matricula)->get();
 
         foreach ($cursoTesis[0] as $curso) {

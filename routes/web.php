@@ -103,7 +103,10 @@ Route::get('/ver-presupuesto',[AdminCursoController::class,'verAgregarPresupuest
 Route::post('/save-presupuesto',[AdminCursoController::class,'savePresupuesto'])->name('admin.guardarPresupuesto');
 Route::delete('/delete-presupuesto',[AdminCursoController::class,'delete_presupuesto'])->name('admin.delete_presupuesto')->middleware('auth');
 //
-
+//----
+Route::get('/ver-cronograma',[AdminCursoController::class,'verAgregarCronograma'])->name('admin.verCronograma');
+Route::post('/save-cronograma',[AdminCursoController::class,'saveCronograma'])->name('admin.guardarCronograma');
+Route::delete('/delete-cronograma',[AdminCursoController::class,'delete_cronograma'])->name('admin.delete_cronograma')->middleware('auth');
 //----
 Route::get('/ver-agregar-categorias',[AdminCursoController::class,'ver_agregar_categoria'])->name('admin.categoriasDocente')->middleware('auth');
 Route::post('/save-categorias',[AdminCursoController::class,'saveCategorias'])->name('admin.saveCategorias')->middleware('auth');

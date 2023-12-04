@@ -14,10 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::table('proyecto_tesis', function (Blueprint $table) {
-            $table->dropColumn('t_ReparacionInstrum');
-            $table->dropColumn('t_RecoleccionDatos');
-            $table->dropColumn('t_AnalisisDatos');
-            $table->dropColumn('t_ElaboracionInfo');
+            $table->char('cod_asesor',4)->nullable();
+            $table->foreign('cod_asesor')
+                    ->references('cod_docente')
+                    ->on('asesor_curso')
+                    ->onDelete('cascade');
         });
     }
 

@@ -44,6 +44,8 @@ return array(
     'App\\Models\\CamposEstudiante' => $baseDir . '/app/Models/CamposEstudiante.php',
     'App\\Models\\Categoria_Docente' => $baseDir . '/app/Models/Categoria_Docente.php',
     'App\\Models\\Configuraciones_Iniciales' => $baseDir . '/app/Models/Configuraciones_Iniciales.php',
+    'App\\Models\\Cronograma' => $baseDir . '/app/Models/Cronograma.php',
+    'App\\Models\\Cronograma_Proyecto' => $baseDir . '/app/Models/Cronograma_Proyecto.php',
     'App\\Models\\Detalle_Archivo' => $baseDir . '/app/Models/Detalle_Archivo.php',
     'App\\Models\\Detalle_Observaciones' => $baseDir . '/app/Models/Detalle_Observaciones.php',
     'App\\Models\\Diseno_Investigacion' => $baseDir . '/app/Models/Diseno_Investigacion.php',

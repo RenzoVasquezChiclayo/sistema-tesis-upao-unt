@@ -662,9 +662,8 @@ class Tesis2022Controller extends Controller
                     $tesisFound = new Tesis_2022();
                     $tesisFound->cod_matricula = $estudiante->cod_matricula;
                 }
-
-                $tesisFound->cod_asesor = $datos[1];
-                $tesisFound->cod_docente = $datos[2];
+                $tesisFound->cod_docente = $datos[1];
+                $tesisFound->cod_asesor = $datos[2];
                 $tesisFound->fecha_create = now();
                 $tesisFound->fecha_update = now();
                 $tesisFound->save();

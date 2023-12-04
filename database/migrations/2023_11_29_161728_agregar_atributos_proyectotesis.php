@@ -14,10 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::table('proyecto_tesis', function (Blueprint $table) {
-            $table->dropColumn('t_ReparacionInstrum');
-            $table->dropColumn('t_RecoleccionDatos');
-            $table->dropColumn('t_AnalisisDatos');
-            $table->dropColumn('t_ElaboracionInfo');
+            $table->string('unidad_academica',50)->nullable()->after('ti_disinvestigacion');
+            $table->string('fecha_inicio',15)->nullable()->after('institucion');
+            $table->string('fecha_termino',15)->nullable()->after('fecha_inicio');
+            $table->text('diseño_contrastacion')->nullable()->after('metodos');
         });
     }
 
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+
     }
 };

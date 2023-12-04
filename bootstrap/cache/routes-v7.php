@@ -24,7 +24,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::B5uSNttTRVo0b43t',
+            '_route' => 'generated::iFIfDsR3OqPkd02t',
           ),
           1 => NULL,
           2 => 
@@ -102,7 +102,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::pwyyfpQaBLNoiMdA',
+            '_route' => 'generated::uEvW5BTtFt3CzYlN',
           ),
           1 => NULL,
           2 => 
@@ -698,13 +698,52 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      '/change-status-presupuesto' => 
+      '/delete-presupuesto' => 
       array (
         0 => 
         array (
           0 => 
           array (
-            '_route' => 'admin.changeStatusPresupuesto',
+            '_route' => 'admin.delete_presupuesto',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'DELETE' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/ver-cronograma' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'admin.verCronograma',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/save-cronograma' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'admin.guardarCronograma',
           ),
           1 => NULL,
           2 => 
@@ -717,13 +756,13 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      '/delete-presupuesto' => 
+      '/delete-cronograma' => 
       array (
         0 => 
         array (
           0 => 
           array (
-            '_route' => 'admin.delete_presupuesto',
+            '_route' => 'admin.delete_cronograma',
           ),
           1 => NULL,
           2 => 
@@ -1989,7 +2028,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::oXm8HaZIMOgNIfEG',
+            '_route' => 'generated::ZVdErd8mBOQJuyKS',
           ),
           1 => NULL,
           2 => 
@@ -2025,7 +2064,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::I6AVG9HIQ79U4n1L',
+            '_route' => 'generated::gsfmwSjAdw0XkSEI',
           ),
           1 => NULL,
           2 => 
@@ -2116,7 +2155,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::spyGPyCLLcVqRjMI',
+            '_route' => 'generated::Je3L2r3rjA9582zb',
           ),
           1 => NULL,
           2 => 
@@ -2234,7 +2273,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::6R6ClOmsSGQmZzdg',
+            '_route' => 'generated::r6YLBtScz47RvEeZ',
           ),
           1 => 
           array (
@@ -2266,7 +2305,7 @@ app('router')->setCompiledRoutes(
   ),
   'attributes' => 
   array (
-    'generated::B5uSNttTRVo0b43t' => 
+    'generated::iFIfDsR3OqPkd02t' => 
     array (
       'methods' => 
       array (
@@ -2287,7 +2326,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
         ),
-        'as' => 'generated::B5uSNttTRVo0b43t',
+        'as' => 'generated::iFIfDsR3OqPkd02t',
       ),
       'fallback' => false,
       'defaults' => 
@@ -2412,7 +2451,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::pwyyfpQaBLNoiMdA' => 
+    'generated::uEvW5BTtFt3CzYlN' => 
     array (
       'methods' => 
       array (
@@ -2429,13 +2468,13 @@ app('router')->setCompiledRoutes(
         ),
         'uses' => 'O:47:"Laravel\\SerializableClosure\\SerializableClosure":1:{s:12:"serializable";O:46:"Laravel\\SerializableClosure\\Serializers\\Signed":2:{s:12:"serializable";s:297:"O:46:"Laravel\\SerializableClosure\\Serializers\\Native":5:{s:3:"use";a:0:{}s:8:"function";s:79:"function (\\Illuminate\\Http\\Request $request) {
     return $request->user();
-}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"000000005631ed6500000000200ae7b9";}";s:4:"hash";s:44:"RsND3M8hNiLTy8SyOS1Y08gIGUX8jDz22GlwISaki0g=";}}',
+}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"0000000001567ba00000000017a8b695";}";s:4:"hash";s:44:"ZPOxSeNPSrzbX+QpuJ6I4nKfCsW77uxuE9S2TWfBHFo=";}}',
         'namespace' => NULL,
         'prefix' => 'api',
         'where' => 
         array (
         ),
-        'as' => 'generated::pwyyfpQaBLNoiMdA',
+        'as' => 'generated::uEvW5BTtFt3CzYlN',
       ),
       'fallback' => false,
       'defaults' => 
@@ -3592,42 +3631,6 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'admin.changeStatusPresupuesto' => 
-    array (
-      'methods' => 
-      array (
-        0 => 'POST',
-      ),
-      'uri' => 'change-status-presupuesto',
-      'action' => 
-      array (
-        'middleware' => 
-        array (
-          0 => 'web',
-        ),
-        'uses' => 'App\\Http\\Controllers\\AdminCursoController@changeStatusPresupuesto',
-        'controller' => 'App\\Http\\Controllers\\AdminCursoController@changeStatusPresupuesto',
-        'namespace' => NULL,
-        'prefix' => '',
-        'where' => 
-        array (
-        ),
-        'as' => 'admin.changeStatusPresupuesto',
-      ),
-      'fallback' => false,
-      'defaults' => 
-      array (
-      ),
-      'wheres' => 
-      array (
-      ),
-      'bindingFields' => 
-      array (
-      ),
-      'lockSeconds' => NULL,
-      'waitSeconds' => NULL,
-      'withTrashed' => false,
-    ),
     'admin.delete_presupuesto' => 
     array (
       'methods' => 
@@ -3650,6 +3653,116 @@ app('router')->setCompiledRoutes(
         array (
         ),
         'as' => 'admin.delete_presupuesto',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'admin.verCronograma' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'ver-cronograma',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+        ),
+        'uses' => 'App\\Http\\Controllers\\AdminCursoController@verAgregarCronograma',
+        'controller' => 'App\\Http\\Controllers\\AdminCursoController@verAgregarCronograma',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'admin.verCronograma',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'admin.guardarCronograma' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'save-cronograma',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+        ),
+        'uses' => 'App\\Http\\Controllers\\AdminCursoController@saveCronograma',
+        'controller' => 'App\\Http\\Controllers\\AdminCursoController@saveCronograma',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'admin.guardarCronograma',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'admin.delete_cronograma' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'DELETE',
+      ),
+      'uri' => 'delete-cronograma',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+        ),
+        'uses' => 'App\\Http\\Controllers\\AdminCursoController@delete_cronograma',
+        'controller' => 'App\\Http\\Controllers\\AdminCursoController@delete_cronograma',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'admin.delete_cronograma',
       ),
       'fallback' => false,
       'defaults' => 
@@ -6131,7 +6244,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::oXm8HaZIMOgNIfEG' => 
+    'generated::ZVdErd8mBOQJuyKS' => 
     array (
       'methods' => 
       array (
@@ -6151,7 +6264,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::oXm8HaZIMOgNIfEG',
+        'as' => 'generated::ZVdErd8mBOQJuyKS',
       ),
       'fallback' => false,
       'defaults' => 
@@ -6204,7 +6317,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::I6AVG9HIQ79U4n1L' => 
+    'generated::gsfmwSjAdw0XkSEI' => 
     array (
       'methods' => 
       array (
@@ -6224,7 +6337,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::I6AVG9HIQ79U4n1L',
+        'as' => 'generated::gsfmwSjAdw0XkSEI',
       ),
       'fallback' => false,
       'defaults' => 
@@ -6423,7 +6536,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::spyGPyCLLcVqRjMI' => 
+    'generated::Je3L2r3rjA9582zb' => 
     array (
       'methods' => 
       array (
@@ -6443,7 +6556,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::spyGPyCLLcVqRjMI',
+        'as' => 'generated::Je3L2r3rjA9582zb',
       ),
       'fallback' => false,
       'defaults' => 
@@ -6459,7 +6572,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::6R6ClOmsSGQmZzdg' => 
+    'generated::r6YLBtScz47RvEeZ' => 
     array (
       'methods' => 
       array (
@@ -6476,13 +6589,13 @@ app('router')->setCompiledRoutes(
         'uses' => 'O:47:"Laravel\\SerializableClosure\\SerializableClosure":1:{s:12:"serializable";O:46:"Laravel\\SerializableClosure\\Serializers\\Signed":2:{s:12:"serializable";s:295:"O:46:"Laravel\\SerializableClosure\\Serializers\\Native":5:{s:3:"use";a:0:{}s:8:"function";s:77:"function($comand){
     \\Illuminate\\Support\\Facades\\Artisan::call($comand);
 
-}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"000000005631ed0000000000200ae7b9";}";s:4:"hash";s:44:"ErFoK9foeSLc8tl8zP6Tq7GzLsvhJxudZPjS9JrgAgw=";}}',
+}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"0000000001567bdb0000000017a8b695";}";s:4:"hash";s:44:"Bacb2/nqI4slJoVw2SqjJEU4VTXJaHU/M9O5d+zGv+4=";}}',
         'namespace' => NULL,
         'prefix' => '',
         'where' => 
         array (
         ),
-        'as' => 'generated::6R6ClOmsSGQmZzdg',
+        'as' => 'generated::r6YLBtScz47RvEeZ',
       ),
       'fallback' => false,
       'defaults' => 

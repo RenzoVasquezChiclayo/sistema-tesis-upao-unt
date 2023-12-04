@@ -167,6 +167,9 @@
                 <a href="{{ route('admin.verEscuela') }}">
                     <span class="links_name">Escuela</span>
                 </a>
+                <a href="{{ route('admin.verCronograma') }}">
+                    <span class="links_name">Cronograma</span>
+                </a>
                 <a href="{{ route('admin.verPresupuesto') }}">
                     <span class="links_name">Presupuesto</span>
                 </a>
@@ -189,14 +192,14 @@
         <li>
             <a class="cstm-a" data-bs-toggle="collapse" href="#collapseAsesor" role="button" aria-expanded="false" aria-controls="collapseAsesor">
                 <i class='bx bx-sm bx-check-square'></i>
-                <span class = "links_name">Asesor</span>
+                <span class = "links_name">Asesores y Docentes</span>
             </a>
             <div class="cstm-collapse collapse" id="collapseAsesor">
                 <a href="{{ route('director.listaAsesores') }}">
-                    <span class="links_name">Lista Asesores</span>
+                    <span class="links_name">Lista Asesores y Docentes</span>
                 </a>
                 <a href="{{ route('director.veragregarAsesor') }}">
-                    <span class="links_name">Agregar Asesor</span>
+                    <span class="links_name">Agregar Asesores y Docentes</span>
                 </a>
             </div>
         </li>
