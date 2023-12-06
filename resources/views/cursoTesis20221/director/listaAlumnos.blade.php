@@ -78,7 +78,7 @@
                                         <tr>
                                             <td>{{ $est->cod_matricula }}</td>
                                             <td>{{ $est->dni }}</td>
-                                            <td>{{ $est->apellidos . ' ' . $est->nombres }}.</td>
+                                            <td>{{ $est->apellidos . ' ' . $est->nombres }}</td>
                                             <td>{{ $est->nombreEscuela }}</td>
                                             <td>
                                                 <form id="form-alumno" method="post"

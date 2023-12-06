@@ -203,7 +203,7 @@
                                                 <div class="col-2">
                                                     <button type="button" class="btn btn-outline-danger"
                                                         data-bs-toggle="modal"
-                                                        data-bs-target="#mCorreccionTitulo">Correccion</button>
+                                                        data-bs-target="#mCorreccionTitulo">Corrección</button>
                                                 </div>
                                             @endif
                                             {{-- Aqui va el modal --}}
@@ -212,7 +212,7 @@
                                                     <div class="modal-content">
                                                         <!-- Modal Header -->
                                                         <div class="modal-header">
-                                                            <h4 class="modal-title">Correccion del titulo</h4>
+                                                            <h4 class="modal-title">Corrección del titulo</h4>
                                                             <button type="button" class="btn-close"
                                                                 data-bs-dismiss="modal"></button>
                                                         </div>
@@ -345,7 +345,7 @@
                                             <div class="col-2">
                                                 <button type="button" class="btn btn-outline-danger"
                                                     data-bs-toggle="modal"
-                                                    data-bs-target="#mCorreccionLinea">Correccion</button>
+                                                    data-bs-target="#mCorreccionLinea">Corrección</button>
                                             </div>
                                         @endif
                                         {{-- Aqui va el modal --}}
@@ -354,7 +354,7 @@
                                                 <div class="modal-content">
                                                     <!-- Modal Header -->
                                                     <div class="modal-header">
-                                                        <h4 class="modal-title">Correccion de la Linea de Investigacion
+                                                        <h4 class="modal-title">Corrección de la Linea de Investigacion
                                                         </h4>
                                                         <button type="button" class="btn-close"
                                                             data-bs-dismiss="modal"></button>
@@ -441,7 +441,7 @@
                                                 <div class="item-card" style="padding-top:10px;">
                                                     <button type="button" class="btn btn-outline-danger"
                                                         data-bs-toggle="modal"
-                                                        data-bs-target="#mCorreccionLocalInsti">Correccion</button>
+                                                        data-bs-target="#mCorreccionLocalInsti">Corrección</button>
                                                 </div>
                                             @endif
                                             {{-- Aqui va el modal --}}
@@ -450,7 +450,7 @@
                                                     <div class="modal-content">
 
                                                         <div class="modal-header">
-                                                            <h4 class="modal-title">Correccion de Localidad e Institucion
+                                                            <h4 class="modal-title">Corrección de Localidad e Institucion
                                                             </h4>
                                                             <button type="button" class="btn-close"
                                                                 data-bs-dismiss="modal"></button>
@@ -488,12 +488,12 @@
                                                         id="setMes" name="setMes" onclick="setMeses();" required>
                                                 </div>
                                                 <div class="col-8 col-xl-9" style="text-align: right;">
-                                                    <label for="txtmeses_ejecucion" class="form-label">Numero de
+                                                    <label for="txtmeses_ejecucion" class="form-label">Número de
                                                         meses</label>
                                                     <input class="form-control" name="txtmeses_ejecucion"
                                                         id="txtmeses_ejecucion" type="number"
                                                         onkeypress="return isNumberKey(this);"
-                                                        value="@if ($tesis[0]->meses_ejecucion != '') {{ $tesis[0]->meses_ejecucion }} @endif"
+                                                        value="@if($tesis[0]->meses_ejecucion != ''){{$tesis[0]->meses_ejecucion}}@endif"
                                                         placeholder="00" min="0" required>
                                                     {{-- <input type="hidden" id="valuesMesesPart"
                                                         value="@if ($tesis[0]->meses_ejecucion != '') {{ $tesis[0]->t_ReparacionInstrum }},{{ $tesis[0]->t_RecoleccionDatos }},{{ $tesis[0]->t_AnalisisDatos }},{{ $tesis[0]->t_ElaboracionInfo }} @endif"> --}}
@@ -506,7 +506,7 @@
                                                 <div class="col-2" style="padding-top:10px;">
                                                     <button type="button" class="btn btn-outline-danger"
                                                         data-bs-toggle="modal"
-                                                        data-bs-target="#mCorreccionMeses">Correccion</button>
+                                                        data-bs-target="#mCorreccionMeses">Corrección</button>
                                                 </div>
                                             @endif
                                             {{-- Aqui va el modal --}}
@@ -515,7 +515,7 @@
                                                     <div class="modal-content">
                                                         <!-- Modal Header -->
                                                         <div class="modal-header">
-                                                            <h4 class="modal-title">Correccion de Meses de ejecucion</h4>
+                                                            <h4 class="modal-title">Corrección de Meses de ejecucion</h4>
                                                             <button type="button" class="btn-close"
                                                                 data-bs-dismiss="modal"></button>
                                                         </div>
@@ -661,7 +661,7 @@
                                 @if ($correciones[0]->recursos != null)
                                     <div class="col-2 col-lg-4" style="padding-top:10px;">
                                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                            data-bs-target="#mRecursos">Correccion</button>
+                                            data-bs-target="#mRecursos">Corrección</button>
                                     </div>
                                 @endif
                                 {{-- Aqui va el modal --}}
@@ -670,7 +670,7 @@
                                         <div class="modal-content">
                                             <!-- Modal Header -->
                                             <div class="modal-header">
-                                                <h4 class="modal-title">Correccion de Recursos</h4>
+                                                <h4 class="modal-title">Corrección de Recursos</h4>
                                                 <button type="button" class="btn-close"
                                                     data-bs-dismiss="modal"></button>
                                             </div>
@@ -766,7 +766,7 @@
                                 @if ($correciones[0]->presupuesto_proy != null)
                                     <div class="col-1">
                                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                            data-bs-target="#mCorreccionRProbl">Correccion</button>
+                                            data-bs-target="#mCorreccionRProbl">Corrección</button>
                                     </div>
                                 @endif
                                 {{-- Aqui va el modal --}}
@@ -775,7 +775,7 @@
                                         <div class="modal-content">
                                             <!-- Modal Header -->
                                             <div class="modal-header">
-                                                <h4 class="modal-title">Correccion de Realidad problematica</h4>
+                                                <h4 class="modal-title">Corrección de Presupuesto del proyecto</h4>
                                                 <button type="button" class="btn-close"
                                                     data-bs-dismiss="modal"></button>
                                             </div>
@@ -921,7 +921,7 @@
                                     @if ($correciones[0]->real_problematica != null)
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionRProbl">Correccion</button>
+                                                data-bs-target="#mCorreccionRProbl">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -930,7 +930,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Realidad problematica</h4>
+                                                    <h4 class="modal-title">Corrección de Realidad problematica</h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
                                                 </div>
@@ -939,61 +939,6 @@
                                                     <div class="row" style="padding: 20px">
                                                         <div class="row my-2">
                                                             <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->real_problematica }}</textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Modal footer -->
-                                                <div class="modal-footer">
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <button type="button" class="btn btn-danger"
-                                                                data-bs-dismiss="modal">Close</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="row" style=" margin-bottom:20px" @if ($campos[0]->rp_antecedente_justificacion == 0) hidden @endif>
-                            <h5>Antecedentes</h5>
-                            <div class="row" style="margin-bottom:8px">
-                                <div class="col-12 col-md-10">
-                                    <div class="form-floating">
-                                        <textarea class="form-control" name="txtantecedentes" id="txtantecedentes" style="height: 100px; resize:none"
-                                            required>
-@if ($tesis[0]->antecedentes != '')
-{{ $tesis[0]->antecedentes }}
-@endif
-</textarea>
-                                    </div>
-                                </div>
-
-                                @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
-                                    @if ($correciones[0]->antecedentes != null)
-                                        <div class="col-2">
-                                            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionAntecedente">Correccion</button>
-                                        </div>
-                                    @endif
-                                    {{-- Aqui va el modal --}}
-                                    <div class="modal" id="mCorreccionAntecedente">
-                                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                            <div class="modal-content">
-                                                <!-- Modal Header -->
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de antecedentes</h4>
-                                                    <button type="button" class="btn-close"
-                                                        data-bs-dismiss="modal"></button>
-                                                </div>
-                                                <!-- Modal body -->
-                                                <div class="modal-body">
-                                                    <div class="row" style="padding: 20px">
-                                                        <div class="row my-2">
-                                                            <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->antecedentes }}</textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1031,7 +976,7 @@
                                     @if ($correciones[0]->justificacion != null)
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionJInv">Correccion</button>
+                                                data-bs-target="#mCorreccionJInv">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -1040,7 +985,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de justificacion de la investigacion
+                                                    <h4 class="modal-title">Corrección de justificacion de la investigacion
                                                     </h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
@@ -1070,7 +1015,7 @@
                         </div>
 
                         <div class="row" style=" margin-bottom:20px" @if ($campos[0]->formulacion_problema == 0) hidden @endif>
-                            <h5>Formulación del problema</h5>
+                            <h5>Enunciado del problema</h5>
                             <div class="row" style="margin-bottom:8px">
                                 <div class="col-12 col-md-10">
                                     <div class="form-floating">
@@ -1087,7 +1032,7 @@
                                     @if ($correciones[0]->formulacion_prob != null)
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionFProbl">Correccion</button>
+                                                data-bs-target="#mCorreccionFProbl">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -1096,7 +1041,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Formulacion del problema</h4>
+                                                    <h4 class="modal-title">Corrección de Formulacion del problema</h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
                                                 </div>
@@ -1144,7 +1089,7 @@
                                 @if ($correciones[0]->objetivos != null)
                                     <div class="col-2">
                                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                            data-bs-target="#mCorreccionObjetivo">Correccion</button>
+                                            data-bs-target="#mCorreccionObjetivo">Corrección</button>
                                     </div>
                                 @endif
                                 {{-- Aqui va el modal --}}
@@ -1153,7 +1098,7 @@
                                         <div class="modal-content">
                                             <!-- Modal Header -->
                                             <div class="modal-header">
-                                                <h4 class="modal-title">Correccion de Objetivos</h4>
+                                                <h4 class="modal-title">Corrección de Objetivos</h4>
                                                 <button type="button" class="btn-close"
                                                     data-bs-dismiss="modal"></button>
                                             </div>
@@ -1243,7 +1188,7 @@
                                     @if ($correciones[0]->marco_teorico != null)
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionMTeorico">Correccion</button>
+                                                data-bs-target="#mCorreccionMTeorico">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -1252,7 +1197,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Marco teorico</h4>
+                                                    <h4 class="modal-title">Corrección de Marco teorico</h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
                                                 </div>
@@ -1261,6 +1206,60 @@
                                                     <div class="row" style="padding: 20px">
                                                         <div class="row my-2">
                                                             <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->marco_teorico }}</textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Modal footer -->
+                                                <div class="modal-footer">
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <button type="button" class="btn btn-danger"
+                                                                data-bs-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <div class="row" style="margin-bottom:15px">
+                                <h5>Marco de Referencia o Antecedentes</h5>
+                                <div class="col-12 col-md-10">
+                                    <div class="form-floating">
+                                        {{-- txtmarco_legal --}}
+                                        <textarea class="form-control" name="txtantecedentes" id="txtantecedentes" style="height: 100px; resize:none"
+                                            required>
+@if ($tesis[0]->marco_legal != '')
+{{ $tesis[0]->marco_legal }}
+@endif
+</textarea>
+                                    </div>
+                                </div>
+
+                                @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
+                                    @if ($correciones[0]->antecedentes != null)
+                                        <div class="col-2">
+                                            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+                                                data-bs-target="#mCorreccionAntecedente">Corrección</button>
+                                        </div>
+                                    @endif
+                                    {{-- Aqui va el modal --}}
+                                    <div class="modal" id="mCorreccionAntecedente">
+                                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                            <div class="modal-content">
+                                                <!-- Modal Header -->
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Corrección de antecedentes</h4>
+                                                    <button type="button" class="btn-close"
+                                                        data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <!-- Modal body -->
+                                                <div class="modal-body">
+                                                    <div class="row" style="padding: 20px">
+                                                        <div class="row my-2">
+                                                            <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->antecedentes }}</textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1296,7 +1295,7 @@
                                     @if ($correciones[0]->marco_conceptual != null)
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionMConceptual">Correccion</button>
+                                                data-bs-target="#mCorreccionMConceptual">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -1304,7 +1303,7 @@
                                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Marco conceptual</h4>
+                                                    <h4 class="modal-title">Corrección de Marco conceptual</h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
                                                 </div>
@@ -1329,58 +1328,7 @@
                                 @endif
                             </div>
 
-                            <div class="row" style="margin-bottom:15px">
-                                <h5>Marco Legal</h5>
-                                <div class="col-12 col-md-10">
-                                    <div class="form-floating">
-                                        <textarea class="form-control" name="txtmarco_legal" id="txtmarco_legal" style="height: 100px; resize:none"
-                                            required>
-@if ($tesis[0]->marco_legal != '')
-{{ $tesis[0]->marco_legal }}
-@endif
-</textarea>
-                                    </div>
-                                </div>
 
-                                @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
-                                    @if ($correciones[0]->marco_legal != null)
-                                        <div class="col-2">
-                                            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionMLegal">Correccion</button>
-                                        </div>
-                                    @endif
-                                    {{-- Aqui va el modal --}}
-                                    <div class="modal" id="mCorreccionMLegal">
-                                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                            <div class="modal-content">
-                                                <!-- Modal Header -->
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Marco Legal</h4>
-                                                    <button type="button" class="btn-close"
-                                                        data-bs-dismiss="modal"></button>
-                                                </div>
-                                                <!-- Modal body -->
-                                                <div class="modal-body">
-                                                    <div class="row" style="padding: 20px">
-                                                        <div class="row my-2">
-                                                            <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->marco_legal }}</textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Modal footer -->
-                                                <div class="modal-footer">
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <button type="button" class="btn btn-danger"
-                                                                data-bs-dismiss="modal">Close</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
                         </div>
 
                         <div class="row" style=" margin-bottom:20px" @if ($campos[0]->formulacion_hipotesis == 0) hidden @endif>
@@ -1401,7 +1349,7 @@
                                     @if ($correciones[0]->form_hipotesis != null)
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionFHipotesis">Correccion</button>
+                                                data-bs-target="#mCorreccionFHipotesis">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -1410,7 +1358,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Formulacion de la hipotesis</h4>
+                                                    <h4 class="modal-title">Corrección de Formulacion de la hipotesis</h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
                                                 </div>
@@ -1457,7 +1405,7 @@
                                 @if ($correciones[0]->variables != null)
                                     <div class="col-2">
                                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                            data-bs-target="#mCorreccionVariables">Correccion</button>
+                                            data-bs-target="#mCorreccionVariables">Corrección</button>
                                     </div>
                                 @endif
                                 {{-- Aqui va el modal --}}
@@ -1466,7 +1414,7 @@
                                         <div class="modal-content">
                                             <!-- Modal Header -->
                                             <div class="modal-header">
-                                                <h4 class="modal-title">Correccion de Variables</h4>
+                                                <h4 class="modal-title">Corrección de Variables</h4>
                                                 <button type="button" class="btn-close"
                                                     data-bs-dismiss="modal"></button>
                                             </div>
@@ -1650,7 +1598,7 @@
                                 @if ($correciones[0]->matriz_op != null)
                                     <div class="col-2">
                                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                            data-bs-target="#mCorreccionMatriz_op">Correccion</button>
+                                            data-bs-target="#mCorreccionMatriz_op">Corrección</button>
                                     </div>
                                 @endif
                                 {{-- Aqui va el modal --}}
@@ -1659,7 +1607,7 @@
                                         <div class="modal-content">
                                             <!-- Modal Header -->
                                             <div class="modal-header">
-                                                <h4 class="modal-title">Correccion de la Matriz Operacional</h4>
+                                                <h4 class="modal-title">Corrección de la Matriz Operacional</h4>
                                                 <button type="button" class="btn-close"
                                                     data-bs-dismiss="modal"></button>
                                             </div>
@@ -1712,7 +1660,7 @@
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger"
                                                 data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionOEstudio">Correccion</button>
+                                                data-bs-target="#mCorreccionOEstudio">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -1721,7 +1669,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Material</h4>
+                                                    <h4 class="modal-title">Corrección de Material</h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
                                                 </div>
@@ -1766,7 +1714,7 @@
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger"
                                                 data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionPoblacion">Correccion</button>
+                                                data-bs-target="#mCorreccionPoblacion">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -1775,7 +1723,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Poblacion</h4>
+                                                    <h4 class="modal-title">Corrección de Poblacion</h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
                                                 </div>
@@ -1818,7 +1766,7 @@
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger"
                                                 data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionMuestra">Correccion</button>
+                                                data-bs-target="#mCorreccionMuestra">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -1827,7 +1775,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Muestra</h4>
+                                                    <h4 class="modal-title">Corrección de Muestra</h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
                                                 </div>
@@ -1873,7 +1821,7 @@
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger"
                                                 data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionTecInst">Correccion</button>
+                                                data-bs-target="#mCorreccionTecInst">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -1882,7 +1830,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Técnicas e instrumentos</h4>
+                                                    <h4 class="modal-title">Corrección de Técnicas e instrumentos</h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
                                                 </div>
@@ -1926,7 +1874,7 @@
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger"
                                                 data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionMetodos">Correccion</button>
+                                                data-bs-target="#mCorreccionMetodos">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -1935,7 +1883,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Procedimientos</h4>
+                                                    <h4 class="modal-title">Corrección de Procedimientos</h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
                                                 </div>
@@ -1979,7 +1927,7 @@
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger"
                                                 data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionDis_Contrastacion">Correccion</button>
+                                                data-bs-target="#mCorreccionDis_Contrastacion">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -1988,7 +1936,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Diseño de contrastacion</h4>
+                                                    <h4 class="modal-title">Corrección de Diseño de contrastacion</h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
                                                 </div>
@@ -2031,7 +1979,7 @@
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger"
                                                 data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionInsFD">Correccion</button>
+                                                data-bs-target="#mCorreccionInsFD">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -2040,7 +1988,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Instrumentación y/o fuentes de
+                                                    <h4 class="modal-title">Corrección de Instrumentación y/o fuentes de
                                                         datos
                                                     </h4>
                                                     <button type="button" class="btn-close"
@@ -2085,7 +2033,7 @@
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger"
                                                 data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionEstrategia">Correccion</button>
+                                                data-bs-target="#mCorreccionEstrategia">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -2094,7 +2042,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Estrategias Metodológicas</h4>
+                                                    <h4 class="modal-title">Corrección de Estrategias Metodológicas</h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
                                                 </div>
@@ -2146,7 +2094,7 @@
                                             <div class="col-2">
                                                 <button type="button" class="btn btn-outline-danger"
                                                     data-bs-toggle="modal"
-                                                    data-bs-target="#mCorreccionReferencia">Correccion</button>
+                                                    data-bs-target="#mCorreccionReferencia">Corrección</button>
                                             </div>
                                         @endif
                                         {{-- Aqui va el modal --}}
@@ -2155,7 +2103,7 @@
                                                 <div class="modal-content">
                                                     <!-- Modal Header -->
                                                     <div class="modal-header">
-                                                        <h4 class="modal-title">Correccion de las Referencias</h4>
+                                                        <h4 class="modal-title">Corrección de las Referencias</h4>
                                                         <button type="button" class="btn-close"
                                                             data-bs-dismiss="modal"></button>
                                                     </div>
@@ -2520,40 +2468,33 @@
     @endif
     <script type="text/javascript">
         var cronogramas_py_bd = @json($cronogramas_py);
-        console.log(cronogramas_py_bd);
 
         var existMes = false;
         if (document.getElementById('txtmeses_ejecucion').value != "") {
             setMeses();
 
         }
-        const valueMesPart = document.getElementById('valuesMesesPart').value;
-
+        //const valueMesPart = document.getElementById('valuesMesesPart').value;
         /*Verificamos que los meses contiene valor*/
-
-        if (valueMesPart != "") {
-            /*Cada valor de mes en la actividad del cronograma la hemos separado por comas*/
-            let eachActivity = valueMesPart.split(",");
-            for (let i = 0; i < eachActivity.length; i++) {
-
-                /*Luego separamos los valores obtenidos antes mediante un guion*/
-                let mesActivity = eachActivity[i].split("-");
-                let activity = i + 1;
-                if (mesActivity[0] != mesActivity[1]) {
-                    for (let j = parseInt(mesActivity[0]); j <= parseInt(mesActivity[1]); j++) {
-
-                        setColorInit(activity + 'Tr' + j);
+        if(cronogramas_py_bd.length > 0){
+            cronogramas_py_bd.forEach(function(item) {
+                const separate = item.descripcion.split(",");
+                separate.forEach(function(sp){
+                    const rango = sp.split("-");
+                    if(rango.length > 1){
+                        for(let i = rango[0]; i<=rango[1];i++){
+                            setColorInit(item.cod_cronograma+'Tr'+i);
+                        }
+                        return;
                     }
-                } else {
-                    setColorInit(activity + 'Tr' + mesActivity[0]);
-                }
-            }
+                    setColorInit(item.cod_cronograma + 'Tr'+ rango[0]);
+                });
+            });
         }
 
         /*Funcion para agregar las celdas referentes de los meses de ejecucion*/
         function setMeses() {
             const activities = parseInt(document.getElementById("nActivities").value);
-            console.log(`nActivities: ${activities}`);
             if (existMes == false) {
                 existMes = true;
                 let meses = document.getElementById("txtmeses_ejecucion").value;

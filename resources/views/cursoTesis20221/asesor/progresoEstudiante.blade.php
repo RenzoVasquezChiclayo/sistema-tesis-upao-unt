@@ -298,6 +298,8 @@
                     {{-- Tabla para clickear los meses correspondientes al cronograma de trabajo --}}
                     <div class="row" style=" margin-bottom:20px" @if ($campos[0]->duracion_proyecto == 0) hidden @endif>
                         <h5>Cronograma de trabajo</h5>
+                        <input type="hidden" name="nActivities" id="nActivities"
+                                    value="{{ sizeof($cronogramas) }}">
                         <div class="row" style="padding-left:20px; padding-right:20px; margin-bottom:8px">
                             <table class="table table-bordered border-dark">
                                 <thead>
@@ -306,22 +308,19 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr id="1Tr">
-
-                                        <td>Preparación de instrumentos de recolección de datos</td>
-                                    </tr>
-                                    <tr id="2Tr">
-
-                                        <td>Recolección de datos</td>
-                                    </tr>
-                                    <tr id="3Tr">
-
-                                        <td>Análisis de datos</td>
-                                    </tr>
-                                    <tr id="4Tr">
-
-                                        <td>Elaboración del informe</td>
-                                    </tr>
+                                    @php
+                                        $cont_tr = 1;
+                                    @endphp
+                                    @foreach ($cronogramas as $cro)
+                                        <input type="hidden" name="cod_cronograma[]" id="cod_cronograma[]"
+                                            value="{{ $cro->cod_cronograma }}">
+                                        <tr id="{{ $cont_tr }}Tr">
+                                            <td>{{ $cro->actividad }}</td>
+                                        </tr>
+                                        @php
+                                            $cont_tr++;
+                                        @endphp
+                                        @endforeach
                                 </tbody>
                             </table>
                             <input type="hidden" id="listMonths" name="listMonths">
@@ -478,35 +477,7 @@
                         </div>
                         <textarea class="form-control" name="tachkCorregir5" id="tachkCorregir5" cols="30" rows="4" hidden></textarea>
                     </div>
-                    <div class="row" style=" margin-bottom:20px" @if ($campos[0]->rp_antecedente_justificacion == 0) hidden @endif>
-                        <h5>Antecedentes</h5>
-                        <div class="row" style="margin-bottom:8px">
-                            <div class="col-12 col-md-10">
-                                <div class="form-floating">
-                                    <textarea class="form-control" name="taAntecedentes" id="taAntecedentes" style="height: 100px; resize:none"
-                                        readonly>{{ $cursoTesis[0]->antecedentes }}</textarea>
-                                </div>
-                            </div>
-                            @if ($cursoTesis[0]->estado == 1)
-                                <div class="col-2" align="center">
-                                    <div class="row">
-                                        <div class="col-10">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="chkCorregir6"
-                                                    onchange="chkCorregir(this);">
-                                                <label class="form-check-label" for="flexCheckDefault">
-                                                    Corregir
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
 
-
-                        </div>
-                        <textarea class="form-control" name="tachkCorregir6" id="tachkCorregir6" cols="30" rows="4" hidden></textarea>
-                    </div>
                     <div class="row" style=" margin-bottom:20px" @if ($campos[0]->rp_antecedente_justificacion == 0) hidden @endif>
                         <h5>Justificación de la investigación</h5>
                         <div class="row" style="margin-bottom:8px">
@@ -537,7 +508,7 @@
                         <textarea class="form-control" name="tachkCorregir7" id="tachkCorregir7" cols="30" rows="4" hidden></textarea>
                     </div>
                     <div class="row" style=" margin-bottom:20px" @if ($campos[0]->formulacion_problema == 0) hidden @endif>
-                        <h5>Formulación del problema</h5>
+                        <h5>Enunciado del problema</h5>
                         <div class="row" style="margin-bottom:8px">
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
@@ -563,6 +534,175 @@
 
                         </div>
                         <textarea class="form-control" name="tachkCorregir8" id="tachkCorregir8" cols="30" rows="4" hidden></textarea>
+                    </div>
+                    <div class="row" style="margin-bottom:20px">
+                        {{-- Variables de operalizacion modal extra --}}
+                        <h6>Variables</h6>
+                        <div class="col-8 col-md-7 col-xl-11">
+                            <table class="table table-striped table-bordered ">
+                                <thead>
+                                    <tr>
+                                        <th>Descripcion</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($variableop as $var)
+                                        <tr>
+                                            <td>{{ $var->descripcion }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                        @if ($cursoTesis[0]->estado == 1)
+                            <div class="col-1" align="center">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="chkCorregir21"
+                                                onchange="chkCorregir(this);">
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                Corregir
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                        <textarea class="form-control" name="tachkCorregir21" id="tachkCorregir21" cols="30" rows="4" hidden></textarea>
+                        <div class="row">
+                            <h5>Matriz Operacional</h5>
+                            <div class="col-10">
+                                <table class="table" id="table-matriz" style="border: 5px;">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">VARIABLES</th>
+                                            <th scope="col">DEFINICION CONCEPTUAL</th>
+                                            <th scope="col">DEFINICION OPERACIONAL</th>
+                                            <th scope="col">DIMENSIONES</th>
+                                            <th scope="col">INDICADORES</th>
+                                            <th scope="col">ESCALA</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if ($matriz->count() > 0)
+                                            <tr id="table-matriz-tr">
+                                                <td>VI</td>
+                                                <td>
+                                                    <textarea class="form-control" name="i_varI" rows="3" cols="8" readonly>
+@if ($matriz[0]->variable_I != null)
+{{ $matriz[0]->variable_I }}
+@endif
+</textarea>
+                                                </td>
+                                                <td>
+                                                    <textarea class="form-control" name="i_dc" rows="3" cols="8" readonly>
+@if ($matriz[0]->def_conceptual_I != null)
+{{ $matriz[0]->def_conceptual_I }}
+@endif
+</textarea>
+                                                </td>
+                                                <td>
+                                                    <textarea class="form-control" name="i_do" rows="3" cols="8" readonly>
+@if ($matriz[0]->def_operacional_I != null)
+{{ $matriz[0]->def_operacional_I }}
+@endif
+</textarea>
+                                                </td>
+                                                <td>
+                                                    <textarea class="form-control" name="i_dim" rows="3" cols="8" readonly>
+@if ($matriz[0]->dimensiones_I != null)
+{{ $matriz[0]->dimensiones_I }}
+@endif
+</textarea>
+                                                </td>
+                                                <td>
+                                                    <textarea class="form-control" name="i_ind" rows="3" cols="8" readonly>
+@if ($matriz[0]->indicadores_I != null)
+{{ $matriz[0]->indicadores_I }}
+@endif
+</textarea>
+                                                </td>
+                                                <td>
+                                                    <textarea class="form-control" name="i_esc" rows="3" cols="8" readonly>
+@if ($matriz[0]->escala_I != null)
+{{ $matriz[0]->escala_I }}
+@endif
+</textarea>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>VD</td>
+                                                <td>
+                                                    <textarea class="form-control" name="d_varD" rows="3" cols="8" readonly>
+@if ($matriz[0]->variable_D != null)
+{{ $matriz[0]->variable_D }}
+@endif
+</textarea>
+                                                </td>
+                                                <td>
+                                                    <textarea class="form-control" name="d_dc" rows="3" cols="8" readonly>
+@if ($matriz[0]->def_conceptual_D != null)
+{{ $matriz[0]->def_conceptual_D }}
+@endif
+</textarea>
+                                                </td>
+                                                <td>
+                                                    <textarea class="form-control" name="d_do" rows="3" cols="8" readonly>
+@if ($matriz[0]->def_operacional_D != null)
+{{ $matriz[0]->def_operacional_D }}
+@endif
+</textarea>
+                                                </td>
+                                                <td>
+                                                    <textarea class="form-control" name="d_dim" rows="3" cols="8" readonly>
+@if ($matriz[0]->dimensiones_D != null)
+{{ $matriz[0]->dimensiones_D }}
+@endif
+</textarea>
+                                                </td>
+                                                <td>
+                                                    <textarea class="form-control" name="d_ind" rows="3" cols="8" readonly>
+@if ($matriz[0]->indicadores_D != null)
+{{ $matriz[0]->indicadores_D }}
+@endif
+</textarea>
+                                                </td>
+                                                <td>
+                                                    <textarea class="form-control" name="d_esc" rows="3" cols="8" readonly>
+@if ($matriz[0]->escala_D != null)
+{{ $matriz[0]->escala_D }}
+@endif
+</textarea>
+                                                </td>
+                                            </tr>
+                                        @else
+                                            <tr>
+                                                <td colspan="6"><em class="class="fst-italic"">No existen datos</em>
+                                                </td>
+                                            </tr>
+                                        @endif
+                                    </tbody>
+                                </table>
+                            </div>
+                            @if ($cursoTesis[0]->estado == 1)
+                            <div class="col-2" align="center">
+                                <div class="row">
+                                    <div class="col-10">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="chkCorregir24"
+                                                onchange="chkCorregir(this);">
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                Corregir
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                        <textarea class="form-control" name="tachkCorregir24" id="tachkCorregir24" cols="30" rows="4" hidden></textarea>
+                        </div>
+
                     </div>
                     <div class="row" style=" margin-bottom:20px" @if ($campos[0]->objetivos == 0) hidden @endif>
                         <h5>Objetivos</h5>
@@ -634,6 +774,35 @@
                             </div>
                             <textarea class="form-control" name="tachkCorregir10" id="tachkCorregir10" cols="30" rows="4" hidden></textarea>
                         </div>
+                        <div class="row" style=" margin-bottom:15px">
+                            <h5>Marco de Referencia o Antecedentes</h5>
+                            <div class="row">
+                                <div class="col-12 col-md-10">
+                                    <div class="form-floating">
+                                        <textarea class="form-control" name="taAntecedentes" id="taAntecedentes" style="height: 100px; resize:none"
+                                            readonly>{{ $cursoTesis[0]->antecedentes }}</textarea>
+                                    </div>
+                                </div>
+                                @if ($cursoTesis[0]->estado == 1)
+                                    <div class="col-2" align="center">
+                                        <div class="row">
+                                            <div class="col-10">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="chkCorregir6"
+                                                        onchange="chkCorregir(this);">
+                                                    <label class="form-check-label" for="flexCheckDefault">
+                                                        Corregir
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+
+
+                            </div>
+                            <textarea class="form-control" name="tachkCorregir6" id="tachkCorregir6" cols="30" rows="4" hidden></textarea>
+                        </div>
 
                         <div class="row" style="margin-bottom:15px">
                             <h5>Marco Conceptual</h5>
@@ -661,34 +830,6 @@
 
                             </div>
                             <textarea class="form-control" name="tachkCorregir11" id="tachkCorregir11" cols="30" rows="4" hidden></textarea>
-                        </div>
-
-                        <div class="row" style="margin-bottom:15px">
-                            <h5>Marco Legal</h5>
-                            <div class="row">
-                                <div class="col-12 col-md-10">
-                                    <div class="form-floating">
-                                        <textarea class="form-control" name="taMLegal" id="taMLegal" style="height: 100px; resize:none" readonly>{{ $cursoTesis[0]->marco_legal }}</textarea>
-                                    </div>
-                                </div>
-                                @if ($cursoTesis[0]->estado == 1)
-                                    <div class="col-2" align="center">
-                                        <div class="row">
-                                            <div class="col-10">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="chkCorregir12"
-                                                        onchange="chkCorregir(this);">
-                                                    <label class="form-check-label" for="flexCheckDefault">
-                                                        Corregir
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endif
-
-                            </div>
-                            <textarea class="form-control" name="tachkCorregir12" id="tachkCorregir12" cols="30" rows="4" hidden></textarea>
                         </div>
                     </div>
 
@@ -730,7 +871,7 @@
                             <hr style="width: 60%; margin-left:15px;" />
                         </div>
                         <div class="row" style="margin-bottom:8px">
-                            <h6 for="taOEstudio" class="form-label">Objeto de Estudio</h6>
+                            <h6 for="taOEstudio" class="form-label">Material</h6>
                             <div class="col-12 col-md-10">
                                 <div class="form-floating">
                                     <textarea class="form-control" name="taOEstudio" id="taOEstudio" style="height: 100px; resize:none" readonly>{{ $cursoTesis[0]->objeto_estudio }}</textarea>
@@ -908,175 +1049,7 @@
 
                             <textarea class="form-control" name="tachkCorregir20" id="tachkCorregir20" cols="30" rows="4" hidden></textarea>
                         </div>
-                        <div class="row" style="margin-bottom:20px">
-                            {{-- Variables de operalizacion modal extra --}}
-                            <h6>Variables</h6>
-                            <div class="col-8 col-md-7 col-xl-11">
-                                <table class="table table-striped table-bordered ">
-                                    <thead>
-                                        <tr>
-                                            <th>Descripcion</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($variableop as $var)
-                                            <tr>
-                                                <td>{{ $var->descripcion }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                            @if ($cursoTesis[0]->estado == 1)
-                                <div class="col-1" align="center">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="chkCorregir21"
-                                                    onchange="chkCorregir(this);">
-                                                <label class="form-check-label" for="flexCheckDefault">
-                                                    Corregir
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
-                            <textarea class="form-control" name="tachkCorregir21" id="tachkCorregir21" cols="30" rows="4" hidden></textarea>
-                            <div class="row">
-                                <h5>Matriz Operacional</h5>
-                                <div class="col-10">
-                                    <table class="table" id="table-matriz" style="border: 5px;">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">VARIABLES</th>
-                                                <th scope="col">DEFINICION CONCEPTUAL</th>
-                                                <th scope="col">DEFINICION OPERACIONAL</th>
-                                                <th scope="col">DIMENSIONES</th>
-                                                <th scope="col">INDICADORES</th>
-                                                <th scope="col">ESCALA</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @if ($matriz->count() > 0)
-                                                <tr id="table-matriz-tr">
-                                                    <td>VI</td>
-                                                    <td>
-                                                        <textarea class="form-control" name="i_varI" rows="3" cols="8" readonly>
-    @if ($matriz[0]->variable_I != null)
-    {{ $matriz[0]->variable_I }}
-    @endif
-    </textarea>
-                                                    </td>
-                                                    <td>
-                                                        <textarea class="form-control" name="i_dc" rows="3" cols="8" readonly>
-    @if ($matriz[0]->def_conceptual_I != null)
-    {{ $matriz[0]->def_conceptual_I }}
-    @endif
-    </textarea>
-                                                    </td>
-                                                    <td>
-                                                        <textarea class="form-control" name="i_do" rows="3" cols="8" readonly>
-    @if ($matriz[0]->def_operacional_I != null)
-    {{ $matriz[0]->def_operacional_I }}
-    @endif
-    </textarea>
-                                                    </td>
-                                                    <td>
-                                                        <textarea class="form-control" name="i_dim" rows="3" cols="8" readonly>
-    @if ($matriz[0]->dimensiones_I != null)
-    {{ $matriz[0]->dimensiones_I }}
-    @endif
-    </textarea>
-                                                    </td>
-                                                    <td>
-                                                        <textarea class="form-control" name="i_ind" rows="3" cols="8" readonly>
-    @if ($matriz[0]->indicadores_I != null)
-    {{ $matriz[0]->indicadores_I }}
-    @endif
-    </textarea>
-                                                    </td>
-                                                    <td>
-                                                        <textarea class="form-control" name="i_esc" rows="3" cols="8" readonly>
-    @if ($matriz[0]->escala_I != null)
-    {{ $matriz[0]->escala_I }}
-    @endif
-    </textarea>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>VD</td>
-                                                    <td>
-                                                        <textarea class="form-control" name="d_varD" rows="3" cols="8" readonly>
-    @if ($matriz[0]->variable_D != null)
-    {{ $matriz[0]->variable_D }}
-    @endif
-    </textarea>
-                                                    </td>
-                                                    <td>
-                                                        <textarea class="form-control" name="d_dc" rows="3" cols="8" readonly>
-    @if ($matriz[0]->def_conceptual_D != null)
-    {{ $matriz[0]->def_conceptual_D }}
-    @endif
-    </textarea>
-                                                    </td>
-                                                    <td>
-                                                        <textarea class="form-control" name="d_do" rows="3" cols="8" readonly>
-    @if ($matriz[0]->def_operacional_D != null)
-    {{ $matriz[0]->def_operacional_D }}
-    @endif
-    </textarea>
-                                                    </td>
-                                                    <td>
-                                                        <textarea class="form-control" name="d_dim" rows="3" cols="8" readonly>
-    @if ($matriz[0]->dimensiones_D != null)
-    {{ $matriz[0]->dimensiones_D }}
-    @endif
-    </textarea>
-                                                    </td>
-                                                    <td>
-                                                        <textarea class="form-control" name="d_ind" rows="3" cols="8" readonly>
-    @if ($matriz[0]->indicadores_D != null)
-    {{ $matriz[0]->indicadores_D }}
-    @endif
-    </textarea>
-                                                    </td>
-                                                    <td>
-                                                        <textarea class="form-control" name="d_esc" rows="3" cols="8" readonly>
-    @if ($matriz[0]->escala_D != null)
-    {{ $matriz[0]->escala_D }}
-    @endif
-    </textarea>
-                                                    </td>
-                                                </tr>
-                                            @else
-                                                <tr>
-                                                    <td colspan="6"><em class="class="fst-italic"">No existen datos</em>
-                                                    </td>
-                                                </tr>
-                                            @endif
-                                        </tbody>
-                                    </table>
-                                </div>
-                                @if ($cursoTesis[0]->estado == 1)
-                                <div class="col-2" align="center">
-                                    <div class="row">
-                                        <div class="col-10">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="chkCorregir24"
-                                                    onchange="chkCorregir(this);">
-                                                <label class="form-check-label" for="flexCheckDefault">
-                                                    Corregir
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
-                            <textarea class="form-control" name="tachkCorregir24" id="tachkCorregir24" cols="30" rows="4" hidden></textarea>
-                            </div>
 
-                        </div>
                     </div>
                     <div class="row" style=" margin-bottom:20px; padding-right:12px;"
                         @if ($campos[0]->referencias_b == 0) hidden @endif>
@@ -1187,35 +1160,29 @@
 
             /*Valores de los meses de ejecucion y a la vez recibimos los valores para la tabla*/
             const valueMes = document.getElementById('txtMesesEjecucion').value;
-            const valueMesPart = document.getElementById('valuesMesesPart').value;
+            //const valueMesPart = document.getElementById('valuesMesesPart').value;
 
             /*Verificamos que los meses contiene valor*/
-            if (valueMes != "" || valueMes != 0) {
+            if (valueMes != "" ) {
                 setMeses();
             }
+            var cronogramas_py_bd = @json($cronogramas_py);
 
-            if (valueMesPart != "") {
-                /*Cada valor de mes en la actividad del cronograma la hemos separado por comas*/
-                let eachActivity = valueMesPart.split(",");
-                for (let i = 0; i < eachActivity.length; i++) {
-                    /*Luego separamos los valores obtenidos antes mediante un guion*/
-                    let mesActivity = eachActivity[i].split("-");
-
-                    let extrasumador = 0;
-                    for (let j = 0; j < mesActivity.length; j++) {
-                        let activity = i + 1;
-                        /*Esta condicion aplica cuando en el cronograma una actividad solo ocupó un mes*/
-                        if (mesActivity[0] == mesActivity[1]) {
-                            extrasumador += 1;
+            /*Verificamos que los meses contiene valor*/
+            if(cronogramas_py_bd.length > 0){
+                cronogramas_py_bd.forEach(function(item) {
+                    const separate = item.descripcion.split(",");
+                    separate.forEach(function(sp){
+                        const rango = sp.split("-");
+                        if(rango.length > 1){
+                            for(let i = rango[0]; i<=rango[1];i++){
+                                setColorInit(item.cod_cronograma+'Tr'+i);
+                            }
+                            return;
                         }
-                        /*El extrasumador nos ayuda a que solo se repita una vez*/
-                        if (extrasumador != 1) {
-                            setColorInit(activity + 'Tr' + mesActivity[j]);
-                            extrasumador = 0;
-                        }
-
-                    }
-                }
+                        setColorInit(item.cod_cronograma + 'Tr'+ rango[0]);
+                    });
+                });
             }
 
         };
@@ -1390,49 +1357,45 @@
         var lastMonth = 0;
 
         function setMeses() {
+            const activities = parseInt(document.getElementById("nActivities").value);
             if (existMes == false) {
                 existMes = true;
-                meses = document.getElementById("txtMesesEjecucion").value;
+                let meses = document.getElementById("txtMesesEjecucion").value;
                 lastMonth = meses;
                 for (i = 1; i <= meses; i++) {
-                    document.getElementById("headers").innerHTML += '<th id="Mes' + i + '" scope="col">Mes ' + i + '</th>'
-                    document.getElementById("1Tr").innerHTML += '<input type="hidden" id="n1Tr' + i + '" name="n1Tr' + i +
-                        '" value="0"><td id="1Tr' + i + '" onclick="setColorTable(this);"></td>'
-                    document.getElementById("2Tr").innerHTML += '<input type="hidden" id="n2Tr' + i + '" name="n2Tr' + i +
-                        '" value="0"><td id="2Tr' + i + '" onclick="setColorTable(this);"></td>'
-                    document.getElementById("3Tr").innerHTML += '<input type="hidden" id="n3Tr' + i + '" name="n3Tr' + i +
-                        '" value="0"><td id="3Tr' + i + '" onclick="setColorTable(this);"></td>'
-                    document.getElementById("4Tr").innerHTML += '<input type="hidden" id="n4Tr' + i + '" name="n4Tr' + i +
-                        '" value="0"><td id="4Tr' + i + '" onclick="setColorTable(this);"></td>'
+                    document.getElementById("headers").innerHTML += '<th id="Mes' + i + '" scope="col">Mes ' + i + '</th>';
+                    for (let j = 1; j <= activities; j++) {
+                        document.getElementById(j + "Tr").innerHTML += '<input type="hidden" id="n' + j + 'Tr' + i +
+                            '" name="n' + j + 'Tr' + i +
+                            '" value="0"><td id="' + j + 'Tr' + i +
+                            '" onclick="setColorTable(this);"></td>';
+                    }
                 }
+                // document.getElementById("1Tr").innerHTML += '<input type="hidden" id="n1Tr' + i + '" name="n1Tr' + i +
+                //     '" value="0"><td id="1Tr' + i + '" onclick="setColorTable(this);"></td>'
+
             } else {
                 for (i = 1; i <= lastMonth; i++) {
-                    $('#Mes' + i).remove();
-                    $('#n1Tr' + i).remove();
-                    $('#n2Tr' + i).remove();
-                    $('#n3Tr' + i).remove();
-                    $('#n4Tr' + i).remove();
-
-                    $('#1Tr' + i).remove();
-                    $('#2Tr' + i).remove();
-                    $('#3Tr' + i).remove();
-                    $('#4Tr' + i).remove();
+                    document.getElementById('Mes' + i).remove();
+                    for (let j = 1; j <= activities; j++) {
+                        document.getElementById('n' + j + 'Tr' + i).remove();
+                    }
                 }
+
                 existMes = false;
                 setMeses();
             }
         }
         /*Funcion para pintar las celdas que se seleccionen para cada actividad*/
         function setColorTable(celda) {
-            cont = document.getElementById("n" + celda.id).value;
-            datos = document.getElementById()
-            touch = parseInt(cont) + 1
-            document.getElementById("n" + celda.id).value = touch;
+            const cont = document.getElementById("n"+celda.id).value;
+            const touch = parseInt(cont) + 1
+            document.getElementById("n"+celda.id).value = touch;
 
-            if (touch % 2 != 0) {
-                celda.style.backgroundColor = "red";
-            } else {
-                celda.style.backgroundColor = "rgb(212, 212, 212)";
+            if(touch%2 != 0 ){
+                celda.style.backgroundColor= "red";
+            }else{
+                celda.style.backgroundColor= "rgb(212, 212, 212)";
             }
         }
     </script>

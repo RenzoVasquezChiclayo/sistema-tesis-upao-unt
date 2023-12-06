@@ -290,6 +290,7 @@ class CursoTesisController extends Controller
 
             //Cronograma de trabajo
             if ($request->listMonths != "") {
+                $allCronogramas = Cronograma_Proyecto::where("cod_proyectotesis",$tesis->cod_proyectotesis)->get();
                 $cod_cronograma = $request->cod_cronograma; //[123,343,434]
                 $cronograma = $request->listMonths; //1_2_4_1a_2_3_2a_4_3a_5_4a
                 //dd($cronograma);
@@ -314,10 +315,21 @@ class CursoTesisController extends Controller
                             } else {
                                 $string_extra .= $inicioSucesivo;
                             }
-                            $new_activity->descripcion = $string_extra;
-                            $new_activity->cod_cronograma = $cod_cronograma[$j];
-                            $new_activity->cod_proyectotesis = $tesis->cod_proyectotesis;
-                            $new_activity->save();
+                            if(sizeof($allCronogramas)>0){
+                                foreach ($allCronogramas as $crono) {
+                                    // Verificar si el 'id' del objeto coincide con el ID buscado
+                                    if ($crono->cod_cronograma == $cod_cronograma[$j]) {
+                                        $crono->descripcion = $string_extra;
+                                        $crono->save();
+                                        break; // Puedes romper el bucle una vez que encuentres el objeto
+                                    }
+                                }
+                            }else{
+                                $new_activity->descripcion = $string_extra;
+                                $new_activity->cod_cronograma = $cod_cronograma[$j];
+                                $new_activity->cod_proyectotesis = $tesis->cod_proyectotesis;
+                                $new_activity->save();
+                            }
                             $string_extra = "";
                             $inicioSucesivo = null;
                             $finSucesivo = null;
@@ -339,7 +351,10 @@ class CursoTesisController extends Controller
                                 if ($inicioSucesivo == null) {
                                     $inicioSucesivo = $cronograma[$i];
                                 }
-                                $finSucesivo = $cronograma[$i];
+                                if($i != $exi){
+                                    $finSucesivo = $cronograma[$i];
+                                }
+
                             } else {
                                 $sucesivos = true;
                             }
@@ -1683,7 +1698,6 @@ class CursoTesisController extends Controller
         $asesorAsignado = $request->saveAsesor;
 
         $posicion = explode(',', $asesorAsignado);
-        dd($posicion);
         $i = 0;
         do {
             if ($posicion[$i] != null) {
@@ -2001,6 +2015,8 @@ class CursoTesisController extends Controller
         $observaciones = ObservacionesProy::join('historial_observaciones', 'observaciones_proy.cod_historialObs', '=', 'historial_observaciones.cod_historialObs')
             ->select('observaciones_proy.*')->where('historial_observaciones.cod_proyectotesis', $cursoTesis[0]->cod_proyectotesis)
             ->get();
+        $cronogramas = Cronograma::all();
+        $cronogramas_py = Cronograma_Proyecto::where("cod_proyectotesis",$cursoTesis[0]->cod_proyectotesis)->get();
 
         $campos = DB::table('campos_estudiante')->select('campos_estudiante.*')->where('cod_proyectotesis', $cursoTesis[0]->cod_proyectotesis)->get();
         // $campos = CamposEstudiante::where('cod_matricula',$cursoTesis[0]->cod_matricula)->get();
@@ -2043,7 +2059,9 @@ class CursoTesisController extends Controller
             '$observaciones' => $observaciones, 'fin_persigue' => $fin_persigue, 'diseno_investigacion' => $diseno_investigacion, 'tipoinvestigacion' => $tipoinvestigacion,
             'recursos' => $recursos, 'objetivos' => $objetivos, 'variableop' => $variableop,
             'campos' => $campos, 'cursoTesis' => $cursoTesis, 'referencias' => $referencias, 'isFinal' => $isFinal,
-            'camposFull' => $camposFull, 'matriz' => $matriz
+            'camposFull' => $camposFull, 'matriz' => $matriz,
+            'cronogramas'=>$cronogramas,
+            'cronogramas_py'=>$cronogramas_py
         ]);
     }
 
