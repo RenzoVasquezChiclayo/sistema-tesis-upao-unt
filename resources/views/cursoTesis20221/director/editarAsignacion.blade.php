@@ -4,7 +4,7 @@
 @endsection
 @section('contenido')
 <div class="card-header">
-    Editar asignacion de asesor de tesis
+    Editar asignacion de asesor de proyecto de tesis
 </div>
 <div class="card-body">
     <div class="row">
@@ -19,7 +19,8 @@
                                     <td>Numero Matricula</td>
                                     <td>DNI</td>
                                     <td>Nombre</td>
-                                    <td>Asignar</td>
+                                    <td>Asesor</td>
+                                    <td>Docente</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -40,10 +41,24 @@
                                                 <option value="0">-</option>
                                                 @foreach ($asesores as $ase)
                                                     <option value="{{$ase->cod_docente}}"
-                                                    @if ($est->cod_docente == $ase->cod_docente)
+                                                    @if ($est->cod_asesor == $ase->cod_docente)
                                                         selected
                                                     @endif
                                                     >{{$ase->nombres." ".$ase->apellidos}}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select name="cboDocente_{{ $cont }}"
+                                                id="cboDocente_{{ $cont }}" class="form-control"
+                                                onchange="validarSeleccionDocente({{ $cont }});"
+                                                @if ($est->cod_docente != null) disabled @endif>
+                                                <option value="0">-</option>
+                                                @foreach ($asesores as $ase)
+                                                    <option value="{{ $ase->cod_docente }}"
+                                                        @if ($est->cod_docente == $ase->cod_docente) selected @endif>
+                                                        {{ $ase->nombres." ".$ase->apellidos }}
+                                                    </option>
                                                 @endforeach
                                             </select>
                                         </td>
@@ -88,36 +103,49 @@
 
 <script type="text/javascript">
     function validarSeleccion(cont){
+        const selector = document.getElementById('cboAsesor_' + cont);
+        index = document.getElementById('cboAsesor_'+cont).selectedIndex;
 
-    index = document.getElementById('cboAsesor_'+cont).selectedIndex;
+        if (index!=0) {
 
-    if (index!=0) {
-
-        document.getElementById("btnAsesor_"+cont).hidden=false;
-    }else {
-        document.getElementById("btnAsesor_"+cont).hidden=true;
+            document.getElementById("btnAsesor_"+cont).hidden=false;
+            selector.style.backgroundColor = 'lightyellow';
+        }else {
+            document.getElementById("btnAsesor_"+cont).hidden=true;
+        }
     }
-    }
+
+    function validarSeleccionDocente(cont) {
+            const selector = document.getElementById('cboDocente_' + cont);
+            index = document.getElementById('cboDocente_' + cont).selectedIndex;
+            if (index != 0) {
+                document.getElementById("btnAsesor_" + cont).hidden = false;
+                selector.style.backgroundColor = 'lightyellow';
+            } else {
+                document.getElementById("btnDocente_" + cont).hidden = true;
+            }
+        }
 
     var arregloAsesor = []
     function guardarAsesor(cont){
 
     asesor = document.getElementById('cboAsesor_'+cont).value;
+    docente = document.getElementById('cboDocente_' + cont).value;
 
     codEstudiante = document.getElementById('codEst_'+cont).value;
 
-    arregloAsesor[cont] = codEstudiante+'_'+asesor;
+    arregloAsesor[cont] = codEstudiante + '_' + asesor + '_' + docente;
 
     document.getElementById('saveAsesor').value = arregloAsesor;
-
     document.getElementById("saveAsignacion").hidden=false;
     document.getElementById("btnAsesor_"+cont).hidden=true;
 
     }
 
     function openEdit(cont){
-    document.getElementById('cboAsesor_'+cont).disabled=false;
-    document.getElementById('btnOpenEdit_'+cont).hidden=true;
+        document.getElementById('cboAsesor_'+cont).disabled=false;
+        document.getElementById('cboDocente_' + cont).disabled = false;
+        document.getElementById('btnOpenEdit_'+cont).hidden=true;
     }
 </script>
 

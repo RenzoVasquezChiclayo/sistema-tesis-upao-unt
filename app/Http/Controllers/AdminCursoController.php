@@ -78,77 +78,6 @@ class AdminCursoController extends Controller
             }
         }
 
-        //FUNCION PROVICIONAL PARA COPIAR LOS DATOS DEL PROY TESIS A LA TESIS DE LOS ESTUDIANTES
-
-        // if (auth()->user()->rol == 'd-CTesis2022-1') {
-        //     $proytesisFound = DB::table("proyecto_tesis as pyt")
-        //         ->select("pyt.*")->get();
-        //     foreach ($proytesisFound as $key => $proy) {
-        //         $objetivos_pyt = Objetivo::where('cod_proyectotesis', '=', $proy->cod_proyectotesis)->latest('cod_objetivo')->get();
-        //         $referencias_pyt = referencias::where('cod_proyectotesis', '=', $proy->cod_proyectotesis)->latest('cod_referencias')->get();
-        //         $tesis = Tesis_2022::where("cod_matricula",$proy->cod_matricula)->first();
-        //         if ($tesis != null) {
-        //             $tesis->titulo = $proy->titulo;
-        //             $tesis->real_problematica = $proy->real_problematica;
-        //             $tesis->antecedentes = $proy->antecedentes;
-        //             $tesis->justificacion = $proy->justificacion;
-        //             $tesis->formulacion_prob = $proy->formulacion_prob;
-        //             try {
-        //                 if ($objetivos_pyt->count() != 0) {
-        //                     foreach ($objetivos_pyt as $obj) {
-        //                         $objetivos_t = new TObjetivo();
-        //                         $objetivos_t->tipo = $obj->tipo;
-        //                         $objetivos_t->descripcion = $obj->descripcion;
-        //                         $objetivos_t->cod_tesis = $tesis->cod_tesis;
-        //                         $objetivos_t->save();
-        //                     }
-        //                 }
-        //             } catch (\Throwable $th) {
-        //                 //throw $th;
-        //             }
-        //             $tesis->marco_teorico = $tesis->marco_teorico;
-        //             $tesis->marco_conceptual = $tesis->marco_conceptual;
-        //             $tesis->marco_legal = $tesis->marco_legal;
-        //             $tesis->form_hipotesis = $tesis->form_hipotesis;
-        //             $tesis->objeto_estudio = $tesis->objeto_estudio;
-        //             $tesis->poblacion = $tesis->poblacion;
-        //             $tesis->muestra = $tesis->muestra;
-        //             $tesis->metodos = $tesis->metodos;
-        //             $tesis->tecnicas_instrum = $tesis->tecnicas_instrum;
-        //             $tesis->instrumentacion = $tesis->instrumentacion;
-        //             $tesis->estg_metodologicas = $tesis->estg_metodologicas;
-        //             try {
-        //                 if ($referencias_pyt->count() != 0) {
-        //                     foreach ($referencias_pyt as $ref) {
-        //                         $referencias_t = new TReferencias();
-        //                         $referencias_t->cod_tiporeferencia = $ref->cod_tiporeferencia;
-        //                         $referencias_t->autor = $ref->autor;
-        //                         $referencias_t->fPublicacion = $ref->fPublicacion;
-        //                         $referencias_t->titulo = $ref->titulo;
-        //                         $referencias_t->fuente = $ref->fuente;
-        //                         $referencias_t->editorial =  $ref->editorial;
-        //                         $referencias_t->title_cap = $ref->title_cap;
-        //                         $referencias_t->num_capitulo = $ref->num_capitulo;
-        //                         $referencias_t->title_revista = $ref->title_revista;
-        //                         $referencias_t->volumen = $ref->volumen;
-        //                         $referencias_t->name_web = $ref->name_web;
-        //                         $referencias_t->name_periodista = $ref->name_periodista;
-        //                         $referencias_t->name_institucion = $ref->name_institucion;
-        //                         $referencias_t->subtitle = $ref->subtitle;
-        //                         $referencias_t->name_editor = $ref->name_editor;
-        //                         $referencias_t->cod_tesis = $tesis->cod_tesis;
-        //                         $referencias_t->save();
-        //                     }
-        //                 }
-        //             } catch (\Throwable $th) {
-        //                 //throw $th;
-        //             }
-        //             $tesis->save();
-        //         }
-        //     }
-        // }
-
-
         $usuario = User::where('name', $id . '-C')->first();
         $estudiante = DB::table('estudiante_ct2022 as E')->where('E.cod_matricula', $id)->first();
         $asesor = DB::table('asesor_curso as A')->leftjoin('grado_academico as ga', 'A.cod_grado_academico', 'ga.cod_grado_academico')->leftjoin('categoria_docente as cd', 'A.cod_categoria', 'cd.cod_categoria')->select('A.*', 'ga.descripcion as DescGrado', 'cd.descripcion as DescCat')->where('A.username', $id)->first();
@@ -600,27 +529,123 @@ class AdminCursoController extends Controller
     public function verListaObservacion(Request $request)
     {
         $buscarObservaciones = $request->get('buscarObservacion');
-        $id = auth()->user()->name;
-        $asesor = AsesorCurso::where('username', $id)->get();
-        if (is_numeric($buscarObservaciones)) {
+        $filtrarSemestre = $request->filtrar_semestre;
+        $asesor = AsesorCurso::where('username', auth()->user()->name)->get();
+        $semestre = DB::table('configuraciones_iniciales as c_i')->select('c_i.*')->where('c_i.estado', 1)->orderBy('c_i.cod_configuraciones', 'desc')->get();
 
-            $estudiantes = DB::connection('mysql')->table('estudiante_ct2022')->join('proyecto_tesis', 'estudiante_ct2022.cod_matricula', '=', 'proyecto_tesis.cod_matricula')->join('historial_observaciones', 'proyecto_tesis.cod_proyectotesis', '=', 'historial_observaciones.cod_proyectotesis')
-                ->select('estudiante_ct2022.*', 'proyecto_tesis.escuela', 'proyecto_tesis.estado', 'historial_observaciones.fecha', 'historial_observaciones.cod_historialObs')->where('proyecto_tesis.cod_matricula', 'like', '%' . $buscarObservaciones . '%')->where('proyecto_tesis.cod_docente', $asesor[0]->cod_docente)->paginate($this::PAGINATION);
+        if (count($semestre) == 0) {
+            return view('cursoTesis20221.asesor.showEstudiantes', ['estudiantes' => [], 'semestre' => [], 'buscarObservaciones' => $buscarObservaciones]);
         } else {
-            $estudiantes = DB::connection('mysql')->table('estudiante_ct2022')->join('proyecto_tesis', 'estudiante_ct2022.cod_matricula', '=', 'proyecto_tesis.cod_matricula')->join('historial_observaciones', 'proyecto_tesis.cod_proyectotesis', '=', 'historial_observaciones.cod_proyectotesis')
-                ->select('estudiante_ct2022.*', 'proyecto_tesis.estado', 'historial_observaciones.fecha', 'historial_observaciones.cod_historialObs')->where('estudiante_ct2022.apellidos', 'like', '%' . $buscarObservaciones . '%')->where('proyecto_tesis.cod_docente', $asesor[0]->cod_docente)->paginate($this::PAGINATION);
+            $last_semestre = DB::table('configuraciones_iniciales as c_i')->select('c_i.*')->where('c_i.estado', 1)->orderBy('c_i.cod_configuraciones', 'desc')->first();
+            if ($buscarObservaciones != "") {
+                $semestreBuscar = $request->semestre;
+                $filtrarSemestre = $semestreBuscar;
+                if (is_numeric($buscarObservaciones)) {
+                    $estudiantes = DB::table('estudiante_semestre as e_s')
+                        ->join('estudiante_ct2022 as e', 'e_s.cod_matricula', 'e.cod_matricula')
+                        ->join('proyecto_tesis', 'e.cod_matricula', '=', 'proyecto_tesis.cod_matricula')
+                        ->join('historial_observaciones', 'proyecto_tesis.cod_proyectotesis', '=', 'historial_observaciones.cod_proyectotesis')
+                        ->select('e.*', 'proyecto_tesis.cod_docente', 'proyecto_tesis.estado', 'proyecto_tesis.cod_proyectotesis', 'historial_observaciones.fecha', 'historial_observaciones.cod_historialObs')
+                        ->where('proyecto_tesis.cod_docente', $asesor[0]->cod_docente)
+                        ->where('e_s.cod_configuraciones', $semestreBuscar)
+                        ->where('e.cod_matricula', 'like', '%' . $buscarObservaciones . '%')
+                        ->orderBy('e.apellidos')->get();
+                    if(count($estudiantes)==0){
+                        $estudiantes = DB::table('estudiante_semestre as e_s')
+                        ->join('estudiante_ct2022 as e', 'e_s.cod_matricula', 'e.cod_matricula')
+                        ->join('proyecto_tesis', 'e.cod_matricula', '=', 'proyecto_tesis.cod_matricula')
+                        ->join('historial_observaciones', 'proyecto_tesis.cod_proyectotesis', '=', 'historial_observaciones.cod_proyectotesis')
+                        ->select('e.*', 'proyecto_tesis.cod_docente', 'proyecto_tesis.estado', 'proyecto_tesis.cod_proyectotesis', 'historial_observaciones.fecha', 'historial_observaciones.cod_historialObs')
+                        ->where('proyecto_tesis.cod_asesor', $asesor[0]->cod_docente)
+                        ->where('e_s.cod_configuraciones', $semestreBuscar)
+                        ->where('e.cod_matricula', 'like', '%' . $buscarObservaciones . '%')
+                        ->orderBy('e.apellidos')->get();
+
+                    }
+                } else {
+                    $estudiantes = DB::table('estudiante_semestre as e_s')
+                        ->join('estudiante_ct2022 as e', 'e_s.cod_matricula', 'e.cod_matricula')
+                        ->join('proyecto_tesis', 'e.cod_matricula', '=', 'proyecto_tesis.cod_matricula')
+                        ->join('historial_observaciones', 'proyecto_tesis.cod_proyectotesis', '=', 'historial_observaciones.cod_proyectotesis')
+                        ->select('e.*', 'proyecto_tesis.cod_docente', 'proyecto_tesis.estado', 'proyecto_tesis.cod_proyectotesis', 'historial_observaciones.fecha', 'historial_observaciones.cod_historialObs')
+                        ->where('proyecto_tesis.cod_docente', $asesor[0]->cod_docente)
+                        ->where('e_s.cod_configuraciones', $semestreBuscar)
+                        ->where('e.apellidos', 'like', '%' . $buscarObservaciones . '%')->orderBy('e.apellidos')->get();
+                    if(count($estudiantes)==0){
+                        $estudiantes = DB::table('estudiante_semestre as e_s')
+                            ->join('estudiante_ct2022 as e', 'e_s.cod_matricula', 'e.cod_matricula')
+                            ->join('proyecto_tesis', 'e.cod_matricula', '=', 'proyecto_tesis.cod_matricula')
+                            ->join('historial_observaciones', 'proyecto_tesis.cod_proyectotesis', '=', 'historial_observaciones.cod_proyectotesis')
+                            ->select('e.*', 'proyecto_tesis.cod_docente', 'proyecto_tesis.estado', 'proyecto_tesis.cod_proyectotesis', 'historial_observaciones.fecha', 'historial_observaciones.cod_historialObs')
+                            ->where('proyecto_tesis.cod_asesor', $asesor[0]->cod_docente)
+                            ->where('e_s.cod_configuraciones', $semestreBuscar)
+                            ->where('e.cod_matricula', 'like', '%' . $buscarObservaciones . '%')
+                            ->orderBy('e.apellidos')->get();
+
+                        }
+                }
+            }else {
+                if ($filtrarSemestre != null) {
+                    $estudiantes = DB::table('estudiante_semestre as e_s')
+                        ->join('estudiante_ct2022 as e', 'e_s.cod_matricula', 'e.cod_matricula')
+                        ->join('proyecto_tesis', 'e.cod_matricula', '=', 'proyecto_tesis.cod_matricula')
+                        ->join('historial_observaciones', 'proyecto_tesis.cod_proyectotesis', '=', 'historial_observaciones.cod_proyectotesis')
+                        ->select('e.*', 'proyecto_tesis.cod_docente', 'proyecto_tesis.estado', 'proyecto_tesis.cod_proyectotesis', 'historial_observaciones.fecha', 'historial_observaciones.cod_historialObs')
+                        ->where('proyecto_tesis.cod_docente', $asesor[0]->cod_docente)
+                        ->where('e_s.cod_configuraciones', 'like', '%' . $filtrarSemestre . '%')
+                        ->orderBy('e.apellidos', 'asc')->get();
+                    if(count($estudiantes)==0){
+                        $estudiantes = DB::table('estudiante_semestre as e_s')
+                            ->join('estudiante_ct2022 as e', 'e_s.cod_matricula', 'e.cod_matricula')
+                            ->join('proyecto_tesis', 'e.cod_matricula', '=', 'proyecto_tesis.cod_matricula')
+                            ->join('historial_observaciones', 'proyecto_tesis.cod_proyectotesis', '=', 'historial_observaciones.cod_proyectotesis')
+                            ->select('e.*', 'proyecto_tesis.cod_docente', 'proyecto_tesis.estado', 'proyecto_tesis.cod_proyectotesis', 'historial_observaciones.fecha', 'historial_observaciones.cod_historialObs')
+                            ->where('proyecto_tesis.cod_asesor', $asesor[0]->cod_docente)
+                            ->where('e_s.cod_configuraciones', 'like', '%' . $filtrarSemestre . '%')
+                            ->orderBy('e.apellidos')->get();
+
+                        }
+                } else {
+                    $estudiantes = DB::table('estudiante_semestre as e_s')
+                        ->join('estudiante_ct2022 as e', 'e_s.cod_matricula', 'e.cod_matricula')
+                        ->join('proyecto_tesis', 'e.cod_matricula', '=', 'proyecto_tesis.cod_matricula')
+                        ->join('historial_observaciones', 'proyecto_tesis.cod_proyectotesis', '=', 'historial_observaciones.cod_proyectotesis')
+                        ->select('e.*', 'proyecto_tesis.cod_docente', 'proyecto_tesis.estado', 'proyecto_tesis.cod_proyectotesis', 'historial_observaciones.fecha', 'historial_observaciones.cod_historialObs')
+                        ->where('proyecto_tesis.cod_docente', $asesor[0]->cod_docente)
+                        ->where('e_s.cod_configuraciones', 'like', '%' . $last_semestre->cod_configuraciones . '%')
+                        ->orderBy('e.apellidos', 'asc')->get();
+                    if(count($estudiantes)==0){
+                        $estudiantes = DB::table('estudiante_semestre as e_s')
+                            ->join('estudiante_ct2022 as e', 'e_s.cod_matricula', 'e.cod_matricula')
+                            ->join('proyecto_tesis', 'e.cod_matricula', '=', 'proyecto_tesis.cod_matricula')
+                            ->join('historial_observaciones', 'proyecto_tesis.cod_proyectotesis', '=', 'historial_observaciones.cod_proyectotesis')
+                            ->select('e.*', 'proyecto_tesis.cod_docente', 'proyecto_tesis.estado', 'proyecto_tesis.cod_proyectotesis', 'historial_observaciones.fecha', 'historial_observaciones.cod_historialObs')
+                            ->where('proyecto_tesis.cod_asesor', $asesor[0]->cod_docente)
+                            ->where('e_s.cod_configuraciones', 'like', '%' . $filtrarSemestre . '%')
+                            ->orderBy('e.apellidos')->get();
+
+                        }
+                }
+            }
         }
+
         if (empty($estudiantes)) {
-            return view('cursoTesis20221.asesor.listaObservaciones', ['buscarObservaciones' => $buscarObservaciones, 'estudiantes' => $estudiantes])->with('datos', 'No se encontro algun registro');
+            return view('cursoTesis20221.asesor.listaObservaciones', ['buscarObservaciones' => $buscarObservaciones, 'estudiantes' => $estudiantes, 'semestre' => $semestre, 'filtrarSemestre' => $filtrarSemestre])->with('datos', 'No se encontro algun registro');
         } else {
-            return view('cursoTesis20221.asesor.listaObservaciones', ['buscarObservaciones' => $buscarObservaciones, 'estudiantes' => $estudiantes]);
+            return view('cursoTesis20221.asesor.listaObservaciones', ['buscarObservaciones' => $buscarObservaciones, 'estudiantes' => $estudiantes, 'semestre' => $semestre, 'filtrarSemestre' => $filtrarSemestre]);
         }
+
+
+        return view('cursoTesis20221.asesor.showEstudiantes', ['estudiantes' => $estudiantes, 'buscarObservaciones' => $buscarObservaciones, 'semestre' => $semestre, 'filtrarSemestre' => $filtrarSemestre]);
     }
 
     public function verObsEstudiante($cod_historialObs)
     {
         $observaciones = ObservacionesProy::where('cod_historialObs', $cod_historialObs)->get();
-        $estudiante = TesisCT2022::join('historial_observaciones', 'proyecto_tesis.cod_proyectotesis', '=', 'historial_observaciones.cod_proyectotesis')->select('proyecto_tesis.*')->where('historial_observaciones.cod_historialObs', $cod_historialObs)->get();
+        $estudiante = TesisCT2022::join('historial_observaciones', 'proyecto_tesis.cod_proyectotesis', '=', 'historial_observaciones.cod_proyectotesis')
+                ->join('estudiante_ct2022 as es','proyecto_tesis.cod_matricula','es.cod_matricula')
+                ->select('proyecto_tesis.*','es.nombres','es.apellidos')
+                ->where('historial_observaciones.cod_historialObs', $cod_historialObs)->get();
         return view('cursoTesis20221.asesor.verObservacionEstudiante', ['observaciones' => $observaciones, 'estudiante' => $estudiante]);
     }
     //Nuevas actualizaciones octubre 2023

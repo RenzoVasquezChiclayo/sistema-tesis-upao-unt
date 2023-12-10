@@ -36,6 +36,7 @@ class ObservacionesProy extends Model
         'poblacion',
         'muestra',
         'metodos',
+        'diseno_contrastacion',
         'tecnicas_instrum',
         'instrumentacion',
         'estg_metodologicas',

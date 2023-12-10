@@ -275,7 +275,7 @@
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: 'Correo actulizada correctamente',
+                    title: 'Correo actualizada correctamente',
                     showConfirmButton: false,
                     timer: 1200
                 })
@@ -286,6 +286,16 @@
                     position: 'center',
                     icon: 'error',
                     title: 'Error al agregar correo',
+                    showConfirmButton: false,
+                    timer: 1200
+                })
+            </script>
+        @elseif (session('datos') == 'okresetcontra')
+            <script>
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Contraseña actualizada correctamente',
                     showConfirmButton: false,
                     timer: 1200
                 })

@@ -38,7 +38,7 @@
                                                 <option value="0">-</option>
                                                 @foreach ($asesores as $ase)
                                                     <option value="{{ $ase->cod_docente }}"
-                                                        @if ($est->cod_docente == $ase->cod_docente) selected @endif>
+                                                        @if ($est->cod_asesor == $ase->cod_docente) selected @endif>
                                                         {{ $ase->nombres." ".$ase->apellidos }}</option>
                                                 @endforeach
                                             </select>
@@ -102,12 +102,13 @@
 
     <script type="text/javascript">
         function validarSeleccion(cont) {
-
+            const selector = document.getElementById('cboAsesor_' + cont);
             index = document.getElementById('cboAsesor_' + cont).selectedIndex;
 
             if (index != 0) {
 
                 document.getElementById("btnAsesor_" + cont).hidden = false;
+                selector.style.backgroundColor = 'lightyellow';
             } else {
                 document.getElementById("btnAsesor_" + cont).hidden = true;
             }
@@ -136,7 +137,6 @@
             arregloAsesor[cont] = codEstudiante + '_' + asesor + '_' + docente;
 
             document.getElementById('saveAsesor').value = arregloAsesor;
-
             document.getElementById("saveAsignacion").hidden = false;
             document.getElementById("btnAsesor_" + cont).hidden = true;
 

@@ -44,6 +44,14 @@ Route::post('/verificate-login',[LoginController::class,'validateLogin'])
 Route::post('/logout',[LoginController::class,'logout'])
         ->name('login.logout');
 
+Route::post('send-password-reset/',[LoginController::class,'enviarCorreoParaCambio'])
+        ->name('correo_reset');
+
+Route::get('recuperar-contraseña/',[LoginController::class,'verRecuperarContraseña'])
+        ->name('recuperar_contra');
+
+Route::post('guardar-password-reset/',[LoginController::class,'guardarResetContraseña'])
+        ->name('guardar_reset_contra');
 //Curso Tesis 2022-1
 Route::get('/cursoTesis',[CursoTesisController::class,'index'])
         ->name('curso.tesis20221')->middleware('auth');
@@ -173,6 +181,7 @@ Route::post('/asignarTemas',[CursoTesisController::class,'asignarTemas'])->name(
 Route::post('/guardarTemas',[CursoTesisController::class,'guardarTemas'])->name('asesor.guardarTemas');
 Route::post('/revisarTemas',[CursoTesisController::class,'revisarTemas'])->name('asesor.revisarTemas')->middleware('auth');
 Route::post('/guardarObservaciones',[CursoTesisController::class,'guardarObservaciones'])->name('asesor.guardarObservaciones');
+Route::post('/guardarSinObservaciones',[CursoTesisController::class,'guardarSinObservaciones'])->name('asesor.guardarSinObs');
 
 
 Route::get('ver-historial-estudiante',[AdminCursoController::class,'verListaObservacion'])->name('asesor.verHistoObs')->middleware('auth');

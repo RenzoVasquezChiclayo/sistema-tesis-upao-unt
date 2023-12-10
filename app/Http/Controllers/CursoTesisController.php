@@ -111,7 +111,6 @@ class CursoTesisController extends Controller
         $tiporeferencia = TipoReferencia::all();
         $referencias = referencias::where('cod_proyectotesis', '=', $tesis[0]->cod_proyectotesis)->get(); //Por si existen referencias
 
-
         //Verificaremos que se hayan dado las observaciones y las enviaremos
         $correciones = ObservacionesProy::join('historial_observaciones', 'observaciones_proy.cod_historialObs', '=', 'historial_observaciones.cod_historialObs')
             ->select('observaciones_proy.*')->where('historial_observaciones.cod_proyectotesis', $tesis[0]->cod_proyectotesis)
@@ -180,16 +179,7 @@ class CursoTesisController extends Controller
         }
 
         try {
-            if ($isSaved == "true") {
-                $tesis->estado = 9;
-            } else {
-                $tesis->estado = 1;
-                // if ($asesor->correo != null) {
-                //     $estudiante = $tesis->apellidos." ".$tesis->nombres;
-                //     Mail::to($asesor->correo)->send(new EstadoEnviadaMail($request->txttitulo,$estudiante,$tesis->cod_matricula));
-                // }
 
-            }
             /*Si el egresado tiene una observacion pendiente, solo se guardaran los cambios solicitados*/
             if (sizeof($observacionX) > 0) {
 
@@ -239,6 +229,15 @@ class CursoTesisController extends Controller
                     $objetivoDelete = Objetivo::find($deleteObjetivos[$i]);
                     if ($objetivoDelete != null) {
                         $objetivoDelete->delete();
+                    }
+                }
+            }
+            if ($request->listOldlref != "") {
+                $deleteReferencias = explode(",", $request->listOldlref);
+                for ($i = 0; $i < sizeof($deleteReferencias); $i++) {
+                    $referenciasDelete = referencias::find($deleteReferencias[$i]);
+                    if ($referenciasDelete != null) {
+                        $referenciasDelete->delete();
                     }
                 }
             }
@@ -851,6 +850,17 @@ class CursoTesisController extends Controller
             $col_matriz[0]->escala_D = $request->d_esc;
             $col_matriz[0]->save();
 
+            if ($isSaved == "true") {
+                $tesis->estado = 9;
+            } else {
+                $tesis->estado = 1;
+                if ($asesor->correo != null || $asesor->correo != "") {
+                    $nombre_estudiante = $tesis->apellidos." ".$tesis->nombres;
+                    Mail::to($asesor->correo)->send(new EstadoEnviadaMail($request->txttitulo,$nombre_estudiante,$tesis->cod_matricula));
+                }
+
+            }
+
             $tesis->fecha = now();
             $tesis->save();
 
@@ -978,10 +988,13 @@ class CursoTesisController extends Controller
                         }
                     }
                 } catch (\Throwable $th) {
-                    dd($th);
+                    return redirect()->route('curso.tesis20221')->with('datos', 'oknot');
                 }
                 $tesisFound->save();
             }
+
+
+
             return redirect()->route('curso.estado-proyecto')->with('datos', 'ok');
         } catch (\Throwable $th) {
             dd($th);
@@ -1066,8 +1079,11 @@ class CursoTesisController extends Controller
 
         $orcid_asesor = $asesor->orcid;
         $grado_asesor = $asesor->DescGrado;
-        $categoria_asesor = $asesor->DescCat;
-        $direccion_asesor = $asesor->direccion;
+
+
+        $unidad_academica = $tesis[0]->unidad_academica;
+        $fecha_inicio = $tesis[0]->fecha_inicio;
+        $fecha_termino = $tesis[0]->fecha_termino;
 
         /*Proyecto de Investigacion y/o Tesis*/
         $titulo = $tesis[0]->titulo;
@@ -1143,7 +1159,8 @@ class CursoTesisController extends Controller
         /*Marco teorico*/
         $marco_teorico = $tesis[0]->marco_teorico;
         $marco_conceptual = $tesis[0]->marco_conceptual;
-        $marco_legal = $tesis[0]->marco_legal;
+
+        $diseño_contrastacion = $tesis[0]->diseño_contrastacion;
 
         Settings::setOutputEscapingEnabled(true);
 
@@ -1285,25 +1302,28 @@ class CursoTesisController extends Controller
         $nuevaSesion->addListItem("1. TITULO", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
         $nuevaSesion->addText("'" . $titulo . "'", null, $styleTitulo);
 
-        $nuevaSesion->addListItem("2. AUTOR", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
-        $nuevaSesion->addText($nombres, null, $styleContenido);
+        $nuevaSesion->addListItem("2. EQUIPO INVESTIGADOR", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
+        $nuevaSesion->addText("Autor(a) ".$nombres, null, $styleContenido);
+        $nuevaSesion->addText("Asesor(a) ".$grado_asesor . ". " . $nombre_asesor, null, $styleContenido);
 
-        $nuevaSesion->addListItem("3. ASESOR", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
-        $nuevaSesion->addText($grado_asesor . ". " . $nombre_asesor, null, $styleContenido);
-        $nuevaSesion->addText($categoria_asesor, null, $styleContenido);
-        $nuevaSesion->addText($direccion_asesor, null, $styleContenido);
+        $nuevaSesion->addListItem("3. TIPO DE INVESTIGACION", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
+        $nuevaSesion->addText("De acuerdo a la orientacion o finalidad: " . $ti_finpersigue, null, $styleContenido);
+        $nuevaSesion->addText("De acuerdo a la tecnica de contratacion: " . $ti_disinvestigacion, null, $styleContenido);
 
-        $nuevaSesion->addListItem("4. TIPO DE INVESTIGACION", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
+        $nuevaSesion->addListItem("4. AREA/LINEA DE INVESTIGACION:", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
         $nuevaSesion->addText($cod_tinvestigacion, null, $styleContenido);
-        $nuevaSesion->addText("De acuerdo al fin que se persigue: " . $ti_finpersigue, null, $styleContenido);
-        $nuevaSesion->addText("De acuerdo al diseño de investigacion: " . $ti_disinvestigacion, null, $styleContenido);
 
-        $nuevaSesion->addListItem("5. LOCALIDAD E INSTITUCION DONDE SE DESARROLLO EL PROYECTO", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
+        $nuevaSesion->addListItem("5. UNIDAD ACADEMICA", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
+        $nuevaSesion->addText($unidad_academica, null, $styleContenido);
+
+        $nuevaSesion->addListItem("6. LOCALIDAD E INSTITUCION DONDE SE DESARROLLO EL PROYECTO", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
         $nuevaSesion->addText("Localidad: " . $localidad, null, $styleContenido);
         $nuevaSesion->addText("Institucion: " . $institucion, null, $styleContenido);
 
-        $nuevaSesion->addListItem("6. DURECION DE LA EJECUCION DEL PROYECTO", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
+        $nuevaSesion->addListItem("7. DURECION TOTAL DEL PROYECTO", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
         $nuevaSesion->addText($meses_ejecucion . " MESES", null, $styleContenido);
+        $nuevaSesion->addText("Fecha de inicio: ".$fecha_inicio, null, $styleContenido);
+        $nuevaSesion->addText("Fecha de termino: ".$fecha_termino, null, $styleContenido);
 
         /* Tabla del Cronograma de Trabajo */
         /* Estilo de la table */
@@ -1313,7 +1333,7 @@ class CursoTesisController extends Controller
             'alignMent' => 'center'
         );
 
-        $nuevaSesion->addListItem("7. CRONOGRAMA DE TRABAJO", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
+        $nuevaSesion->addListItem("8. CRONOGRAMA DE TRABAJO", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
 
         $cronogramaTable = $nuevaSesion->addTable($tableStyle);
 
@@ -1358,7 +1378,7 @@ class CursoTesisController extends Controller
 
         $arregloRecursos = [];
 
-        $nuevaSesion->addListItem("8. RECURSOS", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
+        $nuevaSesion->addListItem("9. RECURSOS", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
 
         $arregloRecTipo = [];
         if ($recursos->count() != 0) {
@@ -1397,7 +1417,7 @@ class CursoTesisController extends Controller
 
         /* ---------------- */
 
-        $nuevaSesion->addListItem("9. PRESUPUESTO", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
+        $nuevaSesion->addListItem("10. PRESUPUESTO", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
 
         /* Presupuesto */
         $presupues = DB::table('presupuesto_proyecto')->join('presupuesto', 'presupuesto_proyecto.cod_presupuesto', '=', 'presupuesto.cod_presupuesto')
@@ -1440,14 +1460,13 @@ class CursoTesisController extends Controller
         $nuevaSesion->addListItem("1. REALIDAD PROBLEMATICA", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
         $nuevaSesion->addText($real_problematica, null, $styleContenido);
 
-        $nuevaSesion->addListItem("2. ANTECEDENTES", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
-        $nuevaSesion->addText($antecedentes, null, $styleContenido);
+        $nuevaSesion->addListItem("2. FORMULACION DEL PROBLEMA", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
+        $nuevaSesion->addText($formulacion_prob, null, $styleContenido);
 
-        $nuevaSesion->addListItem("3. JUSTIFICACION", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
+        $nuevaSesion->addListItem("4. JUSTIFICACION", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
         $nuevaSesion->addText($justificacion, null, $styleContenido);
 
-        $nuevaSesion->addListItem("4. FORMULACION DEL PROBLEMA", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
-        $nuevaSesion->addText($formulacion_prob, null, $styleContenido);
+
 
         /* Objetivos */
         $objetivos = Objetivo::where('cod_proyectotesis', '=', $tesis[0]->cod_proyectotesis)->latest('cod_objetivo')->get();
@@ -1488,37 +1507,20 @@ class CursoTesisController extends Controller
         $nuevaSesion->addListItem("6. MARCO TEORICO", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
         $nuevaSesion->addText($marco_teorico, null, $styleContenido);
 
-        $nuevaSesion->addListItem("7. MARCO CONCEPTUAL", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
+
+        $nuevaSesion->addListItem("7. MARCO DE REFERENCIA O ANTECEDENTES", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
+        $nuevaSesion->addText($antecedentes, null, $styleContenido);
+
+        $nuevaSesion->addListItem("8. MARCO CONCEPTUAL", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
         $nuevaSesion->addText($marco_conceptual, null, $styleContenido);
 
-        $nuevaSesion->addListItem("8. MARCO LEGAL", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
-        $nuevaSesion->addText($marco_legal, null, $styleContenido);
 
         $nuevaSesion->addListItem("9. FORMULACION DE LA HIPOTESIS", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
         $nuevaSesion->addText($form_hipotesis, null, $styleContenido);
 
-        $nuevaSesion->addListItem("10. DISENO DE INVESTIGACION", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
-        $nuevaSesion->addListItem("10.1. OBJETO DE ESTUDIO", 1, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
-        $nuevaSesion->addText($objeto_estudio, null, $styleContenido);
-        $nuevaSesion->addListItem("10.2. POBLACION", 1, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
-        $nuevaSesion->addText($poblacion, null, $styleContenido);
-        $nuevaSesion->addListItem("10.3. MUESTRA", 1, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
-        $nuevaSesion->addText($muestra, null, $styleContenido);
-        $nuevaSesion->addListItem("10.4. METODOS", 1, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
-        $nuevaSesion->addText($metodos, null, $styleContenido);
-        $nuevaSesion->addListItem("10.5. TECNICAS E INTRUMENTOS DE RECOLECCION DE DATOS", 1, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
-        $nuevaSesion->addText($tecnicas_instrum, null, $styleContenido);
-
-
-        $nuevaSesion->addListItem("10.6. INSTRUMENTACION", 1, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
-        $nuevaSesion->addText($instrumentacion, null, $styleContenido);
-
-        $nuevaSesion->addListItem("10.7. ESTRATEGIAS METODOLOGICAS", 1, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
-        $nuevaSesion->addText($estg_metodologicas, null, $styleContenido);
-
         /* Variables */
         $variables = variableOP::where('cod_proyectotesis', '=', $tesis[0]->cod_proyectotesis)->latest('cod_variable')->get();
-        $nuevaSesion->addListItem("10.8. OPERACIONALIZACION DE VARIABLES Y MATRIZ DE CONSISTENCIA", 1, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
+        $nuevaSesion->addListItem("10. OPERACIONALIZACION DE VARIABLES Y MATRIZ DE CONSISTENCIA", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
 
         if ($variables->count() != 0) {
 
@@ -1530,7 +1532,7 @@ class CursoTesisController extends Controller
             }
 
             for ($i = 0; $i <= count($variables) - 1; $i++) {
-                $nuevaSesion->addListItem("10.8." . ($i + 1) . ". " . $arregloVariable[$i], 2, null, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
+                $nuevaSesion->addListItem("10." . ($i + 1) . ". " . $arregloVariable[$i], 2, null, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
             }
         }
 
@@ -1539,6 +1541,27 @@ class CursoTesisController extends Controller
         $footer->addPreserveText(1);
 
         /* ---------------------------- */
+
+
+        $nuevaSesion->addListItem("11. METODOLOGIA", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
+        $nuevaSesion->addListItem("11.1. MATERIALES", 1, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
+        $nuevaSesion->addText($objeto_estudio, null, $styleContenido);
+        $nuevaSesion->addListItem("11.2. POBLACION", 1, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
+        $nuevaSesion->addText($poblacion, null, $styleContenido);
+        $nuevaSesion->addListItem("11.3. MUESTRA", 1, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
+        $nuevaSesion->addText($muestra, null, $styleContenido);
+        $nuevaSesion->addListItem("11.4. TECNICAS E INTRUMENTOS DE RECOLECCION DE DATOS", 1, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
+        $nuevaSesion->addText($tecnicas_instrum, null, $styleContenido);
+        $nuevaSesion->addListItem("11.5. PROCEDIMIENTOS", 1, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
+        $nuevaSesion->addText($metodos, null, $styleContenido);
+        $nuevaSesion->addListItem("11.6. DISEÑO CONTRASTACION", 1, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
+        $nuevaSesion->addText($diseño_contrastacion, null, $styleContenido);
+        $nuevaSesion->addListItem("11.7. PROCESAMIENTO Y ANALISIS DE DATOS", 1, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
+        $nuevaSesion->addText($instrumentacion, null, $styleContenido);
+        $nuevaSesion->addListItem("11.8. CONSIDERACION ETICAS", 1, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
+        $nuevaSesion->addText($estg_metodologicas, null, $styleContenido);
+
+
 
         /* Regerencias Bibliograficas */
 
@@ -1561,7 +1584,7 @@ class CursoTesisController extends Controller
         $arregloS = [];
         $arregloNEd = [];
 
-        $nuevaSesion->addListItem("11. REFERENCIAS BIBLIOGRAFICAS", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
+        $nuevaSesion->addListItem("12. REFERENCIAS BIBLIOGRAFICAS", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
 
         if ($referencia->count() != 0) {
 
@@ -1687,8 +1710,8 @@ class CursoTesisController extends Controller
     public function showAlumnosAsignados()
     {
 
-        $estudiantes = DB::table('estudiante_ct2022 as e')->rightJoin('proyecto_tesis as p', 'p.cod_matricula', '=', 'e.cod_matricula')->select('e.*', 'p.cod_docente')->where('cod_docente', '!=', null)->orderBy('e.apellidos')->paginate($this::PAGINATION3);
-        $asesores = AsesorCurso::all();
+        $estudiantes = DB::table('estudiante_ct2022 as e')->rightJoin('proyecto_tesis as p', 'p.cod_matricula', '=', 'e.cod_matricula')->select('e.*', 'p.cod_docente','p.cod_asesor')->where('cod_docente', '!=', null)->orderBy('e.apellidos')->paginate($this::PAGINATION3);
+        $asesores = DB::table('asesor_curso')->get();
         return view('cursoTesis20221.director.editarAsignacion', ['estudiantes' => $estudiantes, 'asesores' => $asesores]);
     }
 
@@ -1709,8 +1732,8 @@ class CursoTesisController extends Controller
                         $proyectoTesis = new TesisCT2022();
                         $proyectoTesis->cod_matricula = $estudiante->cod_matricula;
                     }
-                    $proyectoTesis->cod_docente = $datos[1];
-                    $proyectoTesis->cod_asesor = $datos[2];
+                    $proyectoTesis->cod_docente = $datos[2];
+                    $proyectoTesis->cod_asesor = $datos[1];
                     $proyectoTesis->save();
                     $proyectoTesis = TesisCT2022::where('cod_matricula', $estudiante->cod_matricula)->first();
                     $campo = new CamposEstudiante();
@@ -1740,7 +1763,8 @@ class CursoTesisController extends Controller
                 $estudiante = DB::table('estudiante_ct2022')->where('cod_matricula', $datos[0])->first();
                 if ($estudiante != null) {
                     $proyectoTesis = TesisCT2022::where('cod_matricula', $estudiante->cod_matricula)->first();
-                    $proyectoTesis->cod_docente = $datos[1];
+                    $proyectoTesis->cod_docente = $datos[2];
+                    $proyectoTesis->cod_asesor = $datos[1];
                     $proyectoTesis->save();
                 } else {
                     return redirect()->route('director.editarAsignacion')->with('datos', 'error');
@@ -1752,24 +1776,103 @@ class CursoTesisController extends Controller
         return redirect()->route('director.editarAsignacion')->with('datos', 'ok');
     }
 
-    public function showEstudiantes()
+    public function showEstudiantes(Request $request)
     {
+        $buscarAlumno = $request->buscarAlumno;
+        $filtrarSemestre = $request->filtrar_semestre;
         $asesor = AsesorCurso::where('username', auth()->user()->name)->get();
-        $estudiantes = DB::table('estudiante_ct2022')
-            ->join('proyecto_tesis', 'estudiante_ct2022.cod_matricula', '=', 'proyecto_tesis.cod_matricula')
-            ->join('asesor_curso as ac', 'proyecto_tesis.cod_docente', 'ac.cod_docente')
-            ->select('estudiante_ct2022.*', 'proyecto_tesis.cod_docente', 'proyecto_tesis.estado', 'proyecto_tesis.cod_proyectotesis')
-            ->where('proyecto_tesis.cod_docente', $asesor[0]->cod_docente)->get();
-        if (count($estudiantes) == 0) {
-            $estudiantes = DB::table('estudiante_ct2022')
-                ->join('proyecto_tesis', 'estudiante_ct2022.cod_matricula', '=', 'proyecto_tesis.cod_matricula')
-                ->join('asesor_curso as ac', 'proyecto_tesis.cod_asesor', 'ac.cod_docente')
-                ->select('estudiante_ct2022.*', 'proyecto_tesis.cod_asesor', 'proyecto_tesis.estado', 'proyecto_tesis.cod_proyectotesis')
-                ->where('proyecto_tesis.cod_asesor', $asesor[0]->cod_docente)->get();
-            return view('cursoTesis20221.asesor.showEstudiantes', ['estudiantes' => $estudiantes]);
+        $semestre = DB::table('configuraciones_iniciales as c_i')->select('c_i.*')->where('c_i.estado', 1)->orderBy('c_i.cod_configuraciones', 'desc')->get();
+        if (count($semestre) == 0) {
+            return view('cursoTesis20221.asesor.showEstudiantes', ['estudiantes' => [], 'semestre' => [], 'buscarAlumno' => $buscarAlumno]);
+        } else {
+            $last_semestre = DB::table('configuraciones_iniciales as c_i')->select('c_i.*')->where('c_i.estado', 1)->orderBy('c_i.cod_configuraciones', 'desc')->first();
+            if ($buscarAlumno != "") {
+                $semestreBuscar = $request->semestre;
+                $filtrarSemestre = $semestreBuscar;
+                if (is_numeric($buscarAlumno)) {
+                    $estudiantes = DB::table('estudiante_semestre as e_s')
+                        ->join('estudiante_ct2022 as e', 'e_s.cod_matricula', 'e.cod_matricula')
+                        ->join('proyecto_tesis', 'e.cod_matricula', '=', 'proyecto_tesis.cod_matricula')
+                        ->select('e.*', 'proyecto_tesis.cod_docente', 'proyecto_tesis.estado', 'proyecto_tesis.cod_proyectotesis')
+                        ->where('proyecto_tesis.cod_docente', $asesor[0]->cod_docente)
+                        ->where('e_s.cod_configuraciones', $semestreBuscar)
+                        ->where('e.cod_matricula', 'like', '%' . $buscarAlumno . '%')
+                        ->orderBy('e.apellidos')->get();
+                    if(count($estudiantes) == 0){
+                        $estudiantes = DB::table('estudiante_semestre as e_s')
+                        ->join('estudiante_ct2022 as e', 'e_s.cod_matricula', 'e.cod_matricula')
+                        ->join('proyecto_tesis', 'e.cod_matricula', '=', 'proyecto_tesis.cod_matricula')
+                        ->select('e.*', 'proyecto_tesis.cod_docente', 'proyecto_tesis.estado', 'proyecto_tesis.cod_proyectotesis')
+                        ->where('proyecto_tesis.cod_asesor', $asesor[0]->cod_docente)
+                        ->where('e_s.cod_configuraciones', $semestreBuscar)
+                        ->where('e.cod_matricula', 'like', '%' . $buscarAlumno . '%')
+                        ->orderBy('e.apellidos')->get();
+
+                    }
+                } else {
+                    $estudiantes = DB::table('estudiante_semestre as e_s')
+                        ->join('estudiante_ct2022 as e', 'e_s.cod_matricula', 'e.cod_matricula')
+                        ->join('proyecto_tesis', 'e.cod_matricula', '=', 'proyecto_tesis.cod_matricula')
+                        ->select('e.*', 'proyecto_tesis.cod_docente', 'proyecto_tesis.estado', 'proyecto_tesis.cod_proyectotesis')
+                        ->where('proyecto_tesis.cod_docente', $asesor[0]->cod_docente)
+                        ->where('e_s.cod_configuraciones', $semestreBuscar)
+                        ->where('e.apellidos', 'like', '%' . $buscarAlumno . '%')->orderBy('e.apellidos')->get();
+                    if(count($estudiantes) == 0){
+                        $estudiantes = DB::table('estudiante_semestre as e_s')
+                            ->join('estudiante_ct2022 as e', 'e_s.cod_matricula', 'e.cod_matricula')
+                            ->join('proyecto_tesis', 'e.cod_matricula', '=', 'proyecto_tesis.cod_matricula')
+                            ->select('e.*', 'proyecto_tesis.cod_docente', 'proyecto_tesis.estado', 'proyecto_tesis.cod_proyectotesis')
+                            ->where('proyecto_tesis.cod_asesor', $asesor[0]->cod_docente)
+                            ->where('e_s.cod_configuraciones', $semestreBuscar)
+                            ->where('e.cod_matricula', 'like', '%' . $buscarAlumno . '%')
+                            ->orderBy('e.apellidos')->get();
+
+                        }
+                }
+            }else {
+                if ($filtrarSemestre != null) {
+
+                    $estudiantes = DB::table('estudiante_semestre as e_s')
+                        ->join('estudiante_ct2022 as e', 'e_s.cod_matricula', 'e.cod_matricula')
+                        ->join('proyecto_tesis', 'e.cod_matricula', '=', 'proyecto_tesis.cod_matricula')
+                        ->select('e.*', 'proyecto_tesis.cod_docente', 'proyecto_tesis.estado', 'proyecto_tesis.cod_proyectotesis')
+                        ->where('proyecto_tesis.cod_docente', $asesor[0]->cod_docente)
+                        ->where('e_s.cod_configuraciones', 'like', '%' . $filtrarSemestre . '%')
+                        ->orderBy('e.apellidos', 'asc')->get();
+                    if(count($estudiantes) == 0){
+
+                        $estudiantes = DB::table('estudiante_semestre as e_s')
+                            ->join('estudiante_ct2022 as e', 'e_s.cod_matricula', 'e.cod_matricula')
+                            ->join('proyecto_tesis', 'e.cod_matricula', '=', 'proyecto_tesis.cod_matricula')
+                            ->select('e.*', 'proyecto_tesis.cod_docente', 'proyecto_tesis.estado', 'proyecto_tesis.cod_proyectotesis')
+                            ->where('proyecto_tesis.cod_asesor', $asesor[0]->cod_docente)
+                            ->where('e_s.cod_configuraciones', 'like', '%' . $filtrarSemestre . '%')
+                            ->orderBy('e.apellidos')->get();
+
+                        }
+                } else {
+                    $estudiantes = DB::table('estudiante_semestre as e_s')
+                        ->join('estudiante_ct2022 as e', 'e_s.cod_matricula', 'e.cod_matricula')
+                        ->join('proyecto_tesis', 'e.cod_matricula', '=', 'proyecto_tesis.cod_matricula')
+                        ->select('e.*', 'proyecto_tesis.cod_docente', 'proyecto_tesis.estado', 'proyecto_tesis.cod_proyectotesis')
+                        ->where('proyecto_tesis.cod_docente', $asesor[0]->cod_docente)
+                        ->where('e_s.cod_configuraciones', 'like', '%' . $last_semestre->cod_configuraciones . '%')
+                        ->orderBy('e.apellidos', 'asc')->get();
+                    if(count($estudiantes) == 0){
+                        $estudiantes = DB::table('estudiante_semestre as e_s')
+                            ->join('estudiante_ct2022 as e', 'e_s.cod_matricula', 'e.cod_matricula')
+                            ->join('proyecto_tesis', 'e.cod_matricula', '=', 'proyecto_tesis.cod_matricula')
+                            ->select('e.*', 'proyecto_tesis.cod_docente', 'proyecto_tesis.estado', 'proyecto_tesis.cod_proyectotesis')
+                            ->where('proyecto_tesis.cod_asesor', $asesor[0]->cod_docente)
+                            ->where('e_s.cod_configuraciones', 'like', '%' . $filtrarSemestre . '%')
+                            ->orderBy('e.apellidos')->get();
+
+                        }
+                }
+            }
         }
 
-        return view('cursoTesis20221.asesor.showEstudiantes', ['estudiantes' => $estudiantes]);
+        return view('cursoTesis20221.asesor.showEstudiantes', ['estudiantes' => $estudiantes, 'buscarAlumno' => $buscarAlumno, 'semestre' => $semestre, 'filtrarSemestre' => $filtrarSemestre]);
     }
     const PAGINATION2 = 10;
     public function listaAlumnos(Request $request)
@@ -1989,21 +2092,23 @@ class CursoTesisController extends Controller
         $aux_campo = 0;
         $isFinal = 'false';
         $camposFull = 'false';
+        $camposActivos = 'false';
 
         $cod_matricula = $request->cod_matricula;
+
         $cursoTesis = DB::table('proyecto_tesis as p')
             ->join('estudiante_ct2022 as e', 'e.cod_matricula', '=', 'p.cod_matricula')
-            ->join('asesor_curso as ac', 'ac.cod_docente', '=', 'p.cod_asesor')
-            ->leftjoin('grado_academico as ga', 'ac.cod_grado_academico', 'ga.cod_grado_academico')
-            ->leftjoin('categoria_docente as cd', 'ac.cod_categoria', 'cd.cod_categoria')
-            ->select('p.*', 'e.nombres as nombresAutor', 'e.apellidos as apellidosAutor', 'ac.nombres as nombre_asesor', 'ac.apellidos as apellidos_asesor', 'ac.*', 'ga.descripcion as DescGrado', 'cd.descripcion as DescCat')
+            ->join('asesor_curso as ac', 'ac.cod_docente', '=', 'p.cod_docente')
+            ->leftJoin('grado_academico as ga', 'ac.cod_grado_academico', 'ga.cod_grado_academico')
+            ->leftJoin('categoria_docente as cd', 'ac.cod_categoria', 'cd.cod_categoria')
+            ->select('p.*', 'e.nombres as nombresAutor', 'e.apellidos as apellidosAutor', 'ac.nombres as nombre_asesor', 'ac.apellidos as apellidos_asesor', 'ac.direccion', 'ac.estado as estadoAsesor', 'ga.descripcion as DescGrado', 'cd.descripcion as DescCat')
             ->where('e.cod_matricula', $cod_matricula)->get();
 
-        foreach ($cursoTesis[0] as $curso) {
+            foreach ($cursoTesis[0] as $curso) {
             $arregloAux[$aux] = $curso;
             $aux++;
         }
-        for ($i = 0; $i < sizeof($arregloAux) - 11; $i++) {
+        for ($i = 0; $i < sizeof($arregloAux) - 17; $i++) {
             if ($arregloAux[$i] != null) {
                 $isFinal = 'true';
             } else {
@@ -2040,7 +2145,14 @@ class CursoTesisController extends Controller
                 break;
             }
         }
-
+        for ($i = 1; $i < sizeof($campoCursoTesis); $i++) {
+            if ($campoCursoTesis[$i] != 0) {
+                $camposActivos = 'true';
+            } else {
+                $camposActivos = 'false';
+                break;
+            }
+        }
         $recursos = recursos::where('cod_proyectotesis', '=', $cursoTesis[0]->cod_proyectotesis)->get();
         $tipoinvestigacion = TipoInvestigacion::where('cod_tinvestigacion', '=', $cursoTesis[0]->cod_tinvestigacion)->get();
         $fin_persigue = Fin_Persigue::where('cod_fin_persigue', '=', $cursoTesis[0]->ti_finpersigue)->get();
@@ -2061,8 +2173,23 @@ class CursoTesisController extends Controller
             'campos' => $campos, 'cursoTesis' => $cursoTesis, 'referencias' => $referencias, 'isFinal' => $isFinal,
             'camposFull' => $camposFull, 'matriz' => $matriz,
             'cronogramas'=>$cronogramas,
-            'cronogramas_py'=>$cronogramas_py
+            'cronogramas_py'=>$cronogramas_py,
+            'camposActivos' =>$camposActivos
         ]);
+    }
+
+    public function guardarSinObservaciones(Request $request){
+        try {
+            $cursoTesis = DB::table('proyecto_tesis')->where('proyecto_tesis.cod_matricula', $request->cod_matricula_hidden)->first();
+            $tesis = TesisCT2022::find($cursoTesis->cod_proyectotesis);
+            $tesis->estado = 2;
+            $tesis->save();
+            return redirect()->route('asesor.showEstudiantes')->with('datos', 'ok');
+        } catch (\Throwable $th) {
+            return redirect()->route('asesor.showEstudiantes')->with('datos', 'oknot');
+        }
+
+
     }
 
     public function guardarObservaciones(Request $request)
@@ -2199,6 +2326,10 @@ class CursoTesisController extends Controller
                 $observaciones->presupuesto_proy = $request->tachkCorregir25;
                 $arrayThemes[] = 'presupuesto_proy';
             }
+            if ($request->tachkCorregir26 != "") {
+                $observaciones->diseno_contrastacion = $request->tachkCorregir26;
+                $arrayThemes[] = 'diseno_contrastacion';
+            }
 
 
 
@@ -2210,17 +2341,16 @@ class CursoTesisController extends Controller
             $tesis->estado = 2;
             $tesis->save();
 
-            // if ($cursoTesis[0]->correoEstudi != null) {
-            //     $titulo = $cursoTesis[0]->titulo;
-            //     $asesor = $cursoTesis[0]->nombresAsesor;
-            //     Mail::to($cursoTesis[0]->correoEstudi)->send(new EstadoObservadoMail($titulo,$asesor));
-            // }
+            if ($cursoTesis[0]->correoEstudi != null || $cursoTesis[0]->correoEstudi != "") {
+                $titulo = $cursoTesis[0]->titulo;
+                $asesor = $cursoTesis[0]->nombresAsesor;
+                Mail::to($cursoTesis[0]->correoEstudi)->send(new EstadoObservadoMail($titulo,$asesor));
+            }
 
         } catch (\Throwable $th) {
             return redirect()->route('asesor.verObsEstudiante', $existHisto[0]->cod_historialObs)->with('datos', 'oknot');
         }
 
-        //$historialLastest = Historial_Observaciones::where('cod_proyectotesis',$tesis->cod_proyectotesis)->get();
         $latestCorrecion = ObservacionesProy::where('cod_historialObs', $existHisto[0]->cod_historialObs)->where('estado', 1)->get();
         for ($i = 0; $i < sizeof($arrayThemes); $i++) {
             $detalleObs = new Detalle_Observaciones();
@@ -2229,10 +2359,8 @@ class CursoTesisController extends Controller
             $detalleObs->correccion = null;
             $detalleObs->save();
         }
-        // return redirect()->route('asesor.verHistoObs')->with('datos','ok');
         return redirect()->route('asesor.verObsEstudiante', $existHisto[0]->cod_historialObs)->with('datos', 'ok');
 
-        //return redirect()->route
     }
 
     public function descargaObservacionCurso(Request $request)
@@ -2291,7 +2419,7 @@ class CursoTesisController extends Controller
         $metodos = $correccion[$cantObserva]->metodos;
         $tecnicas_instrum = $correccion[$cantObserva]->tecnicas_instrum;
         $instrumentacion = $correccion[$cantObserva]->instrumentacion;
-
+        $diseño_constrastacion = $correccion[$cantObserva]->diseno_contrastacion;
         $estg_metodologicas = $correccion[$cantObserva]->estg_metodologicas;
 
 
@@ -2348,7 +2476,7 @@ class CursoTesisController extends Controller
             $nuevaSesion->addText("Observacion: " . $localidad_institucion);
         }
         if ($meses_ejecucion != "") {
-            $nuevaSesion->addText("DURECION DE LA EJECUCION DEL PROYECTO", $titulos);
+            $nuevaSesion->addText("DURACION DE LA EJECUCION DEL PROYECTO", $titulos);
             $nuevaSesion->addText($tesis->meses_ejecucion);
             $nuevaSesion->addText("Observacion: " . $meses_ejecucion);
         }
@@ -2398,21 +2526,18 @@ class CursoTesisController extends Controller
             $nuevaSesion->addText($tesis->real_problematica);
             $nuevaSesion->addText("Observacion: " . $real_problematica);
         }
-        if ($antecedentes != "") {
-            $nuevaSesion->addText("ANTECEDENTES", $titulos);
-            $nuevaSesion->addText($tesis->antecedentes);
-            $nuevaSesion->addText("Observacion: " . $antecedentes);
-        }
-        if ($justificacion != "") {
-            $nuevaSesion->addText("JUSTIFICACION", $titulos);
-            $nuevaSesion->addText($tesis->justificacion);
-            $nuevaSesion->addText("Observacion: " . $justificacion);
-        }
         if ($formulacion_prob != "") {
             $nuevaSesion->addText("FORMULACION DEL PROBLEMA", $titulos);
             $nuevaSesion->addText($tesis->formulacion_prob);
             $nuevaSesion->addText("Observacion: " . $formulacion_prob);
         }
+
+        if ($justificacion != "") {
+            $nuevaSesion->addText("JUSTIFICACION", $titulos);
+            $nuevaSesion->addText($tesis->justificacion);
+            $nuevaSesion->addText("Observacion: " . $justificacion);
+        }
+
         if ($objetivos != "") {
             $nuevaSesion->addText("OBJETIVOS", $titulos);
             for ($i = 0; $i < count($objetivosProy); $i++) {
@@ -2426,23 +2551,39 @@ class CursoTesisController extends Controller
             $nuevaSesion->addText($tesis->marco_teorico);
             $nuevaSesion->addText("Observacion: " . $marco_teorico);
         }
+        if ($antecedentes != "") {
+            $nuevaSesion->addText("MARCO REFERENCIAL O ANTECEDENTES", $titulos);
+            $nuevaSesion->addText($tesis->antecedentes);
+            $nuevaSesion->addText("Observacion: " . $antecedentes);
+        }
         if ($marco_conceptual != "") {
             $nuevaSesion->addText("MARCO CONCEPTUAL", $titulos);
             $nuevaSesion->addText($tesis->marco_conceptual);
             $nuevaSesion->addText("Observacion: " . $marco_conceptual);
         }
-        if ($marco_legal != "") {
-            $nuevaSesion->addText("MARCO LEGAL", $titulos);
-            $nuevaSesion->addText($tesis->marco_legal);
-            $nuevaSesion->addText("Observacion: " . $marco_legal);
-        }
+        // if ($marco_legal != "") {
+        //     $nuevaSesion->addText("MARCO LEGAL", $titulos);
+        //     $nuevaSesion->addText($tesis->marco_legal);
+        //     $nuevaSesion->addText("Observacion: " . $marco_legal);
+        // }
         if ($form_hipotesis != "") {
             $nuevaSesion->addText("FORMULACION DE LA HIPOTESIS", $titulos);
             $nuevaSesion->addText($tesis->form_hipotesis);
             $nuevaSesion->addText("Observacion: " . $form_hipotesis);
         }
+        if ($variables != "") {
+            $nuevaSesion->addText("VARIABLES", $titulos);
+            for ($i = 0; $i < count($variableopProy); $i++) {
+                $nuevaSesion->addText("Descripcion: " . $variableopProy[$i]->descripcion);
+            }
+            $nuevaSesion->addText("Observacion: " . $variables);
+        }
+        if ($matriz_op != "") {
+            $nuevaSesion->addText("MATRIZ OPERACIONAL", $titulos);
+            $nuevaSesion->addText("Observacion: " . $matriz_op);
+        }
         if ($objeto_estudio != "") {
-            $nuevaSesion->addText("OBJETO DE ESTUDIO", $titulos);
+            $nuevaSesion->addText("MATERIALES", $titulos);
             $nuevaSesion->addText($tesis->objeto_estudio);
             $nuevaSesion->addText("Observacion: " . $objeto_estudio);
         }
@@ -2456,48 +2597,44 @@ class CursoTesisController extends Controller
             $nuevaSesion->addText($tesis->muestra);
             $nuevaSesion->addText("Observacion: " . $muestra);
         }
-        if ($metodos != "") {
-            $nuevaSesion->addText("METODOS", $titulos);
-            $nuevaSesion->addText($tesis->metodos);
-            $nuevaSesion->addText("Observacion: " . $metodos);
-        }
         if ($tecnicas_instrum != "") {
             $nuevaSesion->addText("TECNICAS E INTRUMENTOS DE RECOLECCION DE DATOS", $titulos);
             $nuevaSesion->addText($tesis->tecnicas_instrum);
             $nuevaSesion->addText("Observacion: " . $tecnicas_instrum);
         }
+        if ($metodos != "") {
+            $nuevaSesion->addText("PROCEDIMIENTOS", $titulos);
+            $nuevaSesion->addText($tesis->metodos);
+            $nuevaSesion->addText("Observacion: " . $metodos);
+        }
+        if ($diseño_constrastacion != "") {
+            $nuevaSesion->addText("DISEÑO DE CONTRASTACION", $titulos);
+            $nuevaSesion->addText($tesis->diseño_constrastacion);
+            $nuevaSesion->addText("Observacion: " . $diseño_constrastacion);
+        }
         if ($instrumentacion != "") {
-            $nuevaSesion->addText("INSTRUMENTACION", $titulos);
+            $nuevaSesion->addText("PROCESAMIENTO Y ANALISIS DE DATOS", $titulos);
             $nuevaSesion->addText($tesis->instrumentacion);
             $nuevaSesion->addText("Observacion: " . $instrumentacion);
         }
         if ($estg_metodologicas != "") {
-            $nuevaSesion->addText("ESTRATEGIAS METODOLOGICAS", $titulos);
+            $nuevaSesion->addText("CONSIDERACIONES ETICAS", $titulos);
             $nuevaSesion->addText($tesis->estg_metodologicas);
             $nuevaSesion->addText("Observacion: " . $estg_metodologicas);
         }
-        if ($variables != "") {
-            $nuevaSesion->addText("VARIABLES", $titulos);
-            for ($i = 0; $i < count($variableopProy); $i++) {
-                $nuevaSesion->addText("Descripcion: " . $variableopProy[$i]->descripcion);
-            }
-            $nuevaSesion->addText("Observacion: " . $variables);
-        }
+
         if ($referencias != "") {
             $nuevaSesion->addText("REFERENCIAS", $titulos);
             $nuevaSesion->addText("Observacion: " . $referencias);
         }
-        if ($matriz_op != "") {
-            $nuevaSesion->addText("MATRIZ OPERACIONAL", $titulos);
-            $nuevaSesion->addText("Observacion: " . $matriz_op);
-        }
+
 
 
         $objetoEscrito = \PhpOffice\PhpWord\IOFactory::createWriter($word, 'Word2007');
         try {
             $objetoEscrito->save(storage_path('Observaciones.docx'));
         } catch (\Throwable $th) {
-            $th;
+            return redirect()->view('cursoTesis20221.asesor.tesis.estudiantes-obs')->with('datos','oknot');
         }
 
         return response()->download(storage_path('Observaciones.docx'));

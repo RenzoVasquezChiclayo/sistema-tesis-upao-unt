@@ -662,8 +662,8 @@ class Tesis2022Controller extends Controller
                     $tesisFound = new Tesis_2022();
                     $tesisFound->cod_matricula = $estudiante->cod_matricula;
                 }
-                $tesisFound->cod_docente = $datos[1];
-                $tesisFound->cod_asesor = $datos[2];
+                $tesisFound->cod_docente = $datos[2];
+                $tesisFound->cod_asesor = $datos[1];
                 $tesisFound->fecha_create = now();
                 $tesisFound->fecha_update = now();
                 $tesisFound->save();
@@ -675,8 +675,8 @@ class Tesis2022Controller extends Controller
     }
 
     public function showEstudiantAsignado(){
-        $estudiantes = DB::table('estudiante_ct2022 as e')->leftJoin('tesis_2022 as t','t.cod_matricula','=','e.cod_matricula')->select('e.*','t.cod_docente')->where('t.cod_docente','!=',null)->orderBy('e.apellidos')->paginate($this::PAG_ASIGNACION);
-        $asesores = AsesorCurso::all();
+        $estudiantes = DB::table('estudiante_ct2022 as e')->leftJoin('tesis_2022 as t','t.cod_matricula','=','e.cod_matricula')->select('e.*','t.cod_docente','t.cod_asesor')->where('t.cod_docente','!=',null)->orderBy('e.apellidos')->paginate($this::PAG_ASIGNACION);
+        $asesores = DB::table('asesor_curso')->get();
         return view('cursoTesis20221.director.tesis.editarAsignarAsesor',['estudiantes'=>$estudiantes,'asesores'=>$asesores]);
     }
 
@@ -689,7 +689,8 @@ class Tesis2022Controller extends Controller
                 $datos = explode('_',$posicion[$i]);
                 $estudiante = DB::table('estudiante_ct2022 as e')->select('e.*')->where('e.cod_matricula','like','%'.$datos[0].'%')->first();
                 $tesis = Tesis_2022::where('cod_matricula',$estudiante->cod_matricula)->first();
-                $tesis->cod_docente = $datos[1];
+                $tesis->cod_docente = $datos[2];
+                $tesis->cod_asesor = $datos[1];
                 $tesis->save();
             }
             $i++;

@@ -108,6 +108,7 @@
         h6 {
             text-align: left;
         }
+
     </style>
     @if ($autor->cod_docente == null)
         <div class="row d-flex" style="align-items:center; justify-content: center;">
@@ -182,9 +183,9 @@
                                 <h5>Titulo</h5>
                                 <div class="col">
                                     <div class="row">
-                                        <div class="col-12 col-md-10">
+                                        <div class="col-12">
                                             <div class="row gy-1 gy-sm-0">
-                                                <div class="col-12 col-sm-9">
+                                                <div class="col-12 col-lg-10">
                                                     <input class="form-control" name="txttitulo" id="txttitulo"
                                                         type="text"
                                                         value="@if ($tesis[0]->titulo != '') {{ $tesis[0]->titulo }} @endif"
@@ -192,7 +193,7 @@
                                                     <span class="ps-2" id="validateTitle" name="validateTitle"
                                                         style="color: red"></span>
                                                 </div>
-                                                <div class="col-12 col-sm-3">
+                                                <div class="col-12 col-lg-2">
                                                     <input type="button" value="Verificar" onclick="validaText();"
                                                         class="btn btn-success">
                                                 </div>
@@ -957,7 +958,60 @@
                                 @endif
                             </div>
                         </div>
+                        <div class="row" style=" margin-bottom:20px" @if ($campos[0]->formulacion_problema == 0) hidden @endif>
+                            <h5>Enunciado del problema</h5>
+                            <div class="row" style="margin-bottom:8px">
+                                <div class="col-12 col-md-10">
+                                    <div class="form-floating">
+                                        <textarea class="form-control" name="txtformulacion_prob" id="txtformulacion_prob"
+                                            style="height: 100px; resize:none" required>
+@if ($tesis[0]->formulacion_prob != '')
+{{ $tesis[0]->formulacion_prob }}
+@endif
+</textarea>
+                                    </div>
+                                </div>
 
+                                @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
+                                    @if ($correciones[0]->formulacion_prob != null)
+                                        <div class="col-2">
+                                            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+                                                data-bs-target="#mCorreccionFProbl">Corrección</button>
+                                        </div>
+                                    @endif
+                                    {{-- Aqui va el modal --}}
+                                    <div class="modal" id="mCorreccionFProbl">
+                                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                            <div class="modal-content">
+                                                <!-- Modal Header -->
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Corrección de Formulacion del problema</h4>
+                                                    <button type="button" class="btn-close"
+                                                        data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <!-- Modal body -->
+                                                <div class="modal-body">
+                                                    <div class="row" style="padding: 20px">
+                                                        <div class="row my-2">
+                                                            <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->formulacion_prob }}</textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Modal footer -->
+                                                <div class="modal-footer">
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <button type="button" class="btn btn-danger"
+                                                                data-bs-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
                         <div class="row" style=" margin-bottom:20px" @if ($campos[0]->rp_antecedente_justificacion == 0) hidden @endif>
                             <h5>Justificación de la investigación</h5>
                             <div class="row" style="margin-bottom:8px">
@@ -1014,60 +1068,7 @@
                             </div>
                         </div>
 
-                        <div class="row" style=" margin-bottom:20px" @if ($campos[0]->formulacion_problema == 0) hidden @endif>
-                            <h5>Enunciado del problema</h5>
-                            <div class="row" style="margin-bottom:8px">
-                                <div class="col-12 col-md-10">
-                                    <div class="form-floating">
-                                        <textarea class="form-control" name="txtformulacion_prob" id="txtformulacion_prob"
-                                            style="height: 100px; resize:none" required>
-@if ($tesis[0]->formulacion_prob != '')
-{{ $tesis[0]->formulacion_prob }}
-@endif
-</textarea>
-                                    </div>
-                                </div>
 
-                                @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
-                                    @if ($correciones[0]->formulacion_prob != null)
-                                        <div class="col-2">
-                                            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionFProbl">Corrección</button>
-                                        </div>
-                                    @endif
-                                    {{-- Aqui va el modal --}}
-                                    <div class="modal" id="mCorreccionFProbl">
-                                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                            <div class="modal-content">
-                                                <!-- Modal Header -->
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title">Corrección de Formulacion del problema</h4>
-                                                    <button type="button" class="btn-close"
-                                                        data-bs-dismiss="modal"></button>
-                                                </div>
-                                                <!-- Modal body -->
-                                                <div class="modal-body">
-                                                    <div class="row" style="padding: 20px">
-                                                        <div class="row my-2">
-                                                            <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->formulacion_prob }}</textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Modal footer -->
-                                                <div class="modal-footer">
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <button type="button" class="btn btn-danger"
-                                                                data-bs-dismiss="modal">Close</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
 
                         <div class="row" style=" margin-bottom:20px" @if ($campos[0]->objetivos == 0) hidden @endif>
                             <h5>Objetivos</h5>
@@ -1231,8 +1232,8 @@
                                         {{-- txtmarco_legal --}}
                                         <textarea class="form-control" name="txtantecedentes" id="txtantecedentes" style="height: 100px; resize:none"
                                             required>
-@if ($tesis[0]->marco_legal != '')
-{{ $tesis[0]->marco_legal }}
+@if ($tesis[0]->antecedentes != '')
+{{ $tesis[0]->antecedentes }}
 @endif
 </textarea>
                                     </div>
@@ -1923,7 +1924,7 @@
                                 </div>
 
                                 @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
-                                    @if ($correciones[0]->dis_contrastacion != null)
+                                    @if ($correciones[0]->diseno_contrastacion != null)
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger"
                                                 data-bs-toggle="modal"
@@ -1944,7 +1945,7 @@
                                                 <div class="modal-body">
                                                     <div class="row" style="padding: 20px">
                                                         <div class="row my-2">
-                                                            <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->dis_contrastacion }}</textarea>
+                                                            <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->diseno_contrastacion }}</textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -2262,7 +2263,7 @@
                                                                 class="btn btn-warning"
                                                                 onclick="deleteOldRecurso(this);">X</a>
                                                             <input type="hidden" id="xlref-{{ $indRef }}"
-                                                                value="{{ $obj->cod_referencias }}">
+                                                                value="{{ $ref->cod_referencias }}">
                                                         </td>
                                                         <td>{{ $ref->autor }}</td>
                                                         <td>{{ $ref->fPublicacion }}</td>
@@ -2334,7 +2335,7 @@
                                 <div class="row my-2">
                                     <div class="col-6">
                                         <select class="form-select" id="cboTipoRecurso" onchange="onChangeRecurso();">
-                                            <option selected>-</option>
+                                            <option value="0" selected>-</option>
                                             <option value="1">Personal</option>
                                             <option value="2">Bienes</option>
                                             <option value="3">Servicios</option>
@@ -2359,8 +2360,8 @@
                                         data-bs-dismiss="modal">Close</button>
                                 </div>
                                 <div class="col-6">
-                                    <button type="button" class="btn btn-primary" onclick="agregarRecurso();"
-                                        data-bs-dismiss="modal">Guardar</button>
+                                    <button type="button" class="btn btn-primary" id="boton_recurso" onclick="agregarRecurso();"
+                                        data-bs-dismiss="modal" disabled>Guardar</button>
                                 </div>
                             </div>
                         </div>
@@ -2384,8 +2385,8 @@
                             <div class="row" style="padding: 20px">
                                 <div class="row my-2">
                                     <div class="col-6">
-                                        <select class="form-select" id="cboObjetivo">
-                                            <option selected>-</option>
+                                        <select class="form-select" id="cboObjetivo" onchange="onChangeObjetivo();">
+                                            <option value="0" selected>-</option>
                                             <option value="1">General</option>
                                             <option value="2">Especifico</option>
                                         </select>
@@ -2406,8 +2407,8 @@
                                         data-bs-dismiss="modal">Close</button>
                                 </div>
                                 <div class="col-6">
-                                    <button type="button" class="btn btn-warning" onclick="agregarObjetivo();"
-                                        data-bs-dismiss="modal">Guardar</button>
+                                    <button type="button" class="btn btn-warning" id="boton_objetivo" onclick="agregarObjetivo();"
+                                        data-bs-dismiss="modal" disabled>Guardar</button>
                                 </div>
                             </div>
                         </div>
@@ -2467,6 +2468,7 @@
         </script>
     @endif
     <script type="text/javascript">
+
         var cronogramas_py_bd = @json($cronogramas_py);
 
         var existMes = false;

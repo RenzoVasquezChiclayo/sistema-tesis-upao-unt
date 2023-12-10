@@ -22,6 +22,8 @@ var arrayAutores=[];
 
 window.onload = function() {
 
+
+
     const isObservacion = document.getElementById('verificaCorrect').value;
     if(isObservacion=='true'){
 
@@ -78,6 +80,7 @@ function setColorInit(id){
 function deleteOldRecurso(item){
     const iditem = item.id;
     const idindice = iditem.split("-");
+
     let code = document.getElementById('x'+iditem).value;
     if(document.getElementById('listOld'+idindice[0]).value == ""){
         document.getElementById('listOld'+idindice[0]).value = code;
@@ -94,7 +97,6 @@ function deleteOldRecurso(item){
         document.getElementById('filaV'+idindice[1]).remove();
         //iVariable--;
     }else if(idindice[0]=='lref'){
-
         document.getElementById('filaRe'+idindice[1]).remove();
         //iReferencia--;
     }
@@ -347,6 +349,7 @@ function agregarReferenciaB()
 }
 function quitarReferenciaB(item)
 {
+    alert("Aqui");
     document.getElementById('fila'+item).remove();
     //indice--;
     document.getElementById('txtAutorAPA').focus();
@@ -410,8 +413,12 @@ function ordenarArray(arreglo){
 function onChangeRecurso(){
     if(document.getElementById('cboTipoRecurso').value == 2){
         document.getElementById('cboSubtipoRecurso').hidden = false;
-    } else {
+        document.getElementById('boton_recurso').disabled = false;
+    } else if(document.getElementById('cboTipoRecurso').value == 0){
+        document.getElementById('boton_recurso').disabled = true;
+    }else{
         document.getElementById('cboSubtipoRecurso').hidden = true;
+        document.getElementById('boton_recurso').disabled = false;
     }
 }
 //Funcion para agregar cada Recurso
@@ -429,11 +436,16 @@ function agregarRecurso()
     }
 
     descripcion = document.getElementById("taRecurso").value;
+    if (descripcion != "") {
+        fila = '<tbody><tr id="filaR'+indiceRecurso+'"><td><input type="hidden" name="idtipo[]" value="'+txtTipo+'">'+txtTipo+'</td><td><input type="hidden" name="idsubtipo[]" value="'+subtipo+'">'+subtipo+'</td><td><input type="hidden" name="iddescripcion[]" value="'+descripcion+'">'+descripcion+'</td><td align="center"><a href="#" class="btn btn-warning" onclick="quitarRecurso('+indiceRecurso+')">X</a></td></tr></tbody>';
+        document.getElementById('recursosTable').innerHTML += fila;
+        indiceRecurso++;
+        document.getElementById('taRecurso').value="";
+    }else{
+        alert('Falta la descripcion del recurso');
 
-    fila = '<tbody><tr id="filaR'+indiceRecurso+'"><td><input type="hidden" name="idtipo[]" value="'+txtTipo+'">'+txtTipo+'</td><td><input type="hidden" name="idsubtipo[]" value="'+subtipo+'">'+subtipo+'</td><td><input type="hidden" name="iddescripcion[]" value="'+descripcion+'">'+descripcion+'</td><td align="center"><a href="#" class="btn btn-warning" onclick="quitarRecurso('+indiceRecurso+')">X</a></td></tr></tbody>';
-    document.getElementById('recursosTable').innerHTML += fila;
-    indiceRecurso++;
-    document.getElementById('taRecurso').value="";
+    }
+
 }
 
 function quitarRecurso(item)
@@ -443,6 +455,14 @@ function quitarRecurso(item)
 }
 
 //Funcion para agregar cada Recurso
+function onChangeObjetivo(){
+    if(document.getElementById('cboObjetivo').value == 0){
+        document.getElementById('boton_objetivo').disabled = true;
+    }else{
+        document.getElementById('boton_objetivo').disabled = false;
+    }
+}
+
 function agregarObjetivo()
 {
 
@@ -450,11 +470,15 @@ function agregarObjetivo()
     txtTipo = tipo.options[tipo.selectedIndex].text;
 
     descripcion = document.getElementById("taObjetivo").value;
+    if (descripcion != "") {
     fila = '<tbody><tr id="filaO'+iObjetivo+'"><td><input type="hidden" name="idtipoObj[]" value="'+txtTipo+'">'+txtTipo+'</td><td><input type="hidden" name="iddescripcionObj[]" value="'+descripcion+'">'+descripcion+'</td><td align="center"><a href="#" class="btn btn-warning" onclick="quitarObjetivo('+iObjetivo+')">X</a></td></tr></tbody>';
     document.getElementById('objetivoTable').innerHTML +=fila;
     iObjetivo++;
     document.getElementById('taObjetivo').value="";
+    }else{
+        alert('Falta la descripcion del objetivo');
 
+    }
 }
 function quitarObjetivo(item)
 {
@@ -464,10 +488,15 @@ function quitarObjetivo(item)
 function agregarVariable()
 {
     descripcion = document.getElementById("taVariable").value;
+    if (descripcion != "") {
     fila = '<tbody><tr id="filaV'+iVariable+'"><td><input type="hidden" name="iddescripcionVar[]" value="'+descripcion+'">'+descripcion+'</td><td align="center"><a href="#" class="btn btn-warning" onclick="quitarVariable('+iVariable+');">X</a></td></tr></tbody>';
     document.getElementById('variableTable').innerHTML +=fila;
     iVariable++;
     document.getElementById('taVariable').value="";
+    }else{
+        alert('Falta la descripcion de la variable');
+
+    }
 }
 function quitarVariable(item)
 {
