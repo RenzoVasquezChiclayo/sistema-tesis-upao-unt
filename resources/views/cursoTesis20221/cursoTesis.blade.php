@@ -2471,6 +2471,7 @@
 
         var cronogramas_py_bd = @json($cronogramas_py);
 
+        var lastMonth = 0;
         var existMes = false;
         if (document.getElementById('txtmeses_ejecucion').value != "") {
             setMeses();
@@ -2512,9 +2513,11 @@
                 }
             } else {
                 for (i = 1; i <= lastMonth; i++) {
+
                     document.getElementById('Mes' + i).remove();
                     for (let j = 1; j <= activities; j++) {
                         document.getElementById('n' + j + 'Tr' + i).remove();
+                        document.getElementById( j + 'Tr' + i).remove();
                     }
                 }
 

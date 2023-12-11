@@ -11,7 +11,6 @@ var gruposFOTOS = [];
 
 //Variables para setMeses()
 
-var lastMonth = 0;
 
 //Para agregar mas autores
 var arrayAutores=[];
