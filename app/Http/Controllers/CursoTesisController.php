@@ -2104,19 +2104,24 @@ class CursoTesisController extends Controller
             ->select('p.*', 'e.nombres as nombresAutor', 'e.apellidos as apellidosAutor', 'ac.nombres as nombre_asesor', 'ac.apellidos as apellidos_asesor', 'ac.direccion', 'ac.estado as estadoAsesor', 'ga.descripcion as DescGrado', 'cd.descripcion as DescCat')
             ->where('e.cod_matricula', $cod_matricula)->get();
 
-            foreach ($cursoTesis[0] as $curso) {
+        foreach ($cursoTesis[0] as $curso) {
             $arregloAux[$aux] = $curso;
             $aux++;
         }
-        for ($i = 0; $i < sizeof($arregloAux) - 17; $i++) {
-            if ($arregloAux[$i] != null) {
-                $isFinal = 'true';
-            } else {
-                $isFinal = 'false';
-                break;
-            }
-        }
 
+        for ($i = 0; $i < sizeof($arregloAux) - 17; $i++) {
+            if($i == 20){
+                break;
+            }else{
+                if ($arregloAux[$i] != null) {
+                    $isFinal = 'true';
+                } else {
+                    $isFinal = 'false';
+                    break;
+                }
+            }
+
+        }
         $observaciones = ObservacionesProy::join('historial_observaciones', 'observaciones_proy.cod_historialObs', '=', 'historial_observaciones.cod_historialObs')
             ->select('observaciones_proy.*')->where('historial_observaciones.cod_proyectotesis', $cursoTesis[0]->cod_proyectotesis)
             ->get();

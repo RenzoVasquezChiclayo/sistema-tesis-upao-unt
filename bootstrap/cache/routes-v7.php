@@ -24,7 +24,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::p2UTP65MH40QZdrx',
+            '_route' => 'generated::l7mS98vO8fzarHyZ',
           ),
           1 => NULL,
           2 => 
@@ -102,7 +102,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::3dVnExF7mWf8A7wJ',
+            '_route' => 'generated::swdJeBMnXVi6HFYI',
           ),
           1 => NULL,
           2 => 
@@ -1716,6 +1716,143 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
+      '/lista-solicitudes-jurados' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'director.verSolicitudesJurados',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/ver-solicitud-sustentacion' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'alumno.verSolicitudSustentacion',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/historico-solicitud-sustentacion' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'alumno.historicoSolicitud',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/guardar-solicitud-sustentacion' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'alumno.guardarSolicitud',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/crear-informe-final' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'asesor.crearInformeFinal',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/lista-estudiantes-informe' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'asesor.listaEstudiantesInforme',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/guardar-informe-final' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'asesor.guardarInformeFinal',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
       '/verEstudiantes' => 
       array (
         0 => 
@@ -2105,7 +2242,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::hyx8IvyY81joUfSA',
+            '_route' => 'generated::qU1alKIrYofe2PqT',
           ),
           1 => NULL,
           2 => 
@@ -2141,7 +2278,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::7M6pe5z2CsDDdNr5',
+            '_route' => 'generated::eZMbVPOj612RCmmw',
           ),
           1 => NULL,
           2 => 
@@ -2232,7 +2369,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::N2VsEaYIifDQiVTG',
+            '_route' => 'generated::c0yJPmluPXcQbHvm',
           ),
           1 => NULL,
           2 => 
@@ -2350,7 +2487,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::onejYjcl4ZSgYgk0',
+            '_route' => 'generated::qC9BXofXYtxVbMiC',
           ),
           1 => 
           array (
@@ -2382,7 +2519,7 @@ app('router')->setCompiledRoutes(
   ),
   'attributes' => 
   array (
-    'generated::p2UTP65MH40QZdrx' => 
+    'generated::l7mS98vO8fzarHyZ' => 
     array (
       'methods' => 
       array (
@@ -2403,7 +2540,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
         ),
-        'as' => 'generated::p2UTP65MH40QZdrx',
+        'as' => 'generated::l7mS98vO8fzarHyZ',
       ),
       'fallback' => false,
       'defaults' => 
@@ -2528,7 +2665,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::3dVnExF7mWf8A7wJ' => 
+    'generated::swdJeBMnXVi6HFYI' => 
     array (
       'methods' => 
       array (
@@ -2545,13 +2682,13 @@ app('router')->setCompiledRoutes(
         ),
         'uses' => 'O:47:"Laravel\\SerializableClosure\\SerializableClosure":1:{s:12:"serializable";O:46:"Laravel\\SerializableClosure\\Serializers\\Signed":2:{s:12:"serializable";s:297:"O:46:"Laravel\\SerializableClosure\\Serializers\\Native":5:{s:3:"use";a:0:{}s:8:"function";s:79:"function (\\Illuminate\\Http\\Request $request) {
     return $request->user();
-}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"0000000069566cbf0000000014b4f244";}";s:4:"hash";s:44:"QynRwSUwIFTfecu2EqBM4XYryB+kAcEENF71uoBapqE=";}}',
+}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"000000007335b175000000001b4a7697";}";s:4:"hash";s:44:"jPs+KHJ6VcZRSsKNNRUjMx8yLQbKB1F8yr0bq90Bbrg=";}}',
         'namespace' => NULL,
         'prefix' => 'api',
         'where' => 
         array (
         ),
-        'as' => 'generated::3dVnExF7mWf8A7wJ',
+        'as' => 'generated::swdJeBMnXVi6HFYI',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5656,6 +5793,269 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
+    'director.verSolicitudesJurados' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'lista-solicitudes-jurados',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+        ),
+        'uses' => 'App\\Http\\Controllers\\SustentacionController@lista_solicitudes_jurados',
+        'controller' => 'App\\Http\\Controllers\\SustentacionController@lista_solicitudes_jurados',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'director.verSolicitudesJurados',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'alumno.verSolicitudSustentacion' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'ver-solicitud-sustentacion',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+        ),
+        'uses' => 'App\\Http\\Controllers\\SustentacionController@verSolicitudSustentacion',
+        'controller' => 'App\\Http\\Controllers\\SustentacionController@verSolicitudSustentacion',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'alumno.verSolicitudSustentacion',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'alumno.historicoSolicitud' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'historico-solicitud-sustentacion',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+        ),
+        'uses' => 'App\\Http\\Controllers\\SustentacionController@historicoSolicitud',
+        'controller' => 'App\\Http\\Controllers\\SustentacionController@historicoSolicitud',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'alumno.historicoSolicitud',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'alumno.guardarSolicitud' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'guardar-solicitud-sustentacion',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+        ),
+        'uses' => 'App\\Http\\Controllers\\SustentacionController@guardarSolicitud',
+        'controller' => 'App\\Http\\Controllers\\SustentacionController@guardarSolicitud',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'alumno.guardarSolicitud',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'asesor.crearInformeFinal' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'crear-informe-final',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+        ),
+        'uses' => 'App\\Http\\Controllers\\SustentacionController@crearInformeFinal',
+        'controller' => 'App\\Http\\Controllers\\SustentacionController@crearInformeFinal',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'asesor.crearInformeFinal',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'asesor.listaEstudiantesInforme' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'lista-estudiantes-informe',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+        ),
+        'uses' => 'App\\Http\\Controllers\\SustentacionController@listarAlumnosInforme',
+        'controller' => 'App\\Http\\Controllers\\SustentacionController@listarAlumnosInforme',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'asesor.listaEstudiantesInforme',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'asesor.guardarInformeFinal' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'guardar-informe-final',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+        ),
+        'uses' => 'App\\Http\\Controllers\\SustentacionController@guardarInformeFinal',
+        'controller' => 'App\\Http\\Controllers\\SustentacionController@guardarInformeFinal',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'asesor.guardarInformeFinal',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
     'asesor.showEstudiantes' => 
     array (
       'methods' => 
@@ -6466,7 +6866,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::hyx8IvyY81joUfSA' => 
+    'generated::qU1alKIrYofe2PqT' => 
     array (
       'methods' => 
       array (
@@ -6486,7 +6886,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::hyx8IvyY81joUfSA',
+        'as' => 'generated::qU1alKIrYofe2PqT',
       ),
       'fallback' => false,
       'defaults' => 
@@ -6539,7 +6939,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::7M6pe5z2CsDDdNr5' => 
+    'generated::eZMbVPOj612RCmmw' => 
     array (
       'methods' => 
       array (
@@ -6559,7 +6959,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::7M6pe5z2CsDDdNr5',
+        'as' => 'generated::eZMbVPOj612RCmmw',
       ),
       'fallback' => false,
       'defaults' => 
@@ -6758,7 +7158,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::N2VsEaYIifDQiVTG' => 
+    'generated::c0yJPmluPXcQbHvm' => 
     array (
       'methods' => 
       array (
@@ -6778,7 +7178,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::N2VsEaYIifDQiVTG',
+        'as' => 'generated::c0yJPmluPXcQbHvm',
       ),
       'fallback' => false,
       'defaults' => 
@@ -6794,7 +7194,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::onejYjcl4ZSgYgk0' => 
+    'generated::qC9BXofXYtxVbMiC' => 
     array (
       'methods' => 
       array (
@@ -6811,13 +7211,13 @@ app('router')->setCompiledRoutes(
         'uses' => 'O:47:"Laravel\\SerializableClosure\\SerializableClosure":1:{s:12:"serializable";O:46:"Laravel\\SerializableClosure\\Serializers\\Signed":2:{s:12:"serializable";s:295:"O:46:"Laravel\\SerializableClosure\\Serializers\\Native":5:{s:3:"use";a:0:{}s:8:"function";s:77:"function($comand){
     \\Illuminate\\Support\\Facades\\Artisan::call($comand);
 
-}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"0000000069566cc00000000014b4f244";}";s:4:"hash";s:44:"jkTor3OqIlewDYDY+zFkoWa7Ab1/xt91qnXX/tcZ0VQ=";}}',
+}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"000000007335b103000000001b4a7697";}";s:4:"hash";s:44:"jWI/fWDogDcK21c3F4xgPcbDQysGToYNc8IzaWa8cpk=";}}',
         'namespace' => NULL,
         'prefix' => '',
         'where' => 
         array (
         ),
-        'as' => 'generated::onejYjcl4ZSgYgk0',
+        'as' => 'generated::qC9BXofXYtxVbMiC',
       ),
       'fallback' => false,
       'defaults' => 

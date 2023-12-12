@@ -141,7 +141,7 @@
             <div class="card-header">
                 Registro de Proyectos
             </div>
-            <div class="card-body">
+            <div class="card-body" style="text-align: start;">
                 <div class="row py-3" style="text-align: center;">
                     <div class="col" style="align-items: center">
                         <h2 class="title-p"><strong>Registro de Tesis</strong></h2>
@@ -1720,7 +1720,7 @@
                                                                     onclick="deleteOldData(this);">X</a>
                                                             @endif
                                                             <input type="hidden" id="xlref-{{ $indRef }}"
-                                                                value="{{ $obj->cod_referencias }}">
+                                                                value="{{ $ref->cod_referencias }}">
                                                         </td>
                                                         <td>{{ $ref->autor }}</td>
                                                         <td>{{ $ref->fPublicacion }}</td>

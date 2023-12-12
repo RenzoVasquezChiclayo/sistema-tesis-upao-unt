@@ -1353,6 +1353,7 @@
             const isFill = array_chk.some(condition)
             var validaCampos = document.getElementById('validacionCampos').value;
             var camposActivos = document.getElementById('camposActivos').value;
+            var validacionTesis = document.getElementById('validacionTesis').value;
             if(isFill){
                 Swal.fire({
                     icon: 'info',
@@ -1362,22 +1363,31 @@
                 return
             }
             if (camposActivos == 'true') {
-                Swal.fire({
-                title: 'Estas seguro(a)?',
-                text: "No se guardaran observaciones!",
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Si, continuar!',
-                cancelButtonText: 'Cancelar',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        document.formProyecto.action = "{{ route('asesor.guardarSinObs') }}";
-                        document.formProyecto.method = "POST";
-                        document.formProyecto.submit();
-                    }
-                })
+                if (validacionTesis == 'true' && validaCampos == 'true') {
+                    document.getElementById('btnSinObservar').hidden = true;
+                    document.getElementById('btnConObservacion').hidden = true;
+
+                    document.getElementById('grupoAproDesa').hidden = false;
+                    document.getElementById('grupoObservaciones').hidden = true;
+                }else{
+                    Swal.fire({
+                    title: 'Estas seguro(a)?',
+                    text: "No se guardaran observaciones!",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si, continuar!',
+                    cancelButtonText: 'Cancelar',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            document.formProyecto.action = "{{ route('asesor.guardarSinObs') }}";
+                            document.formProyecto.method = "POST";
+                            document.formProyecto.submit();
+                        }
+                    })
+                }
+
             }else{
                 Swal.fire({
                 title: 'Estas seguro(a)?',
@@ -1400,18 +1410,6 @@
 
         }
 
-        /*Validar si se aprueba o no*/
-        function checkAprobation() {
-            var validacionCampos = document.getElementById('validacionCampos').value;
-            var validacionTesis = document.getElementById('validacionTesis').value;
-            if (validacionTesis == 'true' && validacionCampos == 'true') {
-                document.getElementById('btnSinObservar').hidden = true;
-                document.getElementById('btnConObservacion').hidden = true;
-
-                document.getElementById('grupoAproDesa').hidden = false;
-                document.getElementById('grupoObservaciones').hidden = true;
-            }
-        }
 
         function editCamposEstudiante() {
             document.formProyecto.action = "{{ route('asesor.asignarTemas') }}";

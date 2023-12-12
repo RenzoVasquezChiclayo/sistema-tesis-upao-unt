@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminCursoController;
 use App\Http\Controllers\CursoTesisController;
 use App\Http\Controllers\EstudianteTesisController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\SustentacionController;
 use App\Http\Controllers\Tesis2022Controller;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
@@ -173,8 +174,24 @@ Route::post('/saveEditAsesor',[CursoTesisController::class,'editAsesor'])->name(
 
 // ------
 
+// EVALUACION JURADOS
+//Director
+Route::get('/lista-solicitudes-jurados',[SustentacionController::class,'lista_solicitudes_jurados'])->name('director.verSolicitudesJurados')->middleware('auth');
 
 
+// VISTA ALUMNO ENVIO SOLICITUD
+Route::get('/ver-solicitud-sustentacion',[SustentacionController::class,'verSolicitudSustentacion'])->name('alumno.verSolicitudSustentacion')->middleware('auth');
+Route::get('/historico-solicitud-sustentacion',[SustentacionController::class,'historicoSolicitud'])->name('alumno.historicoSolicitud')->middleware('auth');
+Route::post('/guardar-solicitud-sustentacion',[SustentacionController::class,'guardarSolicitud'])->name('alumno.guardarSolicitud')->middleware('auth');
+
+// VISTA ASESOR
+Route::post('/crear-informe-final',[SustentacionController::class,'crearInformeFinal'])->name('asesor.crearInformeFinal')->middleware('auth');
+Route::get('/lista-estudiantes-informe',[SustentacionController::class,'listarAlumnosInforme'])->name('asesor.listaEstudiantesInforme')->middleware('auth');
+Route::post('/guardar-informe-final',[SustentacionController::class,'guardarInformeFinal'])->name('asesor.guardarInformeFinal')->middleware('auth');
+
+
+
+//-----------------------------------
 //Rutas para el asesor Curso
 Route::get('/verEstudiantes',[CursoTesisController::class,'showEstudiantes'])->name('asesor.showEstudiantes')->middleware('auth');
 Route::post('/asignarTemas',[CursoTesisController::class,'asignarTemas'])->name('asesor.asignarTemas')->middleware('auth');
@@ -208,6 +225,8 @@ Route::post('aprobarTesis',[Tesis2022Controller::class,'aprobarTesis'])
         ->name('asesor.aprobar-tesis');
 Route::post('desaprobarTesis',[Tesis2022Controller::class,'desaprobarTesis'])
         ->name('asesor.desaprobar-tesis');
+
+
 
 Auth::routes();
 

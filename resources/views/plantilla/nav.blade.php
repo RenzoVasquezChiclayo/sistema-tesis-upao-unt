@@ -108,6 +108,20 @@
             </a>
             <span class="tooltip">Estado de la Tesis</span>
         </li>
+        <li>
+            <a class="cstm-a" data-bs-toggle="collapse" href="#collapseSolicitud" role="button" aria-expanded="false" aria-controls="collapseSolicitud">
+                <i class='bx bx-group'></i>
+                <span class = "links_name">Sustentacion</span>
+            </a>
+            <div class="cstm-collapse collapse" id="collapseSolicitud">
+                <a href="{{ route('alumno.verSolicitudSustentacion') }}">
+                    <span class="links_name">Solicitud sustentación</span>
+                </a>
+                <a href="{{route('alumno.historicoSolicitud')}}">
+                    <span class="links_name">Historico sustentacion</span>
+                </a>
+            </div>
+        </li>
         {{-- <a class="cstm-a" href="{{route('curso.verHistorialObs')}}" >
         <i class="nav-icon fas fa-graduation-cap"></i>
         <span class="links_name">Historial de Correcciones</span>
@@ -177,7 +191,7 @@
         </li>
         <li>
             <a class="cstm-a" data-bs-toggle="collapse" href="#collapseAlumno" role="button" aria-expanded="false" aria-controls="collapseAlumno">
-                <i class='bx bx-sm bx-check-square'></i>
+                <i class='bx bx-group'></i>
                 <span class = "links_name">Alumno</span>
             </a>
             <div class="cstm-collapse collapse" id="collapseAlumno">
@@ -191,7 +205,7 @@
         </li>
         <li>
             <a class="cstm-a" data-bs-toggle="collapse" href="#collapseAsesor" role="button" aria-expanded="false" aria-controls="collapseAsesor">
-                <i class='bx bx-sm bx-check-square'></i>
+                <i class='bx bx-male-female'></i>
                 <span class = "links_name">Asesores y Docentes</span>
             </a>
             <div class="cstm-collapse collapse" id="collapseAsesor">
@@ -217,7 +231,17 @@
             </a>
             <span class="tooltip">Tesis</span>
         </li>
-
+        <li>
+            <a class="cstm-a" data-bs-toggle="collapse" href="#collapseEvaluacion" role="button" aria-expanded="false" aria-controls="collapseGeneral">
+                <i class='bx bxs-book-bookmark'></i>
+                <span class="links_name">Evaluacion de Jurados</span>
+            </a>
+            <div class="cstm-collapse collapse" id="collapseEvaluacion">
+                <a href="{{route('director.verSolicitudesJurados')}}">
+                    <span class="links_name">Solicitudes</span>
+                </a>
+            </div>
+        </li>
         {{-- Nav para el Asesor del curso TESIS I --}}
     @elseif (auth()->user()->rol == 'a-CTesis2022-1')
         <li>
@@ -247,6 +271,17 @@
                 <span class="links_name">Historial Tesis</span>
             </a>
             <span class="tooltip">Estudiantes</span>
+        </li>
+        <li>
+            <a class="cstm-a" data-bs-toggle="collapse" href="#collapseSustentacion" role="button" aria-expanded="false" aria-controls="collapseSustentacion">
+                <i class='bx bx-male-female'></i>
+                <span class = "links_name">Sustentación</span>
+            </a>
+            <div class="cstm-collapse collapse" id="collapseSustentacion">
+                <a href="{{route('asesor.listaEstudiantesInforme')}}">
+                    <span class="links_name">Historial de informes</span>
+                </a>
+            </div>
         </li>
 
         {{-- Nav para la Secretaria, agregara estudiantes --}}

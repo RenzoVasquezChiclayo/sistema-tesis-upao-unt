@@ -81,7 +81,7 @@ class Tesis2022Controller extends Controller
     public function saveTesis2022(Request $request){
         $isSaved = $request->isSaved;
         $tesis = Tesis_2022::join('estudiante_ct2022 as ES','tesis_2022.cod_matricula','=','ES.cod_matricula')
-                        ->select('tesis_2022.*','ES.*')
+                        ->select('tesis_2022.*','ES.apellidos','ES.nombres','ES.cod_matricula','ES.dni','ES.correo')
                         ->where('tesis_2022.cod_tesis','=',$request->txtcod_tesis)->first();
         $asesor = DB::table('asesor_curso')->where('cod_docente',$tesis->cod_asesor)->first();  //Encontramos al asesor
         $docente = DB::table('asesor_curso')->where('cod_docente',$tesis->cod_docente)->first();  //Encontramos al asesor
@@ -598,10 +598,10 @@ class Tesis2022Controller extends Controller
 
                 }
             }
-
             if($isSaved == "true"){
                 $tesis->estado = 9;
             }else{
+
                 $tesis->estado = 1;
                 // if ($asesor->correo != "") {
                 //     $estudiante = $tesis->apellidos." ".$tesis->nombres;
@@ -731,8 +731,11 @@ class Tesis2022Controller extends Controller
         $referencias = DB::table('t_referencias')->where('cod_tesis','=',$Tesis[0]->cod_tesis)->get();
 
         $validatesis = DB::table('tesis_2022')
-                                    ->select('titulo','presentacion','resumen','introduccion','real_problematica','antecedentes','justificacion','formulacion_prob','marco_teorico','marco_conceptual','marco_legal','form_hipotesis','objeto_estudio','poblacion','muestra','metodos','tecnicas_instrum','instrumentacion','estg_metodologicas','discusion','conclusiones','recomendaciones','resultados','anexos')
+                                    ->select('titulo','presentacion','resumen','introduccion','real_problematica','antecedentes','justificacion','formulacion_prob','marco_teorico','marco_conceptual','form_hipotesis','objeto_estudio','poblacion','muestra','metodos','tecnicas_instrum','instrumentacion','estg_metodologicas','discusion','conclusiones','recomendaciones','resultados')
                                     ->where('cod_tesis','=',$Tesis[0]->cod_tesis)->first();
+
+
+
         foreach ($validatesis as $atri) {
             if ($atri != null && sizeof($t_keywords) > 0 && sizeof($objetivos) > 0 && sizeof($referencias) > 0 ) {
                 $camposFull = true;
@@ -1709,11 +1712,15 @@ class Tesis2022Controller extends Controller
     public function aprobarTesis(Request $request){
 
         $tesis = Tesis_2022::find($request->textcod);
-        $codHistObserva = THistorialObservaciones::where('cod_tesis',$request->textcod)->first();
+
         $tesis->condicion = 'APROBADO';
         $tesis->estado = 3;
 
         $tesis->save();
+        $codHistObserva = THistorialObservaciones::where('cod_tesis',$request->textcod)->first();
+        if ($codHistObserva == null) {
+            return redirect()->route('asesor.estudiantes-tesis')->with('datos','okAprobado');
+        }
         return redirect()->route('asesor.ver-obs-estudiante-tesis',$codHistObserva->cod_historial_observacion)->with('datos','okAprobado');
     }
     public function desaprobarTesis(Request $request){
