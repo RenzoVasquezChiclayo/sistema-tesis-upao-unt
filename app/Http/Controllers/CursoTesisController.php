@@ -315,13 +315,21 @@ class CursoTesisController extends Controller
                                 $string_extra .= $inicioSucesivo;
                             }
                             if(sizeof($allCronogramas)>0){
+                                $extraCrono = false;
                                 foreach ($allCronogramas as $crono) {
                                     // Verificar si el 'id' del objeto coincide con el ID buscado
                                     if ($crono->cod_cronograma == $cod_cronograma[$j]) {
                                         $crono->descripcion = $string_extra;
                                         $crono->save();
+                                        $extraCrono = true;
                                         break; // Puedes romper el bucle una vez que encuentres el objeto
                                     }
+                                }
+                                if(!$extraCrono){
+                                    $new_activity->descripcion = $string_extra;
+                                    $new_activity->cod_cronograma = $cod_cronograma[$j];
+                                    $new_activity->cod_proyectotesis = $tesis->cod_proyectotesis;
+                                    $new_activity->save();
                                 }
                             }else{
                                 $new_activity->descripcion = $string_extra;
