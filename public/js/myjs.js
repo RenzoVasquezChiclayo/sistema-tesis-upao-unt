@@ -147,6 +147,7 @@ function setColorTable(celda){
     }else{
         celda.style.backgroundColor= "rgb(212, 212, 212)";
     }
+    console.log("here");
 }
 
 /*Funcion para guardar los meses que duraron cada actividad del cronograma de trabajo
@@ -180,6 +181,7 @@ function saveMonths(){
 
 
     document.getElementById("listMonths").value=cadena;
+    console.log(`listMonths: ${cadena}`);
 
     return true;
 }
@@ -570,9 +572,7 @@ function registerProject(){
 
         }
     }else{
-        if(document.getElementById('CorreccionMes').value!=""){
-            extra = saveMonths();
-        }
+        saveMonths();
         let corrigio = true;
         for(let x=0; x<counter; x++){
             let valueTA = document.getElementById('txt'+listObs[x]).value;
