@@ -27,6 +27,11 @@
                             </option>
                         </select>
                     </div>
+                        <div class="col-md-3">
+                            <label for="">CONTRASEÑA</label>
+                            <input type="password" class="form-control" name="contraseña" id="contraseña" required>
+                            <span class="password-toggle" onclick="togglePassword()" style="color: red">Mostrar</span>
+                        </div>
                 </div>
                 <div class="col-12" style="margin-top: 10px;">
                     <button class="btn btn-success" type="submit">Guardar</button>
@@ -38,20 +43,18 @@
 @endsection
 @section('js')
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    {{-- <script type="text/javascript">
-        setTimeout(function(){
-            document.querySelector('#mensaje').remove();
-        },2000);
-    </script> --}}
-    {{-- @if (session('datos') == 'oknot')
-            <script>
-                Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Error al editar alumno',
-                showConfirmButton: false,
-                timer: 1200
-                })
-            </script>
-    @endif --}}
+    <script type="text/javascript">
+        function togglePassword() {
+            const passwordInput = document.getElementById('contraseña');
+            const passwordToggle = document.querySelector('.password-toggle');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordToggle.textContent = 'Ocultar';
+            } else {
+                passwordInput.type = 'password';
+                passwordToggle.textContent = 'Mostrar';
+            }
+        }
+    </script>
 @endsection

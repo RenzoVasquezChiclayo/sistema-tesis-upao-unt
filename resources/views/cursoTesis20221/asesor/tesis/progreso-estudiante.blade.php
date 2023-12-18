@@ -335,31 +335,7 @@
                         </div>
                         <textarea class="form-control" name="tachkCorregir7" id="tachkCorregir7" cols="30" rows="4"  hidden></textarea>
                     </div>
-                    <div class="row" style=" margin-bottom:20px">
-                        <h5>Antecedentes</h5>
-                        <div class="row" style="margin-bottom:8px">
-                            <div class="col-12 col-md-10">
-                                <div class="form-floating">
-                                    <textarea class="form-control" name="taAntecedentes" id="taAntecedentes" style="height: 100px; resize:none" readonly>{{$Tesis[0]->antecedentes}}</textarea>
-                                </div>
-                            </div>
-                            @if ($Tesis[0]->estado==1)
-                            <div class="col-2" align="center">
-                                <div class="row">
-                                    <div class="col-10">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="chkCorregir8" onchange="chkCorregir(this);">
-                                            <label class="form-check-label" for="flexCheckDefault">
-                                                Corregir
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            @endif
-                        </div>
-                        <textarea class="form-control" name="tachkCorregir8" id="tachkCorregir8" cols="30" rows="4"  hidden></textarea>
-                    </div>
+
                     <div class="row" style=" margin-bottom:20px">
                         <h5>Justificación de la investigación</h5>
                         <div class="row" style="margin-bottom:8px">
@@ -385,31 +361,7 @@
                         </div>
                         <textarea class="form-control" name="tachkCorregir9" id="tachkCorregir9" cols="30" rows="4"  hidden></textarea>
                     </div>
-                    <div class="row" style=" margin-bottom:20px">
-                        <h5>Formulación del problema</h5>
-                        <div class="row" style="margin-bottom:8px">
-                            <div class="col-12 col-md-10">
-                                <div class="form-floating">
-                                    <textarea class="form-control" name="taFProblema" id="taFProblema" style="height: 100px; resize:none" readonly>{{$Tesis[0]->formulacion_prob}}</textarea>
-                                </div>
-                            </div>
-                            @if ($Tesis[0]->estado==1)
-                            <div class="col-2" align="center">
-                                <div class="row">
-                                    <div class="col-10">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="chkCorregir10" onchange="chkCorregir(this);">
-                                            <label class="form-check-label" for="flexCheckDefault">
-                                                Corregir
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            @endif
-                        </div>
-                        <textarea class="form-control" name="tachkCorregir10" id="tachkCorregir10" cols="30" rows="4"  hidden></textarea>
-                    </div>
+
                     <div class="row" style=" margin-bottom:20px">
                         <h5>Objetivos</h5>
                         <div class="col-8 col-md-5 col-xl-11">
@@ -445,117 +397,6 @@
                         </div>
                         @endif
                         <textarea class="form-control" name="tachkCorregir11" id="tachkCorregir11" cols="30" rows="4" hidden></textarea>
-                    </div>
-                    {{-- Aqui van los marcos teorico, conceptual y legal(opcional) --}}
-                    <div class="row" style=" margin-bottom:20px">
-                        <div class="row" style="margin-bottom:15px">
-                            <div class="col-12">
-                                <hr style="border: 1px solid gray">
-                            </div>
-                            <h5>Marco Teórico</h5>
-                            <div class="row">
-                                <div class="col-12 col-md-10">
-                                    <div class="form-floating">
-                                        <textarea class="form-control" name="taMTeorico" id="taMTeorico" style="height: 100px; resize:none" readonly>{{$Tesis[0]->marco_teorico}}</textarea>
-                                    </div>
-                                </div>
-                                @if ($Tesis[0]->estado==1)
-                                <div class="col-2" align="center">
-                                    <div class="row">
-                                        <div class="col-10">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="chkCorregir12" onchange="chkCorregir(this);">
-                                                <label class="form-check-label" for="flexCheckDefault">
-                                                    Corregir
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                @endif
-                            </div>
-                            <textarea class="form-control" name="tachkCorregir12" id="tachkCorregir12" cols="30" rows="4"  hidden></textarea>
-                        </div>
-
-                        <div class="row" style="margin-bottom:15px">
-                            <h5>Marco Conceptual</h5>
-                            <div class="row">
-                                <div class="col-12 col-md-10">
-                                    <div class="form-floating">
-                                        <textarea class="form-control" name="taMConceptual" id="taMConceptual" style="height: 100px; resize:none" readonly>{{$Tesis[0]->marco_conceptual}}</textarea>
-                                    </div>
-                                </div>
-                                @if ($Tesis[0]->estado==1)
-                                <div class="col-2" align="center">
-                                    <div class="row">
-                                        <div class="col-0">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="chkCorregir13" onchange="chkCorregir(this);">
-                                                <label class="form-check-label" for="flexCheckDefault">
-                                                    Corregir
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                @endif
-                            </div>
-                            <textarea class="form-control" name="tachkCorregir13" id="tachkCorregir13" cols="30" rows="4"  hidden></textarea>
-                        </div>
-
-                        <div class="row" style="margin-bottom:15px">
-                            <h5>Marco Legal</h5>
-                            <div class="row">
-                                <div class="col-12 col-md-10">
-                                    <div class="form-floating">
-                                        <textarea class="form-control" name="taMLegal" id="taMLegal" style="height: 100px; resize:none" readonly>{{$Tesis[0]->marco_legal}}</textarea>
-                                    </div>
-                                </div>
-                                @if ($Tesis[0]->estado==1)
-                                <div class="col-2" align="center">
-                                    <div class="row">
-                                        <div class="col-10">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="chkCorregir14" onchange="chkCorregir(this);">
-                                                <label class="form-check-label" for="flexCheckDefault">
-                                                    Corregir
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                @endif
-                            </div>
-                            <textarea class="form-control" name="tachkCorregir14" id="tachkCorregir14" cols="30" rows="4"  hidden></textarea>
-                        </div>
-                    </div>
-
-                    <div class="row" style=" margin-bottom:20px">
-                        <h5>Formulación de la hipótesis </h5>
-                        <div class="row" style="margin-bottom:8px">
-                            <div class="row">
-                                <div class="col-12 col-md-10">
-                                    <div class="form-floating">
-                                        <textarea class="form-control" name="taFHipotesis" id="taFHipotesis" style="height: 100px; resize:none" readonly>{{$Tesis[0]->form_hipotesis}}</textarea>
-                                    </div>
-                                </div>
-                                @if ($Tesis[0]->estado==1)
-                                <div class="col-2" align="center">
-                                    <div class="row">
-                                        <div class="col-10">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="chkCorregir15" onchange="chkCorregir(this);">
-                                                <label class="form-check-label" for="flexCheckDefault">
-                                                    Corregir
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                @endif
-                            </div>
-                            <textarea class="form-control" name="tachkCorregir15" id="tachkCorregir15" cols="30" rows="4"  hidden></textarea>
-                        </div>
                     </div>
 
                     <div class="row" style=" margin-bottom:20px">
@@ -633,29 +474,6 @@
                             </div>
                             @endif
                             <textarea class="form-control" name="tachkCorregir18" id="tachkCorregir18" cols="30" rows="4"  hidden></textarea>
-                        </div>
-                        <div class="row" style="margin-bottom:8px">
-                            <label for="taMetodos" class="form-label">Métodos</label>
-                            <div class="col-12 col-md-10">
-                                <div class="form-floating">
-                                    <textarea class="form-control" name="taMetodos" id="taMetodos" style="height: 100px; resize:none" readonly>{{$Tesis[0]->metodos}}</textarea>
-                                </div>
-                            </div>
-                            @if ($Tesis[0]->estado==1)
-                            <div class="col-2" align="center">
-                                <div class="row">
-                                    <div class="col-10">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="chkCorregir19" onchange="chkCorregir(this);">
-                                            <label class="form-check-label" for="flexCheckDefault">
-                                                Corregir
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            @endif
-                            <textarea class="form-control" name="tachkCorregir19" id="tachkCorregir19" cols="30" rows="4"  hidden></textarea>
                         </div>
                         <div class="row" style="margin-bottom:8px">
                             <label for="taRecoleccionDatos" class="form-label">Técnicas e instrumentos de recolección de datos</label>

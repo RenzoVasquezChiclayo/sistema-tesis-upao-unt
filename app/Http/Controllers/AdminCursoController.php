@@ -41,7 +41,70 @@ use Carbon\Carbon;
 
 class AdminCursoController extends Controller
 {
+
     const PAGINATION = 10;
+    public function listarUsuario()
+    {
+        $usuarios = User::where('rol', '!=', 'administrador')->paginate($this::PAGINATION);
+        return view('cursoTesis20221.administrador.listarUsuarios', ['usuarios' => $usuarios]);
+    }
+
+    public function verAgregarUsuario(){
+        return view('cursoTesis20221.administrador.verAgregarUsuario');
+    }
+
+    public function saveUsuario(Request $request){
+        try {
+            $new_usuario = new User();
+            $new_usuario->name=$request->usuario;
+            $new_usuario->rol=$request->rol_user;
+            $new_usuario->password= bcrypt($request->contraseña);
+            $new_usuario->save();
+            return redirect()->route('admin.listar')->with('datos','oksave');
+        } catch (\Throwable $th) {
+            return redirect()->route('admin.listar')->with('datos','oknotsave');
+        }
+
+    }
+
+    public function editarUsuario(Request $request)
+    {
+        $iduser = $request->auxiduser;
+        $find_user = User::find($iduser);
+        return view('cursoTesis20221.administrador.editarUsuario', ['find_user' => $find_user]);
+    }
+
+    public function saveEditarUsuario(Request $request)
+    {
+        $iduser = $request->auxiduser;
+        $find_user = User::find($iduser);
+        try {
+            $find_user->name = $request->txtusuario;
+            $find_user->rol = $request->rol_user;
+            $find_user->password = bcrypt($request->contraseña);
+            $find_user->save();
+            return redirect()->route('admin.listar')->with('datos', 'ok');
+        } catch (\Throwable $th) {
+            return redirect()->route('admin.listar')->with('datos', 'oknot');
+        }
+    }
+
+    public function deleteUsuario(Request $request)
+    {
+        $iduser = $request->auxiduser;
+
+        try {
+
+            $usuario = User::where('id', $iduser);
+            $usuario->delete();
+
+            return redirect()->route('admin.listar')->with('datos', 'okdelete');
+        } catch (\Throwable $th) {
+            return redirect()->route('admin.listar')->with('datos', 'oknotdelete');
+        }
+    }
+
+    // -------------------------------------------------------------------
     public function information()
     {
         $id = auth()->user()->name;
@@ -326,7 +389,7 @@ class AdminCursoController extends Controller
 
         $usuario = User::where('name', '=', $request->txtCodUsuario)->first();
         try {
-            $usuario->password = md5($request->txtNuevaContra);
+            $usuario->password = bcrypt($request->txtNuevaContra);
             $usuario->save();
             return redirect()->route('user_information')->with('datos', 'ok');
             //Recuerda que luego de actualizar tu contrasena, no podras volver a cambiarla hasta luego de 7 dias.

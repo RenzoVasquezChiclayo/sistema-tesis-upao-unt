@@ -13,6 +13,12 @@
                 <p>Existe una solicitud en progreso. Puedes darle seguimiento en el historial de tus solicitudes!</p>
             </div>
         </div>
+        @elseif ($tesis->cod_informe_final==null)
+            <div class="row">
+                <div class="col-12">
+                    <p>Esta vista se habilitara cuando su asesor envie su informe final!</p>
+                </div>
+            </div>
         @else
         <div class="row" style="text-align: start;">
             <form id="formSolicitud" name="formSolicitud" action="{{route('alumno.guardarSolicitud')}}" method="post" enctype="multipart/form-data">

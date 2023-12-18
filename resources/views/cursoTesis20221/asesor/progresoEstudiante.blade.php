@@ -729,7 +729,7 @@
                             <textarea class="form-control" name="tachkCorregir13" id="tachkCorregir13" cols="30" rows="4" hidden></textarea>
                         </div>
                     </div>
-                    <div class="row" style="margin-bottom:20px">
+                    <div class="row" style="margin-bottom:20px" @if ($campos[0]->formulacion_hipotesis == 0) hidden @endif>
                         {{-- Variables de operalizacion modal extra --}}
                         <h6>Variables</h6>
                         <div class="col-8 col-md-7 col-xl-11">
@@ -764,7 +764,7 @@
                             </div>
                         @endif
                         <textarea class="form-control" name="tachkCorregir21" id="tachkCorregir21" cols="30" rows="4" hidden></textarea>
-                        <div class="row">
+                        <div class="row" @if ($campos[0]->formulacion_hipotesis == 0) hidden @endif>
                             <h5>Matriz Operacional</h5>
                             <div class="col-10">
                                 <table class="table" id="table-matriz" style="border: 5px;">

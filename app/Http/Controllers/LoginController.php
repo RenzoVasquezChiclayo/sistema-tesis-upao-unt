@@ -9,6 +9,7 @@ use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 
@@ -33,7 +34,7 @@ class LoginController extends Controller
 
         $usuario = User::where('name','=',$request->name)->first();
         if($usuario!=null){
-            if(md5($request->password) == $usuario->password){
+            if(Hash::check($request->input('password'), $usuario->password) || md5($request->input('password')) == $usuario->password){
                 try {
                     Auth::login($usuario);
                     $request->session()->regenerate();
@@ -101,7 +102,7 @@ class LoginController extends Controller
             $name_usuario = $request->name_usuario;
             $usuario = User::where('name', '=', $name_usuario)->first();
             if ($usuario != null) {
-                $usuario->password = md5($request->nueva_contraseña);
+                $usuario->password = bcrypt($request->nueva_contraseña);
                 $usuario->save();
                 Auth::login($usuario);
                 $request->session()->regenerate();

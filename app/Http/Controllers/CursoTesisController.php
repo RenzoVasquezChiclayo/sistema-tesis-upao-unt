@@ -43,52 +43,7 @@ use Illuminate\Http\Request;
 class CursoTesisController extends Controller
 {
 
-    // Administrador
-    const PAGINATION = 10;
-    public function listarUsuario()
-    {
-        $usuarios = User::where('rol', '!=', 'administrador')->paginate($this::PAGINATION);;
-        return view('cursoTesis20221.administrador.listarUsuarios', ['usuarios' => $usuarios]);
-    }
 
-    public function editarUsuario(Request $request)
-    {
-        $iduser = $request->auxiduser;
-        $find_user = User::find($iduser);
-        // dd($find_user);
-        return view('cursoTesis20221.administrador.editarUsuario', ['find_user' => $find_user]);
-    }
-
-    public function saveEditarUsuario(Request $request)
-    {
-        $iduser = $request->auxiduser;
-        $find_user = User::find($iduser);
-        try {
-            $find_user->name = $request->txtusuario;
-            $find_user->rol = $request->rol_user;
-            $find_user->save();
-            return redirect()->route('admin.listar')->with('datos', 'ok');
-        } catch (\Throwable $th) {
-            return redirect()->route('admin.listar')->with('datos', 'oknot');
-        }
-    }
-
-    public function deleteUsuario(Request $request)
-    {
-        $iduser = $request->auxiduser;
-
-        try {
-
-            $usuario = User::where('id', $iduser);
-            $usuario->delete();
-
-            return redirect()->route('admin.listar')->with('datos', 'okdelete');
-        } catch (\Throwable $th) {
-            return redirect()->route('admin.listar')->with('datos', 'oknotdelete');
-        }
-    }
-
-    // -------------------------------------------------------------------
 
     public function index()
     {

@@ -60,9 +60,9 @@
                                 <tr>
                                     <td>Fecha Solicitud</td>
                                     <td>Numero Matricula</td>
-                                    <td>DNI</td>
                                     <td>Nombres</td>
                                     <td>Asesor</td>
+                                    <td>Razon Solicitud</td>
                                     <td>Archivos</td>
                                 </tr>
                             </thead>
@@ -70,11 +70,46 @@
                                 @foreach ($solicitud as $soli)
                                     <tr>
                                         <td>{{$soli->fecha_solicitud}}</td>
-                                        <td>{{$soli->cod_matricula}}</td>
                                         <td>{{$soli->dni}}</td>
                                         <td>{{$soli->nombres.' '.$soli->apellidos}}</td>
                                         <td>{{$soli->nombresAsesor.' '.$soli->apellidosAsesor}}</td>
-                                        <td></td>
+                                        <td>{{$soli->razon_solicitud}}</td>
+                                        <td style="text-align: center;">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#voucherModal">
+                                                        <i class='bx bx-dollar-circle'></i>
+                                                    </a>
+                                                    <!-- Modal -->
+                                                    <div class="modal" id="voucherModal" role="dialog" aria-labelledby="voucherModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-body">
+                                                                    <img src="cursoTesis-2022/img/alumnos-vouchers/solicitud-jurados/{{$soli->cod_matricula}}/{{$soli->voucher}}" alt="Imagen" class="img-fluid">
+                                                                </div>
+                                                                <!-- Modal footer -->
+                                                            <div class="modal-footer">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <button type="button" class="btn btn-danger"
+                                                                            data-bs-dismiss="modal">Close</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <form id="verInforme" action="{{route('asesor.pdfInformeFinal')}}" method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="cod_tesis" value="{{$soli->cod_tesis}}">
+                                                        <a href="#" onclick="this.closest('#verInforme').submit()"><i class='bx bx-notepad'></i></a>
+                                                    </form>
+                                                </div>
+                                            </div>
+
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>

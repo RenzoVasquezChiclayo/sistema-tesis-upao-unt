@@ -470,7 +470,7 @@ function agregarObjetivo()
 
     descripcion = document.getElementById("taObjetivo").value;
     if (descripcion != "") {
-    fila = '<tbody><tr id="filaO'+iObjetivo+'"><td><input type="hidden" name="idtipoObj[]" value="'+txtTipo+'">'+txtTipo+'</td><td><input type="hidden" name="iddescripcionObj[]" value="'+descripcion+'">'+descripcion+'</td><td align="center"><a href="#" class="btn btn-warning" onclick="quitarObjetivo('+iObjetivo+')">X</a></td></tr></tbody>';
+    fila = '<tbody><tr id="filaO'+iObjetivo+'"><td><input type="hidden" name="idtipoObj[]" value="'+txtTipo+'">'+txtTipo+'</td><td><input type="hidden" name="iddescripcionObj[]" value="'+descripcion+'">'+descripcion+'</td><td align="center"><a href="#" class="btn btn-warning" onclick="quitarObjetivo('+iObjetivo+')"><i class="bx bx-sm bx-trash"></i></a></td></tr></tbody>';
     document.getElementById('objetivoTable').innerHTML +=fila;
     iObjetivo++;
     document.getElementById('taObjetivo').value="";
@@ -488,7 +488,7 @@ function agregarVariable()
 {
     descripcion = document.getElementById("taVariable").value;
     if (descripcion != "") {
-    fila = '<tbody><tr id="filaV'+iVariable+'"><td><input type="hidden" name="iddescripcionVar[]" value="'+descripcion+'">'+descripcion+'</td><td align="center"><a href="#" class="btn btn-warning" onclick="quitarVariable('+iVariable+');">X</a></td></tr></tbody>';
+    fila = '<tbody><tr id="filaV'+iVariable+'"><td><input type="hidden" name="iddescripcionVar[]" value="'+descripcion+'">'+descripcion+'</td><td align="center"><a href="#" class="btn btn-warning" onclick="quitarVariable('+iVariable+');"><i class="bx bx-sm bx-trash"></i></a></td></tr></tbody>';
     document.getElementById('variableTable').innerHTML +=fila;
     iVariable++;
     document.getElementById('taVariable').value="";
@@ -658,7 +658,7 @@ function addAutor(){
     if(txtautor!= ""){
         arrayAutores.push(txtautor);
         document.getElementById('rowAddAutor').innerHTML += '<div id="rAutor'+iAutor+'"><div class="input-group" ><input type="text" class="form-control box-autor" id="addAutor'+iAutor+'" value="'+txtautor+'" aria-describedby="btn'+iAutor+'" readonly >'+
-                                            '<button class="btn btn-outline-danger" type="button" id="btn'+iAutor+'" onclick="deleteAutor('+iAutor+');" style="height: 25px; font-size:1.2vh;">x</button></div></div>';
+                                            '<button class="btn btn-outline-danger" type="button" id="btn'+iAutor+'" onclick="deleteAutor('+iAutor+');" style="height: 25px; font-size:1.2vh;"><i class="bx bx-sm bx-trash"></i></button></div></div>';
         document.getElementById('txtAutorAPA').value="";
         iAutor +=1;
     }else{

@@ -115,6 +115,8 @@
                                                                         name="txtNuevaContra" id="txtNuevaContra" required>
                                                                     <input type="hidden" id="older-password"
                                                                         value="">
+                                                                    <span class="password-toggle-np" onclick="toggleNewPassword()"
+                                                                        style="color: red">Mostrar</span>
                                                                 </div>
                                                                 <div class="col-12 col-md-10"
                                                                     style="text-align: left; margin-bottom:15px;">
@@ -123,6 +125,8 @@
                                                                         onchange="verificaContra();" id="txtRepNuevaContra"
                                                                         name="txtRepNuevaContra" required>
                                                                     <span id="guardadoContra"></span>
+                                                                    <span class="password-toggle-cnp" onclick="toggleConNewPassword()"
+                                                                        style="color: red">Mostrar</span>
                                                                 </div>
 
                                                             </div>
@@ -358,6 +362,32 @@
                     return false;
                 } else {
                     return true;
+                }
+            }
+
+            function toggleNewPassword() {
+                const passwordInput = document.getElementById('txtNuevaContra');
+                const passwordToggle = document.querySelector('.password-toggle-np');
+
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    passwordToggle.textContent = 'Ocultar';
+                } else {
+                    passwordInput.type = 'password';
+                    passwordToggle.textContent = 'Mostrar';
+                }
+            }
+
+            function toggleConNewPassword() {
+                const passwordInput = document.getElementById('txtRepNuevaContra');
+                const passwordToggle = document.querySelector('.password-toggle-cnp');
+
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    passwordToggle.textContent = 'Ocultar';
+                } else {
+                    passwordInput.type = 'password';
+                    passwordToggle.textContent = 'Mostrar';
                 }
             }
         </script>

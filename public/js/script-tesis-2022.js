@@ -496,7 +496,7 @@ function addAutor(){
     if(txtautor!= ""){
         array_autores.push(txtautor);
         document.getElementById('rowAddAutor').innerHTML += '<div id="rAutor'+iAutor+'"><div class="input-group" ><input type="text" class="form-control box-autor" id="addAutor'+iAutor+'" value="'+txtautor+'" aria-describedby="btn'+iAutor+'" readonly >'+
-                                            '<button class="btn btn-outline-danger" type="button" id="btn'+iAutor+'" onclick="deleteAutor('+iAutor+');" style="height: 25px; font-size:1.2vh;">x</button></div></div>';
+                                            '<button class="btn btn-outline-danger" type="button" id="btn'+iAutor+'" onclick="deleteAutor('+iAutor+');" style="height: 25px; font-size:1.2vh;"><i class="bx bx-xs bx-x-circle" ></i></button></div></div>';
         document.getElementById('txtAutorAPA').value="";
         iAutor +=1;
     }else{

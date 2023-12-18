@@ -122,7 +122,7 @@
                     <div class="col">
                         <p>Esta vista estara habilitada cuando se te designe algun asesor para el curso.
                             Si existe algun inconveniente y/o queja envia un correo a <a href="#">
-                                <>example@unitru.edu.pe</u>
+                                <>support@proytesisws.com</u>
                             </a> para mas informacion.</p>
                     </div>
                 </div>
@@ -1386,7 +1386,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="row" style="margin-bottom:20px">
+                        <div class="row" style="margin-bottom:20px" @if ($campos[0]->formulacion_hipotesis == 0) hidden @endif>
                             {{-- Variables de operalizacion modal extra --}}
                             <h6>Variables</h6>
                             <div class="col-8 col-md-7 col-xl-3">
@@ -1480,7 +1480,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row" @if ($campos[0]->formulacion_hipotesis == 0) hidden @endif>
                             <h5>Matriz Operacional</h5>
                             <div class="col-10">
                                 <table class="table" id="table-matriz" style="border: 5px;">

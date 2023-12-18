@@ -42,7 +42,28 @@
                                             <p>{{$resultado}}</p>
                                         </td>
                                         <td style="text-align: center;">
-                                            <button class="btn btn-secondary">Observar</button>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal">
+                                                <i class='bx bx-show'></i>
+                                            </a>
+                                            <!-- Modal -->
+                                            <div class="modal" id="imageModal" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body">
+                                                            <img src="cursoTesis-2022/img/alumnos-vouchers/solicitud-jurados/{{$tesis->cod_matricula}}/{{$slc->voucher}}" alt="Imagen" class="img-fluid">
+                                                        </div>
+                                                        <!-- Modal footer -->
+                                                    <div class="modal-footer">
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <button type="button" class="btn btn-danger"
+                                                                    data-bs-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                     @php
@@ -55,27 +76,28 @@
 
                 </div>
             </div>
+
     </div>
 @endsection
 @section('js')
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    @if (session('datos') == 'ok')
+    @if (session('datos') == 'oksolicitud')
         <script>
             Swal.fire({
                 position: 'center',
                 icon: 'success',
-                title: 'Alumno editado correctamente',
+                title: 'Solicitud creada correctamente',
                 showConfirmButton: false,
                 timer: 1200
             })
         </script>
-    @elseif (session('datos') == 'oknot')
+    @elseif (session('datos') == 'oknotsolicitud')
         <script>
             Swal.fire({
                 position: 'center',
                 icon: 'error',
-                title: 'Error al editar alumno',
+                title: 'Error al crear solicitud',
                 showConfirmButton: false,
                 timer: 1200
             })

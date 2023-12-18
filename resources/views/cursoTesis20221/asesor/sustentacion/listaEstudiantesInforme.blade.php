@@ -15,8 +15,7 @@
                             <tr>
                                 <td>Numero Matricula</td>
                                 <td>DNI</td>
-                                <td>Nombres</td>
-                                <td>Estado</td>
+                                <td>Nombre completo</td>
                                 <td>Accion</td>
                             </tr>
                         </thead>
@@ -26,24 +25,21 @@
                                         <td>{{$estu->cod_matricula}}</td>
                                         <td>{{$estu->dni}}</td>
                                         <td>{{$estu->nombres.' '.$estu->apellidos}}</td>
-                                        <td>
-                                            @php
-                                                $resultado = "";
-                                                if($estu->estadoTesis == 1){
-                                                    $resultado = "CUMPLE";
-                                                }
-                                                if($estu->estadoTesis == 2){
-                                                    $resultado = "NO APTO";
-                                                }
-                                            @endphp
-                                            <p>{{$resultado}}</p>
-                                        </td>
                                         <td style="text-align: center;">
-                                            <form id="formInforme" action="{{route('asesor.crearInformeFinal')}}" method="POST">
+                                            @if ($estu->cod_informe_final == null)
+                                                <form id="formInforme" action="{{route('asesor.crearInformeFinal')}}" method="POST">
                                                     @csrf
                                                     <input type="hidden" name="cod_tesis" value="{{$estu->cod_tesis}}">
                                                     <a href="#" onclick="this.closest('#formInforme').submit()" class="btn btn-success">Crear informe</a>
-                                            </form>
+                                                </form>
+                                            @else
+                                                <form id="verInforme" action="{{route('asesor.pdfInformeFinal')}}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="cod_tesis" value="{{$estu->cod_tesis}}">
+                                                    <a href="#" onclick="this.closest('#verInforme').submit()"><i class='bx bx-show'></i></a>
+                                                </form>
+                                            @endif
+
                                         </td>
                                     </tr>
                                 @endforeach
@@ -74,6 +70,16 @@
                 position: 'center',
                 icon: 'error',
                 title: 'Error al editar alumno',
+                showConfirmButton: false,
+                timer: 1200
+            })
+        </script>
+    @elseif (session('datos') == 'oknotverInforme')
+        <script>
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error al abrir el pdf',
                 showConfirmButton: false,
                 timer: 1200
             })

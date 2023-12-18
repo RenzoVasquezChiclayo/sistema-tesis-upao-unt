@@ -21,15 +21,15 @@
                 </div>
                 <div class="col-12">
                     <label for="">Introducción</label>
-                    <textarea class="form-control" name="taIntroduccion" id="taIntroduccion"></textarea>
+                    <textarea class="form-control" name="taIntroduccion" id="taIntroduccion" required></textarea>
                 </div>
                 <div class="col-12 mb-3">
                     <label for="">Aporte de la investigación</label>
-                    <textarea class="form-control" name="taAporte" id="taAporte"></textarea>
+                    <textarea class="form-control" name="taAporte" id="taAporte" required></textarea>
                 </div>
                 <div class="col-12 mb-3">
                     <label for="">Metodología empleada</label>
-                    <textarea class="form-control" name="taMetodologia" id="taMetodologia"></textarea>
+                    <textarea class="form-control" name="taMetodologia" id="taMetodologia" required></textarea>
                 </div>
                 <button class="btn btn-success" type="button" onclick="verificarCampos(this);">Crear informe</button>
             </form>
@@ -39,22 +39,22 @@
 @section('js')
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    @if (session('datos') == 'ok')
+    @if (session('datos') == 'okinforme')
         <script>
             Swal.fire({
                 position: 'center',
                 icon: 'success',
-                title: 'Alumno editado correctamente',
+                title: 'Informe creado correctamente',
                 showConfirmButton: false,
                 timer: 1200
             })
         </script>
-    @elseif (session('datos') == 'oknot')
+    @elseif (session('datos') == 'oknotinforme')
         <script>
             Swal.fire({
                 position: 'center',
                 icon: 'error',
-                title: 'Error al editar alumno',
+                title: 'Error al crear el informe',
                 showConfirmButton: false,
                 timer: 1200
             })
@@ -102,4 +102,4 @@
         }
     </script>
 @endsection
-rme
+

@@ -91,10 +91,12 @@ Route::post('/descargar-tesis',[Tesis2022Controller::class,'descargaTesis'])->na
 //Route::post('tesis', [TesisController::class,'searchAutor'])->name('searchAutor');
 
 //Rutas para el Administrador del Curso
-Route::get('/listar-usuarios',[CursoTesisController::class,'listarUsuario'])->name('admin.listar')->middleware('auth');
-Route::post('/editar-usuario',[CursoTesisController::class,'editarUsuario'])->name('admin.editar')->middleware('auth');
-Route::post('/save-editar-usuario',[CursoTesisController::class,'saveEditarUsuario'])->name('admin.saveEditar');
-Route::delete('/delete-usuario',[CursoTesisController::class,'deleteUsuario'])->name('admin.deleteUser');
+Route::get('/listar-usuarios',[AdminCursoController::class,'listarUsuario'])->name('admin.listar')->middleware('auth');
+Route::get('/ver-agregar-usuario',[AdminCursoController::class,'verAgregarUsuario'])->name('admin.verAgregarUsuario')->middleware('auth');
+Route::post('/save-usuario',[AdminCursoController::class,'saveUsuario'])->name('admin.saveUsuario')->middleware('auth');
+Route::post('/editar-usuario',[AdminCursoController::class,'editarUsuario'])->name('admin.editar')->middleware('auth');
+Route::post('/save-editar-usuario',[AdminCursoController::class,'saveEditarUsuario'])->name('admin.saveEditar');
+Route::delete('/delete-usuario',[AdminCursoController::class,'deleteUsuario'])->name('admin.deleteUser');
 //
 //----
 Route::get('/ver-facultad',[AdminCursoController::class,'verAgregarFacultad'])->name('admin.verFacultad');
@@ -172,11 +174,16 @@ Route::get('/listaAsesores',[CursoTesisController::class,'listaAsesores'])->name
 Route::post('/verAsesorEditar',[CursoTesisController::class,'verAsesorEditar'])->name('director.verAsesorEditar');
 Route::post('/saveEditAsesor',[CursoTesisController::class,'editAsesor'])->name('director.editAsesor');
 
+//Designacion de jurados --------------------------------------
+Route::get('/lista-tesis-aprobadas',[SustentacionController::class,'lista_tesis_aprobadas'])->name('director.listaTesisAprobadas')->middleware('auth');
+Route::post('/save-asignacion-jurados',[SustentacionController::class,'save_asignacion_jurados'])->name('director.saveAsignacionJurados')->middleware('auth');
 // ------
 
 // EVALUACION JURADOS
 //Director
 Route::get('/lista-solicitudes-jurados',[SustentacionController::class,'lista_solicitudes_jurados'])->name('director.verSolicitudesJurados')->middleware('auth');
+Route::get('/ver-editar-asignacion-jurados',[SustentacionController::class,'verEditAsignacionJurados'])->name('director.verEditAsignacionJurados')->middleware('auth');
+Route::post('/edit-asignacion-jurados',[SustentacionController::class,'editAsignacionJurados'])->name('director.editAsignacionJurados')->middleware('auth');
 
 
 // VISTA ALUMNO ENVIO SOLICITUD
@@ -188,7 +195,7 @@ Route::post('/guardar-solicitud-sustentacion',[SustentacionController::class,'gu
 Route::post('/crear-informe-final',[SustentacionController::class,'crearInformeFinal'])->name('asesor.crearInformeFinal')->middleware('auth');
 Route::get('/lista-estudiantes-informe',[SustentacionController::class,'listarAlumnosInforme'])->name('asesor.listaEstudiantesInforme')->middleware('auth');
 Route::post('/guardar-informe-final',[SustentacionController::class,'guardarInformeFinal'])->name('asesor.guardarInformeFinal')->middleware('auth');
-
+Route::post('/ver-informe-final-pdf',[SustentacionController::class,'generarPDFInformeFinal'])->name('asesor.pdfInformeFinal')->middleware('auth');
 
 
 //-----------------------------------

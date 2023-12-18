@@ -132,11 +132,11 @@
         @if (auth()->user()->rol == 'administrador')
 
             <li data-toggle="collapse" data-target="#usuarios" class="collapsed active">
-                {{-- <a class="cstm-a" href="{{ route('admin.listar') }}">
+                <a class="cstm-a" href="{{ route('admin.listar') }}">
                     <i class='bx bxs-user'></i>
                     <span class="links_name">Listar Usuarios</span>
                 </a>
-                <span class="tooltip">Listar Usuarios</span> --}}
+                <span class="tooltip">Listar Usuarios</span>
             </li>
             <ul class="sub-menu collapse" id="usuarios">
                 <li class="active"><a class="cstm-a" href="{{ route('admin.listar') }}">Listar Usuario</a></li>
@@ -237,8 +237,8 @@
                 <span class="links_name">Evaluacion de Jurados</span>
             </a>
             <div class="cstm-collapse collapse" id="collapseEvaluacion">
-                <a href="{{route('director.verSolicitudesJurados')}}">
-                    <span class="links_name">Solicitudes</span>
+                <a href="{{route('director.listaTesisAprobadas')}}">
+                    <span class="links_name">Designacion de Jurados</span>
                 </a>
             </div>
         </li>
