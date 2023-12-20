@@ -350,7 +350,6 @@ function agregarReferenciaB()
 }
 function quitarReferenciaB(item)
 {
-    alert("Aqui");
     document.getElementById('fila'+item).remove();
     //indice--;
     document.getElementById('txtAutorAPA').focus();
@@ -443,7 +442,13 @@ function agregarRecurso()
         indiceRecurso++;
         document.getElementById('taRecurso').value="";
     }else{
-        alert('Falta la descripcion del recurso');
+        Swal.fire({
+            position: "top",
+            icon: "warning",
+            title: "Falta la descripcion del recurso",
+            showConfirmButton: false,
+            timer: 2000
+        });
 
     }
 
@@ -477,7 +482,13 @@ function agregarObjetivo()
     iObjetivo++;
     document.getElementById('taObjetivo').value="";
     }else{
-        alert('Falta la descripcion del objetivo');
+        Swal.fire({
+            position: "top",
+            icon: "warning",
+            title: "Falta la descripcion del objetivo",
+            showConfirmButton: false,
+            timer: 2000
+        });
 
     }
 }
@@ -495,7 +506,13 @@ function agregarVariable()
     iVariable++;
     document.getElementById('taVariable').value="";
     }else{
-        alert('Falta la descripcion de la variable');
+        Swal.fire({
+            position: "top",
+            icon: "warning",
+            title: "Falta la descripcion de la variable",
+            showConfirmButton: false,
+            timer: 2000
+        });
 
     }
 }
@@ -662,7 +679,13 @@ function addAutor(){
         document.getElementById('txtAutorAPA').value="";
         iAutor +=1;
     }else{
-        alert("Falta rellenar el autor");
+        Swal.fire({
+            position: "top",
+            icon: "warning",
+            title: "Falta rellenar el autor",
+            showConfirmButton: false,
+            timer: 2000
+        });
     }
 }
 function deleteAutor(indice){
@@ -721,7 +744,13 @@ function cargaImg(element, iTema, pos_grupo,posimg){
         const imgpreview = document.querySelector('#preview_'+temas_array[iTema]+'_'+pos_grupo+'_'+posimg);
         let extPermitidas = /(.jpg|.png)$/i;
         if(!extPermitidas.exec(element.value)){
-            alert('El archivo debe ser JPG o PNG');
+            Swal.fire({
+                position: "top",
+                icon: "warning",
+                title: "El archivo debe ser JPG o PNG",
+                showConfirmButton: false,
+                timer: 2000
+            });
             element.value = '';
         }else{
             const archivos = element.files;
@@ -753,7 +782,13 @@ function btnDeleteImg(iTema,pos_grupo,pos_contenedor){
 }
 
 function deleteGroup(){
-    alert('Eliminado');
+    Swal.fire({
+        position: "top",
+        icon: "success",
+        title: "Eliminado",
+        showConfirmButton: false,
+        timer: 2000
+    });
 }
 
 

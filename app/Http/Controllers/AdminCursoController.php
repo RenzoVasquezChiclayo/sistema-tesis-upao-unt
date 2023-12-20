@@ -489,8 +489,8 @@ class AdminCursoController extends Controller
             ]);
             $semestre_academico = $request->semestre_hidden;
             $escuela = $request->escuela_hidden;
-            $existAsesor = AsesorCurso::where('cod_docente', $request->cod_docente)->get();
-            if ($existAsesor->count() == 0) {
+            $existAsesor = DB::table('asesor_curso')->where('cod_docente', $request->cod_docente)->first();
+            if ($existAsesor == null) {
                 $newAsesor = new AsesorCurso();
                 $newAsesor->cod_docente = $request->cod_docente;
                 $newAsesor->apellidos = strtoupper($request->apellidos);
@@ -526,7 +526,7 @@ class AdminCursoController extends Controller
                     $new_asesor_semestre->cod_configuraciones = $semestre_academico;
                     $new_asesor_semestre->save();
                 }else{
-                    return redirect()->route('director.veragregarAsesor')->with('datos', 'oknot');
+                    return redirect()->route('director.veragregarAsesor')->with('datos', 'exists');
                 }
                 return redirect()->route('director.veragregarAsesor')->with('datos', 'ok');
             }
@@ -549,8 +549,8 @@ class AdminCursoController extends Controller
             ]);
             $semestre_academico = $request->semestre_hidden;
             $escuela = $request->escuela_hidden;
-            $existEstudiante = EstudianteCT2022::where('cod_matricula', $request->cod_matricula)->get();
-            if ($existEstudiante->count() == 0) {
+            $existEstudiante = DB::table('estudiante_ct2022')->where('cod_matricula', $request->cod_matricula)->first();
+            if ($existEstudiante == null) {
                 $newEstudiante = new EstudianteCT2022();
                 $newEstudiante->cod_matricula = $request->cod_matricula;
                 $newEstudiante->dni = $request->dni;
@@ -566,6 +566,7 @@ class AdminCursoController extends Controller
                 $new_estudiante_semestre->save();
                 return redirect()->route('director.veragregar')->with('datos', 'ok');
             } else {
+
                 $find_estu_semes = DB::table('estudiante_semestre as es')->where('es.cod_matricula', $existEstudiante->cod_matricula)->get();
                 foreach ($find_estu_semes as $key => $f_e_s) {
                     if ($f_e_s->cod_configuraciones == $semestre_academico) {
@@ -578,7 +579,7 @@ class AdminCursoController extends Controller
                     $new_estudiante_semestre->cod_configuraciones = $semestre_academico;
                     $new_estudiante_semestre->save();
                 }else{
-                    return redirect()->route('director.veragregar')->with('datos', 'oknot');
+                    return redirect()->route('director.veragregar')->with('datos', 'exists');
                 }
                 return redirect()->route('director.veragregar')->with('datos', 'ok');
             }

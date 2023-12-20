@@ -26,7 +26,6 @@
       border: transparent;
       box-shadow: none;
     }
-
   </style>
 </head>
 

@@ -56,8 +56,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Registrar por asesor y docente</h5>
                     <div class="row border-box">
-                        <form class="row g-3 needs-validation" action="{{ route('director.addAsesor') }}" method="POST"
-                            novalidate>
+                        <form class="row g-3 needs-validation" action="{{ route('director.addAsesor') }}" method="POST">
                             @csrf
                             <input type="hidden" name="semestre_hidden" id="semestre_hidden">
                             <input type="hidden" name="escuela_hidden" id="escuela_hidden">
@@ -117,7 +116,7 @@
                                     <label for="correo">Correo Institucional</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control" id="correo" name="correo"
-                                            maxlength="80" required>
+                                            maxlength="80">
                                     </div>
                                 </div>
                             </div>
@@ -158,6 +157,16 @@
                 timer: 1500
             })
         </script>
+    @elseif (session('datos') == 'exists')
+    <script>
+        Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Ya existe un asesor con el mismo codigo institucional',
+            showConfirmButton: false,
+            timer: 1500
+        })
+    </script>
     @endif
     <script type="text/javascript">
         window.onload = function() {
@@ -173,7 +182,13 @@
             if (semestre != '0') {
                 document.getElementById('semestre_hidden').value = semestre;
             } else {
-                alert('Seleccione otra opcion de semestre academico');
+                Swal.fire({
+                            position: "top",
+                            icon: "warning",
+                            title: "Seleccione otra opcion de semestre academico",
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
             }
         }
 
@@ -182,7 +197,13 @@
             if (escuela != '0') {
                 document.getElementById('escuela_hidden').value = escuela;
             } else {
-                alert('Seleccione otra opcion de escuela');
+                Swal.fire({
+                            position: "top",
+                            icon: "warning",
+                            title: "Seleccione otra opcion de escuela",
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
             }
         }
 

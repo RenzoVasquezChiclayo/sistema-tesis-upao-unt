@@ -1,6 +1,6 @@
 @extends('plantilla.dashboard')
 @section('titulo')
-    Proyecto de Tesis del Estudiante
+    Tesis para Sustentación
 @endsection
 @section('css')
 <link rel="stylesheet" href="./css/tesis_body.css">
@@ -54,7 +54,7 @@
 
     <div class="">
         <div class="card-header">
-            Tesis
+        Tesis para Sustentación
         </div>
         <div class="card-body">
             <div class="row" style="text-align: center; padding:10px;">
@@ -125,11 +125,11 @@
                         <div class="row border-box card-box" >
                             <div class="item-card col">
                                 <label for="txtNombreAutor" class="form-label">Nombres</label>
-                                <input class="form-control" name="txtNombreAutor" id="txtNombreAutor" type="text" value="{{$Tesis[0]->nombresAutor}}" readonly>
+                                <input class="form-control" name="txtNombreAutor" id="txtNombreAutor" type="text" value="{{$estudiante->nombres}}" readonly>
                             </div>
                             <div class="item-card">
                                 <label for="txtApellidoAutor" class="form-label">Apellidos</label>
-                                <input class="form-control" name="txtApellidoAutor" id="txtApellidoAutor" type="text" value="{{$Tesis[0]->apellidosAutor}}" readonly>
+                                <input class="form-control" name="txtApellidoAutor" id="txtApellidoAutor" type="text" value="{{$estudiante->apellidos}}" readonly>
                             </div>
                         </div>
                     </div>
@@ -143,37 +143,15 @@
                             </div>
                             <div class="item-card">
                                 <label for="cboGrAcademicoAsesor" class="form-label">Grado Academico</label>
-                                <input class="form-control" name="txtGrAcademicoAsesor" id="txtGrAcademicoAsesor" type="text" value="{{$asesor->DescGrado}}" readonly>
+                                <input class="form-control" name="txtGrAcademicoAsesor" id="txtGrAcademicoAsesor" type="text" value="" readonly>
                             </div>
                             <div class="item-card">
                                 <label for="txtTProfesional" class="form-label">Categoria</label>
-                                <input class="form-control" name="txtTProfesional" id="txtTProfesional" type="text" value="{{$asesor->DescCat}}" readonly>
+                                <input class="form-control" name="txtTProfesional" id="txtTProfesional" type="text" value="" readonly>
                             </div>
                             <div class="item-card">
                                 <label for="txtDireccionAsesor" class="form-label">Dirección laboral y/o domiciliaria</label>
                                 <input class="form-control" name="txtDireccionAsesor" id="txtDireccionAsesor" type="text" value="{{$asesor->direccion}}" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" style="margin-bottom:20px; padding-right:12px;">
-                        <h5>Docente</h5>
-
-                        <div class="row border-box card-box">
-                            <div class="item-card">
-                                <label for="txtNombreAsesor" class="form-label">Apellidos y Nombres</label>
-                                <input class="form-control" name="txtNombreAsesor" id="txtNombreAsesor" type="text" value="{{$docente->nombres}}" readonly>
-                            </div>
-                            <div class="item-card">
-                                <label for="cboGrAcademicoAsesor" class="form-label">Grado Academico</label>
-                                <input class="form-control" name="txtGrAcademicoAsesor" id="txtGrAcademicoAsesor" type="text" value="{{$docente->DescGrado}}" readonly>
-                            </div>
-                            <div class="item-card">
-                                <label for="txtTProfesional" class="form-label">Categoria</label>
-                                <input class="form-control" name="txtTProfesional" id="txtTProfesional" type="text" value="{{$docente->DescCat}}" readonly>
-                            </div>
-                            <div class="item-card">
-                                <label for="txtDireccionAsesor" class="form-label">Dirección laboral y/o domiciliaria</label>
-                                <input class="form-control" name="txtDireccionAsesor" id="txtDireccionAsesor" type="text" value="{{$docente->direccion}}" readonly>
                             </div>
                         </div>
                     </div>
@@ -673,7 +651,7 @@
                             <hr style="border: 1px solid gray">
                         </div>
                         <h5>Referencias bibliográficas</h5>
-                        <div class="col-8 col-md-7 col-xl-11">
+                        <div class="col-12 table-responsive">
                             <table class="table table-striped table-bordered ">
                                 <tbody>
                                     @foreach ($referencias as $ref)

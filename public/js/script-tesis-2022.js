@@ -195,7 +195,13 @@ function addKeyword(){
         document.getElementById('chips').innerHTML += fila;
         array_keyword.push(ckeyword);
     }else{
-        alert('Falta escribir la palabra clave.');
+        Swal.fire({
+            position: "top",
+            icon: "warning",
+            title: "Falta escribir la palabra clave.",
+            showConfirmButton: false,
+            timer: 2000
+        });
     }
     document.getElementById('i_keyword').value = "";
 }
@@ -500,7 +506,13 @@ function addAutor(){
         document.getElementById('txtAutorAPA').value="";
         iAutor +=1;
     }else{
-        alert("Falta rellenar el autor");
+        Swal.fire({
+            position: "top",
+            icon: "warning",
+            title: "Falta rellenar el autor",
+            showConfirmButton: false,
+            timer: 2000
+        });
     }
 }
 function deleteAutor(indiceAutor){

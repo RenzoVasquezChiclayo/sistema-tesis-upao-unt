@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('jurado', function (Blueprint $table) {
             $table->integer('cod_jurado')->autoIncrement();
-            $table->integer('cod_diseno_investigacion');
-            $table->foreign('cod_diseno_investigacion')
-                    ->references('cod_diseno_investigacion')
-                    ->on('diseno_investigacion')
+            $table->char('cod_tinvestigacion',04);
+            $table->foreign('cod_tinvestigacion')
+                    ->references('cod_tinvestigacion')
+                    ->on('tipoinvestigacion')
                     ->onDelete('cascade');
             $table->char('cod_docente',4);
             $table->foreign('cod_docente')

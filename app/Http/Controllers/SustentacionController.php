@@ -5,14 +5,22 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\AsesorCurso;
 use App\Models\DesignacionJurados;
+use App\Models\Detalle_Archivo;
+use App\Models\Diseno_Investigacion;
 use App\Models\EstudianteCT2022;
 use App\Models\InformeFinal;
+use App\Models\Jurado;
 use App\Models\SolicitudSustentacion;
+use App\Models\TDetalleKeyword;
 use App\Models\Tesis_2022;
+use App\Models\TipoInvestigacion;
+use App\Models\TObjetivo;
+use App\Models\TReferencias;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 Use PDF;
+use Throwable;
 
 class SustentacionController extends Controller
 {
@@ -176,7 +184,7 @@ class SustentacionController extends Controller
         ->select('t.cod_tesis','t.titulo','t.cod_matricula','es.nombres as nombresEstu','es.apellidos as apellidosEstu','ac.nombres as nombresAsesor','ac.apellidos as apellidosAsesor','ac.cod_docente as cod_asesor','dj.cod_jurado1','dj.cod_jurado2','dj.cod_vocal')
         ->where('t.estado',3)->where('t.condicion',"APROBADO")->get();
 
-        $asesores = DB::table('asesor_curso as ac')->where('cod_docente','!=',$tesis_aprobadas[0]->cod_asesor)->get();
+        $asesores = DB::table('jurado as j')->leftJoin('asesor_curso as ac','j.cod_docente','=','ac.cod_docente')->select('ac.nombres','ac.apellidos','j.cod_docente')->where('j.cod_docente','!=',$tesis_aprobadas[0]->cod_asesor)->get();
         return view('cursoTesis20221.director.evaluacion.asignacionDeJurados',['tesis_aprobadas'=>$tesis_aprobadas,'asesores'=>$asesores]);
     }
 
@@ -224,6 +232,51 @@ class SustentacionController extends Controller
             }
         }
         return redirect()->route('director.verEditAsignacionJurados')->with('datos','okedit');
+    }
+
+    public function verRegistrarJurado(){
+        $asesores = DB::table('asesor_curso as ac')->leftJoin('jurado as j','ac.cod_docente',"=",'j.cod_docente')->select('ac.*')->whereNull('j.cod_docente')->get();
+        $tipoInvestigacion = DB::table('tipoinvestigacion')->get();
+        $jurados = DB::table('jurado as j')->join('tipoinvestigacion as ti','j.cod_tinvestigacion','ti.cod_tinvestigacion')->leftJoin('asesor_curso as ac','j.cod_docente','=','ac.cod_docente')->select('ac.nombres','ac.apellidos','j.*','ti.descripcion')->get();
+        return view('cursoTesis20221.director.evaluacion.registrarJurado',['asesores'=>$asesores, 'tipoInvestigacion'=>$tipoInvestigacion, 'jurados'=>$jurados]);
+    }
+    public function registrarJurado(Request $request){
+        try{
+            $asesor = DB::table('asesor_curso')->where('cod_docente',$request->selectAsesor)->get();
+            $tipoInvestigacion = DB::table('tipoinvestigacion')->where('cod_tinvestigacion',$request->selectTInvestigacion)->get();
+
+            $jurado = new Jurado();
+            $jurado->cod_docente = $asesor[0]->cod_docente;
+            $jurado->cod_tinvestigacion = $tipoInvestigacion[0]->cod_tinvestigacion;
+            $jurado->save();
+            return redirect()->route('director.verRegistrarJurado')->with('datos','ok');
+        }catch(\Throwable $e){
+            dd($e);
+            return redirect()->route('director.verRegistrarJurado')->with('datos','oknot');
+        }
+    }
+
+    public function verListaSustentacion(Request $request){
+        $buscarAlumno = $request->validationSearch ?: "";
+        if($buscarAlumno != ""){
+            $estudiantes = DB::table('estudiante_ct2022 as e')->join('tesis_2022 as t','e.cod_matricula','t.cod_matricula')->select('e.*')->where('t.estado',3)->where('e.apellidos','%like%',$buscarAlumno)->get();
+        }else{
+            $estudiantes = DB::table('estudiante_ct2022 as e')->join('tesis_2022 as t','e.cod_matricula','t.cod_matricula')->select('e.*','t.cod_tesis')->where('t.estado',3)->get();
+        }
+        return view('cursoTesis20221.asesor.sustentacion.verListaSustentacion',['buscarAlumno'=>$buscarAlumno, 'estudiantes'=>$estudiantes]);
+    }
+
+    public function verSustentacionEstudiante($cod_tesis){
+        $camposFull = false;
+        $Tesis = DB::table('tesis_2022')->where('cod_tesis',$cod_tesis)->get();
+        $estudiante = DB::table('estudiante_ct2022')->where('cod_matricula',$Tesis[0]->cod_matricula)->first();
+        $asesor = DB::table('asesor_curso')->where('cod_docente',$Tesis[0]->cod_docente)->first();
+        $keywords = TDetalleKeyword::join('t_keyword','t_keyword.id_keyword','=','t_detalle_keyword.id_keyword')->select('t_detalle_keyword.*')->where('t_keyword.cod_tesis',$Tesis[0]->cod_tesis)->get();
+        $objetivos = TObjetivo::where('cod_tesis','=',$Tesis[0]->cod_tesis)->get();
+        $resultadosImg = Detalle_Archivo::join('archivos_proy_tesis as at','at.cod_archivos','=','detalle_archivos.cod_archivos')->select('detalle_archivos.*')->where('at.cod_tesis',$Tesis[0]->cod_tesis)->where('tipo','resultados')->orderBy('grupo', 'ASC')->get();
+        $anexosImg = Detalle_Archivo::join('archivos_proy_tesis as at','at.cod_archivos','=','detalle_archivos.cod_archivos')->select('detalle_archivos.*')->where('at.cod_tesis',$Tesis[0]->cod_tesis)->where('tipo','anexos')->orderBy('grupo', 'ASC')->get();
+        $referencias = TReferencias::where('cod_tesis',$Tesis[0]->cod_tesis)->get();
+        return view('cursoTesis20221.asesor.sustentacion.sustentacionEstudiante',['Tesis'=>$Tesis, 'estudiante'=>$estudiante,'asesor'=>$asesor,'keywords'=>$keywords,'objetivos'=>$objetivos,'resultadosImg'=>$resultadosImg,'anexosImg'=>$anexosImg,'referencias'=>$referencias,'camposFull'=>$camposFull]);
     }
 
 }

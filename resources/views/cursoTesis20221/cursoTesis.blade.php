@@ -108,7 +108,17 @@
         h6 {
             text-align: left;
         }
+        .btn-save-send{
+            position: fixed;
+            bottom: 20px;
+            right: 40%;
+            padding: 18px 10px;
+            border-radius: 10px;
+            background-color: rgba(133, 134, 134, 0.4);
+            transition: all 300ms ease 0ms;
+            z-index: 1000;
 
+        }
     </style>
     @if ($autor->cod_docente == null)
         <div class="row d-flex" style="align-items:center; justify-content: center;">
@@ -2298,7 +2308,7 @@
                                 <input type="hidden" name="isSaved" id="isSaved" value="">
                             </div>
                         </div>
-                        <div class="row" style=" margin-bottom:20px;">
+                        <div class="row btn-save-send" style="margin-bottom:20px;">
                             <div class="d-grid gap-2 d-md-block">
                                 @if ($tesis[0]->estado == 0 || $tesis[0]->estado == 2 || $tesis[0]->estado == 9)
                                     <input type="button" class="btn btn-secondary" value="Guardar"
@@ -2313,11 +2323,13 @@
                                     @if ($tesis[0]->estado == 0 || $tesis[0]->estado == 2)
                                         Cancelar
                                     @else
-                                        Volver
+                                        Atras
                                     @endif
                                 </a>
                             </div>
                         </div>
+                        <br>
+                        <br>
                     </form>
                 </div>
             </div>

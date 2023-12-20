@@ -105,6 +105,17 @@
             resize: none; /* Evita que el usuario pueda redimensionar manualmente */
             /* overflow-y: hidden; Oculta la barra de desplazamiento vertical */
         }
+        .btn-save-send{
+            position: fixed;
+            bottom: 20px;
+            right: 40%;
+            padding: 18px 10px;
+            border-radius: 10px;
+            background-color: rgba(133, 134, 134, 0.4);
+            transition: all 300ms ease 0ms;
+            z-index: 1000;
+
+        }
     </style>
     @if ($tesis->cod_docente == null)
         <div class="row d-flex" style="align-items:center; justify-content: center;">
@@ -1485,7 +1496,7 @@
                             </div>
                         </div>
 
-                        <div class="row" style=" margin-bottom:20px;">
+                        <div class="row btn-save-send" style=" margin-bottom:20px;">
                             @if ($tesis->estado == 0 || $tesis->estado == 2 || $tesis->estado == 9)
                                 <div class="col-4 col-md-2 ">
                                     <input type="button" class="btn btn-outline-success" value="Guardar"

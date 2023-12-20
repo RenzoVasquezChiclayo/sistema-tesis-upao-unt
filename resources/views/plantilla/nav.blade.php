@@ -218,6 +218,17 @@
             </div>
         </li>
         <li>
+            <a class="cstm-a" data-bs-toggle="collapse" href="#collapseJurado" role="button" aria-expanded="false" aria-controls="collapseJurado">
+                <i class='bx bx-group'></i>
+                <span class = "links_name">Jurado</span>
+            </a>
+            <div class="cstm-collapse collapse" id="collapseJurado">
+                <a href="{{ route('director.verRegistrarJurado') }}">
+                    <span class="links_name">Registrar jurado</span>
+                </a>
+            </div>
+        </li>
+        <li>
             <a class="cstm-a" href="{{ route('director.asignar') }}">
                 <i class='bx bx-sm bx-check-square'></i>
                 <span class="links_name">Proyecto de Tesis</span>
@@ -280,6 +291,9 @@
             <div class="cstm-collapse collapse" id="collapseSustentacion">
                 <a href="{{route('asesor.listaEstudiantesInforme')}}">
                     <span class="links_name">Historial de informes</span>
+                </a>
+                <a href="{{route('asesor.verListaSustentacion')}}">
+                    <span class="links_name">Lista de Sustentación</span>
                 </a>
             </div>
         </li>

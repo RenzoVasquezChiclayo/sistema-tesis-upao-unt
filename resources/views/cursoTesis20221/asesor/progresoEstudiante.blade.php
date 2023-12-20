@@ -39,6 +39,16 @@
         h4,h5,h6 {
             text-align: left;
         }
+        .btn-save-send{
+            position: fixed;
+            bottom: 20px;
+            right: 35%;
+            padding: 18px 10px;
+            border-radius: 10px;
+            background-color: rgba(133, 134, 134, 0.4);
+            z-index: 1000;
+
+        }
     </style>
     <div class="card-header">
         Proyecto de Tesis
@@ -1163,7 +1173,7 @@
                     <input type="hidden" name="validacionCampos" id="validacionCampos" value="{{ $camposFull }}">
                     <input type="hidden" name="validacionTesis" id="validacionTesis" value="{{ $isFinal }}">
                     <input type="hidden" name="camposActivos" id="camposActivos" value="{{ $camposActivos }}">
-                    <div class="row" style="padding-top: 20px; padding-bottom:20px;">
+                    <div class="row btn-save-send" style="padding-top: 20px; padding-bottom:20px;">
                         <div class="col-12">
                             <div class="row" style="text-align:left; ">
                                 <div class="row" id="grupoAproDesa" hidden>
@@ -1176,25 +1186,15 @@
 
                                 </div>
                                 <div class="row" id="grupoObservaciones">
-
-                                    <div class="d-grid gap-2 d-md-block">
+                                    <div class="d-flex justify-content-between">
                                         @if ($cursoTesis[0]->estado == 1)
                                             <input class="btn btn-secondary" type="button" id="btnSinObservar" value="Sin observaciones"
                                                 onclick="saveWithoutErrors();">
                                             <input class="btn btn-primary" type="button" id="btnConObservacion" value="Guardar Observaciones"
                                                 onclick="uploadProyecto();">
                                         @endif
-                                        {{-- @if ($cursoTesis[0]->estado == 2)
-                                            <input class="btn btn-warning" type="button" value="Editar campos"
-                                                onclick="editCamposEstudiante();">
-                                        @endif
-                                        @if ($camposFull == 'true')
-                                            <input class="btn btn-warning" type="button" id="btnCalificacionFinal" value="Calificación Final"
-                                            onclick="checkAprobation();">
-                                        @endif --}}
                                         <a href="{{ route('asesor.showEstudiantes') }}" type="button"
                                             class="btn btn-outline-danger">Cancelar</a>
-
                                     </div>
 
                                 </div>
@@ -1202,9 +1202,8 @@
                             </div>
                         </div>
                     </div>
-
-
-
+                    <br>
+                    <br>
                 </form>
             </div>
         </div>

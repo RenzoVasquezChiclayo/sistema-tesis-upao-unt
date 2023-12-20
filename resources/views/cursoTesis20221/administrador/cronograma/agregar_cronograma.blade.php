@@ -193,7 +193,13 @@
             if (semestre != '0') {
                 document.getElementById('semestre_hidden').value = semestre;
             } else {
-                alert('Seleccione otra opcion de semestre academico');
+                Swal.fire({
+                            position: "top",
+                            icon: "warning",
+                            title: "Seleccione otra opcion de semestre academico",
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
             }
         }
 
@@ -202,7 +208,13 @@
             if (escuela != '0') {
                 document.getElementById('escuela_hidden').value = escuela;
             } else {
-                alert('Seleccione otra opcion de escuela');
+                Swal.fire({
+                            position: "top",
+                            icon: "warning",
+                            title: "Seleccione otra opcion de escuela",
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
             }
         }
     </script>

@@ -11,5 +11,5 @@ class Jurado extends Model
 
     public $table = 'jurado';
     protected $primaryKey = 'cod_jurado';
-    protected $fillable = ['cod_diseno_investigacion','cod_docente','username','estado'];
+    protected $fillable = ['cod_tinvestigacion','cod_docente','username','estado'];
 }

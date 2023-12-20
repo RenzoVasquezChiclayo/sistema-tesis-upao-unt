@@ -146,7 +146,13 @@
 
         function guardarAsesor(cont) {
             if(document.getElementById('cboAsesor_' + cont).selectedIndex ==0 || document.getElementById('cboDocente_' + cont).selectedIndex == 0){
-                alert("Debe seleccionar un asesor y un docente!");
+                Swal.fire({
+                            position: "top",
+                            icon: "warning",
+                            title: "Debe seleccionar un asesor y un docente!",
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
                 return;
             }
             const selector = document.getElementById('cboAsesor_' + cont);

@@ -197,6 +197,13 @@ Route::get('/lista-estudiantes-informe',[SustentacionController::class,'listarAl
 Route::post('/guardar-informe-final',[SustentacionController::class,'guardarInformeFinal'])->name('asesor.guardarInformeFinal')->middleware('auth');
 Route::post('/ver-informe-final-pdf',[SustentacionController::class,'generarPDFInformeFinal'])->name('asesor.pdfInformeFinal')->middleware('auth');
 
+//JURADO
+Route::get('/ver-registrar-jurado',[SustentacionController::class,'verRegistrarJurado'])->name('director.verRegistrarJurado')->middleware('auth');
+Route::post('/registrar-jurado',[SustentacionController::class,'registrarJurado'])->name('director.registrarJurado')->middleware('auth');
+//JURADO - VIEW ASESOR
+Route::get('/ver-lista-sustentacion',[SustentacionController::class,'verListaSustentacion'])->name('asesor.verListaSustentacion')->middleware('auth');
+Route::get('/ver-sustentacion-estudiante/{cod_tesis}',[SustentacionController::class,'verSustentacionEstudiante'])->name('asesor.verSustentacionEstudiante')->middleware('auth');
+
 
 //-----------------------------------
 //Rutas para el asesor Curso

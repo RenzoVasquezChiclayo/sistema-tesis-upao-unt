@@ -337,7 +337,13 @@
 
                 if (contraNueva != repContraNueva) {
                     document.getElementById('btnEnvioPassword').disabled = true;
-                    alert("Ambas contraseñas deben ser iguales");
+                    Swal.fire({
+                            position: "top",
+                            icon: "warning",
+                            title: "Ambas contraseñas deben ser iguales",
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
 
                 } else {
                     document.getElementById('btnEnvioPassword').disabled = false;
