@@ -245,7 +245,6 @@
             codTesis = document.getElementById('codTesis_' + cont).value;
 
             arregloJurados[cont] = codTesis + '_' + jurado1 + '_' + jurado2 + '_' + jurado3;
-
             document.getElementById('saveJurados').value = arregloJurados;
 
             document.getElementById("saveAsignacion").hidden = false;

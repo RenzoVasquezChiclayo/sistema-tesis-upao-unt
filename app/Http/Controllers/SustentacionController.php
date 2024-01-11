@@ -259,9 +259,9 @@ class SustentacionController extends Controller
     public function verListaSustentacion(Request $request){
         $buscarAlumno = $request->validationSearch ?: "";
         if($buscarAlumno != ""){
-            $estudiantes = DB::table('estudiante_ct2022 as e')->join('tesis_2022 as t','e.cod_matricula','t.cod_matricula')->select('e.*')->where('t.estado',3)->where('e.apellidos','%like%',$buscarAlumno)->get();
+            $estudiantes = DB::table('estudiante_ct2022 as e')->join('tesis_2022 as t','e.cod_matricula','t.cod_matricula')->join('designacion_jurados as dj','dj.cod_tesis','t.cod_tesis')->select('e.*')->where('t.estado',3)->where('e.apellidos','%like%',$buscarAlumno)->get();
         }else{
-            $estudiantes = DB::table('estudiante_ct2022 as e')->join('tesis_2022 as t','e.cod_matricula','t.cod_matricula')->select('e.*','t.cod_tesis')->where('t.estado',3)->get();
+            $estudiantes = DB::table('estudiante_ct2022 as e')->join('tesis_2022 as t','e.cod_matricula','t.cod_matricula')->join('designacion_jurados as dj','dj.cod_tesis','t.cod_tesis')->select('e.*','t.cod_tesis')->where('t.estado',3)->get();
         }
         return view('cursoTesis20221.asesor.sustentacion.verListaSustentacion',['buscarAlumno'=>$buscarAlumno, 'estudiantes'=>$estudiantes]);
     }
