@@ -43,7 +43,7 @@
 
     <div class="home_content">
         <nav class="navbar navcustom">
-            <div class="container-fluid" style="display:flex; justify-content:flex-end; margin-right:10px;">
+            <div class="container-fluid" style="display:flex; justify-content:flex-end; margin-right:10px; z-index: 1000;">
                 <div class="col-4 col-sm-2 col-lg-1" style="text-align:center;">
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown">

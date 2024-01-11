@@ -273,25 +273,26 @@ class AdminCursoController extends Controller
 
         // DIRECTOR
 
-        // $totalEstudiantes = count(EstudianteCT2022::all());
+        $totalEstudiantes = count(EstudianteCT2022::all());
 
-        // $totalAsesores = count(AsesorCurso::all());
+        $totalAsesores = count(AsesorCurso::all());
 
-        // $AllProyTesis = DB::table('proyecto_tesis')->get();
-        // $AllProyTesis->toArray();
-        // for ($i=0; $i < count($AllProyTesis); $i++) {
-        //     foreach ($AllProyTesis[$i] as $atributo) {
-        //         if ($atributo!=null) {
-        //             $porce += 100/33;
-        //         }
-        //     }
-        //     $dato .= $AllProyTesis[$i]->cod_matricula.'_'.(int)$porce.'-';
-        //     $porce = 0;
-        // }
+        $AllProyTesis = DB::table('proyecto_tesis as py')->get();
+        $AllProyTesis->toArray();
+        for ($i=0; $i < count($AllProyTesis); $i++) {
+            foreach ($AllProyTesis[$i] as $atributo) {
+                if ($atributo!=null) {
+                    $porce += 100/33;
+                }
+            }
+            $grupo = DB::table('grupo_investigacion')->where('id_grupo',"=",$AllProyTesis[$i]->id_grupo_inves)->first();
+            $dato .= $grupo->id_grupo.'_'.(int)$porce.'-';
+            $porce = 0;
+        }
         // ---------------------------------------------------------
-        // return view('cursoTesis20221.reportes.listaReportes',['porcentaje'=>$porcentaje,'totalEstudiantes'=>$totalEstudiantes,
-        //                         'totalAsesores'=>$totalAsesores,'dato'=>$dato,'dato2'=>$dato2]);
-        return view('cursoTesis20221.reportes.listaReportes');
+        return view('cursoTesis20221.reportes.listaReportes',['porcentaje'=>$porcentaje,'totalEstudiantes'=>$totalEstudiantes,
+                                 'totalAsesores'=>$totalAsesores,'dato'=>$dato,'dato2'=>$dato2]);
+        //return view('cursoTesis20221.reportes.listaReportes');
     }
 
     public function descargarReporteProyT(Request $request){
@@ -413,8 +414,9 @@ class AdminCursoController extends Controller
         if($existAsesor->count()==0){
             $newAsesor=new AsesorCurso();
             $newAsesor->cod_docente = $request->cod_docente;
-            $newAsesor->nombres = strtoupper($request->apellidos).' '.strtoupper($request->nombres);
+            $newAsesor->nombres = strtoupper($request->nombres);
             $newAsesor->orcid = $request->orcid;
+            $newAsesor->apellidos = strtoupper($request->apellidos);
             switch ($request->gradAcademico) {
                 case 0:
                     $newAsesor->grado_academico = 'NOMBRADO';
@@ -485,7 +487,7 @@ class AdminCursoController extends Controller
             ->join('grupo_investigacion as gi','gi.id_grupo','=','dgi.id_grupo_inves')
             ->join('proyecto_tesis as pt','pt.id_grupo_inves','=','gi.id_grupo')
             ->join('historial_observaciones as ho','pt.cod_proyectotesis','=','ho.cod_proyectotesis')
-            ->select('e.*','pt.escuela','pt.estado','ho.fecha','ho.cod_historialObs')
+            ->select('gi.id_grupo','e.*','pt.estado','ho.fecha','ho.cod_historialObs')
             ->where('dgi.cod_matricula','like','%'.$buscarObservaciones.'%')
             ->where('pt.cod_docente',$asesor[0]->cod_docente)
             ->paginate($this::PAGINATION);
@@ -506,7 +508,7 @@ class AdminCursoController extends Controller
             ->join('grupo_investigacion as gi','gi.id_grupo','=','dgi.id_grupo_inves')
             ->join('proyecto_tesis as pt','pt.id_grupo_inves','=','gi.id_grupo')
             ->join('historial_observaciones as ho','pt.cod_proyectotesis','=','ho.cod_proyectotesis')
-            ->select('e.*','pt.escuela','pt.estado','ho.fecha','ho.cod_historialObs')
+            ->select('gi.id_grupo','e.*','pt.estado','ho.fecha','ho.cod_historialObs')
             ->where('e.apellidos','like','%'.$buscarObservaciones.'%')
             ->where('pt.cod_docente',$asesor[0]->cod_docente)
             ->paginate($this::PAGINATION);

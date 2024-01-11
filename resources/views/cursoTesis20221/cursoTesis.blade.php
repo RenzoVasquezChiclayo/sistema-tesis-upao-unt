@@ -311,7 +311,7 @@
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                                 <label for="txtNombreAsesor" class="form-label">Apellidos y Nombres</label>
                                 <input class="form-control" name="txtNombreAsesor" id="txtNombreAsesor" type="text"
-                                    value="{{ $asesor->nombres }}" placeholder="Apellidos y nombres" readonly>
+                                    value="{{ $asesor->nombres." ".$asesor->apellidos }}" placeholder="Apellidos y nombres" readonly>
                             </div>
                             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                                 <label for="cboGrAcademicoAsesor" class="form-label">Grado Academico</label>

@@ -71,7 +71,7 @@
                                             @if ($grupo[0]->cod_docente_tesis == $ase->cod_docente)
                                                 selected
                                             @endif
-                                            >{{$ase->nombres}}</option>
+                                            >{{$ase->nombres." ".$ase->apellidos}}</option>
                                         @endforeach
                                     </select>
                                 </td>

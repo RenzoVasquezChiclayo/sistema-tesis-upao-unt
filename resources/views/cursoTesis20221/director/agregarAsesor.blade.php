@@ -3,7 +3,7 @@
     Agregar Asesor
 @endsection
 @section('contenido')
-    <div class="row" style="display: flex; align-items:center; padding-top:15px;">
+    <div class="row" style="text-align:left; justify-content:center; padding-top:15px; padding-bottom:15px;">
         <div class="col-10">
             <div class="row" style="text-align:center;">
                 <h3>Registro de Asesores</h3>
@@ -25,7 +25,7 @@
                         </div>
                     </div>
                     <div class="col-12">
-                        <h5>Importar un registro Excel</h5>
+                        <h5>Importar desde registro excel</h5>
                     </div>
                     <div class="row">
                         <div class="col-7">
@@ -37,8 +37,10 @@
                     </div>
                 </form>
             </div>
-            <div class="row border-box">
-                <h5>Registrar por asesor</h5>
+            <div class="row border-box" style="justify-content:center;">
+                <div class="col-12" style="text-align:center;">
+                    <h5>Registro de asesor</h5>
+                </div>
                 <form class="row g-3 needs-validation" action="{{ route('director.addAsesor') }}" method="POST" novalidate>
                     @csrf
                     <input type="hidden" name="semestre_hidden" id="semestre_hidden">

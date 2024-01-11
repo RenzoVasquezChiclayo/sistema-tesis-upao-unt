@@ -126,7 +126,6 @@
         function select_semestre() {
             semestre = document.getElementById('semestre_academico');
             selected = semestre.options[semestre.selectedIndex].text;
-            alert(selected);
             document.getElementById('semestre_hidden').value = selected;
         }
     </script>

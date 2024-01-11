@@ -62,7 +62,7 @@
                                             <tr>
                                                 <td>{{$hTesis[0]->fecha}}</td>
                                                 <td>{{$hTesis[0]->titulo}}</td>
-                                                <td>{{$hTesis[0]->nombre_asesor}}</td>
+                                                <td>{{$hTesis[0]->nombre_asesor." ".$hTesis[0]->apellidos_asesor}}</td>
                                                 <td>{{$estado}}</td>
                                                 <td style="text-align: center;">
                                                     @if($hTesis[0]->estado!=0)

@@ -17,6 +17,7 @@ class AsesorCurso extends Model
         'cod_docente',
         'nombres',
         'orcid',
+        'apellidos',
         'grado_academico',
         'titulo_profesional',
         'direccion',

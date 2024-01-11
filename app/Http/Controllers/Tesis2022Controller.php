@@ -697,7 +697,7 @@ class Tesis2022Controller extends Controller
             }
         }
         $studentforGroups = new Paginator($studentforGroups, $this::PAGINATION5);
-        $asesores = DB::table('asesor_curso')->select('cod_docente','nombres')->get();
+        $asesores = DB::table('asesor_curso')->select('cod_docente','nombres','apellidos')->get();
         return view('cursoTesis20221.director.tesis.asignarAsesorGruposTesis',['studentforGroups'=>$studentforGroups,'asesores'=>$asesores,'buscarAlumno'=>$buscarAlumno]);
     }
 
@@ -1065,7 +1065,7 @@ class Tesis2022Controller extends Controller
         $observaciones = TObservacion::where('cod_historial_observacion',$cod_historial_observacion)->get();
         $estudiante = Tesis_2022::join('t_historial_observaciones','tesis_2022.cod_tesis','=','t_historial_observaciones.cod_Tesis')
                                 ->join('grupo_investigacion','grupo_investigacion.id_grupo','tesis_2022.id_grupo_inves')
-                                ->select('tesis_2022.*','estudiante_ct2022.*')->where('t_historial_observaciones.cod_historial_observacion',$cod_historial_observacion)->get();
+                                ->select('tesis_2022.*','grupo_investigacion.*')->where('t_historial_observaciones.cod_historial_observacion',$cod_historial_observacion)->get();
 
         return view('cursoTesis20221.asesor.tesis.lista-obs-estudiante',['observaciones'=>$observaciones,'estudiante'=>$estudiante]);
     }
@@ -1075,11 +1075,12 @@ class Tesis2022Controller extends Controller
         $id = auth()->user()->name;
         $asesor = AsesorCurso::where('username',$id)->get();
         if (is_numeric($buscarObservaciones)) {
-            $estudiantes = DB::connection('mysql')->table('estudiante_ct2022')->join('tesis_2022','estudiante_ct2022.cod_matricula','=','tesis_2022.cod_matricula')->join('t_historial_observaciones','tesis_2022.cod_tesis','=','t_historial_observaciones.cod_tesis')
-                            ->select('estudiante_ct2022.*','tesis_2022.estado','t_historial_observaciones.fecha','t_historial_observaciones.cod_historial_observacion')->where('tesis_2022.cod_matricula','like','%'.$buscarObservaciones.'%')->where('tesis_2022.cod_docente',$asesor[0]->cod_docente)->paginate($this::PAGINATION);
+            $estudiantes = DB::connection('mysql')->table('grupo_investigacion')->join('tesis_2022','grupo_investigacion.id_grupo','tesis_2022.id_grupo_inves')->join('t_historial_observaciones','tesis_2022.cod_tesis','=','t_historial_observaciones.cod_tesis')
+            ->select('grupo_investigacion.id_grupo','tesis_2022.estado','t_historial_observaciones.fecha','t_historial_observaciones.cod_historial_observacion')->where('tesis_2022.cod_docente',$asesor[0]->cod_docente)->paginate($this::PAGINATION);
+
         } else {
-            $estudiantes = DB::connection('mysql')->table('estudiante_ct2022')->join('tesis_2022','estudiante_ct2022.cod_matricula','=','tesis_2022.cod_matricula')->join('t_historial_observaciones','tesis_2022.cod_tesis','=','t_historial_observaciones.cod_Tesis')
-                            ->select('estudiante_ct2022.*','tesis_2022.estado','t_historial_observaciones.fecha','t_historial_observaciones.cod_historial_observacion')->where('estudiante_ct2022.apellidos','like','%'.$buscarObservaciones.'%')->where('tesis_2022.cod_docente',$asesor[0]->cod_docente)->paginate($this::PAGINATION);
+            $estudiantes = DB::connection('mysql')->table('grupo_investigacion')->join('tesis_2022','grupo_investigacion.id_grupo','tesis_2022.id_grupo_inves')->join('t_historial_observaciones','tesis_2022.cod_tesis','=','t_historial_observaciones.cod_Tesis')
+            ->select('grupo_investigacion.id_grupo','tesis_2022.estado','t_historial_observaciones.fecha','t_historial_observaciones.cod_historial_observacion')->where('tesis_2022.cod_docente',$asesor[0]->cod_docente)->paginate($this::PAGINATION);
         }
 
         if(empty($estudiantes)){

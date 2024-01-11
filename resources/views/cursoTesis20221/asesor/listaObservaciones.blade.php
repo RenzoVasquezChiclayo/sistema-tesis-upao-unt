@@ -63,8 +63,7 @@
                         <table id="table-formato" class="table table-bordered table-striped table-responsive-md">
                             <thead>
                                 <tr>
-                                    <td>Codigo Matricula</td>
-                                    <td>Egresado</td>
+                                    <td>Grupo</td>
                                     <td>Escuela</td>
                                     <td>Ultima Observacion</td>
                                     <td style="text-align:center;">Ver Observacion</td>
@@ -79,8 +78,7 @@
                                         style= "background-color: #FA6A56;"
                                     @endif
                                     >
-                                        <td>{{$estudiante->cod_matricula}}</td>
-                                        <td>{{$estudiante->apellidos.', '.$estudiante->nombres}}</td>
+                                        <td>{{$estudiante->id_grupo}}</td>
                                         <td>Contabilidad y Finanzas</td>
                                         <td>{{$estudiante->fecha}}</td>
                                         <td style="text-align:center;">

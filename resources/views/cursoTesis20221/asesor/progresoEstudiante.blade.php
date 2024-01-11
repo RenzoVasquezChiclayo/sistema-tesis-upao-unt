@@ -53,7 +53,7 @@
                 <h2>Proyecto de Tesis</h2>
             </div>
         </div>
-        <div class="row">
+        <div class="row" style="text-align:start; justify-content:center;">
             <form id="formProyecto" name="formProyecto" action="" method="">
                 @csrf
                 <input type="hidden" name="textcod" value="{{ $cursoTesis[0]->cod_proyectotesis }}">

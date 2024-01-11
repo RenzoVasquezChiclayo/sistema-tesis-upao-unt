@@ -76,7 +76,7 @@
                                     @foreach ($asesores as $ase)
                                         <tr>
                                             <td>{{ $ase->cod_docente }}</td>
-                                            <td>{{ $ase->nombres }}</td>
+                                            <td>{{ $ase->nombres ." ".$ase->apellidos}}</td>
                                             <td>{{ $ase->orcid }}</td>
                                             <td>{{ $ase->grado_academico }}.</td>
                                             <td>

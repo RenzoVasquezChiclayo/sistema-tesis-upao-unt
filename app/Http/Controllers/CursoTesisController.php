@@ -152,7 +152,7 @@ class CursoTesisController extends Controller
         $hTesis = TesisCT2022::join('asesor_curso as ac','ac.cod_docente','=','proyecto_tesis.cod_docente')
                         ->join('grupo_investigacion as g_i','proyecto_tesis.id_grupo_inves','=','g_i.id_grupo')
                         ->join('detalle_grupo_investigacion as d_g','d_g.id_grupo_inves','=','g_i.id_grupo')
-                        ->select('ac.nombres as nombre_asesor','proyecto_tesis.*')
+                        ->select('ac.nombres as nombre_asesor','ac.apellidos as apellidos_asesor','proyecto_tesis.*')
                         ->where('d_g.cod_matricula','=',$estudiante->cod_matricula)->get();
         return view('cursoTesis20221.estadoProyecto',['hTesis'=>$hTesis]);
     }
@@ -350,9 +350,9 @@ class CursoTesisController extends Controller
                 $tesis->estado = 9;
             }else{
                 $tesis->estado = 1;
-                if ($asesor->correo != null) {
-                    Mail::to($asesor->correo)->send(new EstadoEnviadaMail($request->txttitulo,$estudiantes_grupo));
-                }
+                // if ($asesor->correo != null) {
+                //     Mail::to($asesor->correo)->send(new EstadoEnviadaMail($request->txttitulo,$estudiantes_grupo));
+                // }
 
             }
 
@@ -777,6 +777,7 @@ class CursoTesisController extends Controller
 
 
         } catch (\Throwable $th) {
+            dd($th);
             return redirect()->route('curso.tesis20221')->with('datos','oknot');
         }
 
@@ -855,7 +856,7 @@ class CursoTesisController extends Controller
             }
 
             /*Datos del Asesor*/
-            $nombre_asesor = $asesor->nombres;
+            $nombre_asesor = $asesor->nombres." ".$asesor->apellidos;
 
             $orcid_asesor = $asesor->orcid;
             $grado_asesor = $asesor->grado_academico;
@@ -951,73 +952,8 @@ class CursoTesisController extends Controller
             $word->addFontStyle($titulos,array('bold'=>true));
 
             /* Estilos de la caratula */
-            // $styleCaratula1 = 'styleCaratula1';
-            // $word->addParagraphStyle($styleCaratula1,array('align'=>'center','spacing' => \PhpOffice\PhpWord\Shared\Converter::cmToTwip(0.08)));
-
-            // $styleCaratula2 = 'styleCaratula2';
-            // $word->addParagraphStyle($styleCaratula2,array('align'=>'left','spacing' => \PhpOffice\PhpWord\Shared\Converter::cmToTwip(0.08)));
-
-            // $styleTitulo = 'styleTitulo';
-            // $word->addParagraphStyle($styleTitulo,array('align'=>'center','spacing' => \PhpOffice\PhpWord\Shared\Converter::cmToTwip(0.08)));
-
-            // $styleContenido = 'styleContenido';
-            // $word->addParagraphStyle($styleContenido,array('align'=>'left','spacing' => \PhpOffice\PhpWord\Shared\Converter::cmToTwip(0.08)));
-
-            // $tituloCaratula = 'tituloCaratula';
-            // $word->addFontStyle($tituloCaratula,array('name'=>'Arial','bold'=>true,'size'=>20,'position'=>'raised'));
-
-            // $subtitCaratula1 = 'subtitCaratual1';
-            // $word->addFontStyle($subtitCaratula1,array('name'=>'Arial','bold'=>true,'size'=>16,'align'=>'center'));
-            // $subtitCaratula2 = 'subtitCaratual2';
-            // $word->addFontStyle($subtitCaratula2,array('name'=>'Arial','bold'=>true,'size'=>14,'align'=>'center'));
-
-            // $titProyCaratula = 'titProyCaratula';
-            // $word->addFontStyle($titProyCaratula,array('name'=>'Arial','bold'=>true,'size'=>18,'align'=>'justify'));
-
-            // $styleImage = array('align'=>'center','width'=>280,'height'=>200);
-
-            /* ------------------------------- */
-
-            /* CARATULA */
-
-            $caratulaSesion = $word->addSection();
-            $nuevaSesion = $word->addSection();
-
-            // CARATULA UNT
-            // $caratulaSesion->addText("UNIVERSIDAD NACIONAL DE TRUJILLO",$tituloCaratula,$styleCaratula1);
-            // $caratulaSesion->addText("FACULTAD DE CIENCIAS ECONOMICAS",$subtitCaratula1,$styleCaratula1);
-            // $caratulaSesion->addText("ESCUELA PROFESIONAL DE CONTABILIDAD Y FINANZAS",$subtitCaratula2,$styleCaratula1);
-
-            // $caratulaSesion->addImage("img/logoUNTcaratula.png",$styleImage);
-
-            // $caratulaSesion->addText($titulo,$titProyCaratula,$styleCaratula1);
-            // $caratulaSesion->addTextBreak(1.5);
-
-            // $caratulaSesion->addText("PROYECTO DE TESIS",array('name'=>'Arial','bold'=>true,'size'=>16),$styleCaratula1);
-            // $caratulaSesion->addText("Para obtener el Titulo Porfesional de:",array('name'=>'Arial','bold'=>true,'size'=>16),$styleCaratula1);
-
-            // $caratulaSesion->addText("Contabilidad y Finanzas",array('name'=>'Arial','bold'=>true,'size'=>18),$styleCaratula1);
-
-            // $caratulaSesion->addTextBreak(2);
-
-            // $caratulaSesion->addText($nombres,array('name'=>'Arial','bold'=>true,'size'=>16),$styleCaratula1);
-            // $caratulaSesion->addText("Bachiller en Ciencias Economicas",array('name'=>'Arial','bold'=>true,'size'=>16),$styleCaratula1);
-
-            // $caratulaSesion->addText("Asesor: ".$nombre_asesor,array('name'=>'Arial','bold'=>true,'size'=>16),$styleCaratula2);
-
-            // $caratulaSesion->addText("ORCID: ".$orcid_asesor,array('name'=>'Arial','bold'=>true,'size'=>14),$styleCaratula2);
-
-            // $caratulaSesion->addTextBreak(2);
-            // $caratulaSesion->addText("Trujillo - Peru",array('name'=>'Arial','bold'=>true,'size'=>16),$styleCaratula1);
-            // $caratulaSesion->addText("2022",array('name'=>'Arial','bold'=>true,'size'=>16),$styleCaratula1);
-
-            /* ------------------------------------------ */
-
-            // CARATULA UPAO
-
-            /* Estilos de la caratula UPAO */
-            $styleCaratula1UPAO = 'styleCaratula1UPAO';
-            $word->addParagraphStyle($styleCaratula1UPAO,array('align'=>'center','spacing' => \PhpOffice\PhpWord\Shared\Converter::cmToTwip(0.08)));
+            $styleCaratula1 = 'styleCaratula1';
+            $word->addParagraphStyle($styleCaratula1,array('align'=>'center','spacing' => \PhpOffice\PhpWord\Shared\Converter::cmToTwip(0.08)));
 
             $styleCaratula2 = 'styleCaratula2';
             $word->addParagraphStyle($styleCaratula2,array('align'=>'left','spacing' => \PhpOffice\PhpWord\Shared\Converter::cmToTwip(0.08)));
@@ -1028,55 +964,52 @@ class CursoTesisController extends Controller
             $styleContenido = 'styleContenido';
             $word->addParagraphStyle($styleContenido,array('align'=>'left','spacing' => \PhpOffice\PhpWord\Shared\Converter::cmToTwip(0.08)));
 
-            $tituloCaratulaUPAO = 'tituloCaratulaUPAO';
-            $word->addFontStyle($tituloCaratulaUPAO,array('name'=>'Arial','bold'=>true,'size'=>14,'position'=>'raised'));
+            $tituloCaratula = 'tituloCaratula';
+            $word->addFontStyle($tituloCaratula,array('name'=>'Arial','bold'=>true,'size'=>20,'position'=>'raised'));
 
-            $subtitCaratula1UPAO = 'subtitCaratual1UPAO';
-            $word->addFontStyle($subtitCaratula1UPAO,array('name'=>'Arial','bold'=>false,'size'=>14,'align'=>'center'));
-            $subtitCaratula2UPAO = 'subtitCaratual2UPAO';
-            $word->addFontStyle($subtitCaratula2UPAO,array('name'=>'Arial','bold'=>false,'size'=>16,'align'=>'center'));
+            $subtitCaratula1 = 'subtitCaratual1';
+            $word->addFontStyle($subtitCaratula1,array('name'=>'Arial','bold'=>true,'size'=>16,'align'=>'center'));
+            $subtitCaratula2 = 'subtitCaratual2';
+            $word->addFontStyle($subtitCaratula2,array('name'=>'Arial','bold'=>true,'size'=>14,'align'=>'center'));
 
-            $titProyCaratulaUPAO = 'titProyCaratulaUPAO';
-            $word->addFontStyle($titProyCaratulaUPAO,array('name'=>'Arial','bold'=>false,'italic'=>true,'size'=>12,'align'=>'justify'));
+            $titProyCaratula = 'titProyCaratula';
+            $word->addFontStyle($titProyCaratula,array('name'=>'Arial','bold'=>true,'size'=>18,'align'=>'justify'));
 
-            $styleImageUPAO = array('align'=>'center','width'=>200,'height'=>150);
-            $lineStyle = array('weight' => 2, 'width' => 450, 'height' => 1.5, 'color' => 000000);
+            $styleImage = array('align'=>'center','width'=>280,'height'=>200);
 
-            $caratulaSesion->addText("UNIVERSIDAD PRIVADA ANTENOR ORREGO",$tituloCaratulaUPAO,$styleCaratula1UPAO);
-            $caratulaSesion->addText("FACULTAD DE CIENCIAS ECONOMICAS",$subtitCaratula1UPAO,$styleCaratula1UPAO);
-            $caratulaSesion->addText("PROGRAMA DE ESTUDIO DE CONTABILIDAD",$subtitCaratula2UPAO,$styleCaratula1UPAO);
+            /* ------------------------------- */
 
-            $caratulaSesion->addImage("img/logo-upao.png",$styleImageUPAO);
+            /* CARATULA */
 
-            $caratulaSesion->addText("PROYECTO DE TESIS PARA OBTENER EL TITULO PROFESIONAL DE CONTADOR PUBLICO",$titProyCaratulaUPAO,$styleCaratula1UPAO);
+            $caratulaSesion = $word->addSection();
+            $nuevaSesion = $word->addSection();
 
-            $caratulaSesion->addLine($lineStyle);
+            // CARATULA UNT
+            $caratulaSesion->addText("UNIVERSIDAD NACIONAL DE TRUJILLO",$tituloCaratula,$styleCaratula1);
+            $caratulaSesion->addText("FACULTAD DE CIENCIAS ECONOMICAS",$subtitCaratula1,$styleCaratula1);
+            $caratulaSesion->addText("ESCUELA PROFESIONAL DE CONTABILIDAD Y FINANZAS",$subtitCaratula2,$styleCaratula1);
 
-            $caratulaSesion->addText($titulo,array('name'=>'Arial','bold'=>true,'size'=>12,'align'=>'justify'),$styleCaratula1UPAO);
+            $caratulaSesion->addImage("img/logoUNTcaratula.png",$styleImage);
 
-            $caratulaSesion->addLine($lineStyle);
+            $caratulaSesion->addText($titulo,$titProyCaratula,$styleCaratula1);
+            $caratulaSesion->addTextBreak(1.5);
 
-            $caratulaSesion->addText("Linea de Investigacion:",array('name'=>'Arial','bold'=>true,'size'=>12,'align'=>'justify'),$styleCaratula1UPAO);
-            $caratulaSesion->addText($cod_tinvestigacion,array('name'=>'Arial','bold'=>false,'size'=>12,'align'=>'justify'),$styleCaratula1UPAO);
+            $caratulaSesion->addText("PROYECTO DE TESIS",array('name'=>'Arial','bold'=>true,'size'=>16),$styleCaratula1);
+            $caratulaSesion->addText("Para obtener el Titulo Porfesional de:",array('name'=>'Arial','bold'=>true,'size'=>16),$styleCaratula1);
 
-            $caratulaSesion->addText("Autor (es)",array('name'=>'Arial','bold'=>true,'size'=>12,'align'=>'justify'),$styleCaratula1UPAO);
-
-            if (count($estudiantes_grupo)>1){
-                $caratulaSesion->addText($estudiante1,array('name'=>'Arial','bold'=>false,'size'=>12,'align'=>'justify'),$styleCaratula1UPAO);
-                $caratulaSesion->addText($estudiante2,array('name'=>'Arial','bold'=>false,'size'=>12,'align'=>'justify'),$styleCaratula1UPAO);
-            } else {
-                $caratulaSesion->addText($estudiante1,array('name'=>'Arial','bold'=>false,'size'=>12,'align'=>'justify'),$styleCaratula1UPAO);
-            }
+            $caratulaSesion->addText("Contabilidad y Finanzas",array('name'=>'Arial','bold'=>true,'size'=>18),$styleCaratula1);
 
 
-            $caratulaSesion->addText("Asesor:",array('name'=>'Arial','bold'=>true,'size'=>12,'align'=>'justify'),$styleCaratula1UPAO);
-            $caratulaSesion->addText($nombre_asesor,array('name'=>'Arial','bold'=>false,'size'=>12,'align'=>'justify'),$styleCaratula1UPAO);
+            $caratulaSesion->addText($nombre_asesor,array('name'=>'Arial','bold'=>true,'size'=>16),$styleCaratula1);
+            $caratulaSesion->addText("Bachiller en Ciencias Economicas",array('name'=>'Arial','bold'=>true,'size'=>16),$styleCaratula1);
 
-            $caratulaSesion->addText("Codigo ORCID: https://orcid.org/".$orcid_asesor,array('name'=>'Arial','bold'=>true,'size'=>12,'align'=>'justify'),$styleCaratula1UPAO);
+            $caratulaSesion->addText("Asesor: ".$nombre_asesor,array('name'=>'Arial','bold'=>true,'size'=>16),$styleCaratula2);
 
-            $caratulaSesion->addTextBreak(2);
-            $caratulaSesion->addText("TRUJILLO - PERU",array('name'=>'Arial','bold'=>true,'size'=>12),$styleCaratula1UPAO);
-            $caratulaSesion->addText("2023",array('name'=>'Arial','bold'=>true,'size'=>12),$styleCaratula1UPAO);
+            $caratulaSesion->addText("ORCID: ".$orcid_asesor,array('name'=>'Arial','bold'=>true,'size'=>14),$styleCaratula2);
+
+            $caratulaSesion->addTextBreak(1.5);
+            $caratulaSesion->addText("Trujillo - Peru",array('name'=>'Arial','bold'=>true,'size'=>16),$styleCaratula1);
+            $caratulaSesion->addText("2022",array('name'=>'Arial','bold'=>true,'size'=>16),$styleCaratula1);
 
             /* ------------------------------------------ */
 
@@ -1511,7 +1444,7 @@ class CursoTesisController extends Controller
             }
         }
         $studentforGroups = new Paginator($studentforGroups, $this::PAGINATION5);
-        $asesores = DB::table('asesor_curso')->select('cod_docente','nombres')->get();
+        $asesores = DB::table('asesor_curso')->select('cod_docente','nombres','apellidos')->get();
         return view('cursoTesis20221.director.asignarAsesorGrupos',['studentforGroups'=>$studentforGroups,'asesores'=>$asesores,'buscarAlumno'=>$buscarAlumno]);
     }
 
@@ -2088,11 +2021,11 @@ class CursoTesisController extends Controller
             $tesis->estado = 2;
             $tesis->save();
 
-            if ($cursoTesis[0]->correoEstudi != null) {
-                $titulo = $cursoTesis[0]->titulo;
-                $asesor = $cursoTesis[0]->nombresAsesor;
-                Mail::to($cursoTesis[0]->correoEstudi)->send(new EstadoObservadoMail($titulo,$asesor));
-            }
+            // if ($cursoTesis[0]->correoEstudi != null) {
+            //     $titulo = $cursoTesis[0]->titulo;
+            //     $asesor = $cursoTesis[0]->nombresAsesor;
+            //     Mail::to($cursoTesis[0]->correoEstudi)->send(new EstadoObservadoMail($titulo,$asesor));
+            // }
 
         } catch (\Throwable $th) {
             return redirect()->route('asesor.verObsEstudiante',$existHisto[0]->cod_historialObs)->with('datos','oknot');

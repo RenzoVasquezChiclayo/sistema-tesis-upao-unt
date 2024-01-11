@@ -244,7 +244,7 @@
                     <div class="row" style=" margin-bottom:20px;">
                         <h5>Abstract</h5>
                         <div class="col-12 col-md-10">
-                            <textarea class="form-control" name="taabstract" id="taabstract" style="height: 100px; resize:none" readonly>{{$Tesis[0]->abstact}}</textarea>
+                            <textarea class="form-control" name="taabstract" id="taabstract" style="height: 100px; resize:none" readonly>{{$Tesis[0]->abstract}}</textarea>
                         </div>
                     </div>
                     <textarea class="form-control" name="tachkCorregir5" id="tachkCorregir5" cols="30" rows="4"  hidden></textarea>
