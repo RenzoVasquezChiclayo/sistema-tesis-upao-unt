@@ -13,6 +13,7 @@
 
     <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../plantilla/css/sidebar.css">
+    <link rel="stylesheet" href="../plantilla/css/components.css">
 
     @yield('css')
     <style type="text/css">
@@ -25,25 +26,33 @@
         .btn-modificaciones:hover {
             background-color: rgba(223, 190, 43, 0.651);
         }
+
+        .btn-no-border {
+            border: transparent;
+            box-shadow: none;
+        }
     </style>
 </head>
 
 <body>
     <div class="sidebar">
-        <div class="logo_content">
-            <div class="logo">
-                <div class="logo_name">CONTABILIDAD UNT</div>
+        <div class="sidebar_content">
+            <div class="logo_content">
+                <div class="logo">
+                    <div class="logo_name">CONTABILIDAD UNT</div>
+                </div>
+                <i class='bx bx-menu' id="btn-menu"></i>
             </div>
-            <i class='bx bx-menu' id="btn-menu"></i>
+            <ul class="nav_list">
+                @include('plantilla.nav')
+            </ul>
         </div>
-        <ul class="nav_list">
-            @include('plantilla.nav')
-        </ul>
     </div>
 
     <div class="home_content">
         <nav class="navbar navcustom">
-            <div class="container-fluid" style="display:flex; justify-content:flex-end; margin-right:10px; z-index: 1000;">
+            <div class="container-fluid"
+                style="display:flex; justify-content:flex-end; margin-right:10px; z-index: 1000;">
                 <div class="col-4 col-sm-2 col-lg-1" style="text-align:center;">
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown">

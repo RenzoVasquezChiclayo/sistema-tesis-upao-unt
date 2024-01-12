@@ -24,7 +24,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::cLsQCOXnMSXxHIXl',
+            '_route' => 'generated::nhiRRsfgUBh70nv3',
           ),
           1 => NULL,
           2 => 
@@ -102,7 +102,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::stdMMEAeYY2p7WWA',
+            '_route' => 'generated::azx1o5H4reqqRKhF',
           ),
           1 => NULL,
           2 => 
@@ -570,6 +570,63 @@ app('router')->setCompiledRoutes(
           0 => 
           array (
             '_route' => 'admin.saveconfigurar',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/change-status-configuraciones' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'admin.changeStatusConfiguraciones',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/ver-editar-configuraciones' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'admin.verConfiguracionEditar',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/save-editar-configuraciones' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'admin.saveEditarconfiguraciones',
           ),
           1 => NULL,
           2 => 
@@ -1605,7 +1662,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::W9LW8iRr0EjbXyrg',
+            '_route' => 'generated::QiZ8nazNCtOG3HrB',
           ),
           1 => NULL,
           2 => 
@@ -1641,7 +1698,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::cbkVjv6ot4XdTv5q',
+            '_route' => 'generated::wQccBl8g4f9u9UDE',
           ),
           1 => NULL,
           2 => 
@@ -1732,7 +1789,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::lnE7jj54oA5HvdkU',
+            '_route' => 'generated::KThBUrX0FMy1v20j',
           ),
           1 => NULL,
           2 => 
@@ -1850,7 +1907,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::apXigxcbvXhxPZsq',
+            '_route' => 'generated::k4Pgr8gyzMZafIC7',
           ),
           1 => 
           array (
@@ -1882,7 +1939,7 @@ app('router')->setCompiledRoutes(
   ),
   'attributes' => 
   array (
-    'generated::cLsQCOXnMSXxHIXl' => 
+    'generated::nhiRRsfgUBh70nv3' => 
     array (
       'methods' => 
       array (
@@ -1903,7 +1960,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
         ),
-        'as' => 'generated::cLsQCOXnMSXxHIXl',
+        'as' => 'generated::nhiRRsfgUBh70nv3',
       ),
       'fallback' => false,
       'defaults' => 
@@ -2028,7 +2085,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::stdMMEAeYY2p7WWA' => 
+    'generated::azx1o5H4reqqRKhF' => 
     array (
       'methods' => 
       array (
@@ -2045,13 +2102,13 @@ app('router')->setCompiledRoutes(
         ),
         'uses' => 'O:47:"Laravel\\SerializableClosure\\SerializableClosure":1:{s:12:"serializable";O:46:"Laravel\\SerializableClosure\\Serializers\\Signed":2:{s:12:"serializable";s:297:"O:46:"Laravel\\SerializableClosure\\Serializers\\Native":5:{s:3:"use";a:0:{}s:8:"function";s:79:"function (\\Illuminate\\Http\\Request $request) {
     return $request->user();
-}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"00000000540c3c560000000027e2b9e7";}";s:4:"hash";s:44:"eQg1y4pSHdrMJAmqhlbJbmVsHNgQs2dn0lAw17+Q+UQ=";}}',
+}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"00000000564dd0e80000000049019c6a";}";s:4:"hash";s:44:"8UaIpxPWfnirVFlOa3NNxXXUCLw2XfyrBkkiVdQv5+k=";}}',
         'namespace' => NULL,
         'prefix' => 'api',
         'where' => 
         array (
         ),
-        'as' => 'generated::stdMMEAeYY2p7WWA',
+        'as' => 'generated::azx1o5H4reqqRKhF',
       ),
       'fallback' => false,
       'defaults' => 
@@ -2977,6 +3034,117 @@ app('router')->setCompiledRoutes(
         array (
         ),
         'as' => 'admin.saveconfigurar',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'admin.changeStatusConfiguraciones' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'change-status-configuraciones',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+        ),
+        'uses' => 'App\\Http\\Controllers\\AdminCursoController@changeStatusConfiguraciones',
+        'controller' => 'App\\Http\\Controllers\\AdminCursoController@changeStatusConfiguraciones',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'admin.changeStatusConfiguraciones',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'admin.verConfiguracionEditar' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'ver-editar-configuraciones',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+        ),
+        'uses' => 'App\\Http\\Controllers\\AdminCursoController@ver_editar_configuraciones',
+        'controller' => 'App\\Http\\Controllers\\AdminCursoController@ver_editar_configuraciones',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'admin.verConfiguracionEditar',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'admin.saveEditarconfiguraciones' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'save-editar-configuraciones',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+        ),
+        'uses' => 'App\\Http\\Controllers\\AdminCursoController@save_editar_configuraciones',
+        'controller' => 'App\\Http\\Controllers\\AdminCursoController@save_editar_configuraciones',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'admin.saveEditarconfiguraciones',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5013,7 +5181,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::W9LW8iRr0EjbXyrg' => 
+    'generated::QiZ8nazNCtOG3HrB' => 
     array (
       'methods' => 
       array (
@@ -5033,7 +5201,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::W9LW8iRr0EjbXyrg',
+        'as' => 'generated::QiZ8nazNCtOG3HrB',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5086,7 +5254,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::cbkVjv6ot4XdTv5q' => 
+    'generated::wQccBl8g4f9u9UDE' => 
     array (
       'methods' => 
       array (
@@ -5106,7 +5274,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::cbkVjv6ot4XdTv5q',
+        'as' => 'generated::wQccBl8g4f9u9UDE',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5305,7 +5473,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::lnE7jj54oA5HvdkU' => 
+    'generated::KThBUrX0FMy1v20j' => 
     array (
       'methods' => 
       array (
@@ -5325,7 +5493,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::lnE7jj54oA5HvdkU',
+        'as' => 'generated::KThBUrX0FMy1v20j',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5341,7 +5509,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::apXigxcbvXhxPZsq' => 
+    'generated::k4Pgr8gyzMZafIC7' => 
     array (
       'methods' => 
       array (
@@ -5358,13 +5526,13 @@ app('router')->setCompiledRoutes(
         'uses' => 'O:47:"Laravel\\SerializableClosure\\SerializableClosure":1:{s:12:"serializable";O:46:"Laravel\\SerializableClosure\\Serializers\\Signed":2:{s:12:"serializable";s:295:"O:46:"Laravel\\SerializableClosure\\Serializers\\Native":5:{s:3:"use";a:0:{}s:8:"function";s:77:"function($comand){
     \\Illuminate\\Support\\Facades\\Artisan::call($comand);
 
-}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"00000000540c3c070000000027e2b9e7";}";s:4:"hash";s:44:"JFAY/f0PK2xUDe/D95EhLHDvEvEa3wYhKwlg3blwnic=";}}',
+}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"00000000564dd0bc0000000049019c6a";}";s:4:"hash";s:44:"qt3dd2BZbZriuyaYYIOJZ32ZiQKoTXS/OJ8koD+3nv8=";}}',
         'namespace' => NULL,
         'prefix' => '',
         'where' => 
         array (
         ),
-        'as' => 'generated::apXigxcbvXhxPZsq',
+        'as' => 'generated::k4Pgr8gyzMZafIC7',
       ),
       'fallback' => false,
       'defaults' => 

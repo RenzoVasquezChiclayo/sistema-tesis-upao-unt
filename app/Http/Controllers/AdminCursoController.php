@@ -528,7 +528,12 @@ class AdminCursoController extends Controller
     }
 
     public function configuraciones(Request $request){
-        return view('cursoTesis20221.administrador.configuraciones_iniciales');
+        try {
+            $lista_configuraciones = DB::table('configuraciones_iniciales')->select('*')->paginate($this::PAGINATION);
+            return view('cursoTesis20221.administrador.configuraciones_iniciales', ['lista_configuraciones' => $lista_configuraciones]);
+        } catch (\Throwable $th) {
+            dd($th);
+        }
     }
 
     public function saveConfiguraciones(Request $request){
@@ -549,6 +554,47 @@ class AdminCursoController extends Controller
         } catch (\Throwable $th) {
             dd($th);
             //return redirect()->route('admin.configurar')->with('datos','okNot');
+        }
+    }
+
+    public function changeStatusConfiguraciones(Request $request){
+        try {
+            $cod_configuraciones = $request->aux_configuraciones;
+            $find_configuraciones = Configuraciones_Iniciales::where('cod_config_ini', $cod_configuraciones)->first();
+            $find_configuraciones->estado = ($find_configuraciones->estado == 1) ? 0 : 1;
+            $find_configuraciones->save();
+            return redirect()->route('admin.configurar');
+        } catch (\Throwable $th) {
+            return redirect()->route('admin.configurar')->with('datos', 'okNotDelete');
+        }
+    }
+
+    public function ver_editar_configuraciones(Request $request)
+    {
+        try {
+            $cod_configuracion = $request->auxid;
+            $find_configuracion = DB::table('configuraciones_iniciales')->where('cod_config_ini', $cod_configuracion)->first();
+            return view('cursoTesis20221.administrador.editar_configuraciones_iniciales', ['find_configuracion' => $find_configuracion]);
+        } catch (\Throwable $th) {
+            dd($th);
+        }
+    }
+
+    public function save_editar_configuraciones(Request $request)
+    {
+        try {
+            $cod_configuraciones = $request->auxid;
+            $year = $request->year;
+            $curso = $request->curso;
+            $ciclo = $request->ciclo;
+            $find_configuracion = Configuraciones_Iniciales::where('cod_config_ini', $cod_configuraciones)->first();
+            $find_configuracion->year = $year;
+            $find_configuracion->curso = strtoupper($curso);
+            $find_configuracion->ciclo = $ciclo;
+            $find_configuracion->save();
+            return redirect()->route('admin.configurar')->with('datos', 'ok');
+        } catch (\Throwable $th) {
+            return redirect()->route('admin.configurar')->with('datos', 'okNot');
         }
     }
 
