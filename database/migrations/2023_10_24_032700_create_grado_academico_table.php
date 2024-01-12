@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('grado_academico', function (Blueprint $table) {
             $table->integer('cod_grado_academico')->autoIncrement();
             $table->string('descripcion',40);
-            $table->char('estado',1);
+            $table->tinyInteger('estado')->default('1');
         });
     }
 

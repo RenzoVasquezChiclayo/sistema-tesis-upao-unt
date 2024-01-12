@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Configuraciones_Iniciales extends Model
+class Cronograma extends Model
 {
     use HasFactory;
-    public $table ='configuraciones_iniciales';
-    protected $primaryKey = 'cod_config_ini';
+    public $table = 'cronograma';
+    protected $primaryKey = 'cod_cronograma';
     protected $fillable =[
-        'year',
-        'curso',
-        'ciclo',
-        'estado',
+        'cod_cronograma',
+        'actividad',
+        'cod_escuela',
+        'cod_config_ini'
     ];
 
     public $timestamps = false;

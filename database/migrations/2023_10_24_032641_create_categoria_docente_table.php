@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('categoria_docente', function (Blueprint $table) {
             $table->integer('cod_categoria')->autoIncrement();
             $table->string('descripcion',40);
-            $table->char('estado',1);
+            $table->tinyInteger('estado')->default('1');
         });
     }
 
