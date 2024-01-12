@@ -1,0 +1,9 @@
+.form-fit{
+    width: fit-content;
+}
+
+.container-center{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
