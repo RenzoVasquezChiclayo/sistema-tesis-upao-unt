@@ -21,6 +21,7 @@ return new class extends Migration
                     ->references('cod_facultad')
                     ->on('facultad')
                     ->onDelete('cascade');
+            $table->tinyInteger('estado')->default('1');
         });
 
 

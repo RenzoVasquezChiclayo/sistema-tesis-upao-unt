@@ -13,7 +13,8 @@ class Facultad extends Model
     public $table = 'facultad';
     protected $primaryKey = 'cod_facultad';
     protected $fillable = [
-        'nombre'
+        'nombre',
+        'estado'
     ];
 
     public function escuela(){

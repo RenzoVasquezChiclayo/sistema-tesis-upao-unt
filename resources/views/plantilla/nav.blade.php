@@ -144,6 +144,48 @@
                 </a>
                 <span class="tooltip">Semestre Académico</span>
             </li>
+            <li>
+                <a class="cstm-a" href="{{ route('admin.listarcategoriasDocente') }}">
+                    <i class='bx bx-sm bx-list-ol'></i>
+                    <span class="links_name">Listar Categorias Docente</span>
+                </a>
+                <span class="tooltip">Listar Categorias Docente</span>
+            </li>
+            <li>
+                <a class="cstm-a" href="{{ route('admin.verEscuela') }}">
+                    <i class='bx bx-sm bx-list-ol'></i>
+                    <span class="links_name">Escuela</span>
+                </a>
+                <span class="tooltip">Escuela</span>
+            </li>
+            <li>
+                <a class="cstm-a" href="{{ route('admin.verFacultad') }}">
+                    <i class='bx bx-sm bx-list-ol'></i>
+                    <span class="links_name">Facultad</span>
+                </a>
+                <span class="tooltip">Facultad</span>
+            </li>
+            <li>
+                <a class="cstm-a" href="{{ route('admin.verAgregarGrado') }}">
+                    <i class='bx bx-sm bx-list-ol'></i>
+                    <span class="links_name">Grado Academico</span>
+                </a>
+                <span class="tooltip">Grado Academico</span>
+            </li>
+            <li>
+                <a class="cstm-a" href="{{ route('admin.verPresupuesto') }}">
+                    <i class='bx bx-sm bx-list-ol'></i>
+                    <span class="links_name">Presupuesto</span>
+                </a>
+                <span class="tooltip">Presupuesto</span>
+            </li>
+            <li>
+                <a class="cstm-a" href="{{ route('admin.verCronograma') }}">
+                    <i class='bx bx-sm bx-list-ol'></i>
+                    <span class="links_name">Cronograma</span>
+                </a>
+                <span class="tooltip">Cronograma</span>
+            </li>
         @endif
         <li>
             <a class="cstm-a" data-bs-toggle="collapse" href="#collapseGeneral" role="button" aria-expanded="false" aria-controls="collapseGeneral">

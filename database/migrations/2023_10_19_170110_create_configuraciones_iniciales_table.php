@@ -18,6 +18,7 @@ return new class extends Migration
             $table->char('year',4);
             $table->string('curso',60);
             $table->integer('ciclo');
+            $table->tinyInteger('estado')->default('1');
         });
     }
 

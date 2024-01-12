@@ -92,6 +92,43 @@ Route::post('/change-status-configuraciones',[AdminCursoController::class,'chang
 Route::post('/ver-editar-configuraciones',[AdminCursoController::class,'ver_editar_configuraciones'])->name('admin.verConfiguracionEditar')->middleware('auth');
 Route::post('/save-editar-configuraciones',[AdminCursoController::class,'save_editar_configuraciones'])->name('admin.saveEditarconfiguraciones')->middleware('auth');
 
+//----
+Route::get('/ver-facultad',[AdminCursoController::class,'verAgregarFacultad'])->name('admin.verFacultad');
+Route::post('/save-facultad',[AdminCursoController::class,'saveFacultad'])->name('admin.guardarFacultad');
+Route::post('/change-status-facultad',[AdminCursoController::class,'changeStatusFacultad'])->name('admin.changeStatusFacultad');
+//
+
+//----
+Route::get('/ver-escuela',[AdminCursoController::class,'verAgregarEscuela'])->name('admin.verEscuela');
+Route::post('/save-escuela',[AdminCursoController::class,'saveEscuela'])->name('admin.guardarEscuela');
+Route::post('/change-status-escuela',[AdminCursoController::class,'changeStatusEscuela'])->name('admin.changeStatusEscuela');
+//
+
+//----
+Route::get('/ver-presupuesto',[AdminCursoController::class,'verAgregarPresupuesto'])->name('admin.verPresupuesto');
+Route::post('/save-presupuesto',[AdminCursoController::class,'savePresupuesto'])->name('admin.guardarPresupuesto');
+Route::delete('/delete-presupuesto',[AdminCursoController::class,'delete_presupuesto'])->name('admin.delete_presupuesto')->middleware('auth');
+//
+
+//----
+Route::get('/ver-grado-academico',[AdminCursoController::class,'verAgregarGrado'])->name('admin.verAgregarGrado');
+Route::post('/save-grado-academico',[AdminCursoController::class,'saveGradoAcademico'])->name('admin.guardarGradoAcademico');
+Route::post('/change-status-grado',[AdminCursoController::class,'changeStatusGrado'])->name('admin.changeStatusGrado');
+Route::delete('/delete-grado',[AdminCursoController::class,'delete_grado'])->name('admin.delete_grado')->middleware('auth');
+
+
+Route::get('/ver-agregar-categorias',[AdminCursoController::class,'ver_agregar_categoria'])->name('admin.categoriasDocente')->middleware('auth');
+Route::post('/save-categorias',[AdminCursoController::class,'saveCategorias'])->name('admin.saveCategorias')->middleware('auth');
+Route::get('/listar-categorias',[AdminCursoController::class,'lista_agregar_categoria'])->name('admin.listarcategoriasDocente')->middleware('auth');
+Route::post('/ver-editar-categorias',[AdminCursoController::class,'ver_editar_categoria'])->name('admin.EditarcategoriasDocente')->middleware('auth');
+Route::post('/save-editar-categorias',[AdminCursoController::class,'save_editar_categoria'])->name('admin.saveEditarCategorias')->middleware('auth');
+Route::post('/change-status-categoria',[AdminCursoController::class,'changeStatusCategoria'])->name('admin.changeStatusCategoria')->middleware('auth');
+Route::delete('/delete-categoria',[AdminCursoController::class,'delete_categoria'])->name('admin.delete_categoria')->middleware('auth');
+
+//----
+Route::get('/ver-cronograma',[AdminCursoController::class,'verAgregarCronograma'])->name('admin.verCronograma');
+Route::post('/save-cronograma',[AdminCursoController::class,'saveCronograma'])->name('admin.guardarCronograma');
+Route::delete('/delete-cronograma',[AdminCursoController::class,'delete_cronograma'])->name('admin.delete_cronograma')->middleware('auth');
 
 // Rutas para el director Curso
 

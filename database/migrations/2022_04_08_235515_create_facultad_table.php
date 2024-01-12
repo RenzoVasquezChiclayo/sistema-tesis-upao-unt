@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::connection('mysql')->create('facultad', function (Blueprint $table) {
             $table->char('cod_facultad',4)->primary();
             $table->string('nombre',60);
+            $table->tinyInteger('estado')->default('1');
         });
 
     }

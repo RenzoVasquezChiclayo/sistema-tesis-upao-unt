@@ -12,7 +12,8 @@ class Escuela extends Model
     protected $primaryKey = 'cod_escuela';
     protected $fillable = [
         'nombre',
-        'cod_facultad'
+        'cod_facultad',
+        'estado'
     ];
 
     public function facultad(){
@@ -31,9 +32,7 @@ class Escuela extends Model
         return $this->hasMany(Diseno_Investigacion::class);
     }
 
-    public function formatoTitulo(){
-        return $this->hasMany(FormatoTitulo::class);
-    }
+
 
     public $timestamps = false;
 }
