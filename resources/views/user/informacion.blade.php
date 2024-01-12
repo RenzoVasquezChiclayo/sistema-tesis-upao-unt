@@ -40,8 +40,7 @@
                                         <div class="col-10" style="text-align: left; margin-bottom:15px;">
                                             <h5>Correo institucional</h5>
                                             @if ($estudiante->correo == null)
-                                                <p style="color: red">AGREGE su correo si desea revicir emails cuando su
-                                                    asesor haya hecho sus correcciones</p>
+                                                <p style="color: red">Coloque un correo electrónico para que usted reciba notificaciones sobre las correcciones de su asesor.</p>
                                                 <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                                                     data-bs-target="#mActualizarCorreo">Actualizar Correo</button>
                                             @else
@@ -74,8 +73,7 @@
                                         <div class="col-10 col-md-6" style="text-align: left; margin-bottom:15px;">
                                             <h5>Correo</h5>
                                             @if ($asesor->correo == null)
-                                                <p style="color: red">AGREGE su correo si desea revicir emails cuando el
-                                                    alumno haya registrado un envio</p>
+                                                <p style="color: red">Coloque un correo electrónico para que usted reciba notificaciones sobre el envio de sus alumnos.</p>
                                                 <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                                                     data-bs-target="#mActualizarCorreo">Actualizar Correo</button>
                                             @else

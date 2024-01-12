@@ -119,6 +119,22 @@
                 'success'
             )
         </script>
+    @elseif (session('datos') == 'okAprobado')
+        <script>
+            Swal.fire(
+                'Guardado!',
+                'El proyecto fue APROBADO',
+                'success'
+            )
+        </script>
+    @elseif (session('datos') == 'okDesaprobado')
+        <script>
+            Swal.fire(
+                'Guardado!',
+                'El proyecto fue DESAPROBADO',
+                'success'
+            )
+        </script>
     @endif
     <script type="text/javascript">
         function saveStateSemestre(form){

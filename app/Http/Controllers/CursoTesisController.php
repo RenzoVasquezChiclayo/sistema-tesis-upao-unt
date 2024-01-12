@@ -2614,10 +2614,13 @@ class CursoTesisController extends Controller
         $codHistObserva = Historial_Observaciones::where('cod_proyectotesis', $request->textcod)->first();
         $proyecto->condicion = 'APROBADO';
         $proyecto->estado = 3;
-
         $proyecto->save();
+        if($codHistObserva != null){
+            return redirect()->route('asesor.verObsEstudiante', $codHistObserva->cod_historialObs)->with('datos', 'okAprobado');
+        }else{
+            return redirect()->route('asesor.showEstudiantes')->with('datos', 'okAprobado');
+        }
 
-        return redirect()->route('asesor.verObsEstudiante', $codHistObserva->cod_historialObs)->with('datos', 'okAprobado');
     }
     public function desaprobarProy(Request $request)
     {
@@ -2626,7 +2629,12 @@ class CursoTesisController extends Controller
         $proyecto->condicion = 'DESAPROBADO';
         $proyecto->estado = 4;
         $proyecto->save();
-        return redirect()->route('asesor.verObsEstudiante', $codHistObserva->cod_historialObs)->with('datos', 'okDesaprobado');
+        if($codHistObserva!=null){
+            return redirect()->route('asesor.verObsEstudiante', $codHistObserva->cod_historialObs)->with('datos', 'okDesaprobado');
+        }else{
+            return redirect()->route('asesor.showEstudiantes')->with('datos', 'okDesaprobado');
+        }
+
     }
 
 

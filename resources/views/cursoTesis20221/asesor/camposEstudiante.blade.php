@@ -37,7 +37,7 @@
                             <h5>Alumno</h5>
                             <p>{{$estudiante[0]->estudiante_nombres.' '.$estudiante[0]->estudiante_apellidos}}</p>
                         </div>
-                        <form id="formCampos" action="" method="">
+                        <form id="formCampos" action="{{route('asesor.guardarTemas')}}" method="post">
                             @csrf
                             <input type="hidden" value="{{$estudiante[0]->cod_matricula}}" name="cod_matriculaAux" >
                             <div class="col-12" style="text-align: left;">
@@ -123,7 +123,7 @@
                                     <div class="d-grid gap-2 d-md-block mt-3">
                                         <a class="btn btn-danger" href="{{route('asesor.showEstudiantes')}}">Cancelar</a>
                                         @if($estudiante[0]->referencias_b!=1)
-                                            <input class="btn btn-success" type="button" value="Guardar" onclick="saveCampos();">
+                                            <input class="btn btn-success" type="submit" value="Guardar" onclick="saveCampos();">
                                         @endif
                                     </div>
                                 </div>
@@ -154,8 +154,8 @@
                 cancelButtonText: 'Cancelar',
                 }).then((result) => {
                 if (result.isConfirmed) {
-                    document.formCampos.action = "{{route('asesor.guardarTemas')}}";
-                    document.formCampos.method = "post";
+                    // document.formCampos.action = "{{route('asesor.guardarTemas')}}";
+                    // document.formCampos.method = "post";
                     document.formCampos.submit();
                 }
                 })
