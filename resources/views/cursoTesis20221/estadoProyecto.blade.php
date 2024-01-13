@@ -13,6 +13,10 @@
 </style>
 @endsection
 @section('contenido')
+<div class="card-header">
+    Estado del proyecto de tesis
+</div>
+<div class="card-body">
     <div class="row" style="display:flex; align-items:center; justify-content: center;">
         <div class="col-12">
             <div class="row">
@@ -26,7 +30,6 @@
                     <div class="col-12">
                         <div class="row box-center">
                             <div class="col-10">
-                                <h5><b>Estado del Proyecto de Tesis</b></h5>
                                 <div class="row">
                                     <table id="table-formato" class="table table-bordered table-responsive-md" style="table-border-color: red;">
                                         <thead>
@@ -86,6 +89,8 @@
             @include('cards.avisoCard')
         @endif
     </div>
+</div>
+
 @endsection
 @section('js')
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

@@ -177,16 +177,16 @@
                 <a href="{{ route('director.mantenedorlineaInves') }}">
                     <span class="links_name">Mantenedor Generalidades</span>
                 </a>
-                <a href="#">
+                <a href="{{ route('admin.verFacultad') }}">
                     <span class="links_name">Facultad</span>
                 </a>
-                <a href="#">
+                <a href="{{ route('admin.verEscuela') }}">
                     <span class="links_name">Escuela</span>
                 </a>
-                <a href="#">
+                <a href="{{ route('admin.verCronograma') }}">
                     <span class="links_name">Cronograma</span>
                 </a>
-                <a href="#">
+                <a href="{{ route('admin.verPresupuesto') }}">
                     <span class="links_name">Presupuesto</span>
                 </a>
             </div>

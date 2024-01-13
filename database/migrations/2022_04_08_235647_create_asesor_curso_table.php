@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('direccion',45);
             //Con finalidad del CURSO TESIS 2022
             $table->string('username')->nullable();
+            $table->tinyInteger('estado')->default('1');
         });
     }
 

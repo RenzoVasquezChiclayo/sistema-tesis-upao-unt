@@ -20,7 +20,8 @@ return new class extends Migration
             $table->string('dni',8);
             $table->string('apellidos',30);
             $table->string('nombres',30);
-            //$table->char('cod_docente',4)->nullable();
+            $table->char('cod_escuela',4);
+            $table->tinyInteger('estado')->default('1');
         });
     }
 
