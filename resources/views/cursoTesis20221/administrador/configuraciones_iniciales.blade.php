@@ -7,37 +7,34 @@
         Semestre Académico
     </div>
     <div class="card-body">
-        <div class="row justify-content-around align-items-center">
-            <form id="formconfig" method="post" action="{{ route('admin.saveconfigurar') }}">
-                @csrf
-                <div class="row">
-                    <div class="col-xl-4">
-                        <h5>Año</h5>
-                        <select class="form-control" name="year" id="year">
-                            <option value="0">-- Selecciona el año académico --</option>
-                        </select>
-                    </div>
-                    <div class="col-xl-5">
-                        <h5>Curso</h5>
-                        <input class="form-control" type="text" placeholder="Nombre del curso" id="curso" name="curso">
-                    </div>
-                    <div class="col-xl-3">
-                        <h5>Ciclo</h5>
-                        <select class="form-control" name="ciclo" id="ciclo">
-                            <option value="0">-- Selecciona el ciclo académico --</option>
-                        </select>
-                    </div>
+        <form id="formconfig" method="post" action="{{ route('admin.saveconfigurar') }}">
+            @csrf
+            <div class="row">
+                <h4>Registrar nuevo semestre</h4>
+                <div class="col-md-6 col-xl-4 my-2 text-start">
+                    <label class="ms-2" for="year">Año</label>
+                    <select class="form-control" name="year" id="year">
+                        <option value="0">-- Selecciona el año académico --</option>
+                    </select>
                 </div>
-                <div class="row justify-content-around align-items-center" style="margin-top: 30px;">
-                    <div class="col-4">
-                        <input class="btn btn-success" type="button" value="Guardar" onclick="saveConfig(this);">
-                    </div>
-
+                <div class="col-md-6 col-xl-4 my-2 text-start">
+                    <label class="ms-2" for="curso">Curso</label>
+                    <input class="form-control" type="text" placeholder="Nombre del curso" id="curso" name="curso">
                 </div>
-            </form>
-        </div>
-        <div class="row">
-            <div class="table-responsive">
+                <div class="col-md-6 col-xl-4 my-2 text-start">
+                    <label class="ms-2" for="ciclo">Ciclo</label>
+                    <select class="form-control" name="ciclo" id="ciclo">
+                        <option value="0">-- Selecciona el ciclo académico --</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col my-3 text-start">
+                <button class="btn btn-success" type="button" onclick="saveConfig(this);">Registrar</button>
+            </div>
+        </form>
+        <div class="row mt-3">
+            <h4>Listado de semestres</h4>
+            <div class="mt-2 table-responsive">
                 <table id="table-proyecto" class="table table-striped table-responsive-md" style="font-size: 14px;">
                     <thead>
                         <tr>

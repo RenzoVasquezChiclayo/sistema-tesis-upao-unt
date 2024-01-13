@@ -118,8 +118,7 @@ body {
 
 
 
-.sidebar ul li .tooltip {
-    position: absolute;
+/* .sidebar.active .sidebar_content ul li:hover .tooltip {
     left: 100px;
     top: 0;
     transform: translate(-50%, -50%);
@@ -132,22 +131,22 @@ body {
     text-align: center;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     transition: 0s;
-    opacity: 0;
     pointer-events: none;
-    display: block;
-}
-
-.sidebar.active ul li .tooltip {
     display: none;
 }
 
-.sidebar ul li:hover .tooltip {
+.sidebar.active .sidebar_content ul li:hover .tooltip {
+    display: none;
+}
+
+.sidebar .sidebar_content ul li:hover .tooltip {
     position: absolute;
-    z-index: 2;
+    z-index: 999;
     transition: all 0.5s ease;
     opacity: 1;
     top: 50%;
-}
+    display: none;
+} */
 
 .sidebar ul li .cstm-a {
     color: rgb(184, 179, 179);
@@ -164,6 +163,13 @@ body {
     background: #3b4bc4;
 }
 
+.menu-a{
+    justify-content: space-between;
+}
+.menu-into-a{
+    display:flex;
+    align-items: center;
+}
 .sidebar ul li a i {
     height: 50x;
     min-width: 50px;

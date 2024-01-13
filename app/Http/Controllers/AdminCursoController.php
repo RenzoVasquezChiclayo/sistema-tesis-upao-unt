@@ -538,7 +538,7 @@ class AdminCursoController extends Controller
             $lista_configuraciones = DB::table('configuraciones_iniciales')->select('*')->paginate($this::PAGINATION);
             return view('cursoTesis20221.administrador.configuraciones_iniciales', ['lista_configuraciones' => $lista_configuraciones]);
         } catch (\Throwable $th) {
-            dd($th);
+            return view('user.informacion');
         }
     }
 
@@ -763,10 +763,13 @@ class AdminCursoController extends Controller
                 }
                 $grado = new Grado_Academico();
                 $grado->descripcion = $description;
+                $grado->estado = 1;
                 $grado->save();
             }
+
             return redirect()->route('admin.verAgregarGrado')->with('datos', 'ok');
         } catch (\Throwable $th) {
+            dd($th);
             return redirect()->route('admin.verAgregarGrado')->with('datos', 'oknot');
         }
     }

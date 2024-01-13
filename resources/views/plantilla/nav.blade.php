@@ -109,9 +109,12 @@
             <span class="tooltip">Estado de la Tesis</span>
         </li>
         <li>
-            <a class="cstm-a" data-bs-toggle="collapse" href="#collapseSolicitud" role="button" aria-expanded="false" aria-controls="collapseSolicitud">
-                <i class='bx bx-group'></i>
-                <span class = "links_name">Sustentacion</span>
+            <a class="cstm-a menu-a" data-bs-toggle="collapse" href="#collapseSolicitud" role="button" aria-expanded="false" aria-controls="collapseSolicitud">
+                <div class="menu-into-a">
+                    <i class='bx bx-group'></i>
+                    <span class = "links_name">Sustentacion</span>
+                </div>
+                <i class='bx bx-xs bxs-chevron-down'></i>
             </a>
             <div class="cstm-collapse collapse" id="collapseSolicitud">
                 <a href="#">
@@ -152,45 +155,20 @@
                 <span class="tooltip">Listar Categorias Docente</span>
             </li>
             <li>
-                <a class="cstm-a" href="{{ route('admin.verEscuela') }}">
-                    <i class='bx bx-sm bx-list-ol'></i>
-                    <span class="links_name">Escuela</span>
-                </a>
-                <span class="tooltip">Escuela</span>
-            </li>
-            <li>
-                <a class="cstm-a" href="{{ route('admin.verFacultad') }}">
-                    <i class='bx bx-sm bx-list-ol'></i>
-                    <span class="links_name">Facultad</span>
-                </a>
-                <span class="tooltip">Facultad</span>
-            </li>
-            <li>
                 <a class="cstm-a" href="{{ route('admin.verAgregarGrado') }}">
                     <i class='bx bx-sm bx-list-ol'></i>
                     <span class="links_name">Grado Academico</span>
                 </a>
                 <span class="tooltip">Grado Academico</span>
             </li>
-            <li>
-                <a class="cstm-a" href="{{ route('admin.verPresupuesto') }}">
-                    <i class='bx bx-sm bx-list-ol'></i>
-                    <span class="links_name">Presupuesto</span>
-                </a>
-                <span class="tooltip">Presupuesto</span>
-            </li>
-            <li>
-                <a class="cstm-a" href="{{ route('admin.verCronograma') }}">
-                    <i class='bx bx-sm bx-list-ol'></i>
-                    <span class="links_name">Cronograma</span>
-                </a>
-                <span class="tooltip">Cronograma</span>
-            </li>
         @endif
         <li>
-            <a class="cstm-a" data-bs-toggle="collapse" href="#collapseGeneral" role="button" aria-expanded="false" aria-controls="collapseGeneral">
-                <i class='bx bx-sm bx-check-square'></i>
-                <span class="links_name">General</span>
+            <a class="cstm-a menu-a" data-bs-toggle="collapse" href="#collapseGeneral" role="button" aria-expanded="false" aria-controls="collapseGeneral">
+                <div class="menu-into-a">
+                    <i class='bx bx-sm bx-check-square'></i>
+                    <span class="links_name">General</span>
+                </div>
+                <i class='bx bx-xs bxs-chevron-down'></i>
             </a>
             <div class="cstm-collapse collapse" id="collapseGeneral">
                 <a href="{{ route('director.generalidades') }}">
@@ -221,9 +199,12 @@
             <span class="tooltip">Grupos de Investigacion</span>
         </li>
         <li>
-            <a class="cstm-a" class="cstm-a" data-bs-toggle="collapse" href="#collapseAlumno" role="button" aria-expanded="false" aria-controls="collapseAlumno">
-                <i class='bx bx-group'></i>
-                <span class = "links_name">Alumno</span>
+            <a class="cstm-a menu-a" class="cstm-a" data-bs-toggle="collapse" href="#collapseAlumno" role="button" aria-expanded="false" aria-controls="collapseAlumno">
+                <div class="menu-into-a">
+                    <i class='bx bx-group'></i>
+                    <span class = "links_name">Alumno</span>
+                </div>
+                <i class='bx bx-xs bxs-chevron-down'></i>
             </a>
             <div class="cstm-collapse collapse" id="collapseAlumno">
                 <a href="{{ route('director.listaAlumnos') }}">
@@ -235,9 +216,12 @@
             </div>
         </li>
         <li>
-            <a class="cstm-a" class="cstm-a" data-bs-toggle="collapse" href="#collapseAsesor" role="button" aria-expanded="false" aria-controls="collapseAsesor">
-                <i class='bx bx-male-female'></i>
-                <span class = "links_name">Asesores</span>
+            <a class="cstm-a menu-a" class="cstm-a" data-bs-toggle="collapse" href="#collapseAsesor" role="button" aria-expanded="false" aria-controls="collapseAsesor">
+                <div class="menu-into-a">
+                    <i class='bx bx-male-female'></i>
+                    <span class = "links_name">Asesores</span>
+                </div>
+                <i class='bx bx-xs bxs-chevron-down'></i>
             </a>
             <div class="cstm-collapse collapse" id="collapseAsesor">
                 <a href="{{ route('director.listaAsesores') }}">
@@ -249,9 +233,12 @@
             </div>
         </li>
         <li>
-            <a class="cstm-a" class="cstm-a" data-bs-toggle="collapse" href="#collapseJurado" role="button" aria-expanded="false" aria-controls="collapseJurado">
-                <i class='bx bx-group'></i>
-                <span class = "links_name">Jurado</span>
+            <a class="cstm-a menu-a" class="cstm-a" data-bs-toggle="collapse" href="#collapseJurado" role="button" aria-expanded="false" aria-controls="collapseJurado">
+                <div class="menu-into-a">
+                    <i class='bx bx-group'></i>
+                    <span class = "links_name">Jurado</span>
+                </div>
+                <i class='bx bx-xs bxs-chevron-down'></i>
             </a>
             <div class="cstm-collapse collapse" id="collapseJurado">
                 <a href="$">

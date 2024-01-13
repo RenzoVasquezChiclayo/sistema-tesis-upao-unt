@@ -1,6 +1,6 @@
 @extends('plantilla.dashboard')
 @section('titulo')
-    Agregar Grado Académico
+    Grado Académico
 @endsection
 @section('css')
     <style type="text/css">
@@ -17,108 +17,97 @@
 @endsection
 @section('contenido')
     <div class="card-header">
-        Registrar Grado Academico
+        Grado Académico
     </div>
     <div class="card-body">
-        <div class="row" style="display: flex; align-items:center;">
-
-            <div class="row border-box">
-                <!-- TODO: Modify the route -->
-                <form action="{{ route('admin.guardarGradoAcademico') }}" method="POST">
-                    @csrf
-                    <div class="row justify-content-around align-items-center">
-                        <div class="col-md-5">
-                            <input type="number" id="cod_grado_academico" name="cod_grado_academico" hidden>
-                            <label for="grado_academico">Descripción</label>
-                            <input class="form-control" type="text" id="descripcion" name="descripcion"
-                                placeholder="Ingrese el grado académico" autofocus required>
-                        </div>
+        <div class="row">
+            <form id="form-add-grado" name="form-add-grado" action="{{ route('admin.guardarGradoAcademico') }}" method="POST">
+                @csrf
+                <h4>Registrar grado académico</h4>
+                <div class="row">
+                    <div class="col-md-12 col-lg-6 text-start">
+                        <input type="number" id="cod_grado_academico" name="cod_grado_academico" hidden>
+                        <label class="ms-2" for="grado_academico">Descripción</label>
+                        <input class="form-control" type="text" id="descripcion" name="descripcion"
+                            placeholder="Ingrese el grado académico" autofocus required>
                     </div>
-                    <div class="col-12" style="margin-top: 10px;">
-                        <button id="btn_save" class="btn btn-success" type="submit">Registrar</button>
-
-                        <a href="{{ route('admin.verAgregarGrado') }}" type="sub"
-                            class="btn btn-no-border btn-outline-danger">Cancelar</a>
-                    </div>
-                </form>
-            </div>
-            <div class="row mb-3" style="display:flex; align-items:right; justify-content:right;">
-                <div class="col col-sm-8 col-md-6 col-lg-4 col-xl-3">
+                </div>
+                <div class="col-12 mt-2 mb-3 justify-content-start text-start">
+                    <button id="btn_save" class="btn btn-success" type="button"
+                        onclick="confirmAddGrado(this);">Registrar</button>
+                    <a id="btnCancelarEdit" href="{{ route('admin.verAgregarGrado') }}" type="button"
+                        class="btn btn-no-border btn-outline-danger" hidden>Cancelar</a>
+                </div>
+            </form>
+            <h4 class="mt-3">Listado de Grados Académicos</h4>
+            <div class="row my-3 px-0" style="display:flex; align-items:right; justify-content:right;">
+                <div class="col col-sm-8 col-md-6 col-lg-4 col-xl-3 text-end">
                     <form id="" name="" method="get">
-                        <div class="row">
-                            <div class="input-group">
-                                <input type="text" class="form-control" name="buscarGrado" placeholder="Grado académico"
-                                    value="" aria-describedby="btn-search">
-                                <button class="btn btn-outline-primary" type="submit" id="btn-search">Buscar</button>
-                            </div>
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="buscarGrado" placeholder="Grado académico"
+                                value="" aria-describedby="btn-search">
+                            <button class="btn btn-outline-primary" type="submit" id="btn-search">Buscar</button>
                         </div>
                     </form>
                 </div>
             </div>
-            <div class="card text-center shadow bg-white rounded">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table id="table-proyecto" class="table table-striped table-responsive-md">
-                            <thead>
-                                <tr>
-                                    <td>Id</td>
-                                    <td>Descripcion</td>
-                                    <td>Estado</td>
-                                    <td>Opciones</td>
-                                </tr>
-                            </thead>
-                            @foreach ($grados_academicos as $grado)
-                                <tr>
-                                    <td>{{ $grado->cod_grado_academico }}</td>
-                                    <td>{{ $grado->descripcion }}</td>
-                                    <td>
-                                        <div class="container-center">
-                                            <form class="form-fit" id="formChangeStatus" name="formChangeStatus"
-                                                method="post" action="{{ route('admin.changeStatusGrado') }}">
-                                                @csrf
-                                                <input type="text" name="aux_grado_academico"
-                                                    value="{{ $grado->cod_grado_academico }}" hidden>
-                                                <div class="form-check form-switch" style="width: fit-content">
-                                                    <input class="form-check-input" type="checkbox" role="switch"
-                                                        id="flexSwitchCheckDefault" onclick="updateState(this);"
-                                                        @if ($grado->estado == 1) checked @endif>
-                                                    <label class="form-check-label"
-                                                        for="flexSwitchCheckDefault">Activado</label>
-                                                </div>
-                                            </form>
+            <div class="table-responsive">
+                <table id="table-proyecto" class="table table-striped table-responsive-md">
+                    <thead>
+                        <tr>
+                            <td>Id</td>
+                            <td>Descripcion</td>
+                            <td>Estado</td>
+                            <td>Opciones</td>
+                        </tr>
+                    </thead>
+                    @foreach ($grados_academicos as $grado)
+                        <tr>
+                            <td>{{ $grado->cod_grado_academico }}</td>
+                            <td>{{ $grado->descripcion }}</td>
+                            <td>
+                                <div class="container-center">
+                                    <form class="form-fit" id="formChangeStatus" name="formChangeStatus" method="post"
+                                        action="{{ route('admin.changeStatusGrado') }}">
+                                        @csrf
+                                        <input type="text" name="aux_grado_academico"
+                                            value="{{ $grado->cod_grado_academico }}" hidden>
+                                        <div class="form-check form-switch" style="width: fit-content">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="flexSwitchCheckDefault" onclick="updateState(this);"
+                                                @if ($grado->estado == 1) checked @endif>
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">Activado</label>
                                         </div>
-                                    </td>
-                                    <td>
-                                        <div class="row" style="display: flex;">
-                                            <div class="col-auto">
-                                                <a href="#" class="btn btn-warning"
-                                                    onclick="editGradoAcademico({{ $grado->cod_grado_academico }}, '{{ $grado->descripcion }}');">
-                                                    <i class='bx bx-sm bx-edit-alt'></i>
-                                                </a>
-                                            </div>
-                                            <div class="col-auto">
-                                                <form id="form-delete-grado" method="post"
-                                                    action="{{ route('admin.delete_grado') }}">
-                                                    @method('DELETE')
-                                                    @csrf
-                                                    <input type="hidden" name="auxidgrado"
-                                                        value="{{ $grado->cod_grado_academico }}">
-                                                    <a href="#" class="btn btn-danger"
-                                                        onclick="alertaConfirmacion(this);"><i
-                                                            class='bx bx-message-square-x'></i></a>
-                                                </form>
+                                    </form>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="row" style="display: flex;">
+                                    <div class="col-auto">
+                                        <a href="#" class="btn btn-warning"
+                                            onclick="editGradoAcademico({{ $grado->cod_grado_academico }}, '{{ $grado->descripcion }}');">
+                                            <i class='bx bx-sm bx-edit-alt'></i>
+                                        </a>
+                                    </div>
+                                    <div class="col-auto">
+                                        <form id="form-delete-grado" method="post"
+                                            action="{{ route('admin.delete_grado') }}">
+                                            @method('DELETE')
+                                            @csrf
+                                            <input type="hidden" name="auxidgrado"
+                                                value="{{ $grado->cod_grado_academico }}">
+                                            <a href="#" class="btn btn-danger" onclick="alertaConfirmacion(this);"><i
+                                                    class='bx bx-message-square-x'></i></a>
+                                        </form>
 
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </td>
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
 
-                                </tr>
-                            @endforeach
-                        </table>
-                    </div>
-                </div>
-
+                        </tr>
+                    @endforeach
+                </table>
             </div>
             {{ $grados_academicos->links() }}
         </div>
@@ -183,8 +172,16 @@
             const inputCodeGrado = document.getElementById("cod_grado_academico");
             inputCodeGrado.value = code;
             document.getElementById("descripcion").value = description;
-            document.getElementById("btn_save").textContent = "Edit";
+            document.getElementById("btn_save").textContent = "Editar";
+            document.getElementById("btnCancelarEdit").hidden = false;
         }
+        const btnCancelarEdit = document.getElementById("btnCancelarEdit");
+        btnCancelarEdit.addEventListener("click", function() {
+            document.getElementById("cod_grado_academico").value = "";
+            document.getElementById("descripcion").value = "";
+            document.getElementById("btn_save").textContent = "Registrar";
+            document.getElementById("btnCancelarEdit").hidden = true;
+        });
 
         function updateState(form) {
             form.closest('#formChangeStatus').submit();
@@ -202,6 +199,22 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     form.closest('#form-delete-grado').submit();
+                }
+            });
+        }
+
+        function confirmAddGrado(form) {
+            Swal.fire({
+                title: 'Desea registrar el siguiente grado académico?',
+                text: "Agregar grado académico",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Confirmar!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.closest('#form-add-grado').submit();
                 }
             });
         }
