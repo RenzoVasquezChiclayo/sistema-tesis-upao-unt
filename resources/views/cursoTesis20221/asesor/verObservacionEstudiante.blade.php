@@ -27,6 +27,10 @@
     </style>
 @endsection
 @section('contenido')
+<div class="card-header">
+    Observaciones del estudiante
+</div>
+<div class="card-body">
     <div class="row">
         <div class="col-12">
             <div class="row box-center">
@@ -98,6 +102,8 @@
             </div>
         </div>
     </div>
+</div>
+
 @endsection
 @section('js')
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

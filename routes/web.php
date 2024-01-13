@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminCursoController;
 use App\Http\Controllers\CursoTesisController;
 use App\Http\Controllers\EstudianteTesisController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\SustentacionController;
 use App\Http\Controllers\Tesis2022Controller;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
@@ -176,12 +177,17 @@ Route::get('/listaAsesores',[CursoTesisController::class,'listaAsesores'])->name
 Route::post('/verAsesorEditar',[CursoTesisController::class,'verAsesorEditar'])->name('director.verAsesorEditar');
 Route::post('/saveEditAsesor',[CursoTesisController::class,'editAsesor'])->name('director.editAsesor');
 
+//JURADO
+Route::get('/ver-registrar-jurado',[SustentacionController::class,'verRegistrarJurado'])->name('director.verRegistrarJurado')->middleware('auth');
+Route::post('/registrar-jurado',[SustentacionController::class,'registrarJurado'])->name('director.registrarJurado')->middleware('auth');
+
 //Rutas para el asesor Curso
 Route::get('/verEstudiantes',[CursoTesisController::class,'showEstudiantes'])->name('asesor.showEstudiantes')->middleware('auth');
 Route::post('/asignarTemas',[CursoTesisController::class,'asignarTemas'])->name('asesor.asignarTemas')->middleware('auth');
 Route::post('/guardarTemas',[CursoTesisController::class,'guardarTemas'])->name('asesor.guardarTemas');
 Route::post('/revisarTemas',[CursoTesisController::class,'revisarTemas'])->name('asesor.revisarTemas')->middleware('auth');
 Route::post('/guardarObservaciones',[CursoTesisController::class,'guardarObservaciones'])->name('asesor.guardarObservaciones');
+Route::post('/guardarSinObservaciones',[CursoTesisController::class,'guardarSinObservaciones'])->name('asesor.guardarSinObs');
 
 
 Route::get('ver-historial-estudiante',[AdminCursoController::class,'verListaObservacion'])->name('asesor.verHistoObs')->middleware('auth');

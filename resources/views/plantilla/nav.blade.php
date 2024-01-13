@@ -241,7 +241,7 @@
                 <i class='bx bx-xs bxs-chevron-down'></i>
             </a>
             <div class="cstm-collapse collapse" id="collapseJurado">
-                <a href="$">
+                <a href="{{ route('director.verRegistrarJurado') }}">
                     <span class="links_name">Registrar jurado</span>
                 </a>
             </div>
@@ -291,8 +291,6 @@
             </a>
             <span class="tooltip">Estudiantes</span>
         </li>
-
-
         {{-- Nav para la Secretaria, agregara estudiantes --}}
         {{-- @elseif (auth()->user()->rol == 'secretaria')
 
@@ -303,3 +301,4 @@
     @endif
 
 @endauth
+
