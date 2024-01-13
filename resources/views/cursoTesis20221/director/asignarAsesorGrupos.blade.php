@@ -3,102 +3,103 @@
     Asignar Asesor
 @endsection
 @section('contenido')
-<div class="row" style="display:flex; align-items:center;">
-    <div class="col-12">
-        <div class="row">
-            <div class="col text-center">
-                <h1 class="p-3">Asignar asesor por grupos para proyecto de tesis</h1>
-            </div>
-        </div>
-        <div class="row" style="display:flex; align-items:right; justify-content:right; margin-bottom:10px; margin-top:10px;">
-            <div class="col col-sm-8 col-md-6 col-lg-4 col-xl-3">
-                <form id="listAlumno" name="listAlumno" method="get">
-                    <div class="row">
-                        <div class="input-group">
-                            <input type="text" class="form-control" name="buscarAlumno" placeholder="Código de matricula o Apellidos" value="{{$buscarAlumno}}" aria-describedby="btn-search">
-                            <button class="btn btn-outline-primary" type="submit" id="btn-search">Buscar</button>
+<div class="card-header">
+    Asignar asesor por grupos para proyecto de tesis
+</div>
+<div class="card-body">
+    <div class="row" style="display:flex; align-items:center;">
+        <div class="col-12">
+            <div class="row" style="display:flex; align-items:right; justify-content:right; margin-bottom:10px; margin-top:10px;">
+                <div class="col col-sm-8 col-md-6 col-lg-4 col-xl-3">
+                    <form id="listAlumno" name="listAlumno" method="get">
+                        <div class="row">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="buscarAlumno" placeholder="Código de matricula o Apellidos" value="{{$buscarAlumno}}" aria-describedby="btn-search">
+                                <button class="btn btn-outline-primary" type="submit" id="btn-search">Buscar</button>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
-        <form action="{{ route('director.saveAsesorAsignadoGrupos') }}" method="post">
-            @csrf
-            <div class="row mb-3" style="text-align:left; justify-content:flex-start">
-                <div class="flex-container" style="display:flex;">
-                    <div style="margin:5px;">
-                        <a href="{{route('director.veragregar')}}" class="btn btn-success"><i class='bx bx-sm bx-message-square-add'></i>Nuevo Alumno</a>
-                    </div>
-                    <div style="margin:5px;">
-                        <a href="{{route('director.editarAsignacion')}}" class="btn btn-modificaciones">Editar Asignacion</a>
-                    </div>
+            <form action="{{ route('director.saveAsesorAsignadoGrupos') }}" method="post">
+                @csrf
+                <div class="row mb-3" style="text-align:left; justify-content:flex-start">
+                    <div class="flex-container" style="display:flex;">
+                        <div style="margin:5px;">
+                            <a href="{{route('director.veragregar')}}" class="btn btn-success"><i class='bx bx-sm bx-message-square-add'></i>Nuevo Alumno</a>
+                        </div>
+                        <div style="margin:5px;">
+                            <a href="{{route('director.editarAsignacion')}}" class="btn btn-modificaciones">Editar Asignacion</a>
+                        </div>
 
+                    </div>
+                    <div class="col-6 col-md-4 col-lg-2">
+                    </div>
+                    {{--  --}}
+                    <div class="col-6 col-md-4 col-lg-2">
+                    </div>
                 </div>
-                <div class="col-6 col-md-4 col-lg-2">
-                </div>
-                {{--  --}}
-                <div class="col-6 col-md-4 col-lg-2">
-                </div>
-            </div>
-            <div class="table-responsive">
-                <table id="table-proyecto" class="table table-striped table-responsive-md">
-                    <thead>
-                        <tr>
-                            <td>Numero de grupo</td>
-                            <td>Estudiante</td>
-                            <td>Asignar</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                            $cont = 0;
-                            $lastGroup = 0;
-                        @endphp
-                        @foreach ($studentforGroups as $grupo)
+                <div class="table-responsive">
+                    <table id="table-proyecto" class="table table-striped table-responsive-md">
+                        <thead>
                             <tr>
-                                <td>{{$grupo[0]->num_grupo}}</td>
-                                <td>@if(count($grupo)>1){{$grupo[0]->apellidos.' '.$grupo[0]->nombres.' & '.$grupo[1]->apellidos.' '.$grupo[1]->nombres}}@else{{$grupo[0]->apellidos.' '.$grupo[0]->nombres}}@endif</td>
-
-                                <td>
-                                    <select name="cboAsesor_{{$cont}}" id="cboAsesor_{{$cont}}" class="form-control" onchange="validarSeleccion({{$cont}});"
-                                    @if ($grupo[0]->cod_docente != null)
-                                        disabled
-                                    @endif
-                                    >
-                                        <option value="0">-</option>
-                                        @foreach ($asesores as $ase)
-                                            <option value="{{$ase->cod_docente}}"
-                                            @if ($grupo[0]->cod_docente == $ase->cod_docente)
-                                                selected
-                                            @endif
-                                            >{{$ase->nombres ." ".$ase->apellidos}}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                <td>
-                                    <input  class="btn btn-success" id="btnAsesor_{{$cont}}" type="button" value="+" onclick="guardarAsesor({{$cont}});" hidden>
-                                    <input type="button" class="btn" style="color:white; background-color: rgb(219, 98, 98)" value="-" id="btnDeleteAsignar_{{$cont}}" onclick="deleteAsignacion({{$cont}});" hidden>
-                                </td>
+                                <td>Numero de grupo</td>
+                                <td>Estudiante</td>
+                                <td>Asignar</td>
                             </tr>
-                            <input type="hidden" id="codEst_{{$cont}}_grupo" value="{{$grupo[0]->id_grupo}}">
+                        </thead>
+                        <tbody>
                             @php
-                                $cont++;
+                                $cont = 0;
+                                $lastGroup = 0;
                             @endphp
-                        @endforeach
-                        <input type="hidden" name="saveAsesor" id="saveAsesor">
+                            @foreach ($studentforGroups as $grupo)
+                                <tr>
+                                    <td>{{$grupo[0]->num_grupo}}</td>
+                                    <td>@if(count($grupo)>1){{$grupo[0]->apellidos.' '.$grupo[0]->nombres.' & '.$grupo[1]->apellidos.' '.$grupo[1]->nombres}}@else{{$grupo[0]->apellidos.' '.$grupo[0]->nombres}}@endif</td>
 
-                    </tbody>
-                </table>
-                {{$studentforGroups->links()}}
-            </div>
-            <div class="row" style="margin: 10px;">
-                <div class="col-12" style="text-align: right;">
-                    <input class="btn btn-success" type="submit" value="Guardar registro" id="saveAsignacion" hidden>
+                                    <td>
+                                        <select name="cboAsesor_{{$cont}}" id="cboAsesor_{{$cont}}" class="form-control" onchange="validarSeleccion({{$cont}});"
+                                        @if ($grupo[0]->cod_docente != null)
+                                            disabled
+                                        @endif
+                                        >
+                                            <option value="0">-</option>
+                                            @foreach ($asesores as $ase)
+                                                <option value="{{$ase->cod_docente}}"
+                                                @if ($grupo[0]->cod_docente == $ase->cod_docente)
+                                                    selected
+                                                @endif
+                                                >{{$ase->nombres ." ".$ase->apellidos}}</option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input  class="btn btn-success" id="btnAsesor_{{$cont}}" type="button" value="+" onclick="guardarAsesor({{$cont}});" hidden>
+                                        <input type="button" class="btn" style="color:white; background-color: rgb(219, 98, 98)" value="-" id="btnDeleteAsignar_{{$cont}}" onclick="deleteAsignacion({{$cont}});" hidden>
+                                    </td>
+                                </tr>
+                                <input type="hidden" id="codEst_{{$cont}}_grupo" value="{{$grupo[0]->id_grupo}}">
+                                @php
+                                    $cont++;
+                                @endphp
+                            @endforeach
+                            <input type="hidden" name="saveAsesor" id="saveAsesor">
+
+                        </tbody>
+                    </table>
+                    {{$studentforGroups->links()}}
                 </div>
-            </div>
-        </form>
+                <div class="row" style="margin: 10px;">
+                    <div class="col-12" style="text-align: right;">
+                        <input class="btn btn-success" type="submit" value="Guardar registro" id="saveAsignacion" hidden>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
+
 
 
 

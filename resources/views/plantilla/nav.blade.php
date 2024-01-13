@@ -152,39 +152,11 @@
                 <span class="tooltip">Listar Categorias Docente</span>
             </li>
             <li>
-                <a class="cstm-a" href="{{ route('admin.verEscuela') }}">
-                    <i class='bx bx-sm bx-list-ol'></i>
-                    <span class="links_name">Escuela</span>
-                </a>
-                <span class="tooltip">Escuela</span>
-            </li>
-            <li>
-                <a class="cstm-a" href="{{ route('admin.verFacultad') }}">
-                    <i class='bx bx-sm bx-list-ol'></i>
-                    <span class="links_name">Facultad</span>
-                </a>
-                <span class="tooltip">Facultad</span>
-            </li>
-            <li>
                 <a class="cstm-a" href="{{ route('admin.verAgregarGrado') }}">
                     <i class='bx bx-sm bx-list-ol'></i>
                     <span class="links_name">Grado Academico</span>
                 </a>
                 <span class="tooltip">Grado Academico</span>
-            </li>
-            <li>
-                <a class="cstm-a" href="{{ route('admin.verPresupuesto') }}">
-                    <i class='bx bx-sm bx-list-ol'></i>
-                    <span class="links_name">Presupuesto</span>
-                </a>
-                <span class="tooltip">Presupuesto</span>
-            </li>
-            <li>
-                <a class="cstm-a" href="{{ route('admin.verCronograma') }}">
-                    <i class='bx bx-sm bx-list-ol'></i>
-                    <span class="links_name">Cronograma</span>
-                </a>
-                <span class="tooltip">Cronograma</span>
             </li>
         @endif
         <li>
@@ -199,16 +171,16 @@
                 <a href="{{ route('director.mantenedorlineaInves') }}">
                     <span class="links_name">Mantenedor Generalidades</span>
                 </a>
-                <a href="#">
+                <a href="{{ route('admin.verFacultad') }}">
                     <span class="links_name">Facultad</span>
                 </a>
-                <a href="#">
+                <a href="{{ route('admin.verEscuela') }}">
                     <span class="links_name">Escuela</span>
                 </a>
-                <a href="#">
+                <a href="{{ route('admin.verCronograma') }}">
                     <span class="links_name">Cronograma</span>
                 </a>
-                <a href="#">
+                <a href="{{ route('admin.verPresupuesto') }}">
                     <span class="links_name">Presupuesto</span>
                 </a>
             </div>

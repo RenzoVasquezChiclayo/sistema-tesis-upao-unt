@@ -43,10 +43,6 @@ return new class extends Migration
             $table->string('institucion',50)->nullable();
             $table->integer('meses_ejecucion')->nullable();
 
-            $table->string('t_ReparacionInstrum',30)->nullable();
-            $table->string('t_RecoleccionDatos',30)->nullable();
-            $table->string('t_AnalisisDatos',30)->nullable();
-            $table->string('t_ElaboracionInfo',30)->nullable();
 
             $table->text('financiamiento')->nullable();
 

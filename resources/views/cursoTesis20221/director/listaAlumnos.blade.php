@@ -13,7 +13,7 @@
                     <div class="col-12">
                         <div class="card text-center shadow bg-white rounded">
                             <div class="card-body">
-                                <div class="row" style="margin: 10px;">
+                                <div class="row justify-content-around align-items-center" style="margin: 10px;">
                                     <div class="col-md-5">
                                         <a href="{{ route('director.veragregar') }}" class="btn btn-success"><i
                                                 class='bx bx-sm bx-message-square-add'></i>Nuevo Alumno</a>
@@ -28,10 +28,10 @@
                                                     <select class="form-select" name="filtrar_semestre"
                                                         id="filtrar_semestre" required>
                                                         @foreach ($semestre as $sem)
-                                                    <option value="{{ $sem->year }}_{{ $sem->curso }}">
-                                                        {{ $sem->year }}_{{ $sem->curso }}
-                                                    </option>
-                                                @endforeach
+                                                            <option value="{{ $sem->cod_config_ini }}" @if($sem->cod_config_ini == $filtrarSemestre) selected @endif>
+                                                                {{ $sem->year }}_{{ $sem->curso }}
+                                                            </option>
+                                                        @endforeach
                                                     </select>
                                                     <button class="btn btn-outline-primary" type="submit"
                                                         id="btn-search">Filtrar</button>
@@ -44,11 +44,12 @@
                                         <h5>Buscar alumno</h5>
                                         <form id="listAlumno" name="listAlumno" method="get">
                                             <div class="row">
+                                                <input name="semestre" id="semestre" type="text" hidden>
                                                 <div class="input-group">
                                                     <input type="text" class="form-control" name="buscarAlumno"
                                                         placeholder="Codigo de matricula o Apellidos"
                                                         value="{{ $buscarAlumno }}" aria-describedby="btn-search">
-                                                    <button class="btn btn-outline-primary" type="submit"
+                                                    <button class="btn btn-outline-primary" type="button" onclick="saveStateSemestre(this);"
                                                         id="btn-search">Buscar</button>
                                                 </div>
                                             </div>
@@ -65,6 +66,7 @@
                                         <td>Numero Matricula</td>
                                         <td>DNI</td>
                                         <td>Nombre</td>
+                                        <td>Escuela</td>
                                         <td>Editar</td>
                                     </tr>
                                 </thead>
@@ -76,7 +78,8 @@
                                         <tr>
                                             <td>{{ $est->cod_matricula }}</td>
                                             <td>{{ $est->dni }}</td>
-                                            <td>{{ $est->apellidos . ' ' . $est->nombres }}.</td>
+                                            <td>{{ $est->apellidos . ' ' . $est->nombres }}</td>
+                                            <td>{{ $est->nombreEscuela }}</td>
                                             <td>
                                                 <form id="form-alumno" method="post"
                                                     action="{{ route('director.verAlumnoEditar') }}">
@@ -113,7 +116,7 @@
                                 </tbody>
                             </table>
                             @if (!empty($estudiantes))
-                                {{ $estudiantes->links() }}
+                                {{ $estudiantes->appends(request()->input())->links() }}
                             @endif
 
                         </div>
@@ -170,6 +173,7 @@
         </script>
     @endif
     <script type="text/javascript">
+
         function editarAlumno(formulario, contador) {
             formulario.closest('#form-alumno' + contador).submit();
         }
@@ -188,6 +192,13 @@
                     form.closest('#formAlumnoDelete').submit();
                 }
             })
+        }
+
+        function saveStateSemestre(form){
+            const semestreSelect = document.getElementById("filtrar_semestre");
+            const selectedSemestre = semestreSelect.options[semestreSelect.selectedIndex];
+            document.getElementById("semestre").value = selectedSemestre.value;
+            form.closest("#listAlumno").submit();
         }
     </script>
 @endsection

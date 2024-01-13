@@ -82,10 +82,13 @@ Route::post('/descargar-tesis',[Tesis2022Controller::class,'descargaTesis'])->na
 //Route::post('tesis', [TesisController::class,'searchAutor'])->name('searchAutor');
 
 //Rutas para el Administrador del Curso
-Route::get('/listar-usuarios',[CursoTesisController::class,'listarUsuario'])->name('admin.listar')->middleware('auth');
-Route::post('/editar-usuario',[CursoTesisController::class,'editarUsuario'])->name('admin.editar')->middleware('auth');
-Route::post('/save-editar-usuario',[CursoTesisController::class,'saveEditarUsuario'])->name('admin.saveEditar');
-Route::delete('/delete-usuario',[CursoTesisController::class,'deleteUsuario'])->name('admin.deleteUser');
+Route::get('/listar-usuarios',[AdminCursoController::class,'listarUsuario'])->name('admin.listar')->middleware('auth');
+Route::get('/ver-agregar-usuario',[AdminCursoController::class,'verAgregarUsuario'])->name('admin.verAgregarUsuario')->middleware('auth');
+Route::post('/save-usuario',[AdminCursoController::class,'saveUsuario'])->name('admin.saveUsuario')->middleware('auth');
+Route::post('/editar-usuario',[AdminCursoController::class,'editarUsuario'])->name('admin.editar')->middleware('auth');
+Route::post('/save-editar-usuario',[AdminCursoController::class,'saveEditarUsuario'])->name('admin.saveEditar');
+Route::delete('/delete-usuario',[AdminCursoController::class,'deleteUsuario'])->name('admin.deleteUser');
+
 Route::get('/configuraciones-iniciales',[AdminCursoController::class,'configuraciones'])->name('admin.configurar')->middleware('auth');
 Route::post('/save-configuraciones-iniciales',[AdminCursoController::class,'saveConfiguraciones'])->name('admin.saveconfigurar')->middleware('auth');
 Route::post('/change-status-configuraciones',[AdminCursoController::class,'changeStatusConfiguraciones'])->name('admin.changeStatusConfiguraciones')->middleware('auth');
@@ -149,8 +152,8 @@ Route::post('/save-grupos-inv',[CursoTesisController::class,'saveGruposInves'])-
 Route::get('/ver-asignar-asesor-grupos',[CursoTesisController::class,'showTablaAsignacionGrupos'])->name('director.asignarAsesorGrupos');
 Route::post('/save-asignar-asesor-grupos',[CursoTesisController::class,'saveGrupoAsesorAsignado'])->name('director.saveAsesorAsignadoGrupos');
 //---
-Route::get('/asignarAsesor',[CursoTesisController::class,'showTablaAsignacion'])->name('director.asignar')->middleware('auth');
-Route::post('/saveRegistro',[CursoTesisController::class,'saveAsesorAsignado'])->name('director.saveAsesor');
+// Route::get('/asignarAsesor',[CursoTesisController::class,'showTablaAsignacion'])->name('director.asignar')->middleware('auth');
+// Route::post('/saveRegistro',[CursoTesisController::class,'saveAsesorAsignado'])->name('director.saveAsesor');
 Route::get('/agregarAsesor',[AdminCursoController::class,'showAddAsesor'])->name('director.veragregarAsesor')->middleware('auth');
 Route::post('/agregarAsesor',[AdminCursoController::class,'agregarAsesor'])->name('director.addAsesor');
 Route::get('/agregarEstudiante',[AdminCursoController::class,'showAddEstudiante'])->name('director.veragregar')->middleware('auth');

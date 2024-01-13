@@ -46,7 +46,7 @@
                             <select class="form-select" onchange="select_semestre();" name="semestre_academico"
                                 id="semestre_academico" required>
                                 @foreach ($semestre as $s_a)
-                                    <option value="{{ $s_a->cod_configuraciones }}">{{ $s_a->año }}_{{ $s_a->curso }}
+                                    <option value="{{ $s_a->cod_config_ini }}">{{ $s_a->year }}_{{ $s_a->curso }}
                                     </option>
                                 @endforeach
                             </select>
@@ -92,12 +92,12 @@
                                     <td>{{ $c->cod_cronograma }}</td>
                                     <td>{{ $c->actividad }}</td>
                                     <td>{{ $c->nombre }}</td>
-                                    <td>{{ $c->año }}_{{ $c->curso }}</td>
+                                    <td>{{ $c->year }}_{{ $c->curso }}</td>
                                     <td>
                                         <div class="row justify-content-center" style="display: flex;">
                                             <div class="col-auto">
                                                 <a href="#" class="btn btn-warning"
-                                                    onclick="editCronograma('{{ $c->cod_cronograma }}', '{{ $c->actividad }}','{{$c->cod_escuela}}','{{$c->cod_configuraciones}}');">
+                                                    onclick="editCronograma('{{ $c->cod_cronograma }}', '{{ $c->actividad }}','{{$c->cod_escuela}}','{{$c->cod_config_ini}}');">
                                                     <i class='bx bx-sm bx-edit-alt'></i>
                                                 </a>
                                             </div>

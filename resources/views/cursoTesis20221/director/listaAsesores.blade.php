@@ -4,7 +4,7 @@
 @endsection
 @section('contenido')
     <div class="card-header">
-        Lista de asesores
+        Lista de asesores y docentes
     </div>
     <div class="card-body">
         <div class="row justify-content-around align-items-center">
@@ -13,7 +13,7 @@
                     <div class="col-12">
                         <div class="card text-center shadow bg-white rounded">
                             <div class="card-body">
-                                <div class="row" style="margin: 10px;">
+                                <div class="row justify-content-around align-items-center" style="margin: 10px;">
                                     <div class="col-md-5">
                                         <a href="{{ route('director.veragregarAsesor') }}" class="btn btn-success"><i
                                                 class='bx bx-sm bx-message-square-add'></i>Nuevo Asesor</a>
@@ -28,7 +28,7 @@
                                                     <select class="form-select" name="filtrar_semestre"
                                                         id="filtrar_semestre" required>
                                                         @foreach ($semestre as $sem)
-                                                    <option value="{{ $sem->year }}_{{ $sem->curso }}">
+                                                    <option value="{{ $sem->cod_config_ini }}" @if($sem->cod_config_ini == $filtrarSemestre) selected @endif>
                                                         {{ $sem->year }}_{{ $sem->curso }}
                                                     </option>
                                                 @endforeach
@@ -44,11 +44,12 @@
                                         <h5>Buscar asesor</h5>
                                         <form id="listAsesor" name="listAsesor" method="get">
                                             <div class="row">
+                                                <input name="semestre" id="semestre" type="text" hidden>
                                                 <div class="input-group">
                                                     <input type="text" class="form-control" name="buscarAsesor"
                                                         placeholder="Codigo o Apellidos" value="{{ $buscarAsesor }}"
                                                         aria-describedby="btn-search">
-                                                    <button class="btn btn-outline-primary" type="submit"
+                                                    <button class="btn btn-outline-primary" type="button" onclick="saveStateSemestre(this);"
                                                         id="btn-search">Buscar</button>
                                                 </div>
                                             </div>
@@ -76,9 +77,9 @@
                                     @foreach ($asesores as $ase)
                                         <tr>
                                             <td>{{ $ase->cod_docente }}</td>
-                                            <td>{{ $ase->nombres ." ".$ase->apellidos}}</td>
+                                            <td>{{ $ase->DescGrado }}. {{ $ase->apellidos }} {{ $ase->nombres }}</td>
                                             <td>{{ $ase->orcid }}</td>
-                                            <td>{{ $ase->grado_academico }}.</td>
+                                            <td>{{ $ase->DescCat }}</td>
                                             <td>
                                                 <form id="form-asesor" method="post"
                                                     action="{{ route('director.verAsesorEditar') }}">
@@ -110,7 +111,9 @@
                                     <input type="hidden" id="cantidadAsesores" value="{{ count($asesores) }}">
                                 </tbody>
                             </table>
-                            {{ $asesores->links() }}
+                            @if (!empty($asesores))
+                                {{ $asesores->appends(request()->input())->links() }}
+                            @endif
                         </div>
 
                     </div>
@@ -147,6 +150,12 @@
     <script type="text/javascript">
         function editarAsesor(formulario, contador) {
             formulario.closest('#form-asesor' + contador).submit();
+        }
+        function saveStateSemestre(form){
+            const semestreSelect = document.getElementById("filtrar_semestre");
+            const selectedSemestre = semestreSelect.options[semestreSelect.selectedIndex];
+            document.getElementById("semestre").value = selectedSemestre.value;
+            form.closest("#listAsesor").submit();
         }
     </script>
 @endsection

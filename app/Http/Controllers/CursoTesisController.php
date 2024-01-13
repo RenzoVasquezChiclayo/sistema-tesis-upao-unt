@@ -33,6 +33,8 @@ use Illuminate\Pagination\Paginator;
 
 use App\Mail\EstadoEnviadaMail;
 use App\Mail\EstadoObservadoMail;
+use App\Models\Cronograma;
+use App\Models\Cronograma_Proyecto;
 use Illuminate\Support\Facades\Mail;
 
 use Illuminate\Http\Request;
@@ -40,48 +42,7 @@ use Illuminate\Http\Request;
 class CursoTesisController extends Controller
 {
 
-    // Administrador
-    const PAGINATION = 10;
-    public function listarUsuario(){
-        $usuarios = User::where('rol','!=','administrador')->paginate($this::PAGINATION);;
-        return view('cursoTesis20221.administrador.listarUsuarios',['usuarios'=>$usuarios]);
-    }
 
-    public function editarUsuario(Request $request){
-        $iduser = $request->auxiduser;
-        $find_user = User::find($iduser);
-        // dd($find_user);
-        return view('cursoTesis20221.administrador.editarUsuario',['find_user'=>$find_user]);
-    }
-
-    public function saveEditarUsuario(Request $request){
-        $iduser = $request->auxiduser;
-        $find_user = User::find($iduser);
-        try {
-            $find_user->name = $request->txtusuario;
-            $find_user->rol = $request->rol_user;
-            $find_user->save();
-            return redirect()->route('admin.listar')->with('datos','ok');
-        } catch (\Throwable $th) {
-            return redirect()->route('admin.listar')->with('datos','oknot');
-        }
-
-    }
-
-    public function deleteUsuario(Request $request){
-        $iduser = $request->auxiduser;
-
-        try {
-
-            $usuario = User::where('id',$iduser);
-            $usuario->delete();
-
-            return redirect()->route('admin.listar')->with('datos','okdelete');
-        } catch (\Throwable $th) {
-            return redirect()->route('admin.listar')->with('datos','oknotdelete');
-        }
-    }
-    // -------------------------------------------------------------------
 
     public function index(){
 
@@ -103,11 +64,13 @@ class CursoTesisController extends Controller
         $coautor = DB::table('detalle_grupo_investigacion as dg')->rightJoin('estudiante_ct2022 as e','e.cod_matricula','=','dg.cod_matricula')->select('e.*')->where('dg.id_grupo_inves',$autor->id_grupo)->where('e.cod_matricula','!=',$id)->first();
 
         $tesis = TesisCT2022::where('id_grupo_inves','=',$autor->id_grupo)->get(); //Encontramos la tesis
-        $asesor = DB::table('asesor_curso')->where('cod_docente',$tesis[0]->cod_docente)->first();  //Encontramos al asesor
+        $asesor = DB::table('asesor_curso')->leftjoin('grado_academico as ga', 'asesor_curso.cod_grado_academico', 'ga.cod_grado_academico')->leftjoin('categoria_docente as cd', 'asesor_curso.cod_categoria', 'cd.cod_categoria')->select('asesor_curso.*', 'ga.descripcion as DescGrado', 'cd.descripcion as DescCat')->where('cod_docente', $tesis[0]->cod_docente)->first();  //Encontramos al asesor
         /* Traemos informacion de las tablas*/
         $tinvestigacion = TipoInvestigacion::all();
         $fin_persigue = Fin_Persigue::all();
         $diseno_investigacion = Diseno_Investigacion::all();
+        $cronograma = Cronograma::all();
+        $cronogramas_py = Cronograma_Proyecto::where("cod_proyectotesis",$tesis[0]->cod_proyectotesis)->get();
         $presupuestos = Presupuesto::all();
         $tiporeferencia = TipoReferencia::all();
         $referencias = referencias::where('cod_proyectotesis','=',$tesis[0]->cod_proyectotesis)->get(); //Por si existen referencias
@@ -140,7 +103,7 @@ class CursoTesisController extends Controller
                 'presupuestos'=>$presupuestos,'fin_persigue'=>$fin_persigue,'diseno_investigacion'=>$diseno_investigacion,'tiporeferencia'=>$tiporeferencia,'tesis'=>$tesis,'asesor'=>$asesor,
                 'correciones' => $correciones,'recursos'=>$recursos,'objetivos'=>$objetivos,'variableop'=>$variableop,
                 'presupuestoProy'=>$presupuestoProy,'detalles'=>$detalles,'tinvestigacion'=>$tinvestigacion,'campos'=>$campos,
-                'referencias'=>$referencias, 'detalleHistorial'=>$detalleHistorial,'matriz'=>$matriz, 'coautor'=>$coautor
+                'referencias'=>$referencias, 'detalleHistorial'=>$detalleHistorial,'matriz'=>$matriz, 'cronograma' => $cronograma,'cronogramas_py' => $cronogramas_py, 'coautor'=>$coautor
             ]);
     }
 
@@ -1581,42 +1544,103 @@ class CursoTesisController extends Controller
     }
     const PAGINATION2 = 10;
     public function listaAlumnos(Request $request){
-        $semestre = DB::table('configuraciones_iniciales as ci')->select('ci.*')->get();
-        $select_semestre = $request->filtrar_semestre;
         $buscarAlumno = $request->buscarAlumno;
-        if($buscarAlumno!=""){
-            if (is_numeric($buscarAlumno)) {
-                    $estudiantes = DB::table('estudiante_ct2022')->select('estudiante_ct2022.*')->where('estudiante_ct2022.cod_matricula','like','%'.$buscarAlumno.'%')->orderBy('estudiante_ct2022.apellidos')->paginate($this::PAGINATION2);
+        $filtrarSemestre = $request->filtrar_semestre;
+        $semestre = DB::table('configuraciones_iniciales as c_i')->select('c_i.*')->where('c_i.estado', 1)->orderBy('c_i.cod_config_ini', 'desc')->get();
+        if (count($semestre) == 0) {
+            return view('cursoTesis20221.director.listaAlumnos', ['estudiantes' => [], 'semestre' => [], 'buscarAlumno' => $buscarAlumno]);
+        } else {
+            $last_semestre = DB::table('configuraciones_iniciales as c_i')->select('c_i.*')->where('c_i.estado', 1)->orderBy('c_i.cod_config_ini', 'desc')->first();
+            if ($buscarAlumno != "") {
+                $semestreBuscar = $request->semestre;
+                $filtrarSemestre = $semestreBuscar;
+                if (is_numeric($buscarAlumno)) {
+                    $estudiantes = DB::table('estudiante_semestre as e_s')
+                        ->join('estudiante_ct2022 as e', 'e_s.cod_matricula', 'e.cod_matricula')
+                        ->join('escuela as es', 'es.cod_escuela', 'e.cod_escuela')
+                        ->select('e.*', 'es.nombre as nombreEscuela')
+                        ->where('e_s.cod_config_ini', $semestreBuscar)
+                        ->where('e.cod_matricula', 'like', '%' . $buscarAlumno . '%')->orderBy('e.apellidos')->paginate($this::PAGINATION2);
+                } else {
+                    $estudiantes = DB::table('estudiante_semestre as e_s')
+                        ->join('estudiante_ct2022 as e', 'e_s.cod_matricula', 'e.cod_matricula')
+                        ->join('escuela as es', 'es.cod_escuela', 'e.cod_escuela')
+                        ->select('e.*', 'es.nombre as nombreEscuela')
+                        ->where('e_s.cod_config_ini', $semestreBuscar)
+                        ->where('e.apellidos', 'like', '%' . $buscarAlumno . '%')->orderBy('e.apellidos')->paginate($this::PAGINATION2);
+                }
             } else {
-                    $estudiantes = DB::table('estudiante_ct2022')->select('estudiante_ct2022.*')->where('estudiante_ct2022.apellidos','like','%'.$buscarAlumno.'%')->orderBy('estudiante_ct2022.apellidos')->paginate($this::PAGINATION2);
+                if ($filtrarSemestre != null) {
+                    $estudiantes = DB::table('estudiante_semestre as e_s')
+                        ->join('estudiante_ct2022 as e', 'e_s.cod_matricula', 'e.cod_matricula')
+                        ->join('escuela as es', 'es.cod_escuela', 'e.cod_escuela')
+                        ->select('e.*', 'es.nombre as nombreEscuela')
+                        ->where('e_s.cod_config_ini', 'like', '%' . $filtrarSemestre . '%')->orderBy('e.apellidos', 'asc')->paginate($this::PAGINATION2);
+                } else {
+                    $estudiantes = DB::table('estudiante_semestre as e_s')
+                        ->join('estudiante_ct2022 as e', 'e_s.cod_matricula', 'e.cod_matricula')
+                        ->join('escuela as es', 'es.cod_escuela', 'e.cod_escuela')
+                        ->select('e.*', 'es.nombre as nombreEscuela')
+                        ->where('e_s.cod_config_ini', 'like', '%' . $last_semestre->cod_config_ini . '%')->orderBy('e.apellidos', 'asc')->paginate($this::PAGINATION2);
+                }
             }
-        }else{
-                $estudiantes = DB::table('estudiante_ct2022')->select('estudiante_ct2022.*')->orderBy('estudiante_ct2022.apellidos')->paginate($this::PAGINATION2);
         }
-        if ($select_semestre!=null) {
-            $estudiantes = DB::table('estudiante_ct2022')->select('estudiante_ct2022.*')->where('estudiante_ct2022.semestre_academico','like','%'.$select_semestre.'%')->orderBy('estudiante_ct2022.apellidos')->paginate($this::PAGINATION2);
-        }
-        return view('cursoTesis20221.director.listaAlumnos',['estudiantes'=>$estudiantes,'buscarAlumno'=>$buscarAlumno,'semestre'=>$semestre]);
+
+        return view('cursoTesis20221.director.listaAlumnos', ['estudiantes' => $estudiantes, 'buscarAlumno' => $buscarAlumno, 'semestre' => $semestre, 'filtrarSemestre' => $filtrarSemestre]);
     }
 
     const PAGINATION4 = 10;
     public function listaAsesores(Request $request){
-        $semestre = DB::table('configuraciones_iniciales as ci')->select('ci.*')->get();
-        $select_semestre = $request->filtrar_semestre;
         $buscarAsesor = $request->buscarAsesor;
-        if($buscarAsesor!=""){
-            if (is_numeric($buscarAsesor)) {
-                $asesores = DB::table('asesor_curso')->select('asesor_curso.*')->where('asesor_curso.cod_docente','like','%'.$buscarAsesor.'%')->orderBy('asesor_curso.nombres')->paginate($this::PAGINATION4);
+        $filtrarSemestre = $request->filtrar_semestre;
+        $semestre = DB::table('configuraciones_iniciales as c_i')->select('c_i.*')->where('c_i.estado', 1)->orderBy('c_i.cod_config_ini', 'desc')->get();
+        if (count($semestre) == 0) {
+            return view('cursoTesis20221.director.listaAsesores', ['asesores' => [], 'buscarAsesor' => $buscarAsesor, 'semestre' => []]);
+        } else {
+            $last_semestre = DB::table('configuraciones_iniciales as c_i')->select('c_i.*')->where('c_i.estado', 1)->orderBy('c_i.cod_config_ini', 'desc')->first();
+            if ($buscarAsesor != "") {
+                $semestreBuscar = $request->semestre;
+                $filtrarSemestre = $semestreBuscar;
+                if (is_numeric($buscarAsesor)) {
+                    $asesores = DB::table('asesor_semestre as a_s')
+                        ->join('asesor_curso as a', 'a_s.cod_docente', 'a.cod_docente')
+                        ->leftJoin('grado_academico', 'grado_academico.cod_grado_academico', 'a.cod_grado_academico')
+                        ->leftJoin('categoria_docente', 'categoria_docente.cod_categoria', 'a.cod_categoria')
+                        ->select('a.*', 'grado_academico.descripcion as DescGrado', 'categoria_docente.descripcion as DescCat')
+                        ->where('a_s.cod_config_ini', $semestreBuscar)
+                        ->where('a.cod_docente', 'like', '%' . $buscarAsesor . '%')->orderBy('a.apellidos', 'asc')->paginate($this::PAGINATION2);
+                } else {
+                    $asesores = DB::table('asesor_semestre as a_s')
+                        ->join('asesor_curso as a', 'a_s.cod_docente', 'a.cod_docente')
+                        ->leftJoin('grado_academico', 'grado_academico.cod_grado_academico', 'a.cod_grado_academico')
+                        ->leftJoin('categoria_docente', 'categoria_docente.cod_categoria', 'a.cod_categoria')
+                        ->select('a.*', 'grado_academico.descripcion as DescGrado', 'categoria_docente.descripcion as DescCat')
+                        ->where('a_s.cod_config_ini', $semestreBuscar)
+                        ->where('a.apellidos', 'like', '%' . $buscarAsesor . '%')->orderBy('a.apellidos', 'asc')->paginate($this::PAGINATION2);
+                }
             } else {
-                $asesores = DB::table('asesor_curso')->select('asesor_curso.*')->where('asesor_curso.apellidos','like','%'.$buscarAsesor.'%')->orderBy('asesor_curso.nombres')->paginate($this::PAGINATION4);
+
+                if ($filtrarSemestre != null) {
+
+                    $asesores = DB::table('asesor_semestre as a_s')
+                        ->join('asesor_curso as a', 'a_s.cod_docente', 'a.cod_docente')
+                        ->leftJoin('grado_academico', 'grado_academico.cod_grado_academico', 'a.cod_grado_academico')
+                        ->leftJoin('categoria_docente', 'categoria_docente.cod_categoria', 'a.cod_categoria')
+                        ->select('a.*', 'grado_academico.descripcion as DescGrado', 'categoria_docente.descripcion as DescCat')
+                        ->where('a_s.cod_config_ini', 'like', '%' . $filtrarSemestre . '%')->orderBy('a.apellidos', 'asc')->paginate($this::PAGINATION2);
+                } else {
+
+                    $asesores = DB::table('asesor_semestre as a_s')
+                        ->join('asesor_curso as a', 'a_s.cod_docente', 'a.cod_docente')
+                        ->leftJoin('grado_academico', 'grado_academico.cod_grado_academico', 'a.cod_grado_academico')
+                        ->leftJoin('categoria_docente', 'categoria_docente.cod_categoria', 'a.cod_categoria')
+                        ->select('a.*', 'grado_academico.descripcion as DescGrado', 'categoria_docente.descripcion as DescCat')
+                        ->where('a_s.cod_config_ini', 'like', '%' . $last_semestre->cod_config_ini . '%')->orderBy('a.apellidos', 'asc')->paginate($this::PAGINATION2);
+                }
             }
-        }else{
-            $asesores = DB::table('asesor_curso')->select('asesor_curso.*')->orderBy('asesor_curso.nombres')->paginate($this::PAGINATION4);
         }
-        if ($select_semestre!=null) {
-            $asesores = DB::table('asesor_curso')->select('asesor_curso.*')->where('asesor_curso.semestre_academico','like','%'.$select_semestre.'%')->orderBy('asesor_curso.nombres')->paginate($this::PAGINATION2);
-        }
-        return view('cursoTesis20221.director.listaAsesores',['asesores'=>$asesores,'buscarAsesor'=>$buscarAsesor,'semestre'=>$semestre]);
+
+        return view('cursoTesis20221.director.listaAsesores', ['asesores' => $asesores, 'buscarAsesor' => $buscarAsesor, 'semestre' => $semestre, 'filtrarSemestre' => $filtrarSemestre]);
     }
 
     public function verAlumnoEditar(Request $request){
@@ -1628,9 +1652,10 @@ class CursoTesisController extends Controller
 
     public function verAsesorEditar(Request $request){
 
-        $asesor = DB::table('asesor_curso')->select('asesor_curso.*')->where('asesor_curso.cod_docente','=',$request->auxid)->get();
-
-        return view('cursoTesis20221.director.editarAsesor',['asesor'=>$asesor]);
+        $asesor = DB::table('asesor_curso')->select('asesor_curso.*')->where('asesor_curso.cod_docente', '=', $request->auxid)->get();
+        $grados_academicos = DB::table('grado_academico')->select('*')->get();
+        $categorias = DB::table('categoria_docente')->select('*')->get();
+        return view('cursoTesis20221.director.editarAsesor', ['asesor' => $asesor, 'grados_academicos' => $grados_academicos, 'categorias' => $categorias]);
     }
 
     public function editEstudiante(Request $request){
@@ -1652,34 +1677,34 @@ class CursoTesisController extends Controller
     }
 
     public function editAsesor(Request $request){
-
         try {
             $asesor = AsesorCurso::find($request->cod_docente);
             $asesor->nombres = $request->nombres;
+            $asesor->apellidos = $request->apellidos;
             $asesor->orcid = $request->orcid;
-            $asesor->grado_academico = $request->gradAcademico;
+            $asesor->cod_grado_academico = $request->gradAcademico;
+            $asesor->cod_categoria = $request->categoria;
             $asesor->direccion = $request->direccion;
             $asesor->correo = $request->correo;
 
             $asesor->save();
 
-            return redirect()->route('director.listaAsesores')->with('datos','ok');
+            return redirect()->route('director.listaAsesores')->with('datos', 'ok');
         } catch (\Throwable $th) {
-            return back()->with('datos','oknot');
+            return back()->with('datos', 'oknot');
         }
-
     }
 
     public function deleteAlumno(Request $request){
         try {
-            $usuario = User::where('name',$request->auxidDelete.'-C')->first();
+            $usuario = User::where('name', $request->auxidDelete . '-C')->first();
             $usuario->delete();
-            $alumno = EstudianteCT2022::where('cod_matricula',$request->auxidDelete);
+            $alumno = EstudianteCT2022::where('cod_matricula', $request->auxidDelete);
             $alumno->delete();
 
-            return redirect()->route('director.listaAlumnos')->with('datos','okDelete');
+            return redirect()->route('director.listaAlumnos')->with('datos', 'okDelete');
         } catch (\Throwable $th) {
-            return redirect()->route('director.listaAlumnos')->with('datos','okNotDelete');
+            return redirect()->route('director.listaAlumnos')->with('datos', 'okNotDelete');
         }
     }
 
