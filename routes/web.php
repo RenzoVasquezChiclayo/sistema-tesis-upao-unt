@@ -221,7 +221,9 @@ Route::post('desaprobarTesis',[Tesis2022Controller::class,'desaprobarTesis'])
         ->name('asesor.desaprobar-tesis');
 
 // EVALUACION
-Route::get('/lista-tesis-asignadas',[SustentacionController::class,'lista_tesis_asignadas'])->name('director.listaTesisAsignadas')->middleware('auth');
+Route::get('/lista-tesis-asignadas',[SustentacionController::class,'lista_tesis_asignadas'])->name('asesor.evaluacion.listaTesisAsignadas')->middleware('auth');
+Route::post('/detalle-tesis-asignada',[SustentacionController::class,'detalleTesisAsignada'])->name('asesor.evaluacion.detalleTesisAsignada')->middleware('auth');
+Route::post('/guardar-observacion-sustentacion',[SustentacionController::class,'guardarObservacionSustentacion'])->name('asesor.sustentacion.guardarObservacion')->middleware('auth');
 
 Auth::routes();
 

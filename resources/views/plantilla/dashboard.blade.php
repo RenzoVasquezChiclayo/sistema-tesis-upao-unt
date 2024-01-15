@@ -72,7 +72,7 @@
         </nav>
         <div class="content d-flex align-items-center">
             <div class="container-fluid">
-                <div class="card text-center shadow bg-white rounded">
+                <div class="card shadow bg-white rounded">
                     @yield('contenido')
                 </div>
             </div>

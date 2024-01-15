@@ -300,7 +300,7 @@
             <br>
             <p style="color: white">APARTADO DE JURADO</p>
             <li>
-                <a class="cstm-a" href="{{ route('director.listaTesisAsignadas') }}">
+                <a class="cstm-a" href="{{ route('asesor.evaluacion.listaTesisAsignadas') }}">
                     <i class='bx bxs-graduation'></i>
                     <span class="links_name">Lista Tesis(Evaluacion)</span>
                 </a>

@@ -4,7 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Designacion_Jurado;
+use App\Models\Detalle_Archivo;
 use App\Models\Jurado;
+use App\Models\TDetalleKeyword;
+use App\Models\TDetalleObservacion;
+use App\Models\Tesis_2022;
+use App\Models\THistorialObservaciones;
+use App\Models\TObservacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -124,7 +130,7 @@ class SustentacionController extends Controller
             ->join('detalle_grupo_investigacion as d_g_i', 'g_i.id_grupo', 'd_g_i.id_grupo_inves')
             ->join('estudiante_ct2022 as es', 'd_g_i.cod_matricula', 'es.cod_matricula')
             ->join('asesor_curso as a_c', 'ts.cod_docente', 'a_c.cod_docente')
-            ->select('g_i.id_grupo','g_i.num_grupo', 'd_g_i.cod_matricula', 'ts.cod_tesis', 'ts.titulo', 'a_c.nombres as nombresAsesor', 'a_c.apellidos as apellidosAsesor', 'es.nombres as nombresAutor', 'es.apellidos as apellidosAutor','d_j.cod_jurado1','d_j.cod_jurado2','d_j.cod_jurado3','d_j.cod_jurado4')
+            ->select('g_i.id_grupo','g_i.num_grupo', 'd_g_i.cod_matricula', 'ts.cod_tesis', 'ts.titulo', 'a_c.nombres as nombresAsesor', 'a_c.apellidos as apellidosAsesor', 'es.nombres as nombresAutor', 'es.apellidos as apellidosAutor','d_j.cod_jurado1','d_j.cod_jurado2','d_j.cod_jurado3','d_j.cod_jurado4','ts.estado')
             ->where('d_j.cod_jurado1', $asesor->cod_docente)
             ->orWhere('d_j.cod_jurado2', $asesor->cod_docente)
             ->orWhere('d_j.cod_jurado3', $asesor->cod_docente)
@@ -155,5 +161,219 @@ class SustentacionController extends Controller
         }
         //dd($studentforGroups);
         return view('cursoTesis20221.asesor.evaluacion.listaTesisAsignadas', ['studentforGroups' => $studentforGroups,'asesor'=>$asesor]);
+    }
+
+
+    public function detalleTesisAsignada(Request $request){
+        $Tesis = [];
+        $camposFull = false;
+
+        $id_grupo = $request->id_grupo;
+        $Tesis = DB::table('tesis_2022 as t')
+                        ->join('grupo_investigacion as gi','t.id_grupo_inves','=','gi.id_grupo')
+                        ->join('asesor_curso as ac','t.cod_docente','=','ac.cod_docente')->leftJoin('grado_academico as gc','ac.cod_grado_academico','=','gc.cod_grado_academico')
+                        ->select('t.*','ac.nombres as nombre_asesor','ac.cod_docente','ac.direccion as direccion_asesor','gc.descripcion as grado_academico')
+                        ->where('gi.id_grupo',$id_grupo)->get();
+
+        $estudiantes_grupo = DB::table('estudiante_ct2022 as e')
+                        ->join('detalle_grupo_investigacion as d_g','d_g.cod_matricula','=','e.cod_matricula')
+                        ->select('e.cod_matricula','e.nombres','e.apellidos')
+                        ->where('d_g.id_grupo_inves',$id_grupo)->get();
+
+        $objetivos = DB::table('t_objetivo')->where('cod_tesis','=',$Tesis[0]->cod_tesis)->get();
+        $t_keywords = DB::table('t_keyword')->where('cod_tesis','=',$Tesis[0]->cod_tesis)->get();
+        $referencias = DB::table('t_referencias')->where('cod_tesis','=',$Tesis[0]->cod_tesis)->get();
+
+        $validatesis = DB::table('tesis_2022')
+                                    ->select('titulo','presentacion','resumen','introduccion','real_problematica','antecedentes','justificacion','formulacion_prob','marco_teorico','marco_conceptual','marco_legal','form_hipotesis','objeto_estudio','poblacion','muestra','metodos','tecnicas_instrum','instrumentacion','estg_metodologicas','discusion','conclusiones','recomendaciones','resultados','anexos')
+                                    ->where('cod_tesis','=',$Tesis[0]->cod_tesis)->first();
+        foreach ($validatesis as $atri) {
+            if ($atri != null && sizeof($t_keywords) > 0 && sizeof($objetivos) > 0 && sizeof($referencias) > 0 ) {
+                $camposFull = true;
+            }else{
+                $camposFull = false;
+                break;
+            }
+        }
+
+        /*Recoger imagenes de resultados*/
+        $resultadosImg = Detalle_Archivo::join('archivos_proy_tesis as at','at.cod_archivos','=','detalle_archivos.cod_archivos')->select('detalle_archivos.*')->where('at.cod_tesis',$Tesis[0]->cod_tesis)->where('tipo','resultados')->orderBy('grupo', 'ASC')->get();
+
+        /*Recoger imagenes de anexos*/
+        $anexosImg = Detalle_Archivo::join('archivos_proy_tesis as at','at.cod_archivos','=','detalle_archivos.cod_archivos')->select('detalle_archivos.*')->where('at.cod_tesis',$Tesis[0]->cod_tesis)->where('tipo','anexos')->orderBy('grupo', 'ASC')->get();
+
+        $keywords = TDetalleKeyword::join('t_keyword','t_keyword.id_keyword','=','t_detalle_keyword.id_keyword')->select('t_detalle_keyword.*')->where('t_keyword.cod_tesis',$Tesis[0]->cod_tesis)->get();
+
+        $observaciones = TObservacion::join('t_historial_observaciones as ho','ho.cod_historial_observacion','=','t_observacion.cod_historial_observacion')->select('t_observacion.*')->where('ho.cod_tesis',$Tesis[0]->cod_tesis)->get();
+
+        return view('cursoTesis20221.asesor.evaluacion.detalleTesisAsignada',['Tesis'=>$Tesis,'keywords'=>$keywords,'objetivos'=>$objetivos,'$observaciones' => $observaciones,'camposFull'=>$camposFull,'referencias'=>$referencias, 'resultadosImg'=>$resultadosImg, 'anexosImg'=>$anexosImg,'estudiantes_grupo'=>$estudiantes_grupo]);
+    }
+
+    public function guardarObservacionSustentacion(Request $request){
+        $idTesis = $request->textcod;
+
+        $Tesis = DB::table('tesis_2022 as t')
+                ->join('detalle_grupo_investigacion as d_g','d_g.id_grupo_inves','=','t.id_grupo_inves')
+                ->join('estudiante_ct2022','estudiante_ct2022.cod_matricula','=','d_g.cod_matricula')
+                ->join('asesor_curso','t.cod_docente','=','asesor_curso.cod_docente')
+                ->select('t.*','estudiante_ct2022.nombres as nombresAutor','estudiante_ct2022.apellidos as apellidosAutor','estudiante_ct2022.correo as correoEstudi','asesor_curso.nombres as nombresAsesor')->where('asesor_curso.username','=',auth()->user()->name)->where('t.id_grupo_inves',$request->id_grupo_hidden)->get();
+
+
+
+        $existHisto = THistorialObservaciones::where('cod_Tesis',$Tesis[0]->cod_tesis)->get();
+        if($existHisto->count()==0){
+            $existHisto = new THistorialObservaciones();
+            $existHisto->cod_Tesis = $Tesis[0]->cod_tesis;
+            $existHisto->fecha=now();
+            $existHisto->estado=1;
+            $existHisto->save();
+        }
+
+        $existHisto = THistorialObservaciones::where('cod_Tesis',$Tesis[0]->cod_tesis)->get();
+
+
+        try {
+            $observaciones = new TObservacion();
+            // $observaciones->cod_tesis = $Tesis[0]->cod_tesis;
+            $observaciones->cod_historial_observacion = $existHisto[0]->cod_historial_observacion;
+            $observaciones->fecha_create = now();
+
+            // if($request->tachkCorregir1!=""){
+            //     $observaciones->titulo = $request->tachkCorregir1;
+            //     $arrayThemes[]='titulo';
+            // }
+            // if($request->tachkCorregir2!=""){
+            //     $observaciones->dedicatoria = $request->tachkCorregir2;
+            //     $arrayThemes[]='dedicatoria';
+            // }
+
+            // if($request->tachkCorregir3!=""){
+            //     $observaciones->agradecimiento = $request->tachkCorregir3;
+            //     $arrayThemes[]='agradecimiento';
+            // }
+
+            if($request->tachkCorregir4!=""){
+                $observaciones->presentacion = $request->tachkCorregir4;
+                $arrayThemes[]='presentacion';
+            }
+            if($request->tachkCorregir5!=""){
+                $observaciones->resumen = $request->tachkCorregir5;
+                $arrayThemes[]='resumen';
+            }
+            if($request->tachkCorregir6!=""){
+                $observaciones->introduccion = $request->tachkCorregir6;
+                $arrayThemes[]='introduccion';
+            }
+
+            if($request->tachkCorregir7!=""){
+                $observaciones->real_problematica = $request->tachkCorregir7;
+                $arrayThemes[]='real_problematica';
+            }
+            if($request->tachkCorregir8!=""){
+                $observaciones->antecedentes = $request->tachkCorregir8;
+                $arrayThemes[]='antecedentes';
+            }
+            if($request->tachkCorregir9!=""){
+                $observaciones->justificacion = $request->tachkCorregir9;
+                $arrayThemes[]='justificacion';
+            }
+            if($request->tachkCorregir10!=""){
+                $observaciones->formulacion_prob = $request->tachkCorregir10;
+                $arrayThemes[]='formulacion_prob';
+            }
+            if($request->tachkCorregir11!=""){
+                $observaciones->objetivos = $request->tachkCorregir11;
+                $arrayThemes[]='objetivos';
+            }
+            if($request->tachkCorregir12!=""){
+                $observaciones->marco_teorico = $request->tachkCorregir12;
+                $arrayThemes[]='marco_teorico';
+            }
+
+            if($request->tachkCorregir13!=""){
+                $observaciones->marco_conceptual = $request->tachkCorregir13;
+                $arrayThemes[]='marco_conceptual';
+            }
+            if($request->tachkCorregir14!=""){
+                $observaciones->marco_legal = $request->tachkCorregir14;
+                $arrayThemes[]='marco_legal';
+            }
+            if($request->tachkCorregir15!=""){
+                $observaciones->form_hipotesis = $request->tachkCorregir15;
+                $arrayThemes[]='form_hipotesis';
+            }
+            if($request->tachkCorregir16!=""){
+                $observaciones->objeto_estudio = $request->tachkCorregir16;
+                $arrayThemes[]='objeto_estudio';
+            }
+            if($request->tachkCorregir17!=""){
+                $observaciones->poblacion = $request->tachkCorregir17;
+                $arrayThemes[]='poblacion';
+            }
+            if($request->tachkCorregir18!=""){
+                $observaciones->muestra = $request->tachkCorregir18;
+                $arrayThemes[]='muestra';
+            }
+            if($request->tachkCorregir19!=""){
+                $observaciones->metodos = $request->tachkCorregir19;
+                $arrayThemes[]='metodos';
+            }
+            if($request->tachkCorregir20!=""){
+                $observaciones->tecnicas_instrum = $request->tachkCorregir20;
+                $arrayThemes[]='tecnicas_instrum';
+            }
+            if($request->tachkCorregir21!=""){
+                $observaciones->instrumentacion = $request->tachkCorregir21;
+                $arrayThemes[]='instrumentacion';
+            }
+            if($request->tachkCorregir22!=""){
+                $observaciones->estg_metodologicas = $request->tachkCorregir22;
+                $arrayThemes[]='estg_metodologicas';
+            }
+            if($request->tachkCorregir23!=""){
+                $observaciones->resultados = $request->tachkCorregir23;
+                $arrayThemes[]='resultados';
+            }
+            if($request->tachkCorregir24!=""){
+                $observaciones->discusion = $request->tachkCorregir24;
+                $arrayThemes[]='discusion';
+            }
+            if($request->tachkCorregir25!=""){
+                $observaciones->conclusiones = $request->tachkCorregir25;
+                $arrayThemes[]='conclusiones';
+            }
+            if($request->tachkCorregir26!=""){
+                $observaciones->recomendaciones = $request->tachkCorregir26;
+                $arrayThemes[]='recomendaciones';
+            }
+            if($request->tachkCorregir27!=""){
+                $observaciones->referencias = $request->tachkCorregir27;
+                $arrayThemes[]='referencias';
+            }
+            $observaciones->estado = 1;
+
+            $observaciones->save();
+            $tesis = Tesis_2022::find($idTesis);
+            $tesis->estado = 2;
+            $tesis->save();
+            if ($Tesis[0]->correoEstudi != null) {
+                $titulo = $Tesis[0]->titulo;
+                $asesor = $Tesis[0]->nombresAsesor;
+                //Mail::to($Tesis[0]->correoEstudi)->send(new EstadoObservadoTesisMail($titulo,$asesor));
+            }
+
+        } catch (\Throwable $th) {
+            return redirect()->route('asesor.revisar-tesis')->with('datos','oknot');
+        }
+
+        $latestCorrecion = TObservacion::where('cod_historial_observacion',$existHisto[0]->cod_historial_observacion)->where('estado',1)->get();
+        for($i = 0; $i<sizeof($arrayThemes);$i++){
+            $detalleObs = new TDetalleObservacion();
+            $detalleObs->id_observacion=$latestCorrecion[0]->cod_historial_observacion;
+            $detalleObs->tema_referido = $arrayThemes[$i];
+            $detalleObs->correccion = null;
+            $detalleObs->save();
+        }
+        return redirect()->route('asesor.ver-obs-estudiante-tesis',$existHisto[0]->cod_historial_observacion)->with('datos','ok');
     }
 }

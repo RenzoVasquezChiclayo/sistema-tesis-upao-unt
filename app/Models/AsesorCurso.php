@@ -18,8 +18,10 @@ class AsesorCurso extends Model
         'nombres',
         'orcid',
         'apellidos',
-        'grado_academico',
-        'titulo_profesional',
+        //'grado_academico', Deleted
+        // 'titulo_profesional', Deleted
+        'cod_grado_academico',
+        'cod_categoria',
         'direccion',
         'correo',
         //Fines del curso

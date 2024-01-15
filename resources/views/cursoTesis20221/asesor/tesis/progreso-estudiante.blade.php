@@ -1,6 +1,6 @@
 @extends('plantilla.dashboard')
 @section('titulo')
-    Proyecto de Tesis del Estudiante
+    Tesis del Estudiante
 @endsection
 @section('css')
 <link rel="stylesheet" href="./css/tesis_body.css">
@@ -127,7 +127,7 @@
                     <div class="row border-box card-box">
                         <div class="item-card">
                             <label for="txtNombreAsesor" class="form-label">Apellidos y Nombres</label>
-                            <input class="form-control" name="txtNombreAsesor" id="txtNombreAsesor" type="text" value="{{$Tesis[0]->nombres}}" readonly>
+                            <input class="form-control" name="txtNombreAsesor" id="txtNombreAsesor" type="text" value="{{$Tesis[0]->nombre_asesor}}" readonly>
                         </div>
                         <div class="item-card">
                             <label for="cboGrAcademicoAsesor" class="form-label">Grado Academico</label>

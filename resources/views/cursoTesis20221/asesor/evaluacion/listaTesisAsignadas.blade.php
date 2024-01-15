@@ -95,6 +95,15 @@
                                                 RESERVA
                                             @endif
                                         </td>
+                                        <td>
+                                            @if($estu[0]->estado != 0)
+                                            <form id="form-revisaTema" action="{{route('asesor.evaluacion.detalleTesisAsignada')}}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="id_grupo" value="{{$estu[0]->id_grupo}}">
+                                                <a href="#" onclick="this.closest('#form-revisaTema').submit()" class="btn btn-success">Revisar</a>
+                                            </form>
+                                            @endif
+                                        </td>
                                         {{-- <td>
                                             @if($tesis->estado != 0)
                                                 <form id="form-revisaTema" action="{{route('asesor.revisarTemas')}}" method="POST">
