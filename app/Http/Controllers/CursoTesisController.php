@@ -206,6 +206,17 @@ class CursoTesisController extends Controller
                 }
             }
 
+            if ($request->listOldlref != "") {
+                $deleteReferencias = explode(",", $request->listOldlref);
+                for ($i = 0; $i < sizeof($deleteReferencias); $i++) {
+                    $referenciasDelete = referencias::find($deleteReferencias[$i]);
+                    if ($referenciasDelete != null) {
+                        $referenciasDelete->delete();
+                    }
+                }
+            }
+
+
             /*Proyecto de Investigacion y/o Tesis*/
             if($request->txttitulo!=""){$tesis->titulo = $request->txttitulo;}
 
@@ -218,10 +229,14 @@ class CursoTesisController extends Controller
                 }
             }
 
-            if($request->txtti_finpersigue!="" && $request->txtti_disinvestigacion!=""){
+            if ($request->txtti_finpersigue != "") {
                 $tesis->ti_finpersigue = $request->txtti_finpersigue;
+            }
+
+            if ($request->txtti_disinvestigacion != "") {
                 $tesis->ti_disinvestigacion = $request->txtti_disinvestigacion;
             }
+
 
             //Desarrollo del proyecto
             if($request->txtlocalidad!=""){$tesis->localidad = $request->txtlocalidad;}
@@ -229,26 +244,87 @@ class CursoTesisController extends Controller
             if($request->txtmeses_ejecucion!=""){$tesis->meses_ejecucion = $request->txtmeses_ejecucion;}
 
             //Cronograma de trabajo
-            if($request->listMonths!=""){
-                $cronograma = $request->listMonths;
-                $cronograma = explode("_",$cronograma);
-                $last = $cronograma[0];
-                for($i=0; $i< sizeof($cronograma); $i++ ){
-                    if($cronograma[$i]=="1a"){
-                        $tesis->t_ReparacionInstrum = $last."-".$cronograma[$i-1];
-                        $last = $cronograma[$i+1];
-                    }else if($cronograma[$i]=="2a"){
-                        $tesis->t_RecoleccionDatos = $last."-".$cronograma[$i-1];
-                        $last = $cronograma[$i+1];
-                    }else if($cronograma[$i]=="3a"){
-                        $tesis->t_AnalisisDatos = $last."-".$cronograma[$i-1];
-                        $last = $cronograma[$i+1];
-                    }else if($cronograma[$i]=="4a"){
-                        $tesis->t_ElaboracionInfo = $last."-".$cronograma[$i-1];
+            if ($request->listMonths != "") {
+                $allCronogramas = Cronograma_Proyecto::where("cod_proyectotesis",$tesis->cod_proyectotesis)->get();
+                $cod_cronograma = $request->cod_cronograma; //[123,343,434]
+                $cronograma = $request->listMonths; //1_2_4_1a_2_3_2a_4_3a_5_4a
+                //dd($cronograma);
+                $cronograma = explode("_", $cronograma); //[1,2,1a,2,3,2a,4,3a,5,4a]
+                $sucesivos = true;
+                $inicioSucesivo = null;
+                $finSucesivo = null;
+                $string_extra = ""; // 1-2, 4 ---- 1-6 ----- 1,3,5
+                $contador = 0;
+                foreach ($cronograma as $c) {
+                    if (strpos($c, 'a') !== false) {
+                        $contador++;
+                    }
+                }
+                $exi = 0;
+                for ($j = 0; $j < $contador; $j++) {
+                    $new_activity = new Cronograma_Proyecto();
+                    for ($i = $exi; $i < sizeof($cronograma); $i++) {
+                        if (stripos($cronograma[$i], "a") !== false) {
+                            if ($finSucesivo != null) {
+                                $string_extra .= $inicioSucesivo."-".$finSucesivo;
+                            } else {
+                                $string_extra .= $inicioSucesivo;
+                            }
+                            if(sizeof($allCronogramas)>0){
+                                $extraCrono = false;
+                                foreach ($allCronogramas as $crono) {
+                                    // Verificar si el 'id' del objeto coincide con el ID buscado
+                                    if ($crono->cod_cronograma == $cod_cronograma[$j]) {
+                                        $crono->descripcion = $string_extra;
+                                        $crono->save();
+                                        $extraCrono = true;
+                                        break; // Puedes romper el bucle una vez que encuentres el objeto
+                                    }
+                                }
+                                if(!$extraCrono){
+                                    $new_activity->descripcion = $string_extra;
+                                    $new_activity->cod_cronograma = $cod_cronograma[$j];
+                                    $new_activity->cod_proyectotesis = $tesis->cod_proyectotesis;
+                                    $new_activity->save();
+                                }
+                            }else{
+                                $new_activity->descripcion = $string_extra;
+                                $new_activity->cod_cronograma = $cod_cronograma[$j];
+                                $new_activity->cod_proyectotesis = $tesis->cod_proyectotesis;
+                                $new_activity->save();
+                            }
+                            $string_extra = "";
+                            $inicioSucesivo = null;
+                            $finSucesivo = null;
+                            $exi = $i + 1;
+
+                            break;
+                        } else {
+                            if ($i > $exi && (int)$cronograma[$i] != (int)$cronograma[$i - 1] + 1) {
+                                $sucesivos = false;
+                                if ($inicioSucesivo == $cronograma[$i - 1]) {
+                                    $string_extra .= $inicioSucesivo.","; //1,3 ---- 4
+                                } else {
+                                    $string_extra .= $inicioSucesivo."-".$cronograma[$i - 1].",";
+                                }
+                                $inicioSucesivo = $cronograma[$i];
+                                $finSucesivo = null;
+                            }
+                            if ($sucesivos === true) {
+                                if ($inicioSucesivo == null) {
+                                    $inicioSucesivo = $cronograma[$i];
+                                }
+                                if($i != $exi){
+                                    $finSucesivo = $cronograma[$i];
+                                }
+
+                            } else {
+                                $sucesivos = true;
+                            }
+                        }
                     }
                 }
             }
-
             //Economico
             if($request->txtfinanciamiento!=""){
                 $tesis->financiamiento = $request->txtfinanciamiento;
@@ -855,20 +931,6 @@ class CursoTesisController extends Controller
             $institucion = $tesis[0]->institucion;
             $meses_ejecucion = $tesis[0]->meses_ejecucion;
 
-            //Cronograma
-            $reparacionInstrum = $tesis[0]->t_ReparacionInstrum;
-            $reparacionInstrum = explode("-",$reparacionInstrum);
-
-            //dd($reparacionInstrum);
-
-            $recoleccionDatos = $tesis[0]->t_RecoleccionDatos;
-            $recoleccionDatos = explode("-",$recoleccionDatos);
-
-            $analisisDatos = $tesis[0]->t_AnalisisDatos;
-            $analisisDatos = explode("-",$analisisDatos);
-
-            $elaboracionInfo = $tesis[0]->t_ElaboracionInfo;
-            $elaboracionInfo = explode("-",$elaboracionInfo);
 
             //Economico
             $financiamiento = $tesis[0]->financiamiento;
@@ -1025,30 +1087,30 @@ class CursoTesisController extends Controller
             $cronogramaTable->addCell(1500)->addText('MES TERMINO',$titulos);
 
 
-            $cronogramaTable->addRow(400);
-            $cronogramaTable->addCell(3500)->addText('Preparacion de instrumentos de recoleccion de datos',$titulos);
-            for ($i=0; $i <= count($reparacionInstrum)-1 ; $i++) {
-                $cronogramaTable->addCell(2000)->addText($reparacionInstrum[$i]);
-            }
+            // $cronogramaTable->addRow(400);
+            // $cronogramaTable->addCell(3500)->addText('Preparacion de instrumentos de recoleccion de datos',$titulos);
+            // for ($i=0; $i <= count($reparacionInstrum)-1 ; $i++) {
+            //     $cronogramaTable->addCell(2000)->addText($reparacionInstrum[$i]);
+            // }
 
 
-            $cronogramaTable->addRow(400);
-            $cronogramaTable->addCell(3500)->addText('Recoleccion de datos',$titulos);
-            for ($i=0; $i <= count($recoleccionDatos)-1 ; $i++) {
-                $cronogramaTable->addCell(2000)->addText($recoleccionDatos[$i]);
-            }
+            // $cronogramaTable->addRow(400);
+            // $cronogramaTable->addCell(3500)->addText('Recoleccion de datos',$titulos);
+            // for ($i=0; $i <= count($recoleccionDatos)-1 ; $i++) {
+            //     $cronogramaTable->addCell(2000)->addText($recoleccionDatos[$i]);
+            // }
 
-            $cronogramaTable->addRow(400);
-            $cronogramaTable->addCell(3500)->addText('Analisis de Datos',$titulos);
-            for ($i=0; $i <= count($analisisDatos)-1 ; $i++) {
-                $cronogramaTable->addCell(2000)->addText($analisisDatos[$i]);
-            }
+            // $cronogramaTable->addRow(400);
+            // $cronogramaTable->addCell(3500)->addText('Analisis de Datos',$titulos);
+            // for ($i=0; $i <= count($analisisDatos)-1 ; $i++) {
+            //     $cronogramaTable->addCell(2000)->addText($analisisDatos[$i]);
+            // }
 
-            $cronogramaTable->addRow(400);
-            $cronogramaTable->addCell(3500)->addText('Elaboracion del Informe',$titulos);
-            for ($i=0; $i <= count($elaboracionInfo)-1 ; $i++) {
-                $cronogramaTable->addCell(2000)->addText($elaboracionInfo[$i]);
-            }
+            // $cronogramaTable->addRow(400);
+            // $cronogramaTable->addCell(3500)->addText('Elaboracion del Informe',$titulos);
+            // for ($i=0; $i <= count($elaboracionInfo)-1 ; $i++) {
+            //     $cronogramaTable->addCell(2000)->addText($elaboracionInfo[$i]);
+            // }
 
 
             /* ------------------------------------------ */
@@ -1507,8 +1569,32 @@ class CursoTesisController extends Controller
         return redirect()->route('director.editarAsignacion')->with('datos','ok');
     }
 
-    public function showEstudiantes(){
+    public function showEstudiantes(Request $request){
+        $lastGroup = 0;
+        $extraArray=[];
+        $studentforGroups=[];
+        $contador = 0;
+        // $buscarAlumno = $request->buscarAlumno;
+        // $filtrarSemestre = $request->filtrar_semestre;
         $asesor = AsesorCurso::where('username',auth()->user()->name)->get();
+        // $semestre = DB::table('configuraciones_iniciales as c_i')->select('c_i.*')->where('c_i.estado', 1)->orderBy('c_i.cod_configuraciones', 'desc')->get();
+        // if (count($semestre) == 0) {
+        //     return view('cursoTesis20221.asesor.showEstudiantes', ['studentforGroups'=> [], 'semestre' => [], 'buscarAlumno' => $buscarAlumno]);
+        // } else {
+        //     $last_semestre = DB::table('configuraciones_iniciales as c_i')->select('c_i.*')->where('c_i.estado', 1)->orderBy('c_i.cod_configuraciones', 'desc')->first();
+        //     if ($buscarAlumno != "") {
+        //         $semestreBuscar = $request->semestre;
+        //         $filtrarSemestre = $semestreBuscar;
+        //         if (is_numeric($buscarAlumno)) {
+        //             $estudiantes = DB::table('estudiante_ct2022')
+        //             ->join('detalle_grupo_investigacion as d_g','d_g.cod_matricula','=','estudiante_ct2022.cod_matricula')
+        //             ->join('grupo_investigacion as g_i', 'g_i.id_grupo','=','d_g.id_grupo_inves')
+        //             ->join('proyecto_tesis','d_g.id_grupo_inves','=','proyecto_tesis.id_grupo_inves')
+        //             ->select('g_i.id_grupo','g_i.num_grupo','estudiante_ct2022.*','proyecto_tesis.cod_docente','proyecto_tesis.estado','proyecto_tesis.cod_proyectotesis')
+        //             ->where('proyecto_tesis.cod_docente',$asesor[0]->cod_docente)->get();
+        //         }
+        //     }
+        // }
         $estudiantes = DB::table('estudiante_ct2022')
                             ->join('detalle_grupo_investigacion as d_g','d_g.cod_matricula','=','estudiante_ct2022.cod_matricula')
                             ->join('grupo_investigacion as g_i', 'g_i.id_grupo','=','d_g.id_grupo_inves')
@@ -1516,10 +1602,7 @@ class CursoTesisController extends Controller
                             ->select('g_i.id_grupo','g_i.num_grupo','estudiante_ct2022.*','proyecto_tesis.cod_docente','proyecto_tesis.estado','proyecto_tesis.cod_proyectotesis')
                             ->where('proyecto_tesis.cod_docente',$asesor[0]->cod_docente)->get();
 
-        $lastGroup = 0;
-        $extraArray=[];
-        $studentforGroups=[];
-        $contador = 0;
+
         foreach($estudiantes as $eachStudent){
             if($lastGroup== 0){
                 array_push($extraArray,$eachStudent);
@@ -1826,12 +1909,15 @@ class CursoTesisController extends Controller
         $aux_campo = 0;
         $isFinal = 'false';
         $camposFull = 'false';
+        $camposActivos = 'false';
 
         $id_grupo = $request->id_grupo;
         $cursoTesis = DB::table('proyecto_tesis as p')
                             ->join('grupo_investigacion as g_i','g_i.id_grupo','=','p.id_grupo_inves')
                             ->join('asesor_curso as ac','ac.cod_docente','=','p.cod_docente')
-                            ->select('p.*','ac.nombres as nombre_asesor','ac.*')
+                            ->leftJoin('grado_academico as ga', 'ac.cod_grado_academico', 'ga.cod_grado_academico')
+                            ->leftJoin('categoria_docente as cd', 'ac.cod_categoria', 'cd.cod_categoria')
+                            ->select('p.*','ac.nombres as nombre_asesor', 'ac.apellidos as apellidos_asesor', 'ac.estado as estadoAsesor', 'ac.direccion', 'ga.descripcion as DescGrado', 'cd.descripcion as DescCat')
                             ->where('g_i.id_grupo',$id_grupo)->get();
 
         $estudiantes_grupo = DB::table('estudiante_ct2022 as e')
@@ -1844,11 +1930,15 @@ class CursoTesisController extends Controller
             $aux++;
         }
         for ($i=0; $i < sizeof($arregloAux)-11; $i++) {
-            if ($arregloAux[$i]!=null) {
-                $isFinal = 'true';
-            }else{
-                $isFinal = 'false';
+            if($i == 20){
                 break;
+            }else{
+                if ($arregloAux[$i] != null) {
+                    $isFinal = 'true';
+                } else {
+                    $isFinal = 'false';
+                    break;
+                }
             }
         }
 
@@ -1858,7 +1948,8 @@ class CursoTesisController extends Controller
 
         $campos = DB::table('campos_estudiante')->select('campos_estudiante.*')->where('cod_proyectotesis',$cursoTesis[0]->cod_proyectotesis)->get();
         // $campos = CamposEstudiante::where('cod_matricula',$cursoTesis[0]->cod_matricula)->get();
-
+        $cronogramas = Cronograma::all();
+        $cronogramas_py = Cronograma_Proyecto::where("cod_proyectotesis",$cursoTesis[0]->cod_proyectotesis)->get();
         $objetivos = DB::table('objetivo')->where('cod_proyectotesis','=',$cursoTesis[0]->cod_proyectotesis)->get();
 
         $recursos = DB::table('recursos')->where('cod_proyectotesis','=',$cursoTesis[0]->cod_proyectotesis)->get();
@@ -1878,7 +1969,14 @@ class CursoTesisController extends Controller
                 break;
             }
         }
-
+        for ($i = 1; $i < sizeof($campoCursoTesis); $i++) {
+            if ($campoCursoTesis[$i] != 0) {
+                $camposActivos = 'true';
+            } else {
+                $camposActivos = 'false';
+                break;
+            }
+        }
         $recursos = recursos::where('cod_proyectotesis','=',$cursoTesis[0]->cod_proyectotesis)->get();
         $tipoinvestigacion = TipoInvestigacion::where('cod_tinvestigacion','=',$cursoTesis[0]->cod_tinvestigacion)->get();
         $fin_persigue = Fin_Persigue::where('cod_fin_persigue','=',$cursoTesis[0]->ti_finpersigue)->get();
@@ -1897,8 +1995,26 @@ class CursoTesisController extends Controller
                 ,'tipoinvestigacion'=>$tipoinvestigacion,
                 'recursos'=>$recursos,'objetivos'=>$objetivos,'variableop'=>$variableop,
                 'campos'=>$campos,'cursoTesis'=>$cursoTesis,'referencias'=>$referencias,'isFinal'=>$isFinal,
-                'camposFull'=>$camposFull,'matriz'=>$matriz, 'estudiantes_grupo'=>$estudiantes_grupo
+                'camposFull'=>$camposFull,'matriz'=>$matriz, 'estudiantes_grupo'=>$estudiantes_grupo,'cronogramas'=>$cronogramas,
+                'cronogramas_py'=>$cronogramas_py,
+                'camposActivos' =>$camposActivos
         ]);
+
+    }
+
+    public function guardarSinObservaciones(Request $request){
+        try {
+            $cursoTesis = DB::table('proyecto_tesis as p')
+            ->join('grupo_investigacion as g_i','g_i.id_grupo','=','p.id_grupo_inves')
+            ->where('g_i.id_grupo',$request->id_grupo_hidden)->first();
+            $tesis = TesisCT2022::find($cursoTesis->cod_proyectotesis);
+            $tesis->estado = 2;
+            $tesis->save();
+            return redirect()->route('asesor.showEstudiantes')->with('datos', 'ok');
+        } catch (\Throwable $th) {
+            return redirect()->route('asesor.showEstudiantes')->with('datos', 'oknot');
+        }
+
 
     }
 
@@ -2356,22 +2472,40 @@ class CursoTesisController extends Controller
     }
 
     public function aprobarProy(Request $request){
-        $proyecto = TesisCT2022::find($request->textcod);
-        $codHistObserva = Historial_Observaciones::where('cod_proyectotesis',$request->textcod)->first();
-        $proyecto->condicion = 'APROBADO';
-        $proyecto->estado = 3;
+        try {
+            $proyecto = TesisCT2022::find($request->textcod);
+            $codHistObserva = Historial_Observaciones::where('cod_proyectotesis',$request->textcod)->first();
+            $proyecto->condicion = 'APROBADO';
+            $proyecto->estado = 3;
 
-        $proyecto->save();
+            $proyecto->save();
 
-        return redirect()->route('asesor.verObsEstudiante',$codHistObserva->cod_historialObs)->with('datos','okAprobado');
+            if($codHistObserva != null){
+                return redirect()->route('asesor.verObsEstudiante', $codHistObserva->cod_historialObs)->with('datos', 'okAprobado');
+            }else{
+                return redirect()->route('asesor.showEstudiantes')->with('datos', 'okAprobado');
+            }
+        } catch (\Throwable $th) {
+            return redirect()->route('asesor.revisarTemas')->with('datos','okNotAprobado');
+        }
+
     }
     public function desaprobarProy(Request $request){
-        $proyecto = TesisCT2022::find($request->textcod);
-        $codHistObserva = Historial_Observaciones::where('cod_proyectotesis',$request->textcod)->first();
-        $proyecto->condicion = 'DESAPROBADO';
-        $proyecto->estado = 4;
-        $proyecto->save();
-        return redirect()->route('asesor.verObsEstudiante',$codHistObserva->cod_historialObs)->with('datos','okDesaprobado');
+        try {
+            $proyecto = TesisCT2022::find($request->textcod);
+            $codHistObserva = Historial_Observaciones::where('cod_proyectotesis',$request->textcod)->first();
+            $proyecto->condicion = 'DESAPROBADO';
+            $proyecto->estado = 4;
+            $proyecto->save();
+            if($codHistObserva!=null){
+                return redirect()->route('asesor.verObsEstudiante', $codHistObserva->cod_historialObs)->with('datos', 'okDesaprobado');
+            }else{
+                return redirect()->route('asesor.showEstudiantes')->with('datos', 'okDesaprobado');
+            }
+        } catch (\Throwable $th) {
+            return redirect()->route('asesor.revisarTemas')->with('datos','okNotDesAprobado');
+        }
+
     }
 
     // He cambiado lo de tesis a Tesis2022 Controller.

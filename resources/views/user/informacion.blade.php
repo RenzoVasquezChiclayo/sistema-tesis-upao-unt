@@ -18,7 +18,7 @@
                         <div class="col-10 col-md-6" style="text-align: left">
                             <div class="mb-3">
                                 <label for="user" class="form-label">Usuario</label>
-                                <input type="text" class="form-control" id="user" value="{{ auth()->user()->name }}" readonly>
+                                <p>{{ auth()->user()->name }}</p>
                             </div>
                         </div>
                         @if (auth()->user()->rol == 'CTesis2022-1')
@@ -56,13 +56,13 @@
                                 <p>{{ $asesor->nombres }}</p>
                             </div>
                             <div class="col-10 col-md-6" style="text-align: left; margin-bottom:15px;">
-                                <h5>Condicion</h5>
-                                <p>{{ $asesor->grado_academico }}</p>
+                                <h5>Grado Academico</h5>
+                                <p>{{ $asesor->DescGrado }}</p>
                             </div>
 
                             <div class="col-10 col-md-6" style="text-align: left; margin-bottom:15px;">
-                                <h5>Escuela</h5>
-                                <p>{{ $asesor->titulo_profesional }}</p>
+                                <h5>Categoria</h5>
+                                <p>{{ $asesor->DescCat }}</p>
                             </div>
                             <div class="col-10 col-md-6" style="text-align: left; margin-bottom:15px;">
                                 <h5>Direccion</h5>

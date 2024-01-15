@@ -241,8 +241,13 @@
                 <i class='bx bx-xs bxs-chevron-down'></i>
             </a>
             <div class="cstm-collapse collapse" id="collapseJurado">
-                <a href="$">
+                <a href="{{ route('director.verRegistrarJurado') }}">
                     <span class="links_name">Registrar jurado</span>
+                </a>
+            </div>
+            <div class="cstm-collapse collapse" id="collapseJurado">
+                <a href="{{ route('director.listaTesisAprobadas') }}">
+                    <span class="links_name">Asignar Jurados</span>
                 </a>
             </div>
         </li>
@@ -291,8 +296,17 @@
             </a>
             <span class="tooltip">Estudiantes</span>
         </li>
-
-
+        @if ($exists_jurado == true)
+            <br>
+            <p style="color: white">APARTADO DE JURADO</p>
+            <li>
+                <a class="cstm-a" href="{{ route('director.listaTesisAsignadas') }}">
+                    <i class='bx bxs-graduation'></i>
+                    <span class="links_name">Lista Tesis(Evaluacion)</span>
+                </a>
+                <span class="tooltip">Lista Tesis(Evaluacion)</span>
+            </li>
+        @endif
         {{-- Nav para la Secretaria, agregara estudiantes --}}
         {{-- @elseif (auth()->user()->rol == 'secretaria')
 
@@ -303,3 +317,4 @@
     @endif
 
 @endauth
+

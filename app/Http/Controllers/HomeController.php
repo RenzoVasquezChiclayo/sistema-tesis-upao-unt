@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Jurado;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -11,6 +12,9 @@ class HomeController extends Controller
      *
      * @return void
      */
+
+     private $datos;
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -25,4 +29,5 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
 }

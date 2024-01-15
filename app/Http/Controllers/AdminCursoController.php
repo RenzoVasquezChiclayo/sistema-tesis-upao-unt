@@ -116,7 +116,6 @@ class AdminCursoController extends Controller
             //dd($grupo_inves);
             if ($grupo_inves != null) {
                 $existTesis = TesisCT2022::where('id_grupo_inves',$grupo_inves->id_grupo)->get();
-                //HOSTING
                 $existTesisII = Tesis_2022::where('id_grupo_inves',$grupo_inves->id_grupo)->get();
 
                 if($existTesis->count()==0){
@@ -150,7 +149,7 @@ class AdminCursoController extends Controller
         }
         $usuario = User::where('name',$id.'-C')->first();
         $estudiante = DB::table('estudiante_ct2022 as E')->where('E.cod_matricula',$id)->first();
-        $asesor = DB::table('asesor_curso as A')->where('A.username',$id)->first();
+        $asesor = DB::table('asesor_curso as A')->leftjoin('grado_academico as ga', 'A.cod_grado_academico', 'ga.cod_grado_academico')->leftjoin('categoria_docente as cd', 'A.cod_categoria', 'cd.cod_categoria')->select('A.*', 'ga.descripcion as DescGrado', 'cd.descripcion as DescCat')->where('A.username', $id)->first();
         $img = 'profile-notfound.jpg';
 
         return view('user.informacion',['usuario'=>$usuario,'img'=>$img,'estudiante'=>$estudiante,'asesor'=>$asesor]);

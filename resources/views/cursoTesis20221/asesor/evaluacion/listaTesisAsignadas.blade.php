@@ -1,13 +1,18 @@
 @extends('plantilla.dashboard')
 @section('titulo')
-    Estudiantes con Proyectos
+    Lista de Tesis asignadas
+@endsection
+@section('css')
+    <style type="text/css">
+
+    </style>
 @endsection
 @section('contenido')
 <div class="card-header">
-    En proceso (PROYECTO DE TESIS)
+    Lista de Tesis asignadas (EVALUACION)
 </div>
 <div class="card-body">
-    <div class="row">
+    <div class="row justify-content-around align-items-center">
         <div class="col-12">
             {{-- <div class="row justify-content-end">
                 <div class="row mb-3 justify-content-end align-items-center">
@@ -55,6 +60,9 @@
                                 <tr>
                                     <td>Grupo</td>
                                     <td>Estudiantes</td>
+                                    <td>Titulo</td>
+                                    <td>Asesor</td>
+                                    <td>JURADO</td>
                                     <td>Revision</td>
                                     <td>Descargar</td>
                                 </tr>
@@ -62,21 +70,33 @@
                             <tbody>
                                 @foreach ($studentforGroups as $estu)
                                     <tr
-                                    @if ($estu[0]->estado == 3)
+                                    {{-- @if ($estu[0]->estado == 3)
                                         style="background-color: #7BF96E;"
                                     @elseif ($estu[0]->estado == 4)
                                         style="background-color: #FA6A56;"
-                                    @endif
+                                    @endif --}}
                                     >
                                         <td>{{$estu[0]->num_grupo}}</td>
                                         @if (count($estu)>1)
-                                            <td>{{$estu[0]->nombres.' '.$estu[0]->apellidos.' & '.$estu[1]->nombres.' '.$estu[1]->apellidos}}</td>
+                                            <td>{{$estu[0]->nombresAutor.' '.$estu[0]->apellidosAutor.' & '.$estu[0]->nombresAutor.' '.$estu[0]->apellidosAutor}}</td>
                                         @else
-                                            <td>{{$estu[0]->nombres.' '.$estu[0]->apellidos}}</td>
+                                            <td>{{$estu[0]->nombresAutor.' '.$estu[0]->apellidosAutor}}</td>
                                         @endif
-
+                                        <td>{{$estu[0]->titulo}}</td>
+                                        <td>{{$estu[0]->nombresAsesor.' '.$estu[0]->apellidosAsesor}}</td>
                                         <td>
-                                            @if($estu[0]->estado != 0)
+                                            @if ($estu[0]->cod_jurado1 == $asesor->cod_docente)
+                                                PRESIDENTE
+                                            @elseif($estu[0]->cod_jurado2 == $asesor->cod_docente)
+                                                2do JURADO
+                                            @elseif($estu[0]->cod_jurado3 == $asesor->cod_docente)
+                                                VOCAL
+                                            @elseif($estu[0]->cod_jurado4 == $asesor->cod_docente)
+                                                RESERVA
+                                            @endif
+                                        </td>
+                                        {{-- <td>
+                                            @if($tesis->estado != 0)
                                                 <form id="form-revisaTema" action="{{route('asesor.revisarTemas')}}" method="POST">
                                                     @csrf
                                                     <input type="hidden" name="id_grupo" value="{{$estu[0]->id_grupo}}">
@@ -87,12 +107,12 @@
                                                     @endif
                                                 </form>
                                             @endif
-                                            {{-- <a href="{{route('asesor.revisarTemas',$estu->cod_matricula)}}" class="btn btn-success">Revisar</a> --}}
-                                        </td>
+                                            <a href="{{route('asesor.revisarTemas',$estu->cod_matricula)}}" class="btn btn-success">Revisar</a>
+                                        </td> --}}
                                         <td style="text-align: center;">
                                             <form id="proyecto-download" action="{{route('curso.descargaTesis')}}" method="POST">
                                                 @csrf
-                                                <input type="hidden" name="cod_cursoTesis" value="{{$estu[0]->cod_proyectotesis}}">
+                                                <input type="hidden" name="cod_cursoTesis" value="{{$estu[0]->cod_tesis}}">
                                                 <a href="#" onclick="this.closest('#proyecto-download').submit()"><i class='bx bx-sm bx-download'></i></a>
                                             </form>
                                         </td>
@@ -106,42 +126,4 @@
         </div>
     </div>
 </div>
-
-@endsection
-@section('js')
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    @if (session('datos')=='ok')
-        <script>
-            Swal.fire(
-                'Guardado!',
-                'Asignacion de campos guardados correctamente',
-                'success'
-            )
-        </script>
-    @elseif (session('datos') == 'okAprobado')
-        <script>
-            Swal.fire(
-                'Guardado!',
-                'El proyecto fue APROBADO',
-                'success'
-            )
-        </script>
-    @elseif (session('datos') == 'okDesaprobado')
-        <script>
-            Swal.fire(
-                'Guardado!',
-                'El proyecto fue DESAPROBADO',
-                'success'
-            )
-        </script>
-    @endif
-    <script type="text/javascript">
-        function saveStateSemestre(form){
-                    const semestreSelect = document.getElementById("filtrar_semestre");
-                    const selectedSemestre = semestreSelect.options[semestreSelect.selectedIndex];
-                    document.getElementById("semestre").value = selectedSemestre.value;
-                    form.closest("#listAlumno").submit();
-                }
-    </script>
 @endsection

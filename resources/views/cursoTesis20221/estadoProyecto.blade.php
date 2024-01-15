@@ -28,7 +28,7 @@
             <div class="col-10">
                 <div class="row">
                     <div class="col-12">
-                        <div class="row box-center">
+                        <div class="row box-center justify-content-center">
                             <div class="col-10">
                                 <div class="row">
                                     <table id="table-formato" class="table table-bordered table-responsive-md" style="table-border-color: red;">
