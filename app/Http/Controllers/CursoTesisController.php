@@ -1691,7 +1691,7 @@ class CursoTesisController extends Controller
 
             return redirect()->route('director.listaAsesores')->with('datos', 'ok');
         } catch (\Throwable $th) {
-            return back()->with('datos', 'oknot');
+            return redirect()->route('director.listaAsesores')->with('datos', 'oknot');
         }
     }
 
