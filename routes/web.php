@@ -181,6 +181,11 @@ Route::post('/saveEditAsesor',[CursoTesisController::class,'editAsesor'])->name(
 Route::get('/ver-registrar-jurado',[SustentacionController::class,'verRegistrarJurado'])->name('director.verRegistrarJurado')->middleware('auth');
 Route::post('/registrar-jurado',[SustentacionController::class,'registrarJurado'])->name('director.registrarJurado')->middleware('auth');
 
+//Designacion de jurados --------------------------------------
+Route::get('/lista-tesis-aprobadas',[SustentacionController::class,'lista_tesis_aprobadas'])->name('director.listaTesisAprobadas')->middleware('auth');
+Route::post('/save-asignacion-jurados',[SustentacionController::class,'save_asignacion_jurados'])->name('director.saveAsignacionJurados')->middleware('auth');
+// ------
+
 //Rutas para el asesor Curso
 Route::get('/verEstudiantes',[CursoTesisController::class,'showEstudiantes'])->name('asesor.showEstudiantes')->middleware('auth');
 Route::post('/asignarTemas',[CursoTesisController::class,'asignarTemas'])->name('asesor.asignarTemas')->middleware('auth');
@@ -214,6 +219,9 @@ Route::post('aprobarTesis',[Tesis2022Controller::class,'aprobarTesis'])
         ->name('asesor.aprobar-tesis');
 Route::post('desaprobarTesis',[Tesis2022Controller::class,'desaprobarTesis'])
         ->name('asesor.desaprobar-tesis');
+
+// EVALUACION
+Route::get('/lista-tesis-asignadas',[SustentacionController::class,'lista_tesis_asignadas'])->name('director.listaTesisAsignadas')->middleware('auth');
 
 Auth::routes();
 

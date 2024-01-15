@@ -34,10 +34,11 @@
     30 => 'Spatie\\LaravelIgnition\\IgnitionServiceProvider',
     31 => 'Maatwebsite\\Excel\\ExcelServiceProvider',
     32 => 'Barryvdh\\DomPDF\\ServiceProvider',
-    33 => 'App\\Providers\\AppServiceProvider',
-    34 => 'App\\Providers\\AuthServiceProvider',
-    35 => 'App\\Providers\\EventServiceProvider',
-    36 => 'App\\Providers\\RouteServiceProvider',
+    33 => 'App\\Providers\\SidebarServiceProvider',
+    34 => 'App\\Providers\\AppServiceProvider',
+    35 => 'App\\Providers\\AuthServiceProvider',
+    36 => 'App\\Providers\\EventServiceProvider',
+    37 => 'App\\Providers\\RouteServiceProvider',
   ),
   'eager' => 
   array (
@@ -60,10 +61,11 @@
     16 => 'Spatie\\LaravelIgnition\\IgnitionServiceProvider',
     17 => 'Maatwebsite\\Excel\\ExcelServiceProvider',
     18 => 'Barryvdh\\DomPDF\\ServiceProvider',
-    19 => 'App\\Providers\\AppServiceProvider',
-    20 => 'App\\Providers\\AuthServiceProvider',
-    21 => 'App\\Providers\\EventServiceProvider',
-    22 => 'App\\Providers\\RouteServiceProvider',
+    19 => 'App\\Providers\\SidebarServiceProvider',
+    20 => 'App\\Providers\\AppServiceProvider',
+    21 => 'App\\Providers\\AuthServiceProvider',
+    22 => 'App\\Providers\\EventServiceProvider',
+    23 => 'App\\Providers\\RouteServiceProvider',
   ),
   'deferred' => 
   array (

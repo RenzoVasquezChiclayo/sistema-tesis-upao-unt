@@ -1087,30 +1087,30 @@ class CursoTesisController extends Controller
             $cronogramaTable->addCell(1500)->addText('MES TERMINO',$titulos);
 
 
-            $cronogramaTable->addRow(400);
-            $cronogramaTable->addCell(3500)->addText('Preparacion de instrumentos de recoleccion de datos',$titulos);
-            for ($i=0; $i <= count($reparacionInstrum)-1 ; $i++) {
-                $cronogramaTable->addCell(2000)->addText($reparacionInstrum[$i]);
-            }
+            // $cronogramaTable->addRow(400);
+            // $cronogramaTable->addCell(3500)->addText('Preparacion de instrumentos de recoleccion de datos',$titulos);
+            // for ($i=0; $i <= count($reparacionInstrum)-1 ; $i++) {
+            //     $cronogramaTable->addCell(2000)->addText($reparacionInstrum[$i]);
+            // }
 
 
-            $cronogramaTable->addRow(400);
-            $cronogramaTable->addCell(3500)->addText('Recoleccion de datos',$titulos);
-            for ($i=0; $i <= count($recoleccionDatos)-1 ; $i++) {
-                $cronogramaTable->addCell(2000)->addText($recoleccionDatos[$i]);
-            }
+            // $cronogramaTable->addRow(400);
+            // $cronogramaTable->addCell(3500)->addText('Recoleccion de datos',$titulos);
+            // for ($i=0; $i <= count($recoleccionDatos)-1 ; $i++) {
+            //     $cronogramaTable->addCell(2000)->addText($recoleccionDatos[$i]);
+            // }
 
-            $cronogramaTable->addRow(400);
-            $cronogramaTable->addCell(3500)->addText('Analisis de Datos',$titulos);
-            for ($i=0; $i <= count($analisisDatos)-1 ; $i++) {
-                $cronogramaTable->addCell(2000)->addText($analisisDatos[$i]);
-            }
+            // $cronogramaTable->addRow(400);
+            // $cronogramaTable->addCell(3500)->addText('Analisis de Datos',$titulos);
+            // for ($i=0; $i <= count($analisisDatos)-1 ; $i++) {
+            //     $cronogramaTable->addCell(2000)->addText($analisisDatos[$i]);
+            // }
 
-            $cronogramaTable->addRow(400);
-            $cronogramaTable->addCell(3500)->addText('Elaboracion del Informe',$titulos);
-            for ($i=0; $i <= count($elaboracionInfo)-1 ; $i++) {
-                $cronogramaTable->addCell(2000)->addText($elaboracionInfo[$i]);
-            }
+            // $cronogramaTable->addRow(400);
+            // $cronogramaTable->addCell(3500)->addText('Elaboracion del Informe',$titulos);
+            // for ($i=0; $i <= count($elaboracionInfo)-1 ; $i++) {
+            //     $cronogramaTable->addCell(2000)->addText($elaboracionInfo[$i]);
+            // }
 
 
             /* ------------------------------------------ */
