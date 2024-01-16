@@ -40,7 +40,7 @@
             <span class="tooltip">Correcciones</span>
         </li>
 
-    {{-- Nav para el Director de escuela --}}
+        {{-- Nav para el Director de escuela --}}
     @elseif (auth()->user()->rol == 'director')
         <li>
             <a class="cstm-a" href="{{ route('director.formatos') }}">
@@ -50,7 +50,7 @@
             <span class="tooltip">Formatos de titulos</span>
         </li>
 
-    {{-- Nav para el Asesor de las tesis --}}
+        {{-- Nav para el Asesor de las tesis --}}
     @elseif (auth()->user()->rol == 'asesor')
         <li>
             <a class="cstm-a" href="{{ route('asesor.proyectos') }}">
@@ -67,7 +67,7 @@
             <span class="tooltip">Observaciones</span>
         </li>
 
-    {{-- Nav para los Docentes, vista Silabo --}}
+        {{-- Nav para los Docentes, vista Silabo --}}
     @elseif (auth()->user()->rol == 'docente')
         <li>
             <a class="cstm-a" href="{{ route('docente.showSilabos') }}">
@@ -77,9 +77,8 @@
             <span class="tooltip">Silabo</span>
         </li>
 
-    {{-- Nav para el Alumnos del curso TESIS I --}}
+        {{-- Nav para el Alumnos del curso TESIS I --}}
     @elseif (auth()->user()->rol == 'CTesis2022-1')
-
         <li>
             <a class="cstm-a" href="{{ route('curso.tesis20221') }}">
                 <i class='bx bx-sm bx-book-bookmark'></i>
@@ -109,7 +108,8 @@
             <span class="tooltip">Estado de la Tesis</span>
         </li>
         <li>
-            <a class="cstm-a menu-a" data-bs-toggle="collapse" href="#collapseSolicitud" role="button" aria-expanded="false" aria-controls="collapseSolicitud">
+            <a class="cstm-a menu-a" data-bs-toggle="collapse" href="#collapseSolicitud" role="button"
+                aria-expanded="false" aria-controls="collapseSolicitud">
                 <div class="menu-into-a">
                     <i class='bx bx-group'></i>
                     <span class = "links_name">Sustentacion</span>
@@ -123,14 +123,20 @@
                 <a href="#">
                     <span class="links_name">Historico sustentacion</span>
                 </a>
+                @if ($exist_obs == true)
+                    <a href="{{ route('estudiante.evaluacion.listaObservacionesTesis') }}">
+                        <span class="links_name">Observaciones Tesis</span>
+                    </a>
+                @endif
             </div>
         </li>
+
         {{-- <a href="{{route('curso.verHistorialObs')}}" >
         <i class="nav-icon fas fa-graduation-cap"></i>
         <span class="links_name">Historial de Correcciones</span>
     </a> --}}
 
-    {{-- Nav para el Director del curso TESIS I --}}
+        {{-- Nav para el Director del curso TESIS I --}}
     @elseif (auth()->user()->rol == 'd-CTesis2022-1' || auth()->user()->rol == 'administrador')
         @if (auth()->user()->rol == 'administrador')
             <li>
@@ -163,7 +169,8 @@
             </li>
         @endif
         <li>
-            <a class="cstm-a menu-a" data-bs-toggle="collapse" href="#collapseGeneral" role="button" aria-expanded="false" aria-controls="collapseGeneral">
+            <a class="cstm-a menu-a" data-bs-toggle="collapse" href="#collapseGeneral" role="button"
+                aria-expanded="false" aria-controls="collapseGeneral">
                 <div class="menu-into-a">
                     <i class='bx bx-sm bx-check-square'></i>
                     <span class="links_name">General</span>
@@ -199,7 +206,8 @@
             <span class="tooltip">Grupos de Investigacion</span>
         </li>
         <li>
-            <a class="cstm-a menu-a" class="cstm-a" data-bs-toggle="collapse" href="#collapseAlumno" role="button" aria-expanded="false" aria-controls="collapseAlumno">
+            <a class="cstm-a menu-a" class="cstm-a" data-bs-toggle="collapse" href="#collapseAlumno" role="button"
+                aria-expanded="false" aria-controls="collapseAlumno">
                 <div class="menu-into-a">
                     <i class='bx bx-group'></i>
                     <span class = "links_name">Alumno</span>
@@ -216,7 +224,8 @@
             </div>
         </li>
         <li>
-            <a class="cstm-a menu-a" class="cstm-a" data-bs-toggle="collapse" href="#collapseAsesor" role="button" aria-expanded="false" aria-controls="collapseAsesor">
+            <a class="cstm-a menu-a" class="cstm-a" data-bs-toggle="collapse" href="#collapseAsesor" role="button"
+                aria-expanded="false" aria-controls="collapseAsesor">
                 <div class="menu-into-a">
                     <i class='bx bx-male-female'></i>
                     <span class = "links_name">Asesores</span>
@@ -233,7 +242,8 @@
             </div>
         </li>
         <li>
-            <a class="cstm-a menu-a" class="cstm-a" data-bs-toggle="collapse" href="#collapseJurado" role="button" aria-expanded="false" aria-controls="collapseJurado">
+            <a class="cstm-a menu-a" class="cstm-a" data-bs-toggle="collapse" href="#collapseJurado" role="button"
+                aria-expanded="false" aria-controls="collapseJurado">
                 <div class="menu-into-a">
                     <i class='bx bx-group'></i>
                     <span class = "links_name">Jurado</span>
@@ -317,4 +327,3 @@
     @endif
 
 @endauth
-

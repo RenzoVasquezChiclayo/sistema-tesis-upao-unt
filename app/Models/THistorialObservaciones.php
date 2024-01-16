@@ -12,8 +12,10 @@ class THistorialObservaciones extends Model
     protected $primaryKey = 'cod_historial_observacion';
     protected $fillable = [
         'cod_tesis',
+        'sustentacion',
         'fecha',
         'estado',
+
         // 'observacionNum'
     ];
     public function tesis(){

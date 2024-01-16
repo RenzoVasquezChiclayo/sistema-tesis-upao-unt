@@ -87,7 +87,7 @@
                                                     @endif
                                                 </form>
                                             @endif
-                                            {{-- <a href="{{route('asesor.revisarTemas',$estu->cod_matricula)}}" class="btn btn-success">Revisar</a> --}}
+
                                         </td>
                                         <td style="text-align: center;">
                                             <form id="proyecto-download" action="{{route('curso.descargaTesis')}}" method="POST">

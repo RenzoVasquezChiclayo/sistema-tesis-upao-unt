@@ -24,7 +24,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::mc2KfKFZBZp2ws4w',
+            '_route' => 'generated::ugDhqrXFWb0nRRrb',
           ),
           1 => NULL,
           2 => 
@@ -102,7 +102,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::Dk6Z3SFUyOKOcNqM',
+            '_route' => 'generated::xevlebJMiRgsICfS',
           ),
           1 => NULL,
           2 => 
@@ -459,6 +459,26 @@ app('router')->setCompiledRoutes(
           2 => 
           array (
             'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/lista-observaciones-tesis-evaluacion' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'estudiante.evaluacion.listaObservacionesTesis',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
           ),
           3 => NULL,
           4 => false,
@@ -2186,13 +2206,51 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'director.listaTesisAsignadas',
+            '_route' => 'asesor.evaluacion.listaTesisAsignadas',
           ),
           1 => NULL,
           2 => 
           array (
             'GET' => 0,
             'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/detalle-tesis-asignada' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'asesor.evaluacion.detalleTesisAsignada',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/guardar-observacion-sustentacion' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'asesor.sustentacion.guardarObservacion',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
           ),
           3 => NULL,
           4 => false,
@@ -2223,7 +2281,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::4mJjXKAlVOX0eh6W',
+            '_route' => 'generated::Dl8vZHrua7t8UJOe',
           ),
           1 => NULL,
           2 => 
@@ -2259,7 +2317,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::nEMV6oOKmmUpBwQH',
+            '_route' => 'generated::iKZdagKawhlyjUfB',
           ),
           1 => NULL,
           2 => 
@@ -2350,7 +2408,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::885wsdM1msrI6dYq',
+            '_route' => 'generated::ms6aPaR8uj6WVMTX',
           ),
           1 => NULL,
           2 => 
@@ -2468,7 +2526,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::5eaE3CPmUHNRgShS',
+            '_route' => 'generated::VudPrSZrSMWR8DA9',
           ),
           1 => 
           array (
@@ -2500,7 +2558,7 @@ app('router')->setCompiledRoutes(
   ),
   'attributes' => 
   array (
-    'generated::mc2KfKFZBZp2ws4w' => 
+    'generated::ugDhqrXFWb0nRRrb' => 
     array (
       'methods' => 
       array (
@@ -2521,7 +2579,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
         ),
-        'as' => 'generated::mc2KfKFZBZp2ws4w',
+        'as' => 'generated::ugDhqrXFWb0nRRrb',
       ),
       'fallback' => false,
       'defaults' => 
@@ -2646,7 +2704,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::Dk6Z3SFUyOKOcNqM' => 
+    'generated::xevlebJMiRgsICfS' => 
     array (
       'methods' => 
       array (
@@ -2663,13 +2721,13 @@ app('router')->setCompiledRoutes(
         ),
         'uses' => 'O:47:"Laravel\\SerializableClosure\\SerializableClosure":1:{s:12:"serializable";O:46:"Laravel\\SerializableClosure\\Serializers\\Signed":2:{s:12:"serializable";s:297:"O:46:"Laravel\\SerializableClosure\\Serializers\\Native":5:{s:3:"use";a:0:{}s:8:"function";s:79:"function (\\Illuminate\\Http\\Request $request) {
     return $request->user();
-}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"000000007b692c4700000000587a55b6";}";s:4:"hash";s:44:"0QXKQQ0l6lGCUbX97IltNyowLVHAEJIsE+G4BEu2+lg=";}}',
+}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"000000001ee2885100000000191d4498";}";s:4:"hash";s:44:"BBxyd64ttvlgig+wtGsipGw4Tg7iDNDiOJrHs3pb3tI=";}}',
         'namespace' => NULL,
         'prefix' => 'api',
         'where' => 
         array (
         ),
-        'as' => 'generated::Dk6Z3SFUyOKOcNqM',
+        'as' => 'generated::xevlebJMiRgsICfS',
       ),
       'fallback' => false,
       'defaults' => 
@@ -3373,6 +3431,44 @@ app('router')->setCompiledRoutes(
         array (
         ),
         'as' => 'curso.descargar-tesis',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'estudiante.evaluacion.listaObservacionesTesis' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'lista-observaciones-tesis-evaluacion',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+        ),
+        'uses' => 'App\\Http\\Controllers\\SustentacionController@lista_observaciones_evaluacion',
+        'controller' => 'App\\Http\\Controllers\\SustentacionController@lista_observaciones_evaluacion',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'estudiante.evaluacion.listaObservacionesTesis',
       ),
       'fallback' => false,
       'defaults' => 
@@ -6737,7 +6833,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'director.listaTesisAsignadas' => 
+    'asesor.evaluacion.listaTesisAsignadas' => 
     array (
       'methods' => 
       array (
@@ -6759,7 +6855,81 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'director.listaTesisAsignadas',
+        'as' => 'asesor.evaluacion.listaTesisAsignadas',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'asesor.evaluacion.detalleTesisAsignada' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'detalle-tesis-asignada',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+        ),
+        'uses' => 'App\\Http\\Controllers\\SustentacionController@detalleTesisAsignada',
+        'controller' => 'App\\Http\\Controllers\\SustentacionController@detalleTesisAsignada',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'asesor.evaluacion.detalleTesisAsignada',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'asesor.sustentacion.guardarObservacion' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'guardar-observacion-sustentacion',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+        ),
+        'uses' => 'App\\Http\\Controllers\\SustentacionController@guardarObservacionSustentacion',
+        'controller' => 'App\\Http\\Controllers\\SustentacionController@guardarObservacionSustentacion',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'asesor.sustentacion.guardarObservacion',
       ),
       'fallback' => false,
       'defaults' => 
@@ -6812,7 +6982,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::4mJjXKAlVOX0eh6W' => 
+    'generated::Dl8vZHrua7t8UJOe' => 
     array (
       'methods' => 
       array (
@@ -6832,7 +7002,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::4mJjXKAlVOX0eh6W',
+        'as' => 'generated::Dl8vZHrua7t8UJOe',
       ),
       'fallback' => false,
       'defaults' => 
@@ -6885,7 +7055,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::nEMV6oOKmmUpBwQH' => 
+    'generated::iKZdagKawhlyjUfB' => 
     array (
       'methods' => 
       array (
@@ -6905,7 +7075,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::nEMV6oOKmmUpBwQH',
+        'as' => 'generated::iKZdagKawhlyjUfB',
       ),
       'fallback' => false,
       'defaults' => 
@@ -7104,7 +7274,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::885wsdM1msrI6dYq' => 
+    'generated::ms6aPaR8uj6WVMTX' => 
     array (
       'methods' => 
       array (
@@ -7124,7 +7294,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::885wsdM1msrI6dYq',
+        'as' => 'generated::ms6aPaR8uj6WVMTX',
       ),
       'fallback' => false,
       'defaults' => 
@@ -7140,7 +7310,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::5eaE3CPmUHNRgShS' => 
+    'generated::VudPrSZrSMWR8DA9' => 
     array (
       'methods' => 
       array (
@@ -7157,13 +7327,13 @@ app('router')->setCompiledRoutes(
         'uses' => 'O:47:"Laravel\\SerializableClosure\\SerializableClosure":1:{s:12:"serializable";O:46:"Laravel\\SerializableClosure\\Serializers\\Signed":2:{s:12:"serializable";s:295:"O:46:"Laravel\\SerializableClosure\\Serializers\\Native":5:{s:3:"use";a:0:{}s:8:"function";s:77:"function($comand){
     \\Illuminate\\Support\\Facades\\Artisan::call($comand);
 
-}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"000000007b692cd600000000587a55b6";}";s:4:"hash";s:44:"1hpBBz+YJOeoC5+gyuP/5qC3i1M+tD7l3SlHHSmr1zw=";}}',
+}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"000000001ee288c500000000191d4498";}";s:4:"hash";s:44:"2o9JdKIjyj6SmZvX4tf9ZMsmD9FG6SN+BLTV/xSzZUk=";}}',
         'namespace' => NULL,
         'prefix' => '',
         'where' => 
         array (
         ),
-        'as' => 'generated::5eaE3CPmUHNRgShS',
+        'as' => 'generated::VudPrSZrSMWR8DA9',
       ),
       'fallback' => false,
       'defaults' => 

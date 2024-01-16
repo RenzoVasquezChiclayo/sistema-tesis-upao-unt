@@ -104,20 +104,7 @@
                                             </form>
                                             @endif
                                         </td>
-                                        {{-- <td>
-                                            @if($tesis->estado != 0)
-                                                <form id="form-revisaTema" action="{{route('asesor.revisarTemas')}}" method="POST">
-                                                    @csrf
-                                                    <input type="hidden" name="id_grupo" value="{{$estu[0]->id_grupo}}">
-                                                    @if ($estu[0]->estado == 1)
-                                                        <a href="#" onclick="this.closest('#form-revisaTema').submit()" class="btn btn-success">Revisar</a>
-                                                    @else
-                                                        <a href="#" onclick="this.closest('#form-revisaTema').submit()" class="btn btn-secondary">Observar</a>
-                                                    @endif
-                                                </form>
-                                            @endif
-                                            <a href="{{route('asesor.revisarTemas',$estu->cod_matricula)}}" class="btn btn-success">Revisar</a>
-                                        </td> --}}
+
                                         <td style="text-align: center;">
                                             <form id="proyecto-download" action="{{route('curso.descargaTesis')}}" method="POST">
                                                 @csrf

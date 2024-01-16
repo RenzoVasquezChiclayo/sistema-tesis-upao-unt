@@ -77,6 +77,9 @@ Route::post('/descargaTesis',[CursoTesisController::class,'descargaTesis'])->nam
 
 Route::post('/descargar-tesis',[Tesis2022Controller::class,'descargaTesis'])->name('curso.descargar-tesis');
 
+// EVALUACION ESTUDIANTE
+Route::get('/lista-observaciones-tesis-evaluacion',[SustentacionController::class,'lista_observaciones_evaluacion'])->name('estudiante.evaluacion.listaObservacionesTesis')->middleware('auth');
+
 //Rutas para la secretaria
 // Route::get('/agregarEstudiante',[AdminCursoController::class,'showAddEstudiante'])->name('secretaria.veragregar')->middleware('auth');
 // Route::post('/agregarEstudiante',[AdminCursoController::class,'agregarEstudiante'])->name('secretaria.addEstudiante');
