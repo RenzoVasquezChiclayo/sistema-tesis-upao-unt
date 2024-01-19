@@ -59,7 +59,7 @@ class Tesis2022Controller extends Controller
                                     ->first();
 
         $tesis = Tesis_2022::where('id_grupo_inves','=',$estudiante->id_grupo)->first(); //Encontramos la tesis
-        $asesor = DB::table('asesor_curso')->where('cod_docente',$tesis->cod_docente)->first();  //Encontramos al asesor
+        $asesor = DB::table('asesor_curso')->leftjoin('grado_academico as ga', 'asesor_curso.cod_grado_academico', 'ga.cod_grado_academico')->leftjoin('categoria_docente as cd', 'asesor_curso.cod_categoria', 'cd.cod_categoria')->select('asesor_curso.*', 'ga.descripcion as DescGrado', 'cd.descripcion as DescCat')->where('cod_docente',$tesis->cod_docente)->first();  //Encontramos al asesor
 
         $correciones = TObservacion::join('t_historial_observaciones','t_observacion.cod_historial_observacion','=','t_historial_observaciones.cod_historial_observacion')
                         ->select('t_observacion.*')->where('t_historial_observaciones.cod_tesis',$tesis->cod_tesis)
@@ -1605,7 +1605,6 @@ class Tesis2022Controller extends Controller
 
 
 
-        //dd('here');
         if (sizeof($correccion)==1) {
             $cantObserva = 0;
         }elseif(sizeof($correccion)==2){

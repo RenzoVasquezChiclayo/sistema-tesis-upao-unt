@@ -24,7 +24,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::ugDhqrXFWb0nRRrb',
+            '_route' => 'generated::WZJC5trObXlePDsV',
           ),
           1 => NULL,
           2 => 
@@ -102,7 +102,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::xevlebJMiRgsICfS',
+            '_route' => 'generated::bPScE7p9SIAPPzYf',
           ),
           1 => NULL,
           2 => 
@@ -1834,6 +1834,45 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
+      '/ver-editar-asignacion-jurados' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'director.verEditAsignacionJurados',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/edit-asignacion-jurados' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'director.editAsignacionJurados',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
       '/verEstudiantes' => 
       array (
         0 => 
@@ -2281,7 +2320,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::Dl8vZHrua7t8UJOe',
+            '_route' => 'generated::d00ARnLvdpeK4cgS',
           ),
           1 => NULL,
           2 => 
@@ -2317,7 +2356,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::iKZdagKawhlyjUfB',
+            '_route' => 'generated::uYbSqW4GC0QSnkNi',
           ),
           1 => NULL,
           2 => 
@@ -2408,7 +2447,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::ms6aPaR8uj6WVMTX',
+            '_route' => 'generated::M6Xobp2Do6QNmWpF',
           ),
           1 => NULL,
           2 => 
@@ -2526,7 +2565,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::VudPrSZrSMWR8DA9',
+            '_route' => 'generated::dcunna453l4qJeJJ',
           ),
           1 => 
           array (
@@ -2558,7 +2597,7 @@ app('router')->setCompiledRoutes(
   ),
   'attributes' => 
   array (
-    'generated::ugDhqrXFWb0nRRrb' => 
+    'generated::WZJC5trObXlePDsV' => 
     array (
       'methods' => 
       array (
@@ -2579,7 +2618,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
         ),
-        'as' => 'generated::ugDhqrXFWb0nRRrb',
+        'as' => 'generated::WZJC5trObXlePDsV',
       ),
       'fallback' => false,
       'defaults' => 
@@ -2704,7 +2743,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::xevlebJMiRgsICfS' => 
+    'generated::bPScE7p9SIAPPzYf' => 
     array (
       'methods' => 
       array (
@@ -2721,13 +2760,13 @@ app('router')->setCompiledRoutes(
         ),
         'uses' => 'O:47:"Laravel\\SerializableClosure\\SerializableClosure":1:{s:12:"serializable";O:46:"Laravel\\SerializableClosure\\Serializers\\Signed":2:{s:12:"serializable";s:297:"O:46:"Laravel\\SerializableClosure\\Serializers\\Native":5:{s:3:"use";a:0:{}s:8:"function";s:79:"function (\\Illuminate\\Http\\Request $request) {
     return $request->user();
-}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"000000001ee2885100000000191d4498";}";s:4:"hash";s:44:"BBxyd64ttvlgig+wtGsipGw4Tg7iDNDiOJrHs3pb3tI=";}}',
+}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"000000004a34f79500000000599dbd6e";}";s:4:"hash";s:44:"jlwqHoVSWW0wWLHgnZEqSD51qiet80Zs4GHCrPyBVbA=";}}',
         'namespace' => NULL,
         'prefix' => 'api',
         'where' => 
         array (
         ),
-        'as' => 'generated::xevlebJMiRgsICfS',
+        'as' => 'generated::bPScE7p9SIAPPzYf',
       ),
       'fallback' => false,
       'defaults' => 
@@ -6060,6 +6099,81 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
+    'director.verEditAsignacionJurados' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'ver-editar-asignacion-jurados',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+        ),
+        'uses' => 'App\\Http\\Controllers\\SustentacionController@verEditAsignacionJurados',
+        'controller' => 'App\\Http\\Controllers\\SustentacionController@verEditAsignacionJurados',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'director.verEditAsignacionJurados',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'director.editAsignacionJurados' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'edit-asignacion-jurados',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+        ),
+        'uses' => 'App\\Http\\Controllers\\SustentacionController@editAsignacionJurados',
+        'controller' => 'App\\Http\\Controllers\\SustentacionController@editAsignacionJurados',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'director.editAsignacionJurados',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
     'asesor.showEstudiantes' => 
     array (
       'methods' => 
@@ -6982,7 +7096,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::Dl8vZHrua7t8UJOe' => 
+    'generated::d00ARnLvdpeK4cgS' => 
     array (
       'methods' => 
       array (
@@ -7002,7 +7116,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::Dl8vZHrua7t8UJOe',
+        'as' => 'generated::d00ARnLvdpeK4cgS',
       ),
       'fallback' => false,
       'defaults' => 
@@ -7055,7 +7169,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::iKZdagKawhlyjUfB' => 
+    'generated::uYbSqW4GC0QSnkNi' => 
     array (
       'methods' => 
       array (
@@ -7075,7 +7189,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::iKZdagKawhlyjUfB',
+        'as' => 'generated::uYbSqW4GC0QSnkNi',
       ),
       'fallback' => false,
       'defaults' => 
@@ -7274,7 +7388,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::ms6aPaR8uj6WVMTX' => 
+    'generated::M6Xobp2Do6QNmWpF' => 
     array (
       'methods' => 
       array (
@@ -7294,7 +7408,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::ms6aPaR8uj6WVMTX',
+        'as' => 'generated::M6Xobp2Do6QNmWpF',
       ),
       'fallback' => false,
       'defaults' => 
@@ -7310,7 +7424,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::VudPrSZrSMWR8DA9' => 
+    'generated::dcunna453l4qJeJJ' => 
     array (
       'methods' => 
       array (
@@ -7327,13 +7441,13 @@ app('router')->setCompiledRoutes(
         'uses' => 'O:47:"Laravel\\SerializableClosure\\SerializableClosure":1:{s:12:"serializable";O:46:"Laravel\\SerializableClosure\\Serializers\\Signed":2:{s:12:"serializable";s:295:"O:46:"Laravel\\SerializableClosure\\Serializers\\Native":5:{s:3:"use";a:0:{}s:8:"function";s:77:"function($comand){
     \\Illuminate\\Support\\Facades\\Artisan::call($comand);
 
-}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"000000001ee288c500000000191d4498";}";s:4:"hash";s:44:"2o9JdKIjyj6SmZvX4tf9ZMsmD9FG6SN+BLTV/xSzZUk=";}}',
+}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"000000004a34f71f00000000599dbd6e";}";s:4:"hash";s:44:"+0Dka/lZBVKjWejQkEN+6ySghFWECQhR1gwRrmXyrj8=";}}',
         'namespace' => NULL,
         'prefix' => '',
         'where' => 
         array (
         ),
-        'as' => 'generated::VudPrSZrSMWR8DA9',
+        'as' => 'generated::dcunna453l4qJeJJ',
       ),
       'fallback' => false,
       'defaults' => 

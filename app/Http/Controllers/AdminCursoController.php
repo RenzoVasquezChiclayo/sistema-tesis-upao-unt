@@ -189,10 +189,10 @@ class AdminCursoController extends Controller
     }
 
     public function agregarGeneralidades(){
-        $escuela = DB::table('escuela')->select('escuela.*')->get();
-        $linea_investigacion = DB::table('tipoinvestigacion')->select('tipoinvestigacion.*')->get();
-        $fin_persigue = DB::table('fin_persigue')->select('fin_persigue.*')->get();
-        $diseno_investigacion = DB::table('diseno_investigacion')->select('diseno_investigacion.*')->get();
+        $escuela = DB::table('escuela')->select('escuela.*')->orderBy('nombre','asc')->get();
+        $linea_investigacion = DB::table('tipoinvestigacion')->select('tipoinvestigacion.*')->orderBy('descripcion','asc')->get();
+        $fin_persigue = DB::table('fin_persigue')->select('fin_persigue.*')->orderBy('nombre','asc')->get();
+        $diseno_investigacion = DB::table('diseno_investigacion')->select('diseno_investigacion.*')->orderBy('nombre','asc')->get();
         return view('cursoTesis20221.director.actualizarGeneralidades',['escuela'=>$escuela,
                         'linea_investigacion'=>$linea_investigacion,'fin_persigue'=>$fin_persigue,'diseno_investigacion'=>$diseno_investigacion]);
     }
@@ -425,15 +425,15 @@ class AdminCursoController extends Controller
     }
 
     public function showAddEstudiante(){
-        $escuela = DB::table('escuela')->select('*')->where('estado', 1)->get();
+        $escuela = DB::table('escuela')->select('*')->where('estado', 1)->orderBy('nombre','asc')->get();
         $semestre_academico = DB::table('configuraciones_iniciales')->select('*')->where('estado', 1)->get();
         return view('cursoTesis20221.director.agregarAlumno', ['semestre_academico' => $semestre_academico, 'escuela' => $escuela]);
     }
     public function showAddAsesor(){
-        $grados_academicos = DB::table('grado_academico')->select('*')->where('estado', 1)->get();
-        $categorias = DB::table('categoria_docente')->select('*')->where('estado', 1)->get();
+        $grados_academicos = DB::table('grado_academico')->select('*')->where('estado', 1)->orderBy('descripcion','asc')->get();
+        $categorias = DB::table('categoria_docente')->select('*')->where('estado', 1)->orderBy('descripcion','asc')->get();
         $semestre_academico = DB::table('configuraciones_iniciales')->select('*')->where('estado', 1)->get();
-        $escuela = DB::table('escuela')->select('*')->where('estado', 1)->get();
+        $escuela = DB::table('escuela')->select('*')->where('estado', 1)->orderBy('nombre','asc')->get();
         return view('cursoTesis20221.director.agregarAsesor', ['grados_academicos' => $grados_academicos, 'categorias' => $categorias, 'semestre_academico' => $semestre_academico, 'escuela' => $escuela]);
     }
 
@@ -712,7 +712,7 @@ class AdminCursoController extends Controller
 
         $buscarEscuela = $request->get('buscarEscuela');
         $escuela = DB::connection('mysql')->table('escuela as e')->select('e.*')->where('e.nombre', 'like', '%' . $buscarEscuela . '%')->paginate($this::PAGINATION);
-        $facultad = DB::table('facultad as f')->select('f.*')->where('estado', 1)->get();
+        $facultad = DB::table('facultad as f')->select('f.*')->where('estado', 1)->orderBy('f.nombre','asc')->get();
         return view('cursoTesis20221.administrador.escuela.agregar_escuela', ['escuela' => $escuela, 'facultad' => $facultad]);
     }
 

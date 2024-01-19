@@ -79,6 +79,7 @@ class CursoTesisController extends Controller
         $correciones = ObservacionesProy::join('historial_observaciones','observaciones_proy.cod_historialObs','=','historial_observaciones.cod_historialObs')
                         ->select('observaciones_proy.*')->where('historial_observaciones.cod_proyectotesis',$tesis[0]->cod_proyectotesis)
                         ->where('observaciones_proy.estado',1)->get();
+
         $detalles = [];
         if(sizeof($correciones)>0){
             $detalles = Detalle_Observaciones::where('cod_observaciones',$correciones[0]->cod_observaciones)->get();
@@ -2479,7 +2480,7 @@ class CursoTesisController extends Controller
             $proyecto->estado = 3;
 
             $proyecto->save();
-
+            $this->copyProyectoToTesis($proyecto->cod_proyectotesis);
             if($codHistObserva != null){
                 return redirect()->route('asesor.verObsEstudiante', $codHistObserva->cod_historialObs)->with('datos', 'okAprobado');
             }else{
@@ -2509,4 +2510,36 @@ class CursoTesisController extends Controller
     }
 
     // He cambiado lo de tesis a Tesis2022 Controller.
+
+    public function copyProyectoToTesis($id){
+        try{
+            $proyecto = TesisCT2022::find($id);
+            $tesis = Tesis_2022::where('id_grupo_inves','=',$proyecto->id_grupo_inves)->first();
+            if($tesis == null){
+                $tesis = new Tesis_2022();
+            }
+            $tesis->titulo = $proyecto->titulo;
+            $tesis->id_grupo_inves=$proyecto->id_grupo_inves;
+            $tesis->cod_docente = null;
+            $tesis->real_problematica = $proyecto->real_problematica;
+            $tesis->antecedentes = $proyecto->antecedentes;
+            $tesis->justificacion = $proyecto->justificacion;
+            $tesis->formulacion_prob = $proyecto->formulacion_prob;
+            $tesis->marco_teorico = $proyecto->marco_teorico;
+            $tesis->marco_conceptual = $proyecto->marco_conceptual;
+            $tesis->marco_legal = $proyecto->marco_legal;
+            $tesis->form_hipotesis = $proyecto->form_hipotesis;
+            $tesis->poblacion = $proyecto->poblacion;
+            $tesis->muestra = $proyecto->muestra;
+            $tesis->metodos = $proyecto->metodos;
+            $tesis->tecnicas_instrum = $proyecto->tecnicas_instrum;
+            $tesis->instrumentacion = $proyecto->instrumentacion;
+            $tesis->estg_metodologicas = $proyecto->estg_metodologicas;
+            $tesis->save();
+        }catch(\Throwable $th){
+            dd($th);
+        }
+
+
+    }
 }

@@ -14,16 +14,17 @@ use App\Models\THistorialObservaciones;
 use App\Models\TObservacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Stmt\TryCatch;
 
 class SustentacionController extends Controller
 {
-
+    const PAGINATION = 10;
 
     public function verRegistrarJurado()
     {
-        $asesores = DB::table('asesor_curso as ac')->leftJoin('jurado as j', 'ac.cod_docente', "=", 'j.cod_docente')->select('ac.*')->whereNull('j.cod_docente')->get();
+        $asesores = DB::table('asesor_curso as ac')->leftJoin('jurado as j', 'ac.cod_docente', "=", 'j.cod_docente')->select('ac.*')->whereNull('j.cod_docente')->orderBy('apellidos', 'asc')->get();
         $tipoInvestigacion = DB::table('tipoinvestigacion')->get();
-        $jurados = DB::table('jurado as j')->join('tipoinvestigacion as ti', 'j.cod_tinvestigacion', 'ti.cod_tinvestigacion')->leftJoin('asesor_curso as ac', 'j.cod_docente', '=', 'ac.cod_docente')->select('ac.nombres', 'ac.apellidos', 'j.*', 'ti.descripcion')->get();
+        $jurados = DB::table('jurado as j')->join('tipoinvestigacion as ti', 'j.cod_tinvestigacion', 'ti.cod_tinvestigacion')->leftJoin('asesor_curso as ac', 'j.cod_docente', '=', 'ac.cod_docente')->select('ac.nombres', 'ac.apellidos', 'j.*', 'ti.descripcion')->orderBy('ac.apellidos', 'asc')->get();
         return view('cursoTesis20221.director.evaluacion.registrarJurado', ['asesores' => $asesores, 'tipoInvestigacion' => $tipoInvestigacion, 'jurados' => $jurados]);
     }
     public function registrarJurado(Request $request)
@@ -82,12 +83,6 @@ class SustentacionController extends Controller
                 ->where('j.cod_docente', '!=', $primerItem->cod_docente)->get();
             return [$autor, $asesores];
         })->values();
-        // foreach ($tesisAgrupadas as $key => $ta) {
-        //     //dd($ta);
-        //     foreach ($ta[1] as $key => $autor) {
-        //         dd($autor->cod_docente);
-        //     }
-        // }
 
 
         return view('cursoTesis20221.director.evaluacion.asignacionDeJurados', ['tesisAgrupadas' => $tesisAgrupadas]);
@@ -162,6 +157,69 @@ class SustentacionController extends Controller
         }
         //dd($studentforGroups);
         return view('cursoTesis20221.asesor.evaluacion.listaTesisAsignadas', ['studentforGroups' => $studentforGroups, 'asesor' => $asesor]);
+    }
+
+    public function verEditAsignacionJurados()
+    {
+        $tesis_aprobadas = DB::table('tesis_2022 as t')
+            ->join('detalle_grupo_investigacion as d_g', 'd_g.id_grupo_inves', '=', 't.id_grupo_inves')
+            ->join('estudiante_ct2022', 'estudiante_ct2022.cod_matricula', '=', 'd_g.cod_matricula')
+            ->join('asesor_curso', 't.cod_docente', '=', 'asesor_curso.cod_docente')
+            ->leftJoin('designacion_jurados as dj', 'dj.cod_tesis', 't.cod_tesis')
+            ->select('t.cod_tesis', 't.titulo', 'estudiante_ct2022.nombres as nombresAutor', 'estudiante_ct2022.apellidos as apellidosAutor', 'asesor_curso.cod_docente', 'asesor_curso.nombres as nombresAsesor', 'asesor_curso.apellidos as apellidosAsesor', 'dj.cod_jurado1', 'dj.cod_jurado2', 'dj.cod_jurado3', 'dj.cod_jurado4')
+            ->where('t.estado', 3)->where('t.condicion', "APROBADO")->get();
+
+        // Agrupar por cod_tesis
+
+        $tesisAgrupadas = $tesis_aprobadas->groupBy('cod_tesis')->map(function ($grupo) {
+            // Combina múltiples autores en una sola tesis
+            $primerItem = $grupo->first();
+            $autor = [
+                'cod_tesis' => $primerItem->cod_tesis,
+                'titulo' => $primerItem->titulo,
+                'autores' => $grupo->map(function ($item) {
+                    return [
+                        'nombresAutor' => $item->nombresAutor,
+                        'apellidosAutor' => $item->apellidosAutor,
+                    ];
+                })->toArray(),
+                'cod_docente' => $primerItem->cod_docente,
+                'nombresAsesor' => $primerItem->nombresAsesor,
+                'apellidosAsesor' => $primerItem->apellidosAsesor,
+                'cod_jurado1' => $primerItem->cod_jurado1,
+                'cod_jurado2' => $primerItem->cod_jurado2,
+                'cod_jurado3' => $primerItem->cod_jurado3,
+                'cod_jurado4' => $primerItem->cod_jurado4,
+            ];
+            $asesores = DB::table('jurado as j')->leftJoin('asesor_curso as ac', 'j.cod_docente', '=', 'ac.cod_docente')->select('ac.nombres', 'ac.apellidos', 'j.cod_docente')
+                ->where('j.cod_docente', '!=', $primerItem->cod_docente)->get();
+            return [$autor, $asesores];
+        })->values();
+
+        return view('cursoTesis20221.director.evaluacion.editarAsignacionJurados', ['tesisAgrupadas' => $tesisAgrupadas]);
+    }
+
+    public function editAsignacionJurados(Request $request)
+    {
+        //
+        try {
+            $datos = explode(',', $request->saveJurados);
+            for ($i = 0; $i < count($datos); $i++) {
+                $jurados = explode('_', $datos[$i]);
+                $asignacion = Designacion_Jurado::where('cod_tesis', $jurados[0])->first();
+                if ($asignacion != null) {
+                    $asignacion->cod_jurado1 = $jurados[1];
+                    $asignacion->cod_jurado2 = $jurados[2];
+                    $asignacion->cod_jurado3 = $jurados[3];
+                    $asignacion->cod_jurado4 = $jurados[4];
+                    $asignacion->save();
+                }
+            }
+            return redirect()->route('director.verEditAsignacionJurados')->with('datos', 'okedit');
+        } catch (\Throwable $th) {
+            dd($th);
+            return redirect()->route('director.verEditAsignacionJurados')->with('datos', 'oknotedit');
+        }
     }
 
 
@@ -368,9 +426,9 @@ class SustentacionController extends Controller
             ->join('tesis_2022 as t', 't_h_o.cod_tesis', 't.cod_tesis')
             ->join('grupo_investigacion as g_i', 't.id_grupo_inves', 'g_i.id_grupo')
             ->join('detalle_grupo_investigacion as d_g_i', 'g_i.id_grupo', 'd_g_i.id_grupo_inves')
-            ->join('jurado as j','o_s.cod_jurado','j.cod_jurado')
-            ->join('asesor_curso as ac','j.cod_docente','ac.cod_docente')
-            ->select('o_s.*','ac.nombres','ac.apellidos')
+            ->join('jurado as j', 'o_s.cod_jurado', 'j.cod_jurado')
+            ->join('asesor_curso as ac', 'j.cod_docente', 'ac.cod_docente')
+            ->select('o_s.*', 'ac.nombres', 'ac.apellidos')
             ->where('d_g_i.cod_matricula', $datos[0])
             ->get();
         //dd($observaciones);

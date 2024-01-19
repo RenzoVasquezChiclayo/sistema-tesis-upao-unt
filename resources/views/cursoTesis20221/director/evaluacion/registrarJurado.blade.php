@@ -25,7 +25,7 @@
                         <select name="selectAsesor" id="selectAsesor" class="form-control">
                             <option value="0">-</option>
                             @foreach ($asesores as $asesor)
-                                <option value="{{ $asesor->cod_docente }}">{{ $asesor->nombres . ' ' . $asesor->apellidos }}
+                                <option value="{{ $asesor->cod_docente }}">{{ $asesor->apellidos. ' ' .$asesor->nombres }}
                                 </option>
                             @endforeach
                         </select>
@@ -70,7 +70,7 @@
                                 @foreach ($jurados as $jurado)
                                     <tr>
                                         <td>{{ $jurado->cod_docente }}</td>
-                                        <td>{{ $jurado->nombres . ' ' . $jurado->apellidos }}</td>
+                                        <td>{{ $jurado->apellidos . ' ' .$jurado->nombres }}</td>
                                         <td>{{ $jurado->descripcion }}</td>
                                         <td>{{ $jurado->created_at }}</td>
                                     </tr>

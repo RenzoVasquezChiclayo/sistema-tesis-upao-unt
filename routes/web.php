@@ -187,6 +187,8 @@ Route::post('/registrar-jurado',[SustentacionController::class,'registrarJurado'
 //Designacion de jurados --------------------------------------
 Route::get('/lista-tesis-aprobadas',[SustentacionController::class,'lista_tesis_aprobadas'])->name('director.listaTesisAprobadas')->middleware('auth');
 Route::post('/save-asignacion-jurados',[SustentacionController::class,'save_asignacion_jurados'])->name('director.saveAsignacionJurados')->middleware('auth');
+Route::get('/ver-editar-asignacion-jurados',[SustentacionController::class,'verEditAsignacionJurados'])->name('director.verEditAsignacionJurados')->middleware('auth');
+Route::post('/edit-asignacion-jurados',[SustentacionController::class,'editAsignacionJurados'])->name('director.editAsignacionJurados')->middleware('auth');
 // ------
 
 //Rutas para el asesor Curso
