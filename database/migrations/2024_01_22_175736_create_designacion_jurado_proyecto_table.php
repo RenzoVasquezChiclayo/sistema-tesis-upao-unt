@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('designacion_jurados', function (Blueprint $table) {
-            $table->integer('cod_designacion_jurados')->autoIncrement();
-            $table->integer('cod_tesis');
-            $table->foreign('cod_tesis')
-                ->references('cod_tesis')
-                ->on('tesis_2022')
+        Schema::create('designacion_jurado_proyecto', function (Blueprint $table) {
+            $table->integer('cod_designacion_proyecto')->autoIncrement();
+            $table->integer('cod_proyectotesis');
+            $table->foreign('cod_proyectotesis')
+                ->references('cod_proyectotesis')
+                ->on('proyecto_tesis')
                 ->onDelete('cascade');
             $table->char('cod_jurado1', 4);
             $table->foreign('cod_jurado1')
@@ -52,6 +52,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('designacion_jurados');
+        Schema::dropIfExists('designacion_jurado_proyecto');
     }
 };

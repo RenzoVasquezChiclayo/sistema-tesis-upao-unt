@@ -35,6 +35,7 @@ use App\Mail\EstadoEnviadaMail;
 use App\Mail\EstadoObservadoMail;
 use App\Models\Cronograma;
 use App\Models\Cronograma_Proyecto;
+use App\Models\Designacion_Jurado;
 use Illuminate\Support\Facades\Mail;
 
 use Illuminate\Http\Request;
@@ -1795,12 +1796,7 @@ class CursoTesisController extends Controller
     //GRUPOS DE INVESTIGACION
     //HOSTING
     public function verAgregarGruposInv(){
-        $estudiantes = DB::table('estudiante_ct2022 as e')->leftJoin('detalle_grupo_investigacion as dg','e.cod_matricula','=','dg.cod_matricula')->select('e.*')->where('dg.id_detalle_grupo',null)->get();
-        $grupo = DB::table('grupo_investigacion')->get();
-        $detalle_grupo = DB::table('detalle_grupo_investigacion as d_g')
-                        ->join('grupo_investigacion as g_i','g_i.id_grupo','=','d_g.id_grupo_inves')
-                        ->join('estudiante_ct2022 as e','e.cod_matricula','=','d_g.cod_matricula')
-                        ->select('d_g.id_grupo_inves','g_i.num_grupo','d_g.cod_matricula','e.nombres','e.apellidos')->get();
+        $estudiantes = DB::table('estudiante_ct2022 as e')->leftJoin('detalle_grupo_investigacion as dg','e.cod_matricula','=','dg.cod_matricula')->select('e.*')->where('dg.id_detalle_grupo',null)->orderBy('apellidos','ASC')->get();
         //Recently added
         $grupo_estudiantes = DB::table('estudiante_ct2022 as e')
                                     ->join('detalle_grupo_investigacion as d_g_i','d_g_i.cod_matricula','=','e.cod_matricula')
@@ -1832,7 +1828,7 @@ class CursoTesisController extends Controller
         $studentforGroups = new Paginator($studentforGroups, $this::PAGINATION5);
 
 
-        return view("cursoTesis20221.director.crearGruposDeInvestigacion",["detalle_grupo"=>$detalle_grupo,'estudiantes'=>$estudiantes,'grupo'=>$grupo,'studentforGroups' => $studentforGroups]);
+        return view("cursoTesis20221.director.crearGruposDeInvestigacion",['estudiantes'=>$estudiantes,'studentforGroups' => $studentforGroups]);
     }
 
     public function saveGruposInves(Request $request){
@@ -2153,7 +2149,9 @@ class CursoTesisController extends Controller
                 $arrayThemes[]='presupuesto_proy';
             }
 
-
+            $designacion = Designacion_Jurado::where('cod_tesis',$tesis->cod_tesis)->first();
+            $designacion->estado = 2;
+            $designacion->save();
 
             $observaciones->estado = 1;
             $observaciones->save();

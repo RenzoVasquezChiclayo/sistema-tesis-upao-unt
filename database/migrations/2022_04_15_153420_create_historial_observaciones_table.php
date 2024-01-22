@@ -20,6 +20,7 @@ return new class extends Migration
                     ->references('cod_proyectotesis')
                     ->on('proyecto_tesis')
                     ->onDelete('cascade');
+            $table->boolean('sustentacion')->default(false);
             $table->date('fecha')->nullable();
             $table->tinyInteger('estado')->default(0);
         });

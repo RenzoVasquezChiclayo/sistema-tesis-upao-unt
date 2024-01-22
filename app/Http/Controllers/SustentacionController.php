@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Designacion_Jurado;
 use App\Models\Detalle_Archivo;
+use App\Models\EvaluacionTesis;
 use App\Models\Jurado;
 use App\Models\Observaciones_Sustentacion;
 use App\Models\TDetalleKeyword;
@@ -126,7 +127,7 @@ class SustentacionController extends Controller
             ->join('detalle_grupo_investigacion as d_g_i', 'g_i.id_grupo', 'd_g_i.id_grupo_inves')
             ->join('estudiante_ct2022 as es', 'd_g_i.cod_matricula', 'es.cod_matricula')
             ->join('asesor_curso as a_c', 'ts.cod_docente', 'a_c.cod_docente')
-            ->select('g_i.id_grupo', 'g_i.num_grupo', 'd_g_i.cod_matricula', 'ts.cod_tesis', 'ts.titulo', 'a_c.nombres as nombresAsesor', 'a_c.apellidos as apellidosAsesor', 'es.nombres as nombresAutor', 'es.apellidos as apellidosAutor', 'd_j.cod_jurado1', 'd_j.cod_jurado2', 'd_j.cod_jurado3', 'd_j.cod_jurado4', 'ts.estado')
+            ->select('g_i.id_grupo', 'g_i.num_grupo', 'd_g_i.cod_matricula', 'ts.cod_tesis', 'ts.titulo', 'a_c.nombres as nombresAsesor', 'a_c.apellidos as apellidosAsesor', 'es.nombres as nombresAutor', 'es.apellidos as apellidosAutor', 'd_j.cod_jurado1', 'd_j.cod_jurado2', 'd_j.cod_jurado3', 'd_j.cod_jurado4', 'ts.estado','d_j.estado as estadoDesignacion')
             ->where('d_j.cod_jurado1', $asesor->cod_docente)
             ->orWhere('d_j.cod_jurado2', $asesor->cod_docente)
             ->orWhere('d_j.cod_jurado3', $asesor->cod_docente)
@@ -231,8 +232,8 @@ class SustentacionController extends Controller
         $id_grupo = $request->id_grupo;
         $Tesis = DB::table('tesis_2022 as t')
             ->join('grupo_investigacion as gi', 't.id_grupo_inves', '=', 'gi.id_grupo')
-            ->join('asesor_curso as ac', 't.cod_docente', '=', 'ac.cod_docente')->leftJoin('grado_academico as gc', 'ac.cod_grado_academico', '=', 'gc.cod_grado_academico')
-            ->select('t.*', 'ac.nombres as nombre_asesor', 'ac.cod_docente', 'ac.direccion as direccion_asesor', 'gc.descripcion as grado_academico')
+            ->join('asesor_curso as ac', 't.cod_docente', '=', 'ac.cod_docente')->leftJoin('grado_academico as gc', 'ac.cod_grado_academico', '=', 'gc.cod_grado_academico')->join('designacion_jurados as dj','t.cod_tesis','=','dj.cod_tesis')
+            ->select('t.*', 'ac.nombres as nombre_asesor', 'ac.cod_docente', 'ac.direccion as direccion_asesor', 'gc.descripcion as grado_academico','dj.estado as estadoDesignacion')
             ->where('gi.id_grupo', $id_grupo)->get();
 
         $estudiantes_grupo = DB::table('estudiante_ct2022 as e')
@@ -269,6 +270,52 @@ class SustentacionController extends Controller
         return view('cursoTesis20221.asesor.evaluacion.detalleTesisAsignada', ['Tesis' => $Tesis, 'keywords' => $keywords, 'objetivos' => $objetivos, '$observaciones' => $observaciones, 'camposFull' => $camposFull, 'referencias' => $referencias, 'resultadosImg' => $resultadosImg, 'anexosImg' => $anexosImg, 'estudiantes_grupo' => $estudiantes_grupo]);
     }
 
+    //Proyecto de Tesis
+    public function lista_proyectos_aprobados(Request $request)
+    {
+
+        $proyectos_aprobados = DB::table('proyecto_tesis as pt')
+            ->join('detalle_grupo_investigacion as d_g','pt.id_grupo_inves', '=', 'd_g.id_grupo_inves')
+            ->join('estudiante_ct2022 as e', 'd_g.cod_matricula', '=', 'e.cod_matricula')
+            ->join('asesor_curso as a', 'pt.cod_docente', '=', 'a.cod_docente')
+            ->leftJoin('designacion_jurado_proyecto as dj','pt.cod_proyectotesis', 'dj.cod_proyectotesis')
+            ->select('pt.cod_proyectotesis', 'pt.titulo', 'e.nombres as nombresAutor', 'e.apellidos as apellidosAutor', 'a.cod_docente', 'a.nombres as nombresAsesor', 'a.apellidos as apellidosAsesor', 'dj.cod_jurado1', 'dj.cod_jurado2', 'dj.cod_jurado3', 'dj.cod_jurado4')
+            ->where('pt.estado', 3)->where('pt.condicion', "APROBADO")->get();
+
+        // Agrupar por cod_tesis
+
+        $proyectosAgrupados = $proyectos_aprobados->groupBy('cod_proyectotesis')->map(function ($grupo) {
+            // Combina múltiples autores en una sola tesis
+            $primerItem = $grupo->first();
+            $autor = [
+                'cod_proyectotesis' => $primerItem->cod_proyectotesis,
+                'titulo' => $primerItem->titulo,
+                'autores' => $grupo->map(function ($item) {
+                    return [
+                        'nombresAutor' => $item->nombresAutor,
+                        'apellidosAutor' => $item->apellidosAutor,
+                    ];
+                })->toArray(),
+                'cod_docente' => $primerItem->cod_docente,
+                'nombresAsesor' => $primerItem->nombresAsesor,
+                'apellidosAsesor' => $primerItem->apellidosAsesor,
+                'cod_jurado1' => $primerItem->cod_jurado1,
+                'cod_jurado2' => $primerItem->cod_jurado2,
+                'cod_jurado3' => $primerItem->cod_jurado3,
+                'cod_jurado4' => $primerItem->cod_jurado4,
+            ];
+            $asesores = DB::table('jurado as j')->leftJoin('asesor_curso as ac', 'j.cod_docente', '=', 'ac.cod_docente')->select('ac.nombres', 'ac.apellidos', 'j.cod_docente')
+                ->where('j.cod_docente', '!=', $primerItem->cod_docente)->get();
+            return [$autor, $asesores];
+        })->values();
+
+
+        return view('cursoTesis20221.director.evaluacion.asignacionJuradoProyecto', ['proyectosAgrupados' => $proyectosAgrupados]);
+    }
+
+
+
+
     public function guardarObservacionSustentacion(Request $request)
     {
         $idTesis = $request->textcod;
@@ -290,7 +337,7 @@ class SustentacionController extends Controller
             $existHisto->save();
         }
 
-        $existHisto = THistorialObservaciones::where('cod_Tesis', $Tesis->cod_tesis)->get();
+        $existHisto = THistorialObservaciones::where('cod_Tesis', $Tesis->cod_tesis)->where('sustentacion','=',1)->first();
 
 
         try {
@@ -411,11 +458,10 @@ class SustentacionController extends Controller
             // }
 
         } catch (\Throwable $th) {
-            dd($th);
-            return redirect()->route('asesor.revisar-tesis')->with('datos', 'oknot');
+            return redirect()->route('asesor.evaluacion.listaTesisAsignadas')->with('datos', 'oknot');
         }
 
-        return redirect()->route('asesor.ver-obs-estudiante-tesis', $existHisto[0]->cod_historial_observacion)->with('datos', 'ok');
+        return redirect()->route('asesor.evaluacion.listaTesisAsignadas', $existHisto[0]->cod_historial_observacion)->with('datos', 'ok');
     }
 
     public function lista_observaciones_evaluacion()

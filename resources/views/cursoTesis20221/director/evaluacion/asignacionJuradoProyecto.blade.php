@@ -77,7 +77,7 @@
                                     @php
                                         $cont = 0;
                                     @endphp
-                                    @foreach ($tesisAgrupadas as $ta)
+                                    @foreach ($proyectosAgrupados as $ta)
                                         <tr>
                                             <td>{{ $ta[0]['cod_tesis'] }}</td>
                                             <td>

@@ -53,7 +53,7 @@
                     <thead>
                         <tr>
                             <td>Numero de grupo</td>
-                            <td>Estudiante(s)</td>
+                            <td colspan="2" style="text-align: center;">Estudiante(s)</td>
                             {{-- <td>Acciones</td> --}}
                         </tr>
                     </thead>
@@ -64,11 +64,22 @@
                         @endphp
                         @foreach ($studentforGroups as $grupo)
                             <tr>
-                                <td>{{ $grupo[0]->num_grupo }}</td>
-                                <td>
-                                    @if (count($grupo) > 1)
+                                <td style="justify-content: center; align-content:center;">{{ $grupo[0]->num_grupo }}</td>
+                                <td colspan="2">
+                                    <table class="table table-borderless mb-0">
+                                        <tbody>
+                                            @foreach ($grupo as $g)
+                                            <tr>
+                                                <td>{{$g->cod_matricula}}</td>
+                                                <td>{{$g->apellidos.' '.$g->nombres}}</td>
+                                            </tr>
+                                            @endforeach
+
+                                        </tbody>
+                                    </table>
+                                    {{-- @if (count() > 1)
                                         {{ $grupo[0]->apellidos . ' ' . $grupo[0]->nombres . ' & ' . $grupo[1]->apellidos . ' ' . $grupo[1]->nombres }}@else{{ $grupo[0]->apellidos . ' ' . $grupo[0]->nombres }}
-                                    @endif
+                                    @endif --}}
                                 </td>
                                 {{-- <td>
                                 <button type="button" class="btn btn-warning"><i class='bx bxs-edit bx-xs'></i></button>

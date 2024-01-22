@@ -191,8 +191,8 @@ class AdminCursoController extends Controller
     public function agregarGeneralidades(){
         $escuela = DB::table('escuela')->select('escuela.*')->orderBy('nombre','asc')->get();
         $linea_investigacion = DB::table('tipoinvestigacion')->select('tipoinvestigacion.*')->orderBy('descripcion','asc')->get();
-        $fin_persigue = DB::table('fin_persigue')->select('fin_persigue.*')->orderBy('nombre','asc')->get();
-        $diseno_investigacion = DB::table('diseno_investigacion')->select('diseno_investigacion.*')->orderBy('nombre','asc')->get();
+        $fin_persigue = DB::table('fin_persigue')->select('fin_persigue.*')->orderBy('descripcion','asc')->get();
+        $diseno_investigacion = DB::table('diseno_investigacion')->select('diseno_investigacion.*')->orderBy('descripcion','asc')->get();
         return view('cursoTesis20221.director.actualizarGeneralidades',['escuela'=>$escuela,
                         'linea_investigacion'=>$linea_investigacion,'fin_persigue'=>$fin_persigue,'diseno_investigacion'=>$diseno_investigacion]);
     }

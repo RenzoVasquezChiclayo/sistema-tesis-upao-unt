@@ -185,6 +185,10 @@ Route::get('/ver-registrar-jurado',[SustentacionController::class,'verRegistrarJ
 Route::post('/registrar-jurado',[SustentacionController::class,'registrarJurado'])->name('director.registrarJurado')->middleware('auth');
 
 //Designacion de jurados --------------------------------------
+// 1.Proyecto de tesis
+Route::get('/lista-proyectos-aprobados',[SustentacionController::class,'lista_proyectos_aprobados'])->name('director.listaProyectosAprobados')->middleware('auth');
+
+// 2.Tesis
 Route::get('/lista-tesis-aprobadas',[SustentacionController::class,'lista_tesis_aprobadas'])->name('director.listaTesisAprobadas')->middleware('auth');
 Route::post('/save-asignacion-jurados',[SustentacionController::class,'save_asignacion_jurados'])->name('director.saveAsignacionJurados')->middleware('auth');
 Route::get('/ver-editar-asignacion-jurados',[SustentacionController::class,'verEditAsignacionJurados'])->name('director.verEditAsignacionJurados')->middleware('auth');

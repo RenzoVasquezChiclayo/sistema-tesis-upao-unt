@@ -262,18 +262,44 @@
             </div>
         </li>
         <li>
-            <a class="cstm-a" href="{{ route('director.asignarAsesorGrupos') }}">
-                <i class='bx bx-sm bx-check-square'></i>
-                <span class="links_name">Proyecto de Tesis</span>
+            <a class="cstm-a menu-a" class="cstm-a" data-bs-toggle="collapse" href="#collapseProyectoTesis" role="button"
+                aria-expanded="false" aria-controls="collapseProyectoTesis">
+                <div class="menu-into-a">
+                    <i class='bx bx-group'></i>
+                    <span class = "links_name">Proyecto de Tesis</span>
+                </div>
+                <i class='bx bx-xs bxs-chevron-down'></i>
             </a>
-            <span class="tooltip">Proyecto de Tesis</span>
+            <div class="cstm-collapse collapse" id="collapseProyectoTesis">
+                <a href="{{ route('director.asignarAsesorGrupos') }}">
+                    <span class="links_name">Asignar asesor</span>
+                </a>
+            </div>
+            <div class="cstm-collapse collapse" id="collapseProyectoTesis">
+                <a href="{{ route('director.listaProyectosAprobados') }}">
+                    <span class="links_name">Asignar jurado</span>
+                </a>
+            </div>
         </li>
         <li>
-            <a class="cstm-a" href="{{ route('director.asignarAsesorGruposTesis') }}">
-                <i class='bx bx-sm bx-check-square'></i>
-                <span class="links_name">Tesis</span>
+            <a class="cstm-a menu-a" class="cstm-a" data-bs-toggle="collapse" href="#collapseTesis" role="button"
+                aria-expanded="false" aria-controls="collapseTesis">
+                <div class="menu-into-a">
+                    <i class='bx bx-group'></i>
+                    <span class = "links_name">Tesis</span>
+                </div>
+                <i class='bx bx-xs bxs-chevron-down'></i>
             </a>
-            <span class="tooltip">Tesis</span>
+            <div class="cstm-collapse collapse" id="collapseTesis">
+                <a href="{{ route('director.asignarAsesorGruposTesis') }}">
+                    <span class="links_name">Asignar asesor</span>
+                </a>
+            </div>
+            <div class="cstm-collapse collapse" id="collapseTesis">
+                <a href="{{ route('director.listaTesisAprobadas') }}">
+                    <span class="links_name">Asignar jurado</span>
+                </a>
+            </div>
         </li>
 
         {{-- Nav para el Asesor del curso TESIS I --}}
@@ -307,14 +333,20 @@
             <span class="tooltip">Estudiantes</span>
         </li>
         @if ($exists_jurado == true)
-            <br>
-            <p style="color: white">APARTADO DE JURADO</p>
             <li>
-                <a class="cstm-a" href="{{ route('asesor.evaluacion.listaTesisAsignadas') }}">
-                    <i class='bx bxs-graduation'></i>
-                    <span class="links_name">Lista Tesis(Evaluacion)</span>
+                <a class="cstm-a menu-a" class="cstm-a" data-bs-toggle="collapse" href="#collapseJurado" role="button"
+                    aria-expanded="false" aria-controls="collapseJurado">
+                    <div class="menu-into-a">
+                        <i class='bx bx-group'></i>
+                        <span class = "links_name">Jurado</span>
+                    </div>
+                    <i class='bx bx-xs bxs-chevron-down'></i>
                 </a>
-                <span class="tooltip">Lista Tesis(Evaluacion)</span>
+                <div class="cstm-collapse collapse" id="collapseJurado">
+                    <a href="{{ route('asesor.evaluacion.listaTesisAsignadas') }}">
+                        <span class="links_name">Lista Tesis(Evaluacion)</span>
+                    </a>
+                </div>
             </li>
         @endif
         {{-- Nav para la Secretaria, agregara estudiantes --}}
