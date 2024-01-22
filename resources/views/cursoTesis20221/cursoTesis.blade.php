@@ -166,10 +166,6 @@
                     </div>
                 </div>
             @endif
-            <div class="card-header">
-                Registro de Proyectos
-            </div>
-            <div class="card-body">
                 <div class="row">
                     <form id="formTesis" name="formTesis" action="{{ route('curso.saveTesis') }}" method="POST"
                         enctype="multipart/form-data">
@@ -2381,73 +2377,61 @@
         </script>
     @endif
     <script type="text/javascript">
+        let cronogramas_py_bd = @json($cronogramas_py);
+        let lastMonth = 0;
         var existMes = false;
         if (document.getElementById('txtmeses_ejecucion').value != "") {
             setMeses();
 
         }
-        const valueMesPart = document.getElementById('valuesMesesPart').value;
 
         /*Verificamos que los meses contiene valor*/
-
-        if (valueMesPart != "") {
-            /*Cada valor de mes en la actividad del cronograma la hemos separado por comas*/
-            let eachActivity = valueMesPart.split(",");
-            for (let i = 0; i < eachActivity.length; i++) {
-
-                /*Luego separamos los valores obtenidos antes mediante un guion*/
-                let mesActivity = eachActivity[i].split("-");
-                let activity = i + 1;
-                if (mesActivity[0] != mesActivity[1]) {
-                    for (let j = parseInt(mesActivity[0]); j <= parseInt(mesActivity[1]); j++) {
-
-                        setColorInit(activity + 'Tr' + j);
+        if(cronogramas_py_bd.length > 0){
+            cronogramas_py_bd.forEach(function(item){
+                const separate = item.descripcion.split(",");
+                separate.forEach(function(sp){
+                    const rango = sp.split("-");
+                    if(rango.length > 1){
+                        for(let i = rango[0]; i<=rango[1];i++){
+                            setColorInit(item.cod_cronograma+'Tr'+i);
+                        }
+                        return;
                     }
-                } else {
-                    setColorInit(activity + 'Tr' + mesActivity[0]);
-                }
-            }
+                    setColorInit(item.cod_cronograma+'Tr'+rango[0]);
+                })
+            });
         }
+
         /*Funcion para agregar las celdas referentes de los meses de ejecucion*/
         function setMeses() {
+            const activities = parseInt(document.getElementById("nActivities").value);
             if (existMes == false) {
                 existMes = true;
                 let meses = document.getElementById("txtmeses_ejecucion").value;
                 lastMonth = meses;
                 for (i = 1; i <= meses; i++) {
-                    document.getElementById("headers").innerHTML += '<th id="Mes' + i + '" scope="col">Mes ' + i + '</th>'
-                    document.getElementById("1Tr").innerHTML += '<input type="hidden" id="n1Tr' + i + '" name="n1Tr' + i +
-                        '" value="0"><td id="1Tr' + i +
-                        '" onclick="@if (sizeof($tesis) > 0 && $tesis[0]->estado != 1) setColorTable(this); @endif"></td>'
-                    document.getElementById("2Tr").innerHTML += '<input type="hidden" id="n2Tr' + i + '" name="n2Tr' + i +
-                        '" value="0"><td id="2Tr' + i +
-                        '" onclick="@if (sizeof($tesis) > 0 && $tesis[0]->estado != 1) setColorTable(this); @endif"></td>'
-                    document.getElementById("3Tr").innerHTML += '<input type="hidden" id="n3Tr' + i + '" name="n3Tr' + i +
-                        '" value="0"><td id="3Tr' + i +
-                        '" onclick="@if (sizeof($tesis) > 0 && $tesis[0]->estado != 1) setColorTable(this); @endif"></td>'
-                    document.getElementById("4Tr").innerHTML += '<input type="hidden" id="n4Tr' + i + '" name="n4Tr' + i +
-                        '" value="0"><td id="4Tr' + i +
-                        '" onclick="@if (sizeof($tesis) > 0 && $tesis[0]->estado != 1) setColorTable(this); @endif"></td>'
+                    document.getElementById("headers").innerHTML += '<th id="Mes' + i + '" scope="col">Mes ' + i + '</th>';
+                    for (let j = 1; j <= activities; j++) {
+                        document.getElementById(j + "Tr").innerHTML += '<input type="hidden" id="n' + j + 'Tr' + i +
+                            '" name="n' + j + 'Tr' + i +
+                            '" value="0"><td id="' + j + 'Tr' + i +
+                            '" onclick="@if (sizeof($tesis) > 0 && $tesis[0]->estado != 1) setColorTable(this); @endif"></td>';
+                    }
                 }
             } else {
                 for (i = 1; i <= lastMonth; i++) {
-                    document.getElementById('Mes' + i).remove();
-                    document.getElementById('n1Tr' + i).remove();
-                    document.getElementById('n2Tr' + i).remove();
-                    document.getElementById('n3Tr' + i).remove();
-                    document.getElementById('n4Tr' + i).remove();
 
-                    document.getElementById('1Tr' + i).remove();
-                    document.getElementById('2Tr' + i).remove();
-                    document.getElementById('3Tr' + i).remove();
-                    document.getElementById('4Tr' + i).remove();
+                    document.getElementById('Mes' + i).remove();
+                    for (let j = 1; j <= activities; j++) {
+                        document.getElementById('n' + j + 'Tr' + i).remove();
+                        document.getElementById( j + 'Tr' + i).remove();
+                    }
                 }
 
                 existMes = false;
                 setMeses();
             }
         }
-
         // function addFilaMatriz() {
         //     var campo = ['var','dc','do','dim','ind','esc'];
         //     for (let i = 0; i < campo.length; i++) {

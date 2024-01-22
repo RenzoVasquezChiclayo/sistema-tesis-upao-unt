@@ -54,7 +54,7 @@
                             <thead>
                                 <tr>
                                     <td>Grupo</td>
-                                    <td>Estudiantes</td>
+                                    <td colspan="2" style="text-align: center;">Estudiantes</td>
                                     <td>Revision</td>
                                     <td>Descargar</td>
                                 </tr>
@@ -69,12 +69,19 @@
                                     @endif
                                     >
                                         <td>{{$estu[0]->num_grupo}}</td>
-                                        @if (count($estu)>1)
-                                            <td>{{$estu[0]->nombres.' '.$estu[0]->apellidos.' & '.$estu[1]->nombres.' '.$estu[1]->apellidos}}</td>
-                                        @else
-                                            <td>{{$estu[0]->nombres.' '.$estu[0]->apellidos}}</td>
-                                        @endif
+                                        <td colspan="2">
+                                            <table class="table table-borderless mb-0">
+                                                <tbody>
+                                                    @foreach ($estu as $e)
+                                                    <tr>
+                                                        <td>{{$e->cod_matricula}}</td>
+                                                        <td>{{$e->apellidos.' '.$e->nombres}}</td>
+                                                    </tr>
+                                                    @endforeach
 
+                                                </tbody>
+                                            </table>
+                                        </td>
                                         <td>
                                             @if($estu[0]->estado != 0)
                                                 <form id="form-revisaTema" action="{{route('asesor.revisarTemas')}}" method="POST">
