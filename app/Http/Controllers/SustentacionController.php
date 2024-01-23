@@ -270,49 +270,6 @@ class SustentacionController extends Controller
         return view('cursoTesis20221.asesor.evaluacion.detalleTesisAsignada', ['Tesis' => $Tesis, 'keywords' => $keywords, 'objetivos' => $objetivos, '$observaciones' => $observaciones, 'camposFull' => $camposFull, 'referencias' => $referencias, 'resultadosImg' => $resultadosImg, 'anexosImg' => $anexosImg, 'estudiantes_grupo' => $estudiantes_grupo]);
     }
 
-    //Proyecto de Tesis
-    public function lista_proyectos_aprobados(Request $request)
-    {
-
-        $proyectos_aprobados = DB::table('proyecto_tesis as pt')
-            ->join('detalle_grupo_investigacion as d_g','pt.id_grupo_inves', '=', 'd_g.id_grupo_inves')
-            ->join('estudiante_ct2022 as e', 'd_g.cod_matricula', '=', 'e.cod_matricula')
-            ->join('asesor_curso as a', 'pt.cod_docente', '=', 'a.cod_docente')
-            ->leftJoin('designacion_jurado_proyecto as dj','pt.cod_proyectotesis', 'dj.cod_proyectotesis')
-            ->select('pt.cod_proyectotesis', 'pt.titulo', 'e.nombres as nombresAutor', 'e.apellidos as apellidosAutor', 'a.cod_docente', 'a.nombres as nombresAsesor', 'a.apellidos as apellidosAsesor', 'dj.cod_jurado1', 'dj.cod_jurado2', 'dj.cod_jurado3', 'dj.cod_jurado4')
-            ->where('pt.estado', 3)->where('pt.condicion', "APROBADO")->get();
-
-        // Agrupar por cod_tesis
-
-        $proyectosAgrupados = $proyectos_aprobados->groupBy('cod_proyectotesis')->map(function ($grupo) {
-            // Combina múltiples autores en una sola tesis
-            $primerItem = $grupo->first();
-            $autor = [
-                'cod_proyectotesis' => $primerItem->cod_proyectotesis,
-                'titulo' => $primerItem->titulo,
-                'autores' => $grupo->map(function ($item) {
-                    return [
-                        'nombresAutor' => $item->nombresAutor,
-                        'apellidosAutor' => $item->apellidosAutor,
-                    ];
-                })->toArray(),
-                'cod_docente' => $primerItem->cod_docente,
-                'nombresAsesor' => $primerItem->nombresAsesor,
-                'apellidosAsesor' => $primerItem->apellidosAsesor,
-                'cod_jurado1' => $primerItem->cod_jurado1,
-                'cod_jurado2' => $primerItem->cod_jurado2,
-                'cod_jurado3' => $primerItem->cod_jurado3,
-                'cod_jurado4' => $primerItem->cod_jurado4,
-            ];
-            $asesores = DB::table('jurado as j')->leftJoin('asesor_curso as ac', 'j.cod_docente', '=', 'ac.cod_docente')->select('ac.nombres', 'ac.apellidos', 'j.cod_docente')
-                ->where('j.cod_docente', '!=', $primerItem->cod_docente)->get();
-            return [$autor, $asesores];
-        })->values();
-
-
-        return view('cursoTesis20221.director.evaluacion.asignacionJuradoProyecto', ['proyectosAgrupados' => $proyectosAgrupados]);
-    }
-
 
 
 

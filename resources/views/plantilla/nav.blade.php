@@ -80,32 +80,58 @@
         {{-- Nav para el Alumnos del curso TESIS I --}}
     @elseif (auth()->user()->rol == 'CTesis2022-1')
         <li>
-            <a class="cstm-a" href="{{ route('curso.tesis20221') }}">
-                <i class='bx bx-sm bx-book-bookmark'></i>
-                <span class="links_name">Proyecto Tesis</span>
+            <a class="cstm-a menu-a" data-bs-toggle="collapse" href="#collapseProyectoTesis" role="button"
+                aria-expanded="false" aria-controls="collapseProyectoTesis">
+                <div class="menu-into-a">
+                    <i class='bx bx-group'></i>
+                    <span class = "links_name">Proyecto de tesis</span>
+                </div>
+                <i class='bx bx-xs bxs-chevron-down'></i>
             </a>
-            <span class="tooltip">Proyecto Tesis</span>
+            <div class="cstm-collapse collapse" id="collapseProyectoTesis">
+                <a href="{{ route('curso.tesis20221') }}">
+                    <span class="links_name">Documento</span>
+                </a>
+                <a href="{{ route('curso.estado-proyecto') }}">
+                    <span class="links_name">Estado</span>
+                </a>
+            </div>
         </li>
         <li>
-            <a class="cstm-a" href="{{ route('curso.estado-proyecto') }}">
-                <i class='bx bx-sm bx-battery'></i>
-                <span class="links_name">Estado del Proyecto</span>
+            <a class="cstm-a menu-a" data-bs-toggle="collapse" href="#collapseProyectoTesisE" role="button"
+                aria-expanded="false" aria-controls="collapseProyectoTesisE">
+                <div class="menu-into-a">
+                    <i class='bx bx-group'></i>
+                    <span class = "links_name">Evaluación Proyecto</span>
+                </div>
+                <i class='bx bx-xs bxs-chevron-down'></i>
             </a>
-            <span class="tooltip">Estado del Proyecto</span>
+            <div class="cstm-collapse collapse" id="collapseProyectoTesisE">
+                <a href="{{ route('estudiante.evaluacion.proyecto-tesis') }}">
+                    <span class="links_name">Documento</span>
+                </a>
+                <a href="{{ route('estudiante.evaluacion.estado-proyecto-tesis') }}">
+                    <span class="links_name">Estado</span>
+                </a>
+            </div>
         </li>
         <li>
-            <a class="cstm-a" href="{{ route('curso.registro-tesis') }}">
-                <i class='bx bxs-graduation'></i>
-                <span class="links_name">Tesis</span>
+            <a class="cstm-a menu-a" data-bs-toggle="collapse" href="#collapseTesisA" role="button"
+                aria-expanded="false" aria-controls="collapseTesisA">
+                <div class="menu-into-a">
+                    <i class='bx bx-group'></i>
+                    <span class = "links_name">Tesis</span>
+                </div>
+                <i class='bx bx-xs bxs-chevron-down'></i>
             </a>
-            <span class="tooltip">Tesis</span>
-        </li>
-        <li>
-            <a class="cstm-a" href="{{ route('curso.estado-tesis') }}">
-                <i class='bx bx-sm bx-battery'></i>
-                <span class="links_name">Estado de la Tesis</span>
-            </a>
-            <span class="tooltip">Estado de la Tesis</span>
+            <div class="cstm-collapse collapse" id="collapseTesisA">
+                <a href="{{ route('curso.registro-tesis') }}">
+                    <span class="links_name">Documento</span>
+                </a>
+                <a href="{{ route('curso.estado-tesis') }}">
+                    <span class="links_name">Estado</span>
+                </a>
+            </div>
         </li>
         <li>
             <a class="cstm-a menu-a" data-bs-toggle="collapse" href="#collapseSolicitud" role="button"
@@ -262,8 +288,8 @@
             </div>
         </li>
         <li>
-            <a class="cstm-a menu-a" class="cstm-a" data-bs-toggle="collapse" href="#collapseProyectoTesis" role="button"
-                aria-expanded="false" aria-controls="collapseProyectoTesis">
+            <a class="cstm-a menu-a" class="cstm-a" data-bs-toggle="collapse" href="#collapseProyectoTesis"
+                role="button" aria-expanded="false" aria-controls="collapseProyectoTesis">
                 <div class="menu-into-a">
                     <i class='bx bx-group'></i>
                     <span class = "links_name">Proyecto de Tesis</span>

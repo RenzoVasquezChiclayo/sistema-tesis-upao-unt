@@ -66,8 +66,8 @@
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="form-check">
-                                                        <input class="form-check-input prueba" type="checkbox" id="chkCorregir1"
-                                                            onchange="chkCorregir(this);">
+                                                        <input class="form-check-input prueba" type="checkbox"
+                                                            id="chkCorregir1" onchange="chkCorregir(this);">
                                                         <label class="form-check-label" for="flexCheckDefault">
                                                             Corregir
                                                         </label>
@@ -94,8 +94,8 @@
                             <div class="row" style="margin-bottom:8px;">
                                 <div class="row">
                                     <div class="col-5 col-md-3">
-                                        <input class="form-control" name="txtCodMatricula" id="txtCodMatricula" type="search"
-                                            value="{{ $est->cod_matricula }}" readonly>
+                                        <input class="form-control" name="txtCodMatricula" id="txtCodMatricula"
+                                            type="search" value="{{ $est->cod_matricula }}" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -125,7 +125,8 @@
                             <div class="item-card">
                                 <label for="txtNombreAsesor" class="form-label">Apellidos y Nombres</label>
                                 <input class="form-control" name="txtNombreAsesor" id="txtNombreAsesor" type="text"
-                                    value="{{ $cursoTesis[0]->nombre_asesor." ".$cursoTesis[0]->apellidos_asesor }}" readonly>
+                                    value="{{ $cursoTesis[0]->nombre_asesor . ' ' . $cursoTesis[0]->apellidos_asesor }}"
+                                    readonly>
                             </div>
                             <div class="item-card">
                                 <label for="cboGrAcademicoAsesor" class="form-label">Grado Academico</label>
@@ -138,9 +139,10 @@
                                     value="{{ $cursoTesis[0]->DescCat }}" readonly>
                             </div>
                             <div class="item-card">
-                                <label for="txtDireccionAsesor" class="form-label">Dirección laboral y/o domiciliaria</label>
-                                <input class="form-control" name="txtDireccionAsesor" id="txtDireccionAsesor" type="text"
-                                    value="{{ $cursoTesis[0]->direccion }}" readonly>
+                                <label for="txtDireccionAsesor" class="form-label">Dirección laboral y/o
+                                    domiciliaria</label>
+                                <input class="form-control" name="txtDireccionAsesor" id="txtDireccionAsesor"
+                                    type="text" value="{{ $cursoTesis[0]->direccion }}" readonly>
                             </div>
                         </div>
                     </div>
@@ -157,8 +159,8 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="form-check">
-                                                    <input class="form-check-input prueba" type="checkbox" id="chkCorregir23"
-                                                        onchange="chkCorregir(this);">
+                                                    <input class="form-check-input prueba" type="checkbox"
+                                                        id="chkCorregir23" onchange="chkCorregir(this);">
                                                     <label class="form-check-label" for="flexCheckDefault">
                                                         Corregir
                                                     </label>
@@ -178,15 +180,20 @@
                                 <input type="hidden" name="txtTipoInvestigacion">
                             </div>
                             <div class="item-card col-4">
-                                <label for="cboFinInvestigacion" class="form-label">De acuerdo al fin que se persigue</label>
+                                <label for="cboFinInvestigacion" class="form-label">De acuerdo al fin que se
+                                    persigue</label>
                                 <input class="form-control" type="text" name="txtFinInvestigacion"
-                                    id="txtFinInvestigacion" value="@if ($fin_persigue->count() > 0) {{ $fin_persigue[0]->descripcion }} @endif" readonly>
+                                    id="txtFinInvestigacion"
+                                    value="@if ($fin_persigue->count() > 0) {{ $fin_persigue[0]->descripcion }} @endif"
+                                    readonly>
                             </div>
                             <div class="item-card col-4">
                                 <label for="cboDesignInvestigacion" class="form-label">De acuerdo al diseño de
                                     investigación</label>
                                 <input class="form-control" type="text" name="txtDesignInvestigacion"
-                                    id="txtDesignInvestigacion" value="@if ($diseno_investigacion->count() > 0) {{ $diseno_investigacion[0]->descripcion }} @endif" readonly>
+                                    id="txtDesignInvestigacion"
+                                    value="@if ($diseno_investigacion->count() > 0) {{ $diseno_investigacion[0]->descripcion }} @endif"
+                                    readonly>
                             </div>
                             <div class="col-12">
                                 <textarea class="form-control" name="tachkCorregir23" id="tachkCorregir23" cols="30" rows="4" hidden
@@ -230,8 +237,8 @@
 
                                     <div class="item-card col-6">
                                         <label for="txtInstitucion" class="form-label">Institucion</label>
-                                        <input class="form-control" name="txtInstitucion" id="txtInstitucion" type="text"
-                                            value="{{ $cursoTesis[0]->institucion }}" readonly>
+                                        <input class="form-control" name="txtInstitucion" id="txtInstitucion"
+                                            type="text" value="{{ $cursoTesis[0]->institucion }}" readonly>
                                     </div>
                                     <textarea class="form-control" name="tachkCorregir2" id="tachkCorregir2" cols="30" rows="4" hidden></textarea>
 
@@ -248,8 +255,9 @@
                                         <label for="txtMesesEjecucion" class="form-label">Numero de meses</label>
                                         <div class="row">
                                             <div class="col-12">
-                                                <input class="form-control" name="txtMesesEjecucion" id="txtMesesEjecucion"
-                                                    type="text" value="{{ $cursoTesis[0]->meses_ejecucion }}" readonly>
+                                                <input class="form-control" name="txtMesesEjecucion"
+                                                    id="txtMesesEjecucion" type="text"
+                                                    value="{{ $cursoTesis[0]->meses_ejecucion }}" readonly>
 
                                             </div>
 
@@ -364,54 +372,54 @@
                         <h5>Presupuesto</h5>
                         {{-- Tabla resumen del presupuesto --}}
 
-                            <div class="col-8 col-md-5 col-xl-11">
-                                <table class="table">
-                                    <thead class="thead-dark">
+                        <div class="col-8 col-md-5 col-xl-11">
+                            <table class="table">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Codigo</th>
+                                        <th>Denominacion</th>
+                                        <th>Precio Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($presupuesto as $presu)
                                         <tr>
-                                            <th>Codigo</th>
-                                            <th>Denominacion</th>
-                                            <th>Precio Total</th>
+                                            <td>{{ $presu->codeUniversal }}</td>
+                                            <td>{{ $presu->denominacion }}</td>
+                                            <td>S/. {{ $presu->precio }}.00</td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($presupuesto as $presu)
-                                            <tr>
-                                                <td>{{ $presu->codeUniversal }}</td>
-                                                <td>{{ $presu->denominacion }}</td>
-                                                <td>S/. {{ $presu->precio }}.00</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th colspan="2" style="text-align: right;">
-                                                <p><strong>Total:</strong></p>
-                                            </th>
-                                            <th>
-                                                <p><strong>S/. @if ($presupuesto->count() > 0)
-                                                            {{ $presupuesto[0]->precio + $presupuesto[1]->precio + $presupuesto[2]->precio + $presupuesto[3]->precio + $presupuesto[4]->precio }}
-                                                        @endif
-                                                    </strong></p>
-                                            </th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                            @if ($cursoTesis[0]->estado == 1)
-                                <div class="col-1" align="center">
-                                    <div class="row">
-                                        <div class="col-10">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="chkCorregir25"
-                                                    onchange="chkCorregir(this);">
-                                                <label class="form-check-label" for="flexCheckDefault">
-                                                    Corregir
-                                                </label>
-                                            </div>
+                                    @endforeach
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="2" style="text-align: right;">
+                                            <p><strong>Total:</strong></p>
+                                        </th>
+                                        <th>
+                                            <p><strong>S/. @if ($presupuesto->count() > 0)
+                                                        {{ $presupuesto[0]->precio + $presupuesto[1]->precio + $presupuesto[2]->precio + $presupuesto[3]->precio + $presupuesto[4]->precio }}
+                                                    @endif
+                                                </strong></p>
+                                        </th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        @if ($cursoTesis[0]->estado == 1)
+                            <div class="col-1" align="center">
+                                <div class="row">
+                                    <div class="col-10">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="chkCorregir25"
+                                                onchange="chkCorregir(this);">
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                Corregir
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
-                            @endif
+                            </div>
+                        @endif
 
                         <div class="row" style="margin-bottom:15px;">
                             <div class="col-12">
@@ -425,8 +433,8 @@
                         <h5>Financiamiento </h5>
                         <div class="row" style="margin-bottom:8px">
                             <div class="col-8 col-md-5">
-                                <input class="form-control" type="text" name="txtFinanciamiento" id="txtFinanciamiento"
-                                    value="{{ $cursoTesis[0]->financiamiento }}" readonly>
+                                <input class="form-control" type="text" name="txtFinanciamiento"
+                                    id="txtFinanciamiento" value="{{ $cursoTesis[0]->financiamiento }}" readonly>
                             </div>
                         </div>
                     </div>
@@ -951,43 +959,43 @@
                                                     <td>
                                                         <textarea class="form-control" name="i_varI" rows="3" cols="8" readonly>
     @if ($matriz[0]->variable_I != null)
-    {{ $matriz[0]->variable_I }}
-    @endif
+{{ $matriz[0]->variable_I }}
+@endif
     </textarea>
                                                     </td>
                                                     <td>
                                                         <textarea class="form-control" name="i_dc" rows="3" cols="8" readonly>
     @if ($matriz[0]->def_conceptual_I != null)
-    {{ $matriz[0]->def_conceptual_I }}
-    @endif
+{{ $matriz[0]->def_conceptual_I }}
+@endif
     </textarea>
                                                     </td>
                                                     <td>
                                                         <textarea class="form-control" name="i_do" rows="3" cols="8" readonly>
     @if ($matriz[0]->def_operacional_I != null)
-    {{ $matriz[0]->def_operacional_I }}
-    @endif
+{{ $matriz[0]->def_operacional_I }}
+@endif
     </textarea>
                                                     </td>
                                                     <td>
                                                         <textarea class="form-control" name="i_dim" rows="3" cols="8" readonly>
     @if ($matriz[0]->dimensiones_I != null)
-    {{ $matriz[0]->dimensiones_I }}
-    @endif
+{{ $matriz[0]->dimensiones_I }}
+@endif
     </textarea>
                                                     </td>
                                                     <td>
                                                         <textarea class="form-control" name="i_ind" rows="3" cols="8" readonly>
     @if ($matriz[0]->indicadores_I != null)
-    {{ $matriz[0]->indicadores_I }}
-    @endif
+{{ $matriz[0]->indicadores_I }}
+@endif
     </textarea>
                                                     </td>
                                                     <td>
                                                         <textarea class="form-control" name="i_esc" rows="3" cols="8" readonly>
     @if ($matriz[0]->escala_I != null)
-    {{ $matriz[0]->escala_I }}
-    @endif
+{{ $matriz[0]->escala_I }}
+@endif
     </textarea>
                                                     </td>
                                                 </tr>
@@ -996,49 +1004,50 @@
                                                     <td>
                                                         <textarea class="form-control" name="d_varD" rows="3" cols="8" readonly>
     @if ($matriz[0]->variable_D != null)
-    {{ $matriz[0]->variable_D }}
-    @endif
+{{ $matriz[0]->variable_D }}
+@endif
     </textarea>
                                                     </td>
                                                     <td>
                                                         <textarea class="form-control" name="d_dc" rows="3" cols="8" readonly>
     @if ($matriz[0]->def_conceptual_D != null)
-    {{ $matriz[0]->def_conceptual_D }}
-    @endif
+{{ $matriz[0]->def_conceptual_D }}
+@endif
     </textarea>
                                                     </td>
                                                     <td>
                                                         <textarea class="form-control" name="d_do" rows="3" cols="8" readonly>
     @if ($matriz[0]->def_operacional_D != null)
-    {{ $matriz[0]->def_operacional_D }}
-    @endif
+{{ $matriz[0]->def_operacional_D }}
+@endif
     </textarea>
                                                     </td>
                                                     <td>
                                                         <textarea class="form-control" name="d_dim" rows="3" cols="8" readonly>
     @if ($matriz[0]->dimensiones_D != null)
-    {{ $matriz[0]->dimensiones_D }}
-    @endif
+{{ $matriz[0]->dimensiones_D }}
+@endif
     </textarea>
                                                     </td>
                                                     <td>
                                                         <textarea class="form-control" name="d_ind" rows="3" cols="8" readonly>
     @if ($matriz[0]->indicadores_D != null)
-    {{ $matriz[0]->indicadores_D }}
-    @endif
+{{ $matriz[0]->indicadores_D }}
+@endif
     </textarea>
                                                     </td>
                                                     <td>
                                                         <textarea class="form-control" name="d_esc" rows="3" cols="8" readonly>
     @if ($matriz[0]->escala_D != null)
-    {{ $matriz[0]->escala_D }}
-    @endif
+{{ $matriz[0]->escala_D }}
+@endif
     </textarea>
                                                     </td>
                                                 </tr>
                                             @else
                                                 <tr>
-                                                    <td colspan="6"><em class="class="fst-italic"">No existen datos</em>
+                                                    <td colspan="6"><em class="class="fst-italic"">No existen
+                                                            datos</em>
                                                     </td>
                                                 </tr>
                                             @endif
@@ -1046,21 +1055,21 @@
                                     </table>
                                 </div>
                                 @if ($cursoTesis[0]->estado == 1)
-                                <div class="col-2" align="center">
-                                    <div class="row">
-                                        <div class="col-10">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="chkCorregir24"
-                                                    onchange="chkCorregir(this);">
-                                                <label class="form-check-label" for="flexCheckDefault">
-                                                    Corregir
-                                                </label>
+                                    <div class="col-2" align="center">
+                                        <div class="row">
+                                            <div class="col-10">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="chkCorregir24"
+                                                        onchange="chkCorregir(this);">
+                                                    <label class="form-check-label" for="flexCheckDefault">
+                                                        Corregir
+                                                    </label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            @endif
-                            <textarea class="form-control" name="tachkCorregir24" id="tachkCorregir24" cols="30" rows="4" hidden></textarea>
+                                @endif
+                                <textarea class="form-control" name="tachkCorregir24" id="tachkCorregir24" cols="30" rows="4" hidden></textarea>
                             </div>
 
                         </div>
@@ -1131,10 +1140,10 @@
 
                                     <div class="d-grid gap-2 d-md-block">
                                         @if ($cursoTesis[0]->estado == 1)
-                                            <input class="btn btn-secondary" type="button" id="btnSinObservar" value="Sin observaciones"
-                                                onclick="saveWithoutErrors();">
-                                            <input class="btn btn-primary" type="button" id="btnConObservacion" value="Guardar Observaciones"
-                                                onclick="uploadProyecto();">
+                                            <input class="btn btn-secondary" type="button" id="btnSinObservar"
+                                                value="Sin observaciones" onclick="saveWithoutErrors();">
+                                            <input class="btn btn-primary" type="button" id="btnConObservacion"
+                                                value="Guardar Observaciones" onclick="uploadProyecto();">
                                         @endif
                                         {{-- @if ($cursoTesis[0]->estado == 2)
                                             <input class="btn btn-warning" type="button" value="Editar campos"
@@ -1165,7 +1174,7 @@
 @endsection
 @section('js')
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    @if (session('datos')=='okNotAprobado')
+    @if (session('datos') == 'okNotAprobado')
         <script>
             Swal.fire({
                 position: 'center',
@@ -1175,7 +1184,7 @@
                 timer: 2500
             })
         </script>
-    @elseif (session('datos')=='okNotDesAprobado')
+    @elseif (session('datos') == 'okNotDesAprobado')
         <script>
             Swal.fire({
                 position: 'center',
@@ -1196,36 +1205,30 @@
 
             /*Valores de los meses de ejecucion y a la vez recibimos los valores para la tabla*/
             const valueMes = document.getElementById('txtMesesEjecucion').value;
-            const valueMesPart = document.getElementById('valuesMesesPart').value;
+            /*const valueMesPart = document.getElementById('valuesMesesPart').value;*/
 
             /*Verificamos que los meses contiene valor*/
             if (valueMes != "" || valueMes != 0) {
                 setMeses();
             }
 
-            if (valueMesPart != "") {
-                /*Cada valor de mes en la actividad del cronograma la hemos separado por comas*/
-                let eachActivity = valueMesPart.split(",");
-                for (let i = 0; i < eachActivity.length; i++) {
-                    /*Luego separamos los valores obtenidos antes mediante un guion*/
-                    let mesActivity = eachActivity[i].split("-");
-
-                    let extrasumador = 0;
-                    for (let j = 0; j < mesActivity.length; j++) {
-                        let activity = i + 1;
-                        /*Esta condicion aplica cuando en el cronograma una actividad solo ocupó un mes*/
-                        if (mesActivity[0] == mesActivity[1]) {
-                            extrasumador += 1;
+            let cronogramas_py_bd = @json($cronogramas_py);
+            if (cronogramas_py_bd.length > 0) {
+                cronogramas_py_bd.forEach(function(item) {
+                    const separate = item.descripcion.split(",");
+                    separate.forEach(function(sp) {
+                        const rango = sp.split("-");
+                        if (rango.length > 1) {
+                            for (let i = rango[0]; i <= rango[1]; i++) {
+                                setColorInit(item.cod_cronograma + 'Tr' + i);
+                            }
+                            return;
                         }
-                        /*El extrasumador nos ayuda a que solo se repita una vez*/
-                        if (extrasumador != 1) {
-                            setColorInit(activity + 'Tr' + mesActivity[j]);
-                            extrasumador = 0;
-                        }
-
-                    }
-                }
+                        setColorInit(item.cod_cronograma + 'Tr' + rango[0]);
+                    });
+                });
             }
+
 
         };
 
@@ -1335,7 +1338,7 @@
             var camposActivos = document.getElementById('camposActivos').value;
             var validacionTesis = document.getElementById('validacionTesis').value;
 
-            if(isFill){
+            if (isFill) {
                 Swal.fire({
                     icon: 'info',
                     title: 'Aviso!',
@@ -1350,16 +1353,16 @@
 
                     document.getElementById('grupoAproDesa').hidden = false;
                     document.getElementById('grupoObservaciones').hidden = true;
-                }else{
+                } else {
                     Swal.fire({
-                    title: 'Estas seguro(a)?',
-                    text: "No se guardaran observaciones!",
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Si, continuar!',
-                    cancelButtonText: 'Cancelar',
+                        title: 'Estas seguro(a)?',
+                        text: "No se guardaran observaciones!",
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Si, continuar!',
+                        cancelButtonText: 'Cancelar',
                     }).then((result) => {
                         if (result.isConfirmed) {
                             document.formProyecto.action = "{{ route('asesor.guardarSinObs') }}";
@@ -1369,16 +1372,16 @@
                     })
                 }
 
-            }else{
+            } else {
                 Swal.fire({
-                title: 'Estas seguro(a)?',
-                text: "No se guardaran observaciones!",
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Si, continuar!',
-                cancelButtonText: 'Cancelar',
+                    title: 'Estas seguro(a)?',
+                    text: "No se guardaran observaciones!",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si, continuar!',
+                    cancelButtonText: 'Cancelar',
                 }).then((result) => {
                     if (result.isConfirmed) {
                         document.formProyecto.action = "{{ route('asesor.asignarTemas') }}";
@@ -1400,7 +1403,7 @@
 
                 document.getElementById('grupoAproDesa').hidden = false;
                 document.getElementById('grupoObservaciones').hidden = true;
-            }else if(validacionTesis == 'false' && validacionCampos == 'true'){
+            } else if (validacionTesis == 'false' && validacionCampos == 'true') {
                 Swal.fire({
                     title: 'Estas seguro(a)?',
                     text: "Existen campos vacios que el estudiante no registro, debe observarlos para que el estudiante los complete.",

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ObservacionSustentacionProyecto extends Model
 {
     use HasFactory;
-    public $table = 'observacion_sustentacion_proyecto';
+    public $table = 'observacion_sustentacionproy';
 
     protected $primaryKey = 'cod_observacion_sustentacion';
     protected $fillable = [

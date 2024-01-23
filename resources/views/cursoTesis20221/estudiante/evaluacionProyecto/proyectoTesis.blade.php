@@ -113,10 +113,28 @@
                     </div>
 
                     <div class="col">
-                        <p>Esta vista estara habilitada cuando se te asigne algun grupo de investigacion para el curso.
+                        <p>Esta vista estará habilitada cuando se te asigne algun grupo de investigacion para el curso.
                             Si existe algun inconveniente y/o queja envia un correo a <a href="#">
                                 <>example@unitru.edu.pe</u>
-                            </a> para mas informacion.</p>
+                            </a> para mas información.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @elseif (sizeof($enabledView) <= 0)
+        <div class="row d-flex" style="align-items:center; justify-content: center;">
+            <div class="col-8 border-box mt-3">
+                <div class="row">
+                    <div class="col">
+                        <h4 style="color:red;">Aviso!</h4>
+                        <hr style="border: 1px solid black;" />
+                    </div>
+
+                    <div class="col">
+                        <p>Esta vista estará habilitada cuando se apruebe tu proyecto de tesis.
+                            Si existe algun inconveniente y/o queja envia un correo a <a href="#">
+                                <>example@unitru.edu.pe</u>
+                            </a> para mas información.</p>
                     </div>
                 </div>
             </div>
@@ -131,10 +149,10 @@
                     </div>
 
                     <div class="col">
-                        <p>Esta vista estara habilitada cuando se te designe algun asesor para el curso.
+                        <p>Esta vista estará habilitada cuando se te designe algun asesor para el curso.
                             Si existe algun inconveniente y/o queja envia un correo a <a href="#">
                                 <>example@unitru.edu.pe</u>
-                            </a> para mas informacion.</p>
+                            </a> para mas información.</p>
                     </div>
                 </div>
             </div>
@@ -153,10 +171,10 @@
                         <p>PROYECTO DESAPROBADO!</p>
                     </div>
                 </div>
-            @elseif (sizeof($correciones) != 0)
+            @elseif (sizeof($observaciones) != 0)
                 <div class="row p-2" style="text-align:center;">
                     <div class="col col-md-6 alert-correction">
-                        <p>Se realizaron las correciones correspondientes.</p>
+                        <p>Los jurados han realizado nuevas observaciones.</p>
                     </div>
                 </div>
             @endif
@@ -172,7 +190,7 @@
                             $varextra1 = 'true';
                         @endphp
                         <input id="verificaCorrect" type="hidden"
-                            value="@if (sizeof($correciones) > 0) {{ $varextra1 }} @endif">
+                            value="@if (sizeof($observaciones) > 0) {{ $varextra1 }} @endif">
                         @php
                             $valuesObs = '';
                             for ($i = 0; $i < sizeof($detalles); $i++) {
@@ -206,8 +224,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
-                                        @if ($correciones[0]->titulo != null)
+                                    @if (sizeof($observaciones) != 0 && $tesis[0]->condicion == null)
+                                        @if ($observaciones[0]->titulo != null)
                                             <div class="col-2">
                                                 <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
                                                     data-bs-target="#mCorreccionTitulo">Correccion</button>
@@ -226,7 +244,7 @@
                                                     <!-- Modal body -->
                                                     <div class="modal-body">
                                                         <div class="row" style="padding: 20px">
-                                                            <p>{{ $correciones[0]->titulo }}</p>
+                                                            <p>{{ $observaciones[0]->titulo }}</p>
                                                         </div>
                                                     </div>
                                                     <!-- Modal footer -->
@@ -337,6 +355,54 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col mb-3">
+                        <h5>Jurados</h5>
+                        @php
+                            $indice = 0;
+                            $tipoJurado = "";
+                        @endphp
+                        @foreach ($jurados as $jurado)
+                            @php
+                                if($indice == 0){
+                                    $tipoJurado = "1er Jurado";
+                                }elseif ($indice == 1) {
+                                    $tipoJurado = "2do Jurado";
+                                }elseif ($indice == 2) {
+                                    $tipoJurado = "Vocal";
+                                }
+                            @endphp
+                            <div class="row border-box my-2">
+                                <h6>{{ $jurado->nombres . ' ' . $jurado->apellidos }}</h6><p>({{$tipoJurado}})</p>
+                                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                                    <label for="txtNombreAsesor" class="form-label">Orcid</label>
+                                    <input class="form-control" name="txtNombreAsesor" id="txtNombreAsesor" type="text"
+                                        value="{{ $jurado->orcid}}"
+                                        placeholder="Apellidos y nombres" readonly>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                                    <label for="cboGrAcademicoAsesor" class="form-label">Grado Academico</label>
+                                    <input class="form-control" name="txtGrAcademicoAsesor" id="txtGrAcademicoAsesor"
+                                        type="text" value="{{ $jurado->DescGrado }}" placeholder="Grado academico"
+                                        readonly>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                                    <label for="txtTProfesional" class="form-label">Titulo Profesional</label>
+                                    <input class="form-control" name="txtTProfesional" id="txtTProfesional" type="text"
+                                        value="{{ $jurado->DescCat }}" placeholder="Titulo profesional" readonly>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                                    <label for="txtDireccionAsesor" class="form-label">Dirección laboral y/o
+                                        domiciliaria</label>
+                                    <input class="form-control" name="txtDireccionAsesor" id="txtDireccionAsesor"
+                                        type="text" value="{{ $jurado->direccion }}"
+                                        placeholder="Direccion laboral y/o domiciliaria" readonly>
+                                </div>
+                            </div>
+                            @php
+                                $indice++;
+                            @endphp
+                        @endforeach
+                    </div>
 
                     <div class="col mb-3" @if ($campos[0]->tipo_investigacion == 0) hidden @endif>
                         <h5>Tipo de Investigacion</h5>
@@ -378,8 +444,8 @@
                                     @endforeach
                                 </select>
                             </div>
-                            @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
-                                @if ($correciones[0]->linea_investigacion != null)
+                            @if (sizeof($observaciones) != 0 && $tesis[0]->condicion == null)
+                                @if ($observaciones[0]->linea_investigacion != null)
                                     <div class="col-2">
                                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
                                             data-bs-target="#mCorreccionLinea">Correccion</button>
@@ -398,7 +464,7 @@
                                             <!-- Modal body -->
                                             <div class="modal-body">
                                                 <div class="row" style="padding: 20px">
-                                                    <p>{{ $correciones[0]->linea_investigacion }}</p>
+                                                    <p>{{ $observaciones[0]->linea_investigacion }}</p>
                                                 </div>
                                             </div>
                                             <!-- Modal footer -->
@@ -436,8 +502,8 @@
                                             placeholder="Institucion" required>
                                     </div>
 
-                                    @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
-                                        @if ($correciones[0]->localidad_institucion != null)
+                                    @if (sizeof($observaciones) != 0 && $tesis[0]->condicion == null)
+                                        @if ($observaciones[0]->localidad_institucion != null)
                                             <div class="item-card" style="padding-top:10px;">
                                                 <button type="button" class="btn btn-outline-danger"
                                                     data-bs-toggle="modal"
@@ -458,7 +524,7 @@
 
                                                     <div class="modal-body">
                                                         <div class="row" style="padding: 20px">
-                                                            <p>{{ $correciones[0]->localidad_institucion }}</p>
+                                                            <p>{{ $observaciones[0]->localidad_institucion }}</p>
                                                         </div>
                                                     </div>
 
@@ -493,7 +559,7 @@
                                                 <input class="form-control" name="txtmeses_ejecucion"
                                                     id="txtmeses_ejecucion" type="number"
                                                     onkeypress="return isNumberKey(this);"
-                                                    value="@if($tesis[0]->meses_ejecucion != ''){{$tesis[0]->meses_ejecucion}}@endif"
+                                                    value="@if ($tesis[0]->meses_ejecucion != '') {{ $tesis[0]->meses_ejecucion }} @endif"
                                                     placeholder="00" min="0" required>
                                                 <input type="hidden" id="valuesMesesPart"
                                                     value="@if ($tesis[0]->meses_ejecucion != '') {{ $tesis[0]->t_ReparacionInstrum }},{{ $tesis[0]->t_RecoleccionDatos }},{{ $tesis[0]->t_AnalisisDatos }},{{ $tesis[0]->t_ElaboracionInfo }} @endif">
@@ -502,8 +568,8 @@
                                         </div>
                                         <input type="hidden" id="CorreccionMes" value="corregir">
                                     </div>
-                                    @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
-                                        @if ($correciones[0]->meses_ejecucion != null)
+                                    @if (sizeof($observaciones) != 0 && $tesis[0]->condicion == null)
+                                        @if ($observaciones[0]->meses_ejecucion != null)
                                             <div class="col-2" style="padding-top:10px;">
                                                 <button type="button" class="btn btn-outline-danger"
                                                     data-bs-toggle="modal"
@@ -523,7 +589,7 @@
                                                     <!-- Modal body -->
                                                     <div class="modal-body">
                                                         <div class="row" style="padding: 20px">
-                                                            <p>{{ $correciones[0]->meses_ejecucion }}</p>
+                                                            <p>{{ $observaciones[0]->meses_ejecucion }}</p>
                                                         </div>
                                                     </div>
                                                     <!-- Modal footer -->
@@ -633,8 +699,8 @@
                                 </table>
                             </div>
                         </div>
-                        @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
-                            @if ($correciones[0]->recursos != null)
+                        @if (sizeof($observaciones) != 0 && $tesis[0]->condicion == null)
+                            @if ($observaciones[0]->recursos != null)
                                 <div class="col-2 col-lg-4" style="padding-top:10px;">
                                     <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
                                         data-bs-target="#mRecursos">Correccion</button>
@@ -653,7 +719,7 @@
                                         <div class="modal-body">
                                             <div class="row" style="padding: 20px">
                                                 <div class="row my-2">
-                                                    <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->recursos }}</textarea>
+                                                    <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $observaciones[0]->recursos }}</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -705,7 +771,7 @@
                                                             name="cod_{{ $i }}" class="form-control"
                                                             aria-label="Amount (to the nearest dollar)" min="0"
                                                             value=@if ($presupuestoProy->count() > 0) "{{ $presupuestoProy[$i]->precio }}"
-                                                                @elseif(sizeof($correciones) == 0)
+                                                                @elseif(sizeof($observaciones) == 0)
                                                                 "0" required @endif>
                                                     </div>
                                                 </td>
@@ -726,7 +792,7 @@
                                                     <input class="form-control" type="number" id="total"
                                                         name="total"
                                                         value=@if ($presupuestoProy->count() > 0) "{{ $presupuestoProy[0]->precio + $presupuestoProy[1]->precio + $presupuestoProy[2]->precio + $presupuestoProy[3]->precio + $presupuestoProy[4]->precio }}" disabled
-                                                        @elseif(sizeof($correciones) == 0)
+                                                        @elseif(sizeof($observaciones) == 0)
                                                         "0" @endif>
                                                 </div>
 
@@ -737,8 +803,8 @@
                                 </table>
                             </div>
                         </div>
-                        @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
-                            @if ($correciones[0]->presupuesto_proy != null)
+                        @if (sizeof($observaciones) != 0 && $tesis[0]->condicion == null)
+                            @if ($observaciones[0]->presupuesto_proy != null)
                                 <div class="col-1">
                                     <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
                                         data-bs-target="#mCorreccionPresupuestoProy">Correccion</button>
@@ -757,7 +823,7 @@
                                         <div class="modal-body">
                                             <div class="row" style="padding: 20px">
                                                 <div class="row my-2">
-                                                    <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->presupuesto_proy }}</textarea>
+                                                    <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $observaciones[0]->presupuesto_proy }}</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -817,8 +883,8 @@
                                 </div>
                             </div>
 
-                            @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
-                                @if ($correciones[0]->real_problematica != null)
+                            @if (sizeof($observaciones) != 0 && $tesis[0]->condicion == null)
+                                @if ($observaciones[0]->real_problematica != null)
                                     <div class="col-2">
                                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
                                             data-bs-target="#mCorreccionRProbl">Correccion</button>
@@ -838,7 +904,7 @@
                                             <div class="modal-body">
                                                 <div class="row" style="padding: 20px">
                                                     <div class="row my-2">
-                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->real_problematica }}</textarea>
+                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $observaciones[0]->real_problematica }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -873,8 +939,8 @@
                                 </div>
                             </div>
 
-                            @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
-                                @if ($correciones[0]->antecedentes != null)
+                            @if (sizeof($observaciones) != 0 && $tesis[0]->condicion == null)
+                                @if ($observaciones[0]->antecedentes != null)
                                     <div class="col-2">
                                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
                                             data-bs-target="#mCorreccionAntecedente">Correccion</button>
@@ -894,7 +960,7 @@
                                             <div class="modal-body">
                                                 <div class="row" style="padding: 20px">
                                                     <div class="row my-2">
-                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->antecedentes }}</textarea>
+                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $observaciones[0]->antecedentes }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -928,8 +994,8 @@
                                 </div>
                             </div>
 
-                            @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
-                                @if ($correciones[0]->justificacion != null)
+                            @if (sizeof($observaciones) != 0 && $tesis[0]->condicion == null)
+                                @if ($observaciones[0]->justificacion != null)
                                     <div class="col-2">
                                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
                                             data-bs-target="#mCorreccionJInv">Correccion</button>
@@ -950,7 +1016,7 @@
                                             <div class="modal-body">
                                                 <div class="row" style="padding: 20px">
                                                     <div class="row my-2">
-                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->justificacion }}</textarea>
+                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $observaciones[0]->justificacion }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -984,8 +1050,8 @@
                                 </div>
                             </div>
 
-                            @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
-                                @if ($correciones[0]->formulacion_prob != null)
+                            @if (sizeof($observaciones) != 0 && $tesis[0]->condicion == null)
+                                @if ($observaciones[0]->formulacion_prob != null)
                                     <div class="col-2">
                                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
                                             data-bs-target="#mCorreccionFProbl">Correccion</button>
@@ -1005,7 +1071,7 @@
                                             <div class="modal-body">
                                                 <div class="row" style="padding: 20px">
                                                     <div class="row my-2">
-                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->formulacion_prob }}</textarea>
+                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $observaciones[0]->formulacion_prob }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1041,8 +1107,8 @@
                                 </div>
                             </div>
                         </div>
-                        @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
-                            @if ($correciones[0]->objetivos != null)
+                        @if (sizeof($observaciones) != 0 && $tesis[0]->condicion == null)
+                            @if ($observaciones[0]->objetivos != null)
                                 <div class="col-2">
                                     <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
                                         data-bs-target="#mCorreccionObjetivo">Correccion</button>
@@ -1061,7 +1127,7 @@
                                         <div class="modal-body">
                                             <div class="row" style="padding: 20px">
                                                 <div class="row my-2">
-                                                    <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->objetivos }}</textarea>
+                                                    <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $observaciones[0]->objetivos }}</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -1139,8 +1205,8 @@
                                 </div>
                             </div>
 
-                            @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
-                                @if ($correciones[0]->marco_teorico != null)
+                            @if (sizeof($observaciones) != 0 && $tesis[0]->condicion == null)
+                                @if ($observaciones[0]->marco_teorico != null)
                                     <div class="col-2">
                                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
                                             data-bs-target="#mCorreccionMTeorico">Correccion</button>
@@ -1160,7 +1226,7 @@
                                             <div class="modal-body">
                                                 <div class="row" style="padding: 20px">
                                                     <div class="row my-2">
-                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->marco_teorico }}</textarea>
+                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $observaciones[0]->marco_teorico }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1192,8 +1258,8 @@
                                 </div>
                             </div>
 
-                            @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
-                                @if ($correciones[0]->marco_conceptual != null)
+                            @if (sizeof($observaciones) != 0 && $tesis[0]->condicion == null)
+                                @if ($observaciones[0]->marco_conceptual != null)
                                     <div class="col-2">
                                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
                                             data-bs-target="#mCorreccionMConceptual">Correccion</button>
@@ -1211,7 +1277,7 @@
                                             <div class="modal-body">
                                                 <div class="row" style="padding: 20px">
                                                     <div class="row my-2">
-                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->marco_conceptual }}</textarea>
+                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $observaciones[0]->marco_conceptual }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1242,8 +1308,8 @@
                                 </div>
                             </div>
 
-                            @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
-                                @if ($correciones[0]->marco_legal != null)
+                            @if (sizeof($observaciones) != 0 && $tesis[0]->condicion == null)
+                                @if ($observaciones[0]->marco_legal != null)
                                     <div class="col-2">
                                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
                                             data-bs-target="#mCorreccionMLegal">Correccion</button>
@@ -1263,7 +1329,7 @@
                                             <div class="modal-body">
                                                 <div class="row" style="padding: 20px">
                                                     <div class="row my-2">
-                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->marco_legal }}</textarea>
+                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $observaciones[0]->marco_legal }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1297,8 +1363,8 @@
                                 </div>
                             </div>
 
-                            @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
-                                @if ($correciones[0]->form_hipotesis != null)
+                            @if (sizeof($observaciones) != 0 && $tesis[0]->condicion == null)
+                                @if ($observaciones[0]->form_hipotesis != null)
                                     <div class="col-2">
                                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
                                             data-bs-target="#mCorreccionFHipotesis">Correccion</button>
@@ -1318,7 +1384,7 @@
                                             <div class="modal-body">
                                                 <div class="row" style="padding: 20px">
                                                     <div class="row my-2">
-                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->form_hipotesis }}</textarea>
+                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $observaciones[0]->form_hipotesis }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1359,8 +1425,8 @@
                                 </div>
                             </div>
 
-                            @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
-                                @if ($correciones[0]->objeto_estudio != null)
+                            @if (sizeof($observaciones) != 0 && $tesis[0]->condicion == null)
+                                @if ($observaciones[0]->objeto_estudio != null)
                                     <div class="col-2">
                                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
                                             data-bs-target="#mCorreccionOEstudio">Correccion</button>
@@ -1380,7 +1446,7 @@
                                             <div class="modal-body">
                                                 <div class="row" style="padding: 20px">
                                                     <div class="row my-2">
-                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->objeto_estudio }}</textarea>
+                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $observaciones[0]->objeto_estudio }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1411,8 +1477,8 @@
                                 </div>
                             </div>
 
-                            @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
-                                @if ($correciones[0]->poblacion != null)
+                            @if (sizeof($observaciones) != 0 && $tesis[0]->condicion == null)
+                                @if ($observaciones[0]->poblacion != null)
                                     <div class="col-2">
                                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
                                             data-bs-target="#mCorreccionPoblacion">Correccion</button>
@@ -1432,7 +1498,7 @@
                                             <div class="modal-body">
                                                 <div class="row" style="padding: 20px">
                                                     <div class="row my-2">
-                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->poblacion }}</textarea>
+                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $observaciones[0]->poblacion }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1462,8 +1528,8 @@
                                 </div>
                             </div>
 
-                            @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
-                                @if ($correciones[0]->muestra != null)
+                            @if (sizeof($observaciones) != 0 && $tesis[0]->condicion == null)
+                                @if ($observaciones[0]->muestra != null)
                                     <div class="col-2">
                                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
                                             data-bs-target="#mCorreccionMuestra">Correccion</button>
@@ -1483,7 +1549,7 @@
                                             <div class="modal-body">
                                                 <div class="row" style="padding: 20px">
                                                     <div class="row my-2">
-                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->muestra }}</textarea>
+                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $observaciones[0]->muestra }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1514,8 +1580,8 @@
                                 </div>
                             </div>
 
-                            @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
-                                @if ($correciones[0]->metodos != null)
+                            @if (sizeof($observaciones) != 0 && $tesis[0]->condicion == null)
+                                @if ($observaciones[0]->metodos != null)
                                     <div class="col-2">
                                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
                                             data-bs-target="#mCorreccionMetodos">Correccion</button>
@@ -1535,7 +1601,7 @@
                                             <div class="modal-body">
                                                 <div class="row" style="padding: 20px">
                                                     <div class="row my-2">
-                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->metodos }}</textarea>
+                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $observaciones[0]->metodos }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1567,8 +1633,8 @@
 </textarea>
                                 </div>
                             </div>
-                            @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
-                                @if ($correciones[0]->tecnicas_instrum != null)
+                            @if (sizeof($observaciones) != 0 && $tesis[0]->condicion == null)
+                                @if ($observaciones[0]->tecnicas_instrum != null)
                                     <div class="col-2">
                                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
                                             data-bs-target="#mCorreccionTecInst">Correccion</button>
@@ -1588,7 +1654,7 @@
                                             <div class="modal-body">
                                                 <div class="row" style="padding: 20px">
                                                     <div class="row my-2">
-                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->tecnicas_instrum }}</textarea>
+                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $observaciones[0]->tecnicas_instrum }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1618,8 +1684,8 @@
 </textarea>
                                 </div>
                             </div>
-                            @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
-                                @if ($correciones[0]->instrumentacion != null)
+                            @if (sizeof($observaciones) != 0 && $tesis[0]->condicion == null)
+                                @if ($observaciones[0]->instrumentacion != null)
                                     <div class="col-2">
                                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
                                             data-bs-target="#mCorreccionInsFD">Correccion</button>
@@ -1641,7 +1707,7 @@
                                             <div class="modal-body">
                                                 <div class="row" style="padding: 20px">
                                                     <div class="row my-2">
-                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->instrumentacion }}</textarea>
+                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $observaciones[0]->instrumentacion }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1671,8 +1737,8 @@
 </textarea>
                                 </div>
                             </div>
-                            @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
-                                @if ($correciones[0]->estg_metodologicas != null)
+                            @if (sizeof($observaciones) != 0 && $tesis[0]->condicion == null)
+                                @if ($observaciones[0]->estg_metodologicas != null)
                                     <div class="col-2">
                                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
                                             data-bs-target="#mCorreccionEstrategia">Correccion</button>
@@ -1692,7 +1758,7 @@
                                             <div class="modal-body">
                                                 <div class="row" style="padding: 20px">
                                                     <div class="row my-2">
-                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->estg_metodologicas }}</textarea>
+                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $observaciones[0]->estg_metodologicas }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1726,8 +1792,8 @@
                                     </div>
                                 </div>
                             </div>
-                            @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
-                                @if ($correciones[0]->variables != null)
+                            @if (sizeof($observaciones) != 0 && $tesis[0]->condicion == null)
+                                @if ($observaciones[0]->variables != null)
                                     <div class="col-2">
                                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
                                             data-bs-target="#mCorreccionVariables">Correccion</button>
@@ -1747,7 +1813,7 @@
                                             <div class="modal-body">
                                                 <div class="row" style="padding: 20px">
                                                     <div class="row my-2">
-                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->variables }}</textarea>
+                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $observaciones[0]->variables }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1920,8 +1986,8 @@
                                     </tbody>
                                 </table>
                             </div>
-                            @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
-                                @if ($correciones[0]->matriz_op != null)
+                            @if (sizeof($observaciones) != 0 && $tesis[0]->condicion == null)
+                                @if ($observaciones[0]->matriz_op != null)
                                     <div class="col-2">
                                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
                                             data-bs-target="#mCorreccionMatriz_op">Correccion</button>
@@ -1941,7 +2007,7 @@
                                             <div class="modal-body">
                                                 <div class="row" style="padding: 20px">
                                                     <div class="row my-2">
-                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->matriz_op }}</textarea>
+                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $observaciones[0]->matriz_op }}</textarea>
 
                                                     </div>
                                                 </div>
@@ -1980,8 +2046,8 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                @if (sizeof($correciones) != 0 && $tesis[0]->condicion == null)
-                                    @if ($correciones[0]->referencias != null)
+                                @if (sizeof($observaciones) != 0 && $tesis[0]->condicion == null)
+                                    @if ($observaciones[0]->referencias != null)
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger"
                                                 data-bs-toggle="modal"
@@ -2002,7 +2068,7 @@
                                                 <div class="modal-body">
                                                     <div class="row" style="padding: 20px">
                                                         <div class="row my-2">
-                                                            <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->referencias }}</textarea>
+                                                            <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $observaciones[0]->referencias }}</textarea>
                                                         </div>
                                                     </div>
                                                 </div>

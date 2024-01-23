@@ -5,6 +5,7 @@ use App\Http\Controllers\CursoTesisController;
 use App\Http\Controllers\EstudianteTesisController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SustentacionController;
+use App\Http\Controllers\SustentacionProyectoController;
 use App\Http\Controllers\Tesis2022Controller;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
@@ -186,7 +187,8 @@ Route::post('/registrar-jurado',[SustentacionController::class,'registrarJurado'
 
 //Designacion de jurados --------------------------------------
 // 1.Proyecto de tesis
-Route::get('/lista-proyectos-aprobados',[SustentacionController::class,'lista_proyectos_aprobados'])->name('director.listaProyectosAprobados')->middleware('auth');
+Route::get('/lista-proyectos-aprobados',[SustentacionProyectoController::class,'lista_proyectos_aprobados'])->name('director.listaProyectosAprobados')->middleware('auth');
+Route::post('/save-asignacion-jurados-proyecto',[SustentacionProyectoController::class,'saveAsignacionJuradoProyecto'])->name('director.saveAsignacionJuradosProyecto')->middleware('auth');
 
 // 2.Tesis
 Route::get('/lista-tesis-aprobadas',[SustentacionController::class,'lista_tesis_aprobadas'])->name('director.listaTesisAprobadas')->middleware('auth');
@@ -233,6 +235,10 @@ Route::post('desaprobarTesis',[Tesis2022Controller::class,'desaprobarTesis'])
 Route::get('/lista-tesis-asignadas',[SustentacionController::class,'lista_tesis_asignadas'])->name('asesor.evaluacion.listaTesisAsignadas')->middleware('auth');
 Route::post('/detalle-tesis-asignada',[SustentacionController::class,'detalleTesisAsignada'])->name('asesor.evaluacion.detalleTesisAsignada')->middleware('auth');
 Route::post('/guardar-observacion-sustentacion',[SustentacionController::class,'guardarObservacionSustentacion'])->name('asesor.sustentacion.guardarObservacion')->middleware('auth');
+
+/* Evaluacion Proyecto de tesis (Estudiante)*/
+Route::get('/view-evaluacion-proyecto',[SustentacionProyectoController::class,'viewEvaluacionProyecto'])->name('estudiante.evaluacion.proyecto-tesis')->middleware('auth');
+Route::get('/view-estado-evaluacion-proyecto',[SustentacionProyectoController::class,'viewEstadoEvaluacionProyecto'])->name('estudiante.evaluacion.estado-proyecto-tesis')->middleware('auth');
 
 Auth::routes();
 

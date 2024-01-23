@@ -54,10 +54,10 @@
             </div> --}}
             <div class="row">
                 <div style="margin:5px;">
-                    <a href="{{ route('director.verEditAsignacionJurados') }}" class="btn btn-modificaciones">Editar Asignacion</a>
+                    <a href="#" class="btn btn-modificaciones">Editar Asignacion</a>
                 </div>
             </div>
-            <form action="{{ route('director.saveAsignacionJurados') }}" method="post">
+            <form action="{{ route('director.saveAsignacionJuradosProyecto') }}" method="post">
                 @csrf
                 <div class="row" style="display: flex; align-items:center;">
                     <div class="col-12">
@@ -79,7 +79,7 @@
                                     @endphp
                                     @foreach ($proyectosAgrupados as $ta)
                                         <tr>
-                                            <td>{{ $ta[0]['cod_tesis'] }}</td>
+                                            <td>{{ $ta[0]['cod_proyectotesis'] }}</td>
                                             <td>
                                                 @foreach ($ta[0]['autores'] as $index => $autor)
                                                     {{ $autor['nombresAutor'] . ' ' . $autor['apellidosAutor'] }}
@@ -171,7 +171,7 @@
                                             </td>
                                         </tr>
                                         <input type="hidden" id="codTesis_{{ $cont }}"
-                                            value="{{ $ta[0]['cod_tesis'] }}">
+                                            value="{{ $ta[0]['cod_proyectotesis'] }}">
                                         @php
                                             $cont++;
                                         @endphp
@@ -200,7 +200,7 @@
             Swal.fire({
                 position: 'center',
                 icon: 'success',
-                title: 'Designacion correcta',
+                title: 'Designación correcta',
                 showConfirmButton: false,
                 timer: 1500
             })
@@ -210,17 +210,7 @@
             Swal.fire({
                 position: 'center',
                 icon: 'error',
-                title: 'Error en la designacion',
-                showConfirmButton: false,
-                timer: 1500
-            })
-        </script>
-    @elseif (session('datos') == 'exists')
-        <script>
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Ya existe un alumno con el mismo codigo de matricula',
+                title: 'Error en la designación. Intente nuevamente.',
                 showConfirmButton: false,
                 timer: 1500
             })
