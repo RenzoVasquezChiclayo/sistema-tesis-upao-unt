@@ -369,8 +369,11 @@
                     <i class='bx bx-xs bxs-chevron-down'></i>
                 </a>
                 <div class="cstm-collapse collapse" id="collapseJurado">
-                    <a href="{{ route('asesor.evaluacion.listaTesisAsignadas') }}">
-                        <span class="links_name">Lista Tesis(Evaluacion)</span>
+                    <a href="{{ route('jurado.listaTesisAsignadas') }}">
+                        <span class="links_name">Lista de tesis(Evaluación)</span>
+                    </a>
+                    <a href="{{ route('jurado.listaProyectosAsignados') }}">
+                        <span class="links_name">Lista de proyectos(Evaluación)</span>
                     </a>
                 </div>
             </li>

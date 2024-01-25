@@ -46,6 +46,15 @@ Route::post('/verificate-login',[LoginController::class,'validateLogin'])
 Route::post('/logout',[LoginController::class,'logout'])
         ->name('login.logout');
 
+
+Route::post('send-password-reset/',[LoginController::class,'enviarCorreoParaCambio'])
+        ->name('correo_reset');
+
+Route::get('recuperar-contraseña/',[LoginController::class,'verRecuperarContraseña'])
+        ->name('recuperar_contra');
+
+Route::post('guardar-password-reset/',[LoginController::class,'guardarResetContraseña'])
+        ->name('guardar_reset_contra');
 //Curso Tesis 2022-1
 Route::get('/cursoTesis',[CursoTesisController::class,'index'])
         ->name('curso.tesis20221')->middleware('auth');
@@ -231,14 +240,24 @@ Route::post('aprobarTesis',[Tesis2022Controller::class,'aprobarTesis'])
 Route::post('desaprobarTesis',[Tesis2022Controller::class,'desaprobarTesis'])
         ->name('asesor.desaprobar-tesis');
 
-// EVALUACION
-Route::get('/lista-tesis-asignadas',[SustentacionController::class,'lista_tesis_asignadas'])->name('asesor.evaluacion.listaTesisAsignadas')->middleware('auth');
-Route::post('/detalle-tesis-asignada',[SustentacionController::class,'detalleTesisAsignada'])->name('asesor.evaluacion.detalleTesisAsignada')->middleware('auth');
-Route::post('/guardar-observacion-sustentacion',[SustentacionController::class,'guardarObservacionSustentacion'])->name('asesor.sustentacion.guardarObservacion')->middleware('auth');
+/* Evaluacion Tesis (Jurados)*/
+Route::get('/lista-tesis-asignadas',[SustentacionController::class,'lista_tesis_asignadas'])->name('jurado.listaTesisAsignadas')->middleware('auth');
+Route::post('/detalle-tesis-asignada',[SustentacionController::class,'detalleTesisAsignada'])->name('jurado.detalleTesisAsignada')->middleware('auth');
+Route::post('/guardar-observacion-jurado-tesis',[SustentacionController::class,'guardarObservacionSustentacion'])->name('jurado.guardarObservacionTesis')->middleware('auth');
+Route::post('/guardar-sin-observacion-jurado-tesis',[SustentacionProyectoController::class,'guardarSinObservacion'])->name('jurado.guardarSinObsTesis');
 
 /* Evaluacion Proyecto de tesis (Estudiante)*/
 Route::get('/view-evaluacion-proyecto',[SustentacionProyectoController::class,'viewEvaluacionProyecto'])->name('estudiante.evaluacion.proyecto-tesis')->middleware('auth');
 Route::get('/view-estado-evaluacion-proyecto',[SustentacionProyectoController::class,'viewEstadoEvaluacionProyecto'])->name('estudiante.evaluacion.estado-proyecto-tesis')->middleware('auth');
+Route::post('/guardar-proyecto-evaluacion',[SustentacionProyectoController::class,'actualizarProyectoTesis'])->name('estudiante.evaluacion.actualizarProyectoTesis')->middleware('auth');
+/* Evaluacion Proyecto de tesis (Jurados)*/
+Route::get('/lista-proyectos-asignados/{showObservacion?}',[SustentacionProyectoController::class,'listaProyectosAsignados'])->name('jurado.listaProyectosAsignados')->middleware('auth');
+Route::post('/evaluar-proyecto-tesis',[SustentacionProyectoController::class,'evaluarProyectoTesis'])->name('jurado.evaluarProyectoTesis')->middleware('auth');
+Route::post('/guardar-observacion-jurado',[SustentacionProyectoController::class,'guardarObservacionProyecto'])->name('jurado.guardarObservacionProyecto');
+Route::post('/aprobar-proyecto-jurado',[SustentacionProyectoController::class,'aprobarProyectoTesis'])->name('jurado.aprobarProyectoTesis');
+
+
+
 
 Auth::routes();
 

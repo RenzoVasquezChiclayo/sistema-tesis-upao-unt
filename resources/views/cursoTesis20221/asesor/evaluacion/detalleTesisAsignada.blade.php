@@ -1000,7 +1000,7 @@
                 cancelButtonText: 'Cancelar',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        document.formProyecto.action = "{{route('asesor.sustentacion.guardarObservacion')}}";
+                        document.formProyecto.action = "{{route('jurado.guardarObservacionTesis')}}";
                         document.formProyecto.method = "POST";
                         document.formProyecto.submit();
                     }
@@ -1026,7 +1026,7 @@
                 cancelButtonText: 'Cancelar',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        document.formProyecto.action = "{{route('asesor.guardar-sin-observaciones')}}";
+                        document.formProyecto.action = "{{route('jurado.guardarSinObsTesis')}}";
                         document.formProyecto.method = "POST";
                         document.formProyecto.submit();
                     }

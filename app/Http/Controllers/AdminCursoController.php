@@ -385,7 +385,7 @@ class AdminCursoController extends Controller
 
         $usuario = User::where('name','=',$request->txtCodUsuario)->first();
         try {
-            $usuario->password = md5($request->txtNuevaContra);
+            $usuario->password = bcrypt($request->txtNuevaContra);
             $usuario->save();
             return redirect()->route('user_information')->with('datos','ok');
             //Recuerda que luego de actualizar tu contrasena, no podras volver a cambiarla hasta luego de 7 dias.

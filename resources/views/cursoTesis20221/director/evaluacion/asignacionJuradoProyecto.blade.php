@@ -81,11 +81,9 @@
                                         <tr>
                                             <td>{{ $ta[0]['cod_proyectotesis'] }}</td>
                                             <td>
-                                                @foreach ($ta[0]['autores'] as $index => $autor)
-                                                    {{ $autor['nombresAutor'] . ' ' . $autor['apellidosAutor'] }}
-                                                    @if ($index < count($ta[0]['autores']) - 1)
-                                                        &amp;
-                                                    @endif
+                                                @foreach ($ta[0]['autores'] as $autor)
+                                                    {{$autor['cod_matricula'].' - '.$autor['apellidosAutor'].', '.$autor['nombresAutor']}}
+                                                    <br>
                                                 @endforeach
                                             </td>
                                             <td>{{ $ta[0]['titulo'] }}</td>

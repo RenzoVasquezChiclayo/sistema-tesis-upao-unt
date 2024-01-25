@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class DetalleObsSustentacionProy extends Model
 {
     use HasFactory;
-    protected $table = 'detalle_obs_sustentacion_proyecto';
+    protected $table = 'detalle_obs_sustentacionproy';
     protected $primaryKey = 'cod_detalleObs_sustentacionProy';
     protected $fillable = [
         'cod_observacion_sustentacion',

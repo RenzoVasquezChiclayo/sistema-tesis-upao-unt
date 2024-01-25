@@ -1,6 +1,6 @@
 var indiceRecurso=0;
 var iObjetivo=0;
-var iVariable=0;
+//var iVariable=0;
 
 var listObs = [];
 var listTextObs = [];
@@ -53,10 +53,10 @@ window.onload = function() {
 
     }
 
-    const valOldVar = document.getElementById('valNVariable').value;
-    if(valOldVar!=0 ){
-        iVariable = parseInt(valOldVar);
-    }
+    // const valOldVar = document.getElementById('valNVariable').value;
+    // if(valOldVar!=0 ){
+    //     iVariable = parseInt(valOldVar);
+    // }
 }
 /*Esta funcion la hemos duplicado para aplicar solo cuando haya datos registrados en el cronograma*/
 function setColorInit(id){
@@ -91,6 +91,8 @@ function deleteOldRecurso(item){
         //iObjetivo--;
     }else if(idindice[0]=='lvar'){
         document.getElementById('filaV'+idindice[1]).remove();
+        array_variable[idindice[1]] = "";
+        updateMatriz();
         //iVariable--;
     }else if(idindice[0]=='lref'){
 
@@ -507,19 +509,9 @@ function quitarObjetivo(item)
     document.getElementById('filaO'+item).remove();
     //iObjetivo--;
 }
-function agregarVariable()
-{
-    descripcion = document.getElementById("taVariable").value;
-    fila = '<tbody><tr id="filaV'+iVariable+'"><td><input type="hidden" name="iddescripcionVar[]" value="'+descripcion+'">'+descripcion+'</td><td align="center"><a href="#" class="btn btn-warning" onclick="quitarVariable('+iVariable+');">X</a></td></tr></tbody>';
-    document.getElementById('variableTable').innerHTML +=fila;
-    iVariable++;
-    document.getElementById('taVariable').value="";
-}
-function quitarVariable(item)
-{
-    document.getElementById('filaV'+item).remove();
-    //iVariable--;
-}
+
+
+
 //Funcion para generar el total del presupuesto
 function verTotal(){
     cadena = ""
@@ -553,6 +545,9 @@ function guardarCopia(){
 /*Funcion para dirigir a la ruta guardar y registrar los datos del proy. investigacion*/
 function registerProject(){
 
+    let selectVariableI = document.getElementById('rowMatrizVI').selectedIndex;
+    let selectVariableD = document.getElementById('rowMatrizVD').selectedIndex;
+
     tipoInvestigacion = document.getElementById("cboTipoInvestigacion").selectedIndex;
     finInvestigacion = document.getElementById("cboFinInvestigacion").selectedIndex;
     disenInvestigacion = document.getElementById("cboDesignInvestigacion").selectedIndex;
@@ -562,6 +557,10 @@ function registerProject(){
     //Esto nos ayuda a saber si se esta haciendo una correccion
     const isCorrect = document.getElementById('verificaCorrect').value;
     verTotal();
+    if(selectVariableI == selectVariableD){
+        alert('Se requiere que la variable INDEPENDIENTE sea distinta de la DEPENDIENTE.');
+        return;
+    }
     if(isCorrect!='true'){
         saveMonths();
         if(validaText()==false){

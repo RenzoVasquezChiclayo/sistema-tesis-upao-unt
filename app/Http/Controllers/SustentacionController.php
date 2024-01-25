@@ -21,6 +21,8 @@ class SustentacionController extends Controller
 {
     const PAGINATION = 10;
 
+
+    /* ADMIN / DIRECTOR */
     public function verRegistrarJurado()
     {
         $asesores = DB::table('asesor_curso as ac')->leftJoin('jurado as j', 'ac.cod_docente', "=", 'j.cod_docente')->select('ac.*')->whereNull('j.cod_docente')->orderBy('apellidos', 'asc')->get();
@@ -112,54 +114,6 @@ class SustentacionController extends Controller
         }
     }
 
-
-    //ASESOR
-
-    public function lista_tesis_asignadas(Request $request)
-    {
-        $lastGroup = 0;
-        $extraArray = [];
-        $studentforGroups = [];
-        $contador = 0;
-        $asesor = DB::table('asesor_curso')->select('asesor_curso.cod_docente')->where('asesor_curso.username', auth()->user()->name)->first();
-        $lista_tesis = DB::table('designacion_jurados as d_j')->join('tesis_2022 as ts', 'd_j.cod_tesis', 'ts.cod_tesis')
-            ->join('grupo_investigacion as g_i', 'ts.id_grupo_inves', 'g_i.id_grupo')
-            ->join('detalle_grupo_investigacion as d_g_i', 'g_i.id_grupo', 'd_g_i.id_grupo_inves')
-            ->join('estudiante_ct2022 as es', 'd_g_i.cod_matricula', 'es.cod_matricula')
-            ->join('asesor_curso as a_c', 'ts.cod_docente', 'a_c.cod_docente')
-            ->select('g_i.id_grupo', 'g_i.num_grupo', 'd_g_i.cod_matricula', 'ts.cod_tesis', 'ts.titulo', 'a_c.nombres as nombresAsesor', 'a_c.apellidos as apellidosAsesor', 'es.nombres as nombresAutor', 'es.apellidos as apellidosAutor', 'd_j.cod_jurado1', 'd_j.cod_jurado2', 'd_j.cod_jurado3', 'd_j.cod_jurado4', 'ts.estado','d_j.estado as estadoDesignacion')
-            ->where('d_j.cod_jurado1', $asesor->cod_docente)
-            ->orWhere('d_j.cod_jurado2', $asesor->cod_docente)
-            ->orWhere('d_j.cod_jurado3', $asesor->cod_docente)
-            ->orWhere('d_j.cod_jurado4', $asesor->cod_docente)
-            ->get();
-        //dd($lista_tesis);
-
-
-
-        foreach ($lista_tesis as $tesis) {
-            if ($lastGroup == 0) {
-                array_push($extraArray, $tesis);
-                $lastGroup = $tesis->id_grupo;
-            } else {
-                if ($lastGroup == $tesis->id_grupo) {
-                    array_push($extraArray, $tesis);
-                } else {
-                    array_push($studentforGroups, $extraArray);
-                    $extraArray = [];
-                    array_push($extraArray, $tesis);
-                    $lastGroup = $tesis->id_grupo;
-                }
-            }
-            $contador++;
-            if ($contador == count($lista_tesis)) {
-                array_push($studentforGroups, $extraArray);
-            }
-        }
-        //dd($studentforGroups);
-        return view('cursoTesis20221.asesor.evaluacion.listaTesisAsignadas', ['studentforGroups' => $studentforGroups, 'asesor' => $asesor]);
-    }
-
     public function verEditAsignacionJurados()
     {
         $tesis_aprobadas = DB::table('tesis_2022 as t')
@@ -224,6 +178,53 @@ class SustentacionController extends Controller
     }
 
 
+    /* ASESOR */
+
+    public function lista_tesis_asignadas(Request $request)
+    {
+        $lastGroup = 0;
+        $extraArray = [];
+        $studentforGroups = [];
+        $contador = 0;
+        $asesor = DB::table('asesor_curso')->select('asesor_curso.cod_docente')->where('asesor_curso.username', auth()->user()->name)->first();
+        $lista_tesis = DB::table('designacion_jurados as d_j')->join('tesis_2022 as ts', 'd_j.cod_tesis', 'ts.cod_tesis')
+            ->join('grupo_investigacion as g_i', 'ts.id_grupo_inves', 'g_i.id_grupo')
+            ->join('detalle_grupo_investigacion as d_g_i', 'g_i.id_grupo', 'd_g_i.id_grupo_inves')
+            ->join('estudiante_ct2022 as es', 'd_g_i.cod_matricula', 'es.cod_matricula')
+            ->join('asesor_curso as a_c', 'ts.cod_docente', 'a_c.cod_docente')
+            ->select('g_i.id_grupo', 'g_i.num_grupo', 'd_g_i.cod_matricula', 'ts.cod_tesis', 'ts.titulo', 'a_c.nombres as nombresAsesor', 'a_c.apellidos as apellidosAsesor', 'es.nombres as nombresAutor', 'es.apellidos as apellidosAutor', 'd_j.cod_jurado1', 'd_j.cod_jurado2', 'd_j.cod_jurado3', 'd_j.cod_jurado4', 'ts.estado','d_j.estado as estadoDesignacion')
+            ->where('d_j.cod_jurado1', $asesor->cod_docente)
+            ->orWhere('d_j.cod_jurado2', $asesor->cod_docente)
+            ->orWhere('d_j.cod_jurado3', $asesor->cod_docente)
+            ->orWhere('d_j.cod_jurado4', $asesor->cod_docente)
+            ->get();
+        //dd($lista_tesis);
+
+
+
+        foreach ($lista_tesis as $tesis) {
+            if ($lastGroup == 0) {
+                array_push($extraArray, $tesis);
+                $lastGroup = $tesis->id_grupo;
+            } else {
+                if ($lastGroup == $tesis->id_grupo) {
+                    array_push($extraArray, $tesis);
+                } else {
+                    array_push($studentforGroups, $extraArray);
+                    $extraArray = [];
+                    array_push($extraArray, $tesis);
+                    $lastGroup = $tesis->id_grupo;
+                }
+            }
+            $contador++;
+            if ($contador == count($lista_tesis)) {
+                array_push($studentforGroups, $extraArray);
+            }
+        }
+        //dd($studentforGroups);
+        return view('cursoTesis20221.asesor.evaluacion.listaTesisAsignadas', ['studentforGroups' => $studentforGroups, 'asesor' => $asesor]);
+    }
+
     public function detalleTesisAsignada(Request $request)
     {
         $Tesis = [];
@@ -269,9 +270,6 @@ class SustentacionController extends Controller
 
         return view('cursoTesis20221.asesor.evaluacion.detalleTesisAsignada', ['Tesis' => $Tesis, 'keywords' => $keywords, 'objetivos' => $objetivos, '$observaciones' => $observaciones, 'camposFull' => $camposFull, 'referencias' => $referencias, 'resultadosImg' => $resultadosImg, 'anexosImg' => $anexosImg, 'estudiantes_grupo' => $estudiantes_grupo]);
     }
-
-
-
 
     public function guardarObservacionSustentacion(Request $request)
     {
@@ -419,6 +417,10 @@ class SustentacionController extends Controller
         }
 
         return redirect()->route('asesor.evaluacion.listaTesisAsignadas', $existHisto[0]->cod_historial_observacion)->with('datos', 'ok');
+    }
+
+    public function guardarSinObservacion(Request $request){
+
     }
 
     public function lista_observaciones_evaluacion()

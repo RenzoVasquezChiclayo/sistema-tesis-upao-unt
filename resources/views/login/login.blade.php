@@ -45,6 +45,20 @@
             -webkit-backdrop-filter: blur(10px);
             border: black solid 1px;
         }
+        .reset-boton {
+            margin-top: 10px;
+            border: 0px;
+            outline: none;
+            text-decoration: none;
+            background-color: transparent;
+            border-radius: 10px;
+            color: #fff;
+        }
+        .reset-boton:hover,
+        .reset-boton:active {
+            background-color: #000;
+            color: red;
+            }
     </style>
 </head>
 
@@ -65,6 +79,9 @@
                     <div style="">
                         <input type="password" class="form-control" id="password" name="password" placeholder="Contrasena" required>
                     </div>
+                    <div style="text-align: left">
+                        <button class="reset-boton" type="button" data-bs-toggle="modal" data-bs-target="#mReset_Password">Olvide mi contraseña</button>
+                    </div>
 
                     <div style="text-align: right; margin-top:10px;margin-bottom:5px;">
                         <label style="color:white;">
@@ -83,10 +100,78 @@
             </div>
         </div>
     </div>
+    {{-- Aqui va el modal --}}
+    <div class="modal" id="mReset_Password">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Correo Electronico</h4>
+                    <button type="button" class="btn-close"
+                        data-bs-dismiss="modal"></button>
+                </div>
+                <!-- Modal body -->
+                <form action="{{route('correo_reset')}}" method="post">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row" style="padding: 20px">
+                            <h5>Verificacion de identidad</h5>
+                            <p>Ingrese el correo que tiene registrado en su sistema para que se le envie un link de cambio de contraseña.</p>
+                            <div class="row my-2">
+                                <input class="form-control" type="text" id="correo_reset" name="correo_reset" required>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <div class="row">
+                            <div class="col-6">
+                                <button type="submit" class="btn btn-success">Enviar</button>
+                            </div>
+                            <div class="col-6">
 
+                                <button type="button" class="btn btn-danger"
+                                    data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 </body>
-<script type="text/javascript">
-
-</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @if (session('datos') == 'ok')
+        <script>
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Se envio el correo correctamente',
+                showConfirmButton: true,
+                timer: 2500
+            })
+        </script>
+    @elseif (session('datos') == 'oknot')
+        <script>
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error al enviar el correo',
+                showConfirmButton: true,
+                timer: 2500
+            })
+        </script>
+    @elseif (session('datos') == 'oknotregister')
+        <script>
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Este correo no se encuentra registrado, comunicate con soporte (support@proytesisws.com).',
+                showConfirmButton: true,
+                timer: 2500
+            })
+        </script>
+    @endif
 </html>

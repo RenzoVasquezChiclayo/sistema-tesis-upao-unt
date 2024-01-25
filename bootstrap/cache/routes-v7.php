@@ -24,7 +24,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::WZJC5trObXlePDsV',
+            '_route' => 'generated::eDe72P5tndhuklls',
           ),
           1 => NULL,
           2 => 
@@ -102,7 +102,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::bPScE7p9SIAPPzYf',
+            '_route' => 'generated::zPxFjfRzXjJDhzlf',
           ),
           1 => NULL,
           2 => 
@@ -259,6 +259,64 @@ app('router')->setCompiledRoutes(
           0 => 
           array (
             '_route' => 'logout',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/send-password-reset' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'correo_reset',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/recuperar-contraseña' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'recuperar_contra',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/guardar-password-reset' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'guardar_reset_contra',
           ),
           1 => NULL,
           2 => 
@@ -1795,6 +1853,45 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
+      '/lista-proyectos-aprobados' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'director.listaProyectosAprobados',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/save-asignacion-jurados-proyecto' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'director.saveAsignacionJuradosProyecto',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
       '/lista-tesis-aprobadas' => 
       array (
         0 => 
@@ -2245,7 +2342,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'asesor.evaluacion.listaTesisAsignadas',
+            '_route' => 'jurado.listaTesisAsignadas',
           ),
           1 => NULL,
           2 => 
@@ -2265,7 +2362,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'asesor.evaluacion.detalleTesisAsignada',
+            '_route' => 'jurado.detalleTesisAsignada',
           ),
           1 => NULL,
           2 => 
@@ -2278,13 +2375,148 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      '/guardar-observacion-sustentacion' => 
+      '/guardar-observacion-jurado-tesis' => 
       array (
         0 => 
         array (
           0 => 
           array (
-            '_route' => 'asesor.sustentacion.guardarObservacion',
+            '_route' => 'jurado.guardarObservacionTesis',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/guardar-sin-observacion-jurado-tesis' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'jurado.guardarSinObsTesis',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/view-evaluacion-proyecto' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'estudiante.evaluacion.proyecto-tesis',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/view-estado-evaluacion-proyecto' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'estudiante.evaluacion.estado-proyecto-tesis',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/guardar-proyecto-evaluacion' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'estudiante.evaluacion.actualizarProyectoTesis',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/evaluar-proyecto-tesis' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'jurado.evaluarProyectoTesis',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/guardar-observacion-jurado' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'jurado.guardarObservacionProyecto',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/aprobar-proyecto-jurado' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'jurado.aprobarProyectoTesis',
           ),
           1 => NULL,
           2 => 
@@ -2320,7 +2552,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::d00ARnLvdpeK4cgS',
+            '_route' => 'generated::NHF9XVUJwHxJhxpn',
           ),
           1 => NULL,
           2 => 
@@ -2356,7 +2588,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::uYbSqW4GC0QSnkNi',
+            '_route' => 'generated::bdC7D28HMdNsOpQU',
           ),
           1 => NULL,
           2 => 
@@ -2447,7 +2679,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::M6Xobp2Do6QNmWpF',
+            '_route' => 'generated::5VetEXzpawbzKepy',
           ),
           1 => NULL,
           2 => 
@@ -2463,7 +2695,7 @@ app('router')->setCompiledRoutes(
     ),
     2 => 
     array (
-      0 => '{^(?|/ver\\-observacion/([^/]++)(*:33)|/observaciones\\-estudiante(?|/([^/]++)(*:78)|\\-tesis/([^/]++)(*:101))|/password/reset/([^/]++)(*:134)|/cmd/([^/]++)(*:155))/?$}sDu',
+      0 => '{^(?|/ver\\-observacion/([^/]++)(*:33)|/observaciones\\-estudiante(?|/([^/]++)(*:78)|\\-tesis/([^/]++)(*:101))|/lista\\-proyectos\\-asignados(?:/([^/]++))?(*:152)|/password/reset/([^/]++)(*:184)|/cmd/([^/]++)(*:205))/?$}sDu',
     ),
     3 => 
     array (
@@ -2536,7 +2768,31 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      134 => 
+      152 => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'jurado.listaProyectosAsignados',
+            'showObservacion' => NULL,
+          ),
+          1 => 
+          array (
+            0 => 'showObservacion',
+          ),
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => true,
+          6 => NULL,
+        ),
+      ),
+      184 => 
       array (
         0 => 
         array (
@@ -2559,13 +2815,13 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      155 => 
+      205 => 
       array (
         0 => 
         array (
           0 => 
           array (
-            '_route' => 'generated::dcunna453l4qJeJJ',
+            '_route' => 'generated::UO5CHhDXR9GCuT6V',
           ),
           1 => 
           array (
@@ -2597,7 +2853,7 @@ app('router')->setCompiledRoutes(
   ),
   'attributes' => 
   array (
-    'generated::WZJC5trObXlePDsV' => 
+    'generated::eDe72P5tndhuklls' => 
     array (
       'methods' => 
       array (
@@ -2618,7 +2874,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
         ),
-        'as' => 'generated::WZJC5trObXlePDsV',
+        'as' => 'generated::eDe72P5tndhuklls',
       ),
       'fallback' => false,
       'defaults' => 
@@ -2743,7 +2999,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::bPScE7p9SIAPPzYf' => 
+    'generated::zPxFjfRzXjJDhzlf' => 
     array (
       'methods' => 
       array (
@@ -2760,13 +3016,13 @@ app('router')->setCompiledRoutes(
         ),
         'uses' => 'O:47:"Laravel\\SerializableClosure\\SerializableClosure":1:{s:12:"serializable";O:46:"Laravel\\SerializableClosure\\Serializers\\Signed":2:{s:12:"serializable";s:297:"O:46:"Laravel\\SerializableClosure\\Serializers\\Native":5:{s:3:"use";a:0:{}s:8:"function";s:79:"function (\\Illuminate\\Http\\Request $request) {
     return $request->user();
-}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"000000004a34f79500000000599dbd6e";}";s:4:"hash";s:44:"jlwqHoVSWW0wWLHgnZEqSD51qiet80Zs4GHCrPyBVbA=";}}',
+}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"0000000066433e3d0000000047df7803";}";s:4:"hash";s:44:"M4Y7dFrtJyJF9Jp4PfSLVkntKsbO+fhDYybaw2KJn2o=";}}',
         'namespace' => NULL,
         'prefix' => 'api',
         'where' => 
         array (
         ),
-        'as' => 'generated::bPScE7p9SIAPPzYf',
+        'as' => 'generated::zPxFjfRzXjJDhzlf',
       ),
       'fallback' => false,
       'defaults' => 
@@ -3061,6 +3317,115 @@ app('router')->setCompiledRoutes(
         array (
         ),
         'as' => 'logout',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'correo_reset' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'send-password-reset',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+        ),
+        'uses' => 'App\\Http\\Controllers\\LoginController@enviarCorreoParaCambio',
+        'controller' => 'App\\Http\\Controllers\\LoginController@enviarCorreoParaCambio',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'correo_reset',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'recuperar_contra' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'recuperar-contraseña',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+        ),
+        'uses' => 'App\\Http\\Controllers\\LoginController@verRecuperarContraseña',
+        'controller' => 'App\\Http\\Controllers\\LoginController@verRecuperarContraseña',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'recuperar_contra',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'guardar_reset_contra' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'guardar-password-reset',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+        ),
+        'uses' => 'App\\Http\\Controllers\\LoginController@guardarResetContraseña',
+        'controller' => 'App\\Http\\Controllers\\LoginController@guardarResetContraseña',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'guardar_reset_contra',
       ),
       'fallback' => false,
       'defaults' => 
@@ -6024,6 +6389,81 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
+    'director.listaProyectosAprobados' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'lista-proyectos-aprobados',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+        ),
+        'uses' => 'App\\Http\\Controllers\\SustentacionProyectoController@lista_proyectos_aprobados',
+        'controller' => 'App\\Http\\Controllers\\SustentacionProyectoController@lista_proyectos_aprobados',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'director.listaProyectosAprobados',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'director.saveAsignacionJuradosProyecto' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'save-asignacion-jurados-proyecto',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+        ),
+        'uses' => 'App\\Http\\Controllers\\SustentacionProyectoController@saveAsignacionJuradoProyecto',
+        'controller' => 'App\\Http\\Controllers\\SustentacionProyectoController@saveAsignacionJuradoProyecto',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'director.saveAsignacionJuradosProyecto',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
     'director.listaTesisAprobadas' => 
     array (
       'methods' => 
@@ -6947,7 +7387,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'asesor.evaluacion.listaTesisAsignadas' => 
+    'jurado.listaTesisAsignadas' => 
     array (
       'methods' => 
       array (
@@ -6969,7 +7409,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'asesor.evaluacion.listaTesisAsignadas',
+        'as' => 'jurado.listaTesisAsignadas',
       ),
       'fallback' => false,
       'defaults' => 
@@ -6985,7 +7425,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'asesor.evaluacion.detalleTesisAsignada' => 
+    'jurado.detalleTesisAsignada' => 
     array (
       'methods' => 
       array (
@@ -7006,7 +7446,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'asesor.evaluacion.detalleTesisAsignada',
+        'as' => 'jurado.detalleTesisAsignada',
       ),
       'fallback' => false,
       'defaults' => 
@@ -7022,13 +7462,13 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'asesor.sustentacion.guardarObservacion' => 
+    'jurado.guardarObservacionTesis' => 
     array (
       'methods' => 
       array (
         0 => 'POST',
       ),
-      'uri' => 'guardar-observacion-sustentacion',
+      'uri' => 'guardar-observacion-jurado-tesis',
       'action' => 
       array (
         'middleware' => 
@@ -7043,7 +7483,303 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'asesor.sustentacion.guardarObservacion',
+        'as' => 'jurado.guardarObservacionTesis',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'jurado.guardarSinObsTesis' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'guardar-sin-observacion-jurado-tesis',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+        ),
+        'uses' => 'App\\Http\\Controllers\\SustentacionProyectoController@guardarSinObservacion',
+        'controller' => 'App\\Http\\Controllers\\SustentacionProyectoController@guardarSinObservacion',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'jurado.guardarSinObsTesis',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'estudiante.evaluacion.proyecto-tesis' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'view-evaluacion-proyecto',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+        ),
+        'uses' => 'App\\Http\\Controllers\\SustentacionProyectoController@viewEvaluacionProyecto',
+        'controller' => 'App\\Http\\Controllers\\SustentacionProyectoController@viewEvaluacionProyecto',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'estudiante.evaluacion.proyecto-tesis',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'estudiante.evaluacion.estado-proyecto-tesis' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'view-estado-evaluacion-proyecto',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+        ),
+        'uses' => 'App\\Http\\Controllers\\SustentacionProyectoController@viewEstadoEvaluacionProyecto',
+        'controller' => 'App\\Http\\Controllers\\SustentacionProyectoController@viewEstadoEvaluacionProyecto',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'estudiante.evaluacion.estado-proyecto-tesis',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'estudiante.evaluacion.actualizarProyectoTesis' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'guardar-proyecto-evaluacion',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+        ),
+        'uses' => 'App\\Http\\Controllers\\SustentacionProyectoController@actualizarProyectoTesis',
+        'controller' => 'App\\Http\\Controllers\\SustentacionProyectoController@actualizarProyectoTesis',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'estudiante.evaluacion.actualizarProyectoTesis',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'jurado.listaProyectosAsignados' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'lista-proyectos-asignados/{showObservacion?}',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+        ),
+        'uses' => 'App\\Http\\Controllers\\SustentacionProyectoController@listaProyectosAsignados',
+        'controller' => 'App\\Http\\Controllers\\SustentacionProyectoController@listaProyectosAsignados',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'jurado.listaProyectosAsignados',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'jurado.evaluarProyectoTesis' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'evaluar-proyecto-tesis',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+        ),
+        'uses' => 'App\\Http\\Controllers\\SustentacionProyectoController@evaluarProyectoTesis',
+        'controller' => 'App\\Http\\Controllers\\SustentacionProyectoController@evaluarProyectoTesis',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'jurado.evaluarProyectoTesis',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'jurado.guardarObservacionProyecto' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'guardar-observacion-jurado',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+        ),
+        'uses' => 'App\\Http\\Controllers\\SustentacionProyectoController@guardarObservacionProyecto',
+        'controller' => 'App\\Http\\Controllers\\SustentacionProyectoController@guardarObservacionProyecto',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'jurado.guardarObservacionProyecto',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'jurado.aprobarProyectoTesis' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'aprobar-proyecto-jurado',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+        ),
+        'uses' => 'App\\Http\\Controllers\\SustentacionProyectoController@aprobarProyectoTesis',
+        'controller' => 'App\\Http\\Controllers\\SustentacionProyectoController@aprobarProyectoTesis',
+        'namespace' => NULL,
+        'prefix' => '',
+        'where' => 
+        array (
+        ),
+        'as' => 'jurado.aprobarProyectoTesis',
       ),
       'fallback' => false,
       'defaults' => 
@@ -7096,7 +7832,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::d00ARnLvdpeK4cgS' => 
+    'generated::NHF9XVUJwHxJhxpn' => 
     array (
       'methods' => 
       array (
@@ -7116,7 +7852,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::d00ARnLvdpeK4cgS',
+        'as' => 'generated::NHF9XVUJwHxJhxpn',
       ),
       'fallback' => false,
       'defaults' => 
@@ -7169,7 +7905,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::uYbSqW4GC0QSnkNi' => 
+    'generated::bdC7D28HMdNsOpQU' => 
     array (
       'methods' => 
       array (
@@ -7189,7 +7925,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::uYbSqW4GC0QSnkNi',
+        'as' => 'generated::bdC7D28HMdNsOpQU',
       ),
       'fallback' => false,
       'defaults' => 
@@ -7388,7 +8124,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::M6Xobp2Do6QNmWpF' => 
+    'generated::5VetEXzpawbzKepy' => 
     array (
       'methods' => 
       array (
@@ -7408,7 +8144,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::M6Xobp2Do6QNmWpF',
+        'as' => 'generated::5VetEXzpawbzKepy',
       ),
       'fallback' => false,
       'defaults' => 
@@ -7424,7 +8160,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::dcunna453l4qJeJJ' => 
+    'generated::UO5CHhDXR9GCuT6V' => 
     array (
       'methods' => 
       array (
@@ -7441,13 +8177,13 @@ app('router')->setCompiledRoutes(
         'uses' => 'O:47:"Laravel\\SerializableClosure\\SerializableClosure":1:{s:12:"serializable";O:46:"Laravel\\SerializableClosure\\Serializers\\Signed":2:{s:12:"serializable";s:295:"O:46:"Laravel\\SerializableClosure\\Serializers\\Native":5:{s:3:"use";a:0:{}s:8:"function";s:77:"function($comand){
     \\Illuminate\\Support\\Facades\\Artisan::call($comand);
 
-}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"000000004a34f71f00000000599dbd6e";}";s:4:"hash";s:44:"+0Dka/lZBVKjWejQkEN+6ySghFWECQhR1gwRrmXyrj8=";}}',
+}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"0000000066433eba0000000047df7803";}";s:4:"hash";s:44:"v8N1S0QDHbO3JUPb0PSUJIp/MgYjPiHYqKZm4sdkvmA=";}}',
         'namespace' => NULL,
         'prefix' => '',
         'where' => 
         array (
         ),
-        'as' => 'generated::dcunna453l4qJeJJ',
+        'as' => 'generated::UO5CHhDXR9GCuT6V',
       ),
       'fallback' => false,
       'defaults' => 

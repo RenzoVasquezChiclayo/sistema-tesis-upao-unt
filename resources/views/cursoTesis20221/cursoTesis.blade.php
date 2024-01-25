@@ -1807,7 +1807,10 @@
                         </div>
                         <div class="row">
                             <h5>Matriz Operacional</h5>
-                            <div class="col-10">
+                            <div class="col-10" id="noVariableMssg" @if($variableop->count() > 0) hidden @endif>
+                                <p>Necesita agregar una o más variables.</p>
+                            </div>
+                            <div class="table-responsive" id="matrizVariableTable" @if($variableop->count() <= 0) hidden @endif>
                                 <table class="table" id="table-matriz" style="border: 5px;">
                                     <thead>
                                         <tr>
@@ -1825,11 +1828,13 @@
                                             <tr id="table-matriz-tr">
                                                 <td>VI</td>
                                                 <td>
-                                                    <textarea class="form-control" name="i_varI" rows="3" cols="8">
-@if ($matriz[0]->variable_I != null)
-{{ $matriz[0]->variable_I }}
-@endif
-</textarea>
+                                                    <select class="form-control" name="i_varI" id="rowMatrizVI">
+                                                        @if ($variableop->count()>0)
+                                                            @foreach ($variableop as $v)
+                                                                <option value="{{$v->descripcion}}" @if($matriz[0]->variable_I == $v->descripcion) selected @endif>{{$v->descripcion}}</option>
+                                                            @endforeach
+                                                        @endif
+                                                    </select>
                                                 </td>
                                                 <td>
                                                     <textarea class="form-control" name="i_dc" rows="3" cols="8">
@@ -1870,11 +1875,13 @@
                                             <tr>
                                                 <td>VD</td>
                                                 <td>
-                                                    <textarea class="form-control" name="d_varD" rows="3" cols="8">
-@if ($matriz[0]->variable_D != null)
-{{ $matriz[0]->variable_D }}
-@endif
-</textarea>
+                                                    <select class="form-control" name="d_varD" id="rowMatrizVD">
+                                                        @if ($variableop->count()>0)
+                                                            @foreach ($variableop as $v)
+                                                                <option value="{{$v->descripcion}}" @if($matriz[0]->variable_D == $v->descripcion) selected @endif>{{$v->descripcion}}</option>
+                                                            @endforeach
+                                                        @endif
+                                                    </select>
                                                 </td>
                                                 <td>
                                                     <textarea class="form-control" name="d_dc" rows="3" cols="8">
@@ -2136,7 +2143,7 @@
 
 
                         <div class="row" style="padding-top:15px;">
-                            <div class="col-12 table-responsive-sm">
+                            <div class="table-responsive">
                                 <table id="detalleReferencias" class="table table-bordered ">
                                     @if ($referencias->count() > 0)
                                         @php
@@ -2349,6 +2356,8 @@
         </script>
     @endif
     <script type="text/javascript">
+        let variablesFromBd = @json($variableop);
+        let array_variable = [];
         let cronogramas_py_bd = @json($cronogramas_py);
         let cronograma = @json($cronograma);
         let lastMonth = 0;
@@ -2373,6 +2382,64 @@
                     setColorInit(item.cod_cronograma + 'Tr' + rango[0]);
                 })
             });
+        }
+        if(variablesFromBd.length > 0){
+
+            variablesFromBd.forEach(item =>{
+                array_variable.push(item.descripcion);
+            })
+        }
+
+        /*From myjs.js*/
+        function agregarVariable(){
+            let iVariable = array_variable.length;
+            descripcion = document.getElementById("taVariable").value;
+            fila = '<tbody><tr id="filaV'+iVariable+'"><td><input type="hidden" name="iddescripcionVar[]" value="'+descripcion+'">'+descripcion+'</td><td align="center"><a href="#" class="btn btn-warning" onclick="quitarVariable('+iVariable+');">X</a></td></tr></tbody>';
+            document.getElementById('variableTable').innerHTML +=fila;
+            document.getElementById('taVariable').value="";
+            addTempVariable(descripcion);
+            console.log(`after add: ${array_variable}`);
+        }
+        function quitarVariable(item){
+            console.log(`to delete: ${array_variable[item]}`);
+            document.getElementById('filaV'+item).remove();
+            array_variable[item]="";
+            console.log(`after delete: ${array_variable}`);
+            updateMatriz();
+            //iVariable--;
+        }
+
+        function addTempVariable(descripcion){
+            array_variable.push(descripcion);
+            updateMatriz();
+        }
+        function updateMatriz(){
+            let stateViewMatriz = array_variable.length > 0;
+            /* Cambiar estado de vista de los componentes */
+            document.getElementById("noVariableMssg").hidden = stateViewMatriz;
+            document.getElementById("matrizVariableTable").hidden = !stateViewMatriz;
+
+            /* Generar select en la matriz */
+            if(stateViewMatriz){
+                let select1 = document.getElementById('rowMatrizVI');
+                let select2 = document.getElementById('rowMatrizVD');
+                select1.innerHTML = '';
+                select2.innerHTML = '';
+
+                array_variable.forEach(item => {
+                    if(item!=""){
+                        let option1 = document.createElement('option');
+                        option1.value = item;
+                        option1.text = item;
+                        select1.appendChild(option1);
+
+                        let option2 = document.createElement('option');
+                        option2.value = item;
+                        option2.text = item;
+                        select2.appendChild(option2);
+                    }
+                });
+            }
         }
 
         /*Funcion para agregar las celdas referentes de los meses de ejecucion*/
