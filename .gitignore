@@ -16,10 +16,10 @@ yarn-error.log
 
 #actualizados
 .env
-bootstrap/cache/
+/bootstrap/cache/
 storage/
 .env.*
 /logs/
 *.log
 .env.backup
-vendor/
+/vendor/

@@ -9,7 +9,7 @@ class DetalleObsSustentacion extends Model
 {
     use HasFactory;
     protected $table = 'detalle_obs_sustentacion';
-    protected $primaryKey = 'cod_detalleObs_sustentacion';
+    protected $primaryKey = 'cod_detalleObs';
     protected $fillable = [
         'id_observacion',
         'tema_referido',

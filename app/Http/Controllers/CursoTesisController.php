@@ -169,7 +169,7 @@ class CursoTesisController extends Controller
                     if ($tema == "localidad_institucion") {
                         $name_request = 'txtlocalidad';
                     } else {
-                        $name_request = 'txt' . $tema;
+                        $name_request = 'txt'.$tema;
                     }
                     $detalleEEG = Detalle_Observaciones::find($detalles[$i]->cod_detalleObs);
 

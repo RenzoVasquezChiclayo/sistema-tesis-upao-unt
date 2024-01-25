@@ -10,7 +10,7 @@ class ObservacionSustentacionProyecto extends Model
     use HasFactory;
     public $table = 'observacion_sustentacionproy';
 
-    protected $primaryKey = 'cod_observacion_sustentacion';
+    protected $primaryKey = 'cod_observacion';
     protected $fillable = [
         'cod_historialObs',
         'cod_jurado',

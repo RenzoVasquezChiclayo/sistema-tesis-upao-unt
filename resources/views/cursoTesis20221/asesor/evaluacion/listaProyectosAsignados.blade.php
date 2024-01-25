@@ -121,7 +121,7 @@
                                                 @csrf
                                                 <input type="hidden" name="cod_proyectotesis" value="{{$estu[0]->cod_proyectotesis}}">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="" id="chkAprobado" onclick="aprobarProyecto(this);" @if($estu[0]->estadoDesignacion > 1 || $estu[0]->numObs > 0)disabled @endif @if($estu[0]->estadoDesignacion == 3) checked @endif>
+                                                    <input class="form-check-input" type="checkbox" value="" id="chkAprobado" onclick="aprobarProyecto(this);" @if($estu[0]->estadoDesignacion > 1 || $estu[0]->numObs > 0 || ($estu[0]->estadoResultado != null && $estu[0]->estadoResultado ==1))disabled @endif @if($estu[0]->estadoResultado != null && $estu[0]->estadoResultado ==1) checked @endif>
                                                     <label class="form-check-label" for="chkAprobado">
                                                       Aprobado
                                                     </label>
@@ -160,10 +160,15 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @if(sizeof($observaciones)<=0)
+                        <tr>
+                            <td colspan="4"><p><i>No existen observaciones.</i></p></td>
+                        </tr>
+                    @endif
                     @foreach ($observaciones as $obs)
                         <tr>
                             <td>{{'#'.($loop->index +1)}}</td>
-                            <td>{{$obs->cod_jurado}}</td>
+                            <td>{{$obs->apellidosJurado.', '.$obs->nombresJurado}}</td>
                             <td>{{$obs->fechaHistorial}}</td>
                         </tr>
                     @endforeach

@@ -417,7 +417,7 @@
                                 <h5>Localidad e Institucion</h5>
                                 <div class="row" id="auxObslocalidad_institucion">
                                     <div class="col-12 col-md-6">
-                                        <label for="txtLocalidad" class="form-label">Localidad</label>
+                                        <label for="txtlocalidad" class="form-label">Localidad</label>
                                         <input class="form-control" name="txtlocalidad" id="txtLocalidad" type="text"
                                             value="@if ($tesis[0]->localidad != ''){{$tesis[0]->localidad}}@endif"
                                             placeholder="Localidad" required>

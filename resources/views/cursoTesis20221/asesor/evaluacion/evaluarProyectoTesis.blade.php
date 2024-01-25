@@ -1126,10 +1126,12 @@
                     <input type="hidden" name="camposActivos" id="camposActivos" value="{{ $camposActivos }}">
                     <div class="row" style="padding-top: 20px; padding-bottom:20px;">
                         <div class="d-grid gap-2 d-md-block">
-                            @if ($cursoTesis[0]->estadoDesignacion == 1 || $cursoTesis[0]->estadoDesignacion == 0)
-                                @if($verifyObs->numObs<=0)
-                                <input class="btn btn-primary" type="button" id="btnConObservacion"
-                                    value="Guardar Observaciones" onclick="uploadProyecto();">
+                            @if ($cursoTesis[0]->estadoDesignacion == 1 || $cursoTesis[0]->estadoDesignacion == 0 )
+                                @if(sizeof($resultado)<=0)
+                                    @if($verifyObs->numObs<=0 )
+                                    <input class="btn btn-primary" type="button" id="btnConObservacion"
+                                        value="Guardar Observaciones" onclick="uploadProyecto();">
+                                    @endif
                                 @endif
                             @endif
                             <a href="{{ route('jurado.listaProyectosAsignados') }}" type="button"

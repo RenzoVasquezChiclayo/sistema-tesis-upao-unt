@@ -24,6 +24,7 @@ use App\Models\Presupuesto;
 use App\Models\Presupuesto_Proyecto;
 use App\Models\recursos;
 use App\Models\referencias;
+use App\Models\ResultadoJuradoProyecto;
 use App\Models\TesisCT2022;
 use App\Models\TipoInvestigacion;
 use App\Models\TipoReferencia;
@@ -131,19 +132,21 @@ class SustentacionProyectoController extends Controller
                          ->where('os.cod_jurado', $jurado->cod_jurado)
                          ->where('os.estado', 1);
                 })
-                ->select('gi.id_grupo', 'gi.num_grupo', 'd_g_i.cod_matricula', 'pt.cod_proyectotesis', 'pt.titulo', 'ac.nombres as nombresAsesor', 'ac.apellidos as apellidosAsesor', 'es.nombres as nombresAutor', 'es.apellidos as apellidosAutor', 'dj.cod_jurado1', 'dj.cod_jurado2', 'dj.cod_jurado3', 'dj.cod_jurado4', 'pt.estado', 'dj.estado as estadoDesignacion',DB::raw('count(os.cod_observacion) as numObs'))
+                ->leftJoin('resultado_jurado_proyecto as rj', function($join) use ($jurado){
+                    $join->on('dj.cod_designacion_proyecto','=','rj.cod_designacion_proyecto')
+                    ->where('rj.cod_jurado',$jurado->cod_jurado);
+                })
+                ->select('gi.id_grupo', 'gi.num_grupo', 'd_g_i.cod_matricula', 'pt.cod_proyectotesis', 'pt.titulo', 'ac.nombres as nombresAsesor', 'ac.apellidos as apellidosAsesor', 'es.nombres as nombresAutor', 'es.apellidos as apellidosAutor', 'dj.cod_jurado1', 'dj.cod_jurado2', 'dj.cod_jurado3', 'dj.cod_jurado4', 'pt.estado', 'dj.estado as estadoDesignacion',DB::raw('count(os.cod_observacion) as numObs'),'rj.estado as estadoResultado')
                 ->where('ho.sustentacion',true)
                 ->where('dj.cod_jurado1', $asesor->cod_docente)
                 ->orWhere('dj.cod_jurado2', $asesor->cod_docente)
                 ->orWhere('dj.cod_jurado3', $asesor->cod_docente)
-                ->groupBy('gi.id_grupo', 'gi.num_grupo', 'd_g_i.cod_matricula', 'pt.cod_proyectotesis', 'pt.titulo', 'ac.nombres', 'ac.apellidos', 'es.nombres', 'es.apellidos', 'dj.cod_jurado1', 'dj.cod_jurado2', 'dj.cod_jurado3', 'dj.cod_jurado4', 'pt.estado', 'dj.estado')
+                ->groupBy('gi.id_grupo', 'gi.num_grupo', 'd_g_i.cod_matricula', 'pt.cod_proyectotesis', 'pt.titulo', 'ac.nombres', 'ac.apellidos', 'es.nombres', 'es.apellidos', 'dj.cod_jurado1', 'dj.cod_jurado2', 'dj.cod_jurado3', 'dj.cod_jurado4', 'pt.estado', 'dj.estado','rj.estado')
                 ->get();
 
-
-            //dd($lista_tesis);
             $observaciones = null;
             if($showObservacion != null){
-                $observaciones = ObservacionSustentacionProyecto::join('historial_observaciones as ho','observacion_sustentacionproy.cod_historialObs','ho.cod_historialObs')->where('ho.cod_proyectotesis',$showObservacion)->where('ho.sustentacion',true)->select('observacion_sustentacionproy.*', 'ho.fecha as fechaHistorial')->get();
+                $observaciones = ObservacionSustentacionProyecto::join('historial_observaciones as ho','observacion_sustentacionproy.cod_historialObs','ho.cod_historialObs')->join('jurado as j','observacion_sustentacionproy.cod_jurado','j.cod_jurado')->join('asesor_curso as ac','j.cod_docente','ac.cod_docente')->where('ho.cod_proyectotesis',$showObservacion)->where('ho.sustentacion',true)->select('observacion_sustentacionproy.*', 'ho.fecha as fechaHistorial','ac.nombres as nombresJurado','ac.apellidos as apellidosJurado')->orderBy('observacion_sustentacionproy.created_at','ASC')->get();
             }
 
             foreach ($lista_tesis as $tesis) {
@@ -191,7 +194,7 @@ class SustentacionProyectoController extends Controller
             ->join('designacion_jurado_proyecto as dj', 'p.cod_proyectotesis', 'dj.cod_proyectotesis')
             ->leftJoin('grado_academico as ga', 'ac.cod_grado_academico', 'ga.cod_grado_academico')
             ->leftJoin('categoria_docente as cd', 'ac.cod_categoria', 'cd.cod_categoria')
-            ->select('p.*', 'ac.nombres as nombre_asesor', 'ac.apellidos as apellidos_asesor', 'ac.estado as estadoAsesor', 'ac.direccion', 'ga.descripcion as DescGrado', 'cd.descripcion as DescCat', 'dj.estado as estadoDesignacion')
+            ->select('p.*', 'ac.nombres as nombre_asesor', 'ac.apellidos as apellidos_asesor', 'ac.estado as estadoAsesor', 'ac.direccion', 'ga.descripcion as DescGrado', 'cd.descripcion as DescCat', 'dj.estado as estadoDesignacion','dj.cod_designacion_proyecto')
             ->where('p.cod_proyectotesis', $cod_proyectotesis)
             ->get();
         $verifyObs = DB::table('historial_observaciones as ho')
@@ -269,7 +272,7 @@ class SustentacionProyectoController extends Controller
 
 
         $matriz = MatrizOperacional::where('cod_proyectotesis', '=', $cursoTesis[0]->cod_proyectotesis)->get();
-
+        $resultado = ResultadoJuradoProyecto::where('cod_designacion_proyecto',$cursoTesis[0]->cod_designacion_proyecto)->where('cod_jurado',$jurado->cod_jurado)->get();
 
         return view('cursoTesis20221.asesor.evaluacion.evaluarProyectoTesis', [
             'presupuesto' => $presupuesto, 'fin_persigue' => $fin_persigue, 'diseno_investigacion' => $diseno_investigacion, 'tipoinvestigacion' => $tipoinvestigacion,
@@ -278,7 +281,8 @@ class SustentacionProyectoController extends Controller
             'camposFull' => $camposFull, 'matriz' => $matriz, 'estudiantes_grupo' => $estudiantes_grupo, 'cronogramas' => $cronogramas,
             'cronogramas_py' => $cronogramas_py,
             'camposActivos' => $camposActivos,
-            'verifyObs'=>$verifyObs
+            'verifyObs'=>$verifyObs,
+            'resultado'=>$resultado
         ]);
     }
 
@@ -411,7 +415,7 @@ class SustentacionProyectoController extends Controller
             $observaciones->estado = 1;
             $observaciones->save();
 
-            $findObs = ObservacionSustentacionProyecto::where('cod_historialObs',$existHisto[0]->cod_historialObs)->get();
+            $findObs = ObservacionSustentacionProyecto::where('cod_historialObs',$existHisto[0]->cod_historialObs)->where('estado',1)->get();
             if(sizeof($findObs) >=3){
                 $existHisto[0]->estado = 2;
                 $existHisto[0]->save();
@@ -419,14 +423,24 @@ class SustentacionProyectoController extends Controller
                 $designacion->save();
             }
 
-            $latestCorrecion = ObservacionSustentacionProyecto::where('cod_historialObs', $existHisto[0]->cod_historialObs)->where('estado', 1)->get();
+            $latestCorrecion = ObservacionSustentacionProyecto::where('cod_historialObs', $existHisto[0]->cod_historialObs)->where('cod_jurado',$jurado->cod_jurado)->where('estado', 1)->get();
+            $exisDetalle = DetalleObsSustentacionProy::join('observacion_sustentacionproy as os','detalle_obs_sustentacionproy.cod_observacion','os.cod_observacion')->join('historial_observaciones as ho','os.cod_historialObs','ho.cod_historialObs')->select('detalle_obs_sustentacionproy.cod_detalleObs','detalle_obs_sustentacionproy.tema_referido')->where('ho.cod_historialObs',$existHisto[0]->cod_historialObs)->get();
+            //dd($exisDetalle);
             for ($i = 0; $i < sizeof($arrayThemes); $i++) {
-                $detalleObs = new DetalleObsSustentacionProy();
-                $detalleObs->cod_observacion = $latestCorrecion[0]->cod_observacion;
-                $detalleObs->tema_referido = $arrayThemes[$i];
-                $detalleObs->correccion = null;
-                $detalleObs->estado = 1;
-                $detalleObs->save();
+                $exist = false;
+                foreach($exisDetalle as $edetalle){
+                    if($edetalle->tema_referido == $arrayThemes[$i]){
+                        $exist = true;
+                    }
+                }
+                if(!$exist){
+                    $detalleObs = new DetalleObsSustentacionProy();
+                    $detalleObs->cod_observacion = $latestCorrecion[0]->cod_observacion;
+                    $detalleObs->tema_referido = $arrayThemes[$i];
+                    $detalleObs->correccion = null;
+                    $detalleObs->estado = 1;
+                    $detalleObs->save();
+                }
             }
             return redirect()->route('jurado.listaProyectosAsignados')->with('datos', 'okobservacion');
         } catch (\Throwable $th) {
@@ -437,9 +451,21 @@ class SustentacionProyectoController extends Controller
 
     public function aprobarProyectoTesis(Request $request){
         try {
+            $jurado = Jurado::join('asesor_curso as ac','jurado.cod_docente','ac.cod_docente')->where('ac.username',auth()->user()->name)->first();
             $designacion = DesignacionJuradoProyecto::where('cod_proyectotesis',$request->cod_proyectotesis)->first();
-            $designacion->estado = 3;
-            $designacion->save();
+            $resultadoHistorial = ResultadoJuradoProyecto::where('cod_designacion_proyecto',$designacion->cod_designacion_proyecto)->get();
+            $newResultado = new ResultadoJuradoProyecto();
+            $newResultado->cod_designacion_proyecto = $designacion->cod_designacion_proyecto;
+            $newResultado->cod_jurado = $jurado->cod_jurado;
+            $newResultado->estado = 1;
+            $newResultado->save();
+            if(sizeof($resultadoHistorial)>=2){
+                $resultadoHistorial = ResultadoJuradoProyecto::where('cod_designacion_proyecto',$designacion->cod_designacion_proyecto)->where('estado',1)->get();
+                //dd($resultadoHistorial);
+                $designacion->estado = (sizeof($resultadoHistorial)>=3) ? 3 : 4;
+                $designacion->save();
+            }
+
             return redirect()->route('jurado.listaProyectosAsignados')->with('datos', 'okAprobadoProyecto');
         } catch (\Throwable $th) {
             return redirect()->route('jurado.listaProyectosAsignados')->with('datos', 'oknotAprobadoProyecto');
@@ -541,12 +567,16 @@ class SustentacionProyectoController extends Controller
         $asesor = AsesorCurso::where('cod_docente', $tesis->cod_docente)->first();
         $observacionX = ObservacionSustentacionProyecto::join('historial_observaciones as ho', 'observacion_sustentacionproy.cod_historialObs', 'ho.cod_historialObs')
             ->select('observacion_sustentacionproy.*')->where('ho.cod_proyectotesis', $tesis->cod_proyectotesis)
-            ->where('observacion_sustentacionproy.estado', 2)->get();
+            ->where('observacion_sustentacionproy.estado', 1)->get();
         $designacion = DesignacionJuradoProyecto::where('cod_proyectotesis',$request->cod_proyectotesis)->where('estado',2)->first();
         if (sizeof($observacionX) > 0) {
-            $detalles = DetalleObsSustentacionProy::where('cod_observacion', $observacionX[0]->cod_observacion)->get();
+            $detalles = DetalleObsSustentacionProy::join('observacion_sustentacionproy as os','detalle_obs_sustentacionproy.cod_observacion','os.cod_observacion')->join('historial_observaciones as ho',function ($join) use ($tesis) {
+                $join->on('os.cod_historialObs','=','ho.cod_historialObs' )
+                     ->where('ho.cod_proyectotesis', $tesis->cod_proyectotesis)
+                     ->where('ho.estado', 2);
+            })->select('detalle_obs_sustentacionproy.*')->where('detalle_obs_sustentacionproy.estado',1)->get();
         }
-
+        //dd($detalles);
         try {
 
             /*Si el egresado tiene una observacion pendiente, solo se guardaran los cambios solicitados*/
@@ -557,11 +587,12 @@ class SustentacionProyectoController extends Controller
                     if ($tema == "localidad_institucion") {
                         $name_request = 'txtlocalidad';
                     } else {
-                        $name_request = 'txt' . $tema;
+                        $name_request = 'txt'.$tema;
                     }
-                    $detalleEEG = Detalle_Observaciones::find($detalles[$i]->cod_detalleObs);
+                    $detalleEEG = DetalleObsSustentacionProy::find($detalles[$i]->cod_detalleObs);
 
                     $detalleEEG->correccion = $request->$name_request;
+                    $detalleEEG->estado = 2;
                     $detalleEEG->save();
                 }
 
@@ -569,10 +600,11 @@ class SustentacionProyectoController extends Controller
                 $historialX[0]->fecha = now();
                 $historialX[0]->estado = 1;
                 $historialX[0]->save();
-
-                /*AHORA SON 3 OBSERVACIONES */
-                // $observacionX[0]->estado = 2;
-                // $observacionX[0]->save();
+                foreach ($observacionX as $obs) {
+                    $obs->fecha = now();
+                    $obs->estado = 2;
+                    $obs->save();
+                }
             }
 
             /*Si elimina datos que ya existian en las tablas*/
@@ -734,35 +766,6 @@ class SustentacionProyectoController extends Controller
             if ($request->txtfinanciamiento != "") {
                 $tesis->financiamiento = $request->txtfinanciamiento;
             }
-
-            //Guardar los grupos $request->gruposFotosRP
-            // $historialArchivosT = Archivo_Tesis_ct2022::where('cod_proyectotesis','=',$tesis->cod_proyectotesis)->get();
-
-            // if (sizeof($historialArchivosT)==0) {
-            //     $historialArchivos = new Archivo_Tesis_ct2022();
-            //     $historialArchivos->cod_proyectotesis = $tesis->cod_proyectotesis;
-            //     $historialArchivos->save();
-            // }
-
-            // // COEMNTADO PARA PRESENTACION AL PROFESOR, LUEGO DESCOMENTAR.
-            // $historialArchivosX = Archivo_Tesis_ct2022::where('cod_proyectotesis',$tesis->cod_proyectotesis)->get();
-
-            // //Guardar archivos de Realidad Problematica
-            // $unirtxtAreaRP = $this->getText_saveImg($request,$request->txtAreaRP,$estudiante->cod_matricula,
-            //         $historialArchivosX[0]->cod_archivos, "Realidad-Problematica","imagenesRP",$request->gruposRP,$request->txtreal_problematica);
-
-            // //Guardar archivos de Antecedentes
-            // $unirtxtAreaANT = $this->getText_saveImg($request,$request->txtAreaANT,$estudiante->cod_matricula,
-            //         $historialArchivosX[0]->cod_archivos, "Antecedentes","imagenesANT",$request->gruposANT,$request->txtantecedentes);
-
-            // //Guardar archivos de Justificacion de la Investigacion
-            // $unirtxtAreaJI = $this->getText_saveImg($request,$request->txtAreaJI,$estudiante->cod_matricula,
-            //         $historialArchivosX[0]->cod_archivos, "Justificacion-I","imagenesJI",$request->gruposJI,$request->txtjustificacion);
-
-            // //Guardar archivos de Formulacion del Problema
-            // $unirtxtAreaFP = $this->getText_saveImg($request,$request->txtAreaFP,$estudiante->cod_matricula,
-            //         $historialArchivosX[0]->cod_archivos, "Formulacion-P","imagenesFP",$request->gruposFP,$request->txtformulacion_prob);
-
             // cAMBIAR LOS TXT POR LOS UNIRTXT
             /*Realidad problematica y others*/
             if ($request->txtreal_problematica != "") {
@@ -821,15 +824,9 @@ class SustentacionProyectoController extends Controller
                 $tesis->marco_legal = $request->txtmarco_legal;
             }
             if ($isSaved == "true") {
-                //$tesis->estado = 9;
                 $designacion->estado = 9;
             } else {
-                //$tesis->estado = 1;
                 $designacion->estado = 1;
-                // if ($asesor->correo != null) {
-                //     Mail::to($asesor->correo)->send(new EstadoEnviadaMail($request->txttitulo,$estudiantes_grupo));
-                // }
-
             }
 
             /* Recursos */
@@ -870,7 +867,7 @@ class SustentacionProyectoController extends Controller
                     if (sizeof($observacionX) > 0) {
                         for ($i = 0; $i < sizeof($detalles); $i++) {
                             if ($detalles[$i]->tema_referido == 'recursos') {
-                                $detalleEEG = Detalle_Observaciones::find($detalles[$i]->cod_detalleObs);
+                                $detalleEEG = DetalleObsSustentacionProy::find($detalles[$i]->cod_detalleObs);
                                 $detalleEEG->correccion = $cadena;
                                 $detalleEEG->save();
                             }
@@ -917,7 +914,7 @@ class SustentacionProyectoController extends Controller
                     if (sizeof($observacionX) > 0) {
                         for ($i = 0; $i < sizeof($detalles); $i++) {
                             if ($detalles[$i]->tema_referido == 'presupuesto_proy') {
-                                $detalleEEG = Detalle_Observaciones::find($detalles[$i]->cod_detalleObs);
+                                $detalleEEG = DetalleObsSustentacionProy::find($detalles[$i]->cod_detalleObs);
                                 $detalleEEG->correccion = $cadena_presup;
                                 $detalleEEG->save();
                             }
@@ -953,7 +950,7 @@ class SustentacionProyectoController extends Controller
                     if (sizeof($observacionX) > 0) {
                         for ($i = 0; $i < sizeof($detalles); $i++) {
                             if ($detalles[$i]->tema_referido == 'objetivos') {
-                                $detalleEEG = Detalle_Observaciones::find($detalles[$i]->cod_detalleObs);
+                                $detalleEEG = DetalleObsSustentacionProy::find($detalles[$i]->cod_detalleObs);
                                 $detalleEEG->correccion = $cadena;
                                 $detalleEEG->save();
                             }
@@ -982,7 +979,7 @@ class SustentacionProyectoController extends Controller
                     if (sizeof($observacionX) > 0) {
                         for ($i = 0; $i < sizeof($detalles); $i++) {
                             if ($detalles[$i]->tema_referido == 'variables') {
-                                $detalleEEG = Detalle_Observaciones::find($detalles[$i]->cod_detalleObs);
+                                $detalleEEG = DetalleObsSustentacionProy::find($detalles[$i]->cod_detalleObs);
                                 $detalleEEG->correccion = $cadena;
                                 $detalleEEG->save();
                             }
@@ -1226,10 +1223,12 @@ class SustentacionProyectoController extends Controller
 
             $tesis->fecha = now();
             $tesis->save();
-            return redirect()->route('information')->with('datos','okEvaluacionProyecto');
+
+            $designacion->save();
+            return redirect()->route('user_information')->with('datos','okActualizacionProyecto');
         } catch (\Throwable $th) {
             dd($th);
-            return redirect()->route('')->with('datos', 'oknot');
+            return redirect()->route('user_information')->with('datos', 'oknotActualizacionProyecto');
         }
     }
 
