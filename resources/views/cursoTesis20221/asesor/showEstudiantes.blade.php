@@ -63,11 +63,10 @@
                                 @foreach ($studentforGroups as $estu)
                                     <tr
                                     @if ($estu[0]->estado == 3)
-                                        style="background-color: #7BF96E;"
+                                        style="background-color: rgba(76, 175, 80, 0.2);"
                                     @elseif ($estu[0]->estado == 4)
-                                        style="background-color: #FA6A56;"
-                                    @endif
-                                    >
+                                    style="background-color: rgba(255, 87, 51, 0.2);"
+                                    @endif>
                                         <td>{{$estu[0]->num_grupo}}</td>
                                         <td colspan="2">
                                             <table class="table table-borderless mb-0">

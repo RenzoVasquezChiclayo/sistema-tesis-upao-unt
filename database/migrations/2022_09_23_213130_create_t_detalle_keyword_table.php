@@ -21,7 +21,6 @@ return new class extends Migration
                     ->on('t_keyword')
                     ->onDelete('cascade');
             $table->string('keyword')->nullable(false);
-
         });
     }
 

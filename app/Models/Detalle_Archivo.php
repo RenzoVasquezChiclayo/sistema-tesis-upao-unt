@@ -24,5 +24,4 @@ class Detalle_Archivo extends Model
         return $this->hasOne(Archivo_Tesis_ct2022::class);
     }
 
-    public $timestamps = false;
 }

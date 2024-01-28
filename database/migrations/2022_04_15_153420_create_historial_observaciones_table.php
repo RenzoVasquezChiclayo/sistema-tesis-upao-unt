@@ -23,6 +23,7 @@ return new class extends Migration
             $table->boolean('sustentacion')->default(false);
             $table->date('fecha')->nullable();
             $table->tinyInteger('estado')->default(0);
+            $table->timestamps();
         });
 
     }

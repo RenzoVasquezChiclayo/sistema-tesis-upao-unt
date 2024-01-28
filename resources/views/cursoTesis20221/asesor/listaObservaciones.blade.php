@@ -33,69 +33,59 @@
 <div class="card-body">
     <div class="row">
         <div class="col-12">
-            <div class="row box-center">
-                <div class="col-10">
-                    <div class="row" style="display:flex; align-items:right; justify-content:right;">
-                        <div class="col-9 col-md-4">
-                            <form id="listObservacion" name="listObservacion" method="get">
-                                <div class="row">
-                                    <div class="col-9">
-                                        <input type="text" class="form-control me-2" name="buscarObservacion" placeholder="Buscar observacion" value="{{$buscarObservaciones}}" aria-describedby="btn-search">
-                                    </div>
-                                    <div class="col-3">
-                                        <input class="btn btn-outline-success" type="submit" id="btn-search" value="Search">
-                                    </div>
-                                </div>
-                            </form>
+            <div class="mx-3" style="display:flex; align-items:end; justify-content:end;">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-4">
+                    <form id="listObservacion" name="listObservacion" method="get">
+                        <div class="row">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" name="buscarObservacion" placeholder="Buscar por código o apellidos" value="{{$buscarObservaciones}}" aria-describedby="btn-search">
+                                <button class="btn btn-outline-success" type="submit" id="btn-search"><i class='bx bx-sm bx-search' style="vertical-align: middle;"></i></button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row" style="display:flex; align-items:right; justify-content:right;">
-                        <div class="col-7 col-xl-4" style="text-align: right;">
-                            <span id="notfound">@if (sizeof($estudiantes)==0)
-                                No se encontro algun registro
-                            @endif
-                            </span>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
         <div class="col-12">
+            <div class="table-responsive mx-3">
+                <table id="table-formato" class="table table-bordered table-striped table-responsive-md">
+                    <thead>
+                        <tr>
+                            <td>Grupo</td>
+                            <td>Escuela</td>
+                            <td>Ultima Observacion</td>
+                            <td style="text-align:center;">Ver Observacion</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (sizeof($estudiantes)<=0)
+                        <tr>
+                            <td colspan="4"><i>No se encontró algún registro.</i></td>
+                        </tr>
+                        @endif
+
+                        @foreach ($estudiantes as $estudiante)
+                            <tr @if ($estudiante->estado == 3)
+                                style="background-color: rgba(76, 175, 80, 0.2);"
+                            @elseif ($estudiante->estado == 4)
+                            style="background-color: rgba(255, 87, 51, 0.2);"
+                            @endif>
+                                <td>{{$estudiante->id_grupo}}</td>
+                                <td>Contabilidad y Finanzas</td>
+                                <td>{{$estudiante->fecha}}</td>
+                                <td style="text-align:center;">
+                                    <a href="{{route('asesor.verObsEstudiante',$estudiante->cod_proyectotesis)}}"><i class='bx bx-sm bx-show'></i></a>
+
+                                </td>
+                            </tr>
+                        @endforeach
+
+                    </tbody>
+                </table>
+                {{$estudiantes->links()}}
+            </div>
             <div class="row box-center">
-                <div class="col-10 ">
-                    <div class="row">
-                        <table id="table-formato" class="table table-bordered table-striped table-responsive-md">
-                            <thead>
-                                <tr>
-                                    <td>Grupo</td>
-                                    <td>Escuela</td>
-                                    <td>Ultima Observacion</td>
-                                    <td style="text-align:center;">Ver Observacion</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($estudiantes as $estudiante)
-                                    <tr
-                                    @if ($estudiante->estado == 3)
-                                        style= "background-color: #7BF96E;"
-                                    @elseif ($estudiante->estado == 4)
-                                        style= "background-color: #FA6A56;"
-                                    @endif
-                                    >
-                                        <td>{{$estudiante->id_grupo}}</td>
-                                        <td>Contabilidad y Finanzas</td>
-                                        <td>{{$estudiante->fecha}}</td>
-                                        <td style="text-align:center;">
-                                            <a href="{{route('asesor.verObsEstudiante',$estudiante->cod_historialObs)}}"><i class='bx bx-sm bx-show'></i></a>
-
-                                        </td>
-                                    </tr>
-                                @endforeach
-
-                            </tbody>
-                        </table>
-                        {{$estudiantes->links()}}
-                    </div>
+                <div class="col-12">
 
 
                 </div>

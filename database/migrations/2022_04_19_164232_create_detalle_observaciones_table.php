@@ -22,6 +22,7 @@ return new class extends Migration
                     ->onDelete('cascade');
             $table->string('tema_referido',60);
             $table->text('correccion')->nullable();
+            $table->timestamps();
             // $table->foreign('cod_historialObs')
             //         ->references('cod_historialObs')
             //         ->on('historial_observaciones')

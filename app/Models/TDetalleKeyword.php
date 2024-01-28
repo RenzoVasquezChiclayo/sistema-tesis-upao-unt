@@ -19,5 +19,4 @@ class TDetalleKeyword extends Model
         return $this->hasOne(TKeyword::class);
     }
 
-    public $timestamps = false;
 }

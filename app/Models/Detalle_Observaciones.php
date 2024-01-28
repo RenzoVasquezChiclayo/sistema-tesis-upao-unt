@@ -20,5 +20,4 @@ class Detalle_Observaciones extends Model
         return $this->hasOne(ObservacionesProy::class);
     }
 
-    public $timestamps = false;
 }

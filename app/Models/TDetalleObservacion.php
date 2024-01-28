@@ -19,6 +19,5 @@ class TDetalleObservacion extends Model
     public function observacion(){
         return $this->hasOne(TObservacion::class);
     }
-    public $timestamps = false;
 
 }

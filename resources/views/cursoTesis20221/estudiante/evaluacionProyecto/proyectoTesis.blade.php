@@ -206,18 +206,18 @@
                     <div class="col-12 mb-3">
                         <input type="hidden" name="textcod" value="">
                         <div class="row" @if ($campos->count() > 0 && $campos[0]->titulo == 0) hidden @endif>
-                            <h5>Titulo</h5>
+                            <h5>Título</h5>
                             <div class="row" id="auxObstitulo">
                                 <div class="col-12">
                                     <div class="row gy-1 gy-sm-0">
-                                        <div class="col-12 col-sm-11">
+                                        <div class="col-12 col-md-10">
                                             <input class="form-control" name="txttitulo" id="txttitulo" type="text"
                                                 value="@if ($tesis[0]->titulo != '') {{ $tesis[0]->titulo }} @endif"
                                                 placeholder="Ingrese el titulo del proyecto" required>
                                             <span class="ps-2" id="validateTitle" name="validateTitle"
                                                 style="color: red"></span>
                                         </div>
-                                        <div class="col-12 col-sm-1">
+                                        <div class="col-2">
                                             <input type="button" value="Verificar" onclick="validaText();"
                                                 class="btn btn-success">
                                         </div>
@@ -928,7 +928,7 @@
                         </div>
                         <div class="row" id="auxObsmatriz_op">
                             <h5>Matriz Operacional</h5>
-                            <div class="col-10">
+                            <div class="table-responsive">
                                 <table class="table" id="table-matriz" style="border: 5px;">
                                     <thead>
                                         <tr>

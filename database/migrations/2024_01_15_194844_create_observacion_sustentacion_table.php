@@ -25,10 +25,13 @@ return new class extends Migration
                     ->references('cod_jurado')
                     ->on('jurado')
                     ->onDelete('cascade');
+            $table->text('titulo')->nullable();
             $table->text('presentacion')->nullable();
             $table->text('resumen')->nullable();
-            $table->text('keyword')->nullable();
             $table->text('introduccion')->nullable();
+            $table->text('keyword')->nullable();
+            $table->text('dedicatoria')->nullable();
+            $table->text('agradecimiento')->nullable();
 
             $table->text('real_problematica')->nullable();
             $table->text('antecedentes')->nullable();
@@ -56,12 +59,12 @@ return new class extends Migration
             $table->text('conclusiones')->nullable();
             $table->text('recomendaciones')->nullable();
             $table->text('resultados')->nullable();
+            $table->text('anexos')->nullable();
 
             $table->text('referencias')->nullable();
 
             $table->tinyInteger('estado')->default('0');
-            $table->date('fecha_create')->nullable();
-            $table->date('fecha_update')->nullable();
+            $table->timestamps();
         });
     }
 

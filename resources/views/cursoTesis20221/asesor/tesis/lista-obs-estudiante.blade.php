@@ -60,6 +60,11 @@
                                     $estado = 'Sin iniciar';
                                     $contadorObs = 1;
                                 @endphp
+                                @if(sizeof($observaciones)<=0)
+                                <tr>
+                                    <td colspan="4">No se realizaron observaciones.</td>
+                                </tr>
+                                @endif
                                 @foreach ($observaciones as $observacion)
                                     <tr>
                                         <td>{{$contadorObs}}</td>

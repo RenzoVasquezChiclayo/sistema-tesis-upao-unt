@@ -22,6 +22,7 @@ return new class extends Migration
             ->onDelete('cascade');
             $table->string('tema_referido',80)->nullable(false);
             $table->text('correccion')->nullable();
+            $table->timestamps();
         });
     }
 

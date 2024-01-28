@@ -18,5 +18,4 @@ class Historial_Observaciones extends Model
     public function proyectoTesis(){
         return $this->hasOne(TesisCT2022::class);
     }
-    public $timestamps = false;
 }

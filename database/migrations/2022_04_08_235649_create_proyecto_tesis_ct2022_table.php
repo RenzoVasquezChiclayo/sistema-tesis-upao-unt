@@ -68,6 +68,7 @@ return new class extends Migration
             $table->tinyInteger('estado')->default('0');
 
             $table->string('condicion',20)->nullable();
+            $table->timestamps();
         });
     }
 

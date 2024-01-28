@@ -24,6 +24,7 @@ return new class extends Migration
             $table->integer('grupo')->nullable();
             $table->integer('orden')->nullable();
             $table->string('ruta')->nullable();
+            $table->timestamps();
         });
     }
 

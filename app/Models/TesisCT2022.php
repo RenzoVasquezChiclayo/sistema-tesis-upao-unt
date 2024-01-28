@@ -82,6 +82,4 @@ class TesisCT2022 extends Model
     public function tipoInvestigacion(){
         return $this->hasOne(TipoInvestigacion::class);
     }
-
-    public $timestamps = false;
 }

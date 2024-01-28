@@ -54,13 +54,13 @@
                 </div>
             </div> --}}
             <div class="row" style="display: flex; align-items:center;">
-                <div class="col-12">
+                <div class="table-responsive">
                         <table id="table-proyecto" class="table table-striped table-responsive-md">
                             <thead>
                                 <tr>
                                     <td>Grupo</td>
                                     <td>Estudiante(s)</td>
-                                    <td>Titulo</td>
+                                    <td>Título</td>
                                     <td>Asesor</td>
                                     <td>Tipo Jurado</td>
                                     <td>Revisión</td>
@@ -70,6 +70,11 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @if(sizeof($studentforGroups)<=0)
+                                <tr>
+                                    <td colspan="9"><i>No cuenta con proyectos de tesis asignados.</i></td>
+                                </tr>
+                                @endif
                                 @foreach ($studentforGroups as $estu)
                                     <tr
                                     @if ($estu[0]->estadoDesignacion == 3)
@@ -78,11 +83,11 @@
                                     style="background-color: rgba(255, 87, 51, 0.2);"
                                     @endif>
                                         <td>{{$estu[0]->num_grupo}}</td>
-                                        @if (count($estu)>1)
-                                            <td>{{$estu[0]->nombresAutor.' '.$estu[0]->apellidosAutor.' & '.$estu[0]->nombresAutor.' '.$estu[0]->apellidosAutor}}</td>
-                                        @else
-                                            <td>{{$estu[0]->nombresAutor.' '.$estu[0]->apellidosAutor}}</td>
-                                        @endif
+                                        <td>
+                                            @foreach ($estu as $e)
+                                                <p>{{$e->cod_matricula.' - '.$e->apellidosAutor.', '.$e->nombresAutor}}</p>
+                                            @endforeach
+                                        </td>
                                         <td>{{$estu[0]->titulo}}</td>
                                         <td>{{$estu[0]->nombresAsesor.' '.$estu[0]->apellidosAsesor}}</td>
                                         <td>
@@ -101,9 +106,7 @@
                                                 $textButton = "";
                                                 if($estu[0]->numObs > 0 || $estu[0]->estadoDesignacion > 1){
                                                     $textButton = "Observar";
-                                                }elseif($estu[0]->estadoDesignacion == 0){
-                                                    $textButton = "Iniciar revisión";
-                                                }elseif ($estu[0]->estadoDesignacion == 1) {
+                                                }elseif($estu[0]->estadoDesignacion <= 1){
                                                     $textButton = "Revisar";
                                                 }else
                                             @endphp
@@ -112,20 +115,22 @@
                                                     @csrf
                                                     <input type="hidden" name="id_grupo" value="{{$estu[0]->id_grupo}}">
                                                     <input type="hidden" name="cod_proyectotesis" value="{{$estu[0]->cod_proyectotesis}}">
-                                                    <a href="#" onclick="this.closest('#form-revisaTema').submit()" class="btn btn-success">{{$textButton}}</a>
+                                                    <a href="#" onclick="this.closest('#form-revisaTema').submit()" class=" btn @if($textButton == "Observar") btn-secondary @else btn-success @endif">{{$textButton}}</a>
                                                 </form>
                                             @endif
                                         </td>
                                         <td>
-                                            <form id="formAprobarProyecto" name="formAprobarProyecto" action="" method="">
+                                            <form id="formAprobarProyecto" name="formAprobarProyecto">
                                                 @csrf
                                                 <input type="hidden" name="cod_proyectotesis" value="{{$estu[0]->cod_proyectotesis}}">
+                                                <input type="hidden" name="stateAprobation" id="stateAprobation-{{$estu[0]->id_grupo}}" value="">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="" id="chkAprobado" onclick="aprobarProyecto(this);" @if($estu[0]->estadoDesignacion > 1 || $estu[0]->numObs > 0 || ($estu[0]->estadoResultado != null && $estu[0]->estadoResultado ==1))disabled @endif @if($estu[0]->estadoResultado != null && $estu[0]->estadoResultado ==1) checked @endif>
+                                                    <input class="form-check-input" type="checkbox" value="" id="chkAprobado-{{$estu[0]->id_grupo}}" onclick="aprobarProyecto(this);" @if($estu[0]->estadoDesignacion > 1 || $estu[0]->numObs > 0 || ($estu[0]->estadoResultado != null && $estu[0]->estadoResultado ==1))disabled @endif @if($estu[0]->estadoResultado != null && $estu[0]->estadoResultado ==1) checked @endif>
                                                     <label class="form-check-label" for="chkAprobado">
-                                                      Aprobado
+                                                      Aprobar/Desaprobar
                                                     </label>
                                                 </div>
+
                                             </form>
                                         </td>
                                         <td><a href="{{route('jurado.listaProyectosAsignados',['showObservacion'=>$estu[0]->cod_proyectotesis])}}">Ver detalle</a></td>
@@ -178,7 +183,6 @@
     </div>
 </div>
 @endif
-
 @endsection
 @section('js')
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -245,24 +249,30 @@
     @endif
     <script type="text/javascript">
         function aprobarProyecto(chk){
+            const idchk = chk.id.split('-');
             Swal.fire({
                 title: 'Estas seguro(a)?',
-                text: "El proyecto será aprobado.",
+                text: "El proyecto será aprobado/desaprobado.",
                 icon: 'warning',
+                showDenyButton: true,
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sí, APROBAR!',
+                confirmButtonText: 'APROBAR',
+                denyButtonText: 'DESAPROBAR',
                 cancelButtonText: 'Cancelar',
             }).then((result) => {
+
                 if (result.isConfirmed) {
-                    document.formAprobarProyecto.action = "{{ route('jurado.aprobarProyectoTesis') }}";
-                    document.formAprobarProyecto.method = "POST";
-                    document.formAprobarProyecto.submit();
+                    document.getElementById(`stateAprobation-${idchk[1]}`).value = 1;
+                }else if (result.isDenied){
+                    document.getElementById(`stateAprobation-${idchk[1]}`).value = 0;
                 }else{
-                    document.getElementById(chk.id).checked = false;
+                    document.getElementById(`chkAprobado-${idchk[1]}`).checked = false;
+                    return;
                 }
-            })
+                chk.closest('#formAprobarProyecto').action = "{{ route('jurado.aprobarProyectoTesis') }}";
+                chk.closest('#formAprobarProyecto').method = "POST";
+                chk.closest('#formAprobarProyecto').submit();
+            });
         }
     </script>
 @endsection

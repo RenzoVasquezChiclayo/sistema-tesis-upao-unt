@@ -50,5 +50,4 @@ class ObservacionesProy extends Model
         return $this->hasOne(Historial_Observaciones::class);
     }
 
-    public $timestamps = false;
 }

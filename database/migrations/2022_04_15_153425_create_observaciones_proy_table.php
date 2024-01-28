@@ -59,7 +59,7 @@ return new class extends Migration
 
             $table->text('referencias')->nullable();
             $table->text('matriz_op')->nullable();
-
+            $table->timestamps();
         });
 
 

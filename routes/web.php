@@ -216,7 +216,7 @@ Route::post('/guardarSinObservaciones',[CursoTesisController::class,'guardarSinO
 
 
 Route::get('ver-historial-estudiante',[AdminCursoController::class,'verListaObservacion'])->name('asesor.verHistoObs')->middleware('auth');
-Route::get('/observaciones-estudiante/{cod_historialObs}',[AdminCursoController::class,'verObsEstudiante'])->name('asesor.verObsEstudiante')->middleware('auth');
+Route::get('/observaciones-estudiante/{cod_tesis}',[AdminCursoController::class,'verObsEstudiante'])->name('asesor.verObsEstudiante')->middleware('auth');
 Route::post('/descargaObservacion',[CursoTesisController::class,'descargaObservacionCurso'])->name('asesor.descargaObservacion');
 
 Route::post('/download-observacion',[Tesis2022Controller::class,'descargaObservacion'])->name('asesor.descarga-observacion');
@@ -232,7 +232,7 @@ Route::get('historial-estudiante-tesis',[Tesis2022Controller::class,''])->name('
 Route::post('/revisar-tesis',[Tesis2022Controller::class,'revisarTesis'])->name('asesor.revisar-tesis')->middleware('auth');
 Route::post('/guardar-sin-obs',[Tesis2022Controller::class,'guardarSinObservaciones'])->name('asesor.guardar-sin-observaciones');
 Route::post('/guardar-observaciones',[Tesis2022Controller::class,'guardarConObservaciones'])->name('asesor.guardar-observaciones');
-Route::get('/observaciones-estudiante-tesis/{cod_historial_obs}',[Tesis2022Controller::class,'listaObsEstudianteTesis'])->name('asesor.ver-obs-estudiante-tesis')->middleware('auth');
+Route::get('/observaciones-estudiante-tesis/{cod_tesis}',[Tesis2022Controller::class,'listaObsEstudianteTesis'])->name('asesor.ver-obs-estudiante-tesis')->middleware('auth');
 Route::get('/estudiantes-observaciones',[Tesis2022Controller::class,'verEstudiantesObservacionTesis'])->name('asesor.ver-estudsiantes-obs')->middleware('auth');
 
 Route::post('aprobarTesis',[Tesis2022Controller::class,'aprobarTesis'])
@@ -241,10 +241,14 @@ Route::post('desaprobarTesis',[Tesis2022Controller::class,'desaprobarTesis'])
         ->name('asesor.desaprobar-tesis');
 
 /* Evaluacion Tesis (Jurados)*/
-Route::get('/lista-tesis-asignadas',[SustentacionController::class,'lista_tesis_asignadas'])->name('jurado.listaTesisAsignadas')->middleware('auth');
+Route::get('/lista-tesis-asignadas/{showObservacion?}',[SustentacionController::class,'lista_tesis_asignadas'])->name('jurado.listaTesisAsignadas')->middleware('auth');
 Route::post('/detalle-tesis-asignada',[SustentacionController::class,'detalleTesisAsignada'])->name('jurado.detalleTesisAsignada')->middleware('auth');
 Route::post('/guardar-observacion-jurado-tesis',[SustentacionController::class,'guardarObservacionSustentacion'])->name('jurado.guardarObservacionTesis')->middleware('auth');
-Route::post('/guardar-sin-observacion-jurado-tesis',[SustentacionProyectoController::class,'guardarSinObservacion'])->name('jurado.guardarSinObsTesis');
+Route::post('/aprobar-tesis-jurado',[SustentacionController::class,'aprobarTesisEvaluacion'])->name('jurado.aprobarTesis');
+
+/* Evaluacion Tesis (Estudiante)*/
+Route::get('/view-evaluacion-tesis',[SustentacionController::class,'viewEvaluacionTesis'])->name('estudiante.evaluacion.view-tesis')->middleware('auth');
+Route::get('/view-estado-tesis',[SustentacionController::class,'viewEstadoEvaluacionTesis'])->name('estudiante.evaluacion.estado-tesis')->middleware('auth');
 
 /* Evaluacion Proyecto de tesis (Estudiante)*/
 Route::get('/view-evaluacion-proyecto',[SustentacionProyectoController::class,'viewEvaluacionProyecto'])->name('estudiante.evaluacion.proyecto-tesis')->middleware('auth');

@@ -4,8 +4,6 @@
 @endsection
 @section('css')
 <link rel="stylesheet" href="./css/tesis_body.css">
-@endsection
-@section('contenido')
 <style type="text/css">
     .border-box{
         margin-bottom:8px;
@@ -37,7 +35,12 @@
         resize:none;
     }
 </style>
-    <div class="" style="background-color:rgb(212, 212, 212)">
+@endsection
+@section('contenido')
+    <div class="card-header text-center">
+        <h4>Tesis</h4>
+    </div>
+    <div class="card-body">
         <div class="row" style="text-align: center; padding:10px;">
             @if (session('datos'))
                         <div id="mensaje">
@@ -49,9 +52,6 @@
                             </div>
                         </div>
                 @endif
-            <div class="col-12" style="align-items: center">
-                <h2>Tesis</h2>
-            </div>
         </div>
         <div class="row">
             <form id="formProyecto" name="formProyecto" action="" method="">
@@ -71,8 +71,8 @@
                                     <input class="form-control" name="txtTitulo" id="txtTitulo" type="text" value="{{$Tesis[0]->titulo}}" readonly>
                                     <span id="validateTitle" name="validateTitle" style="color: red"></span>
                                 </div>
-                                {{-- @if ($Tesis[0]->estado==1)
-                                <div class="col-3" align="center">
+                                @if ($Tesis[0]->estado==1)
+                                <div class="col-3">
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-check">
@@ -84,9 +84,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                @endif --}}
-
-
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -131,11 +129,11 @@
                         </div>
                         <div class="item-card">
                             <label for="cboGrAcademicoAsesor" class="form-label">Grado Academico</label>
-                            <input class="form-control" name="txtGrAcademicoAsesor" id="txtGrAcademicoAsesor" type="text" value="{{$Tesis[0]->grado_academico}}" readonly>
+                            <input class="form-control" name="txtGrAcademicoAsesor" id="txtGrAcademicoAsesor" type="text" value="" readonly>
                         </div>
                         <div class="item-card">
                             <label for="txtTProfesional" class="form-label">Titulo Profesional</label>
-                            <input class="form-control" name="txtTProfesional" id="txtTProfesional" type="text" value="{{$Tesis[0]->titulo_profesional}}" readonly>
+                            <input class="form-control" name="txtTProfesional" id="txtTProfesional" type="text" value="" readonly>
                         </div>
                         <div class="item-card">
                             <label for="txtDireccionAsesor" class="form-label">Dirección laboral y/o domiciliaria</label>
@@ -151,8 +149,8 @@
                                 <textarea class="form-control" name="taDedicatoria" id="taDedicatoria" style="height: 100px; resize:none" readonly>{{$Tesis[0]->dedicatoria}}</textarea>
                             </div>
                         </div>
-                        {{-- @if ($Tesis[0]->estado==1)
-                        <div class="col-2" align="center">
+                        @if ($Tesis[0]->estado==1)
+                        <div class="col-2">
                             <div class="row">
                                 <div class="col-10">
                                     <div class="form-check">
@@ -164,7 +162,7 @@
                                 </div>
                             </div>
                         </div>
-                        @endif --}}
+                        @endif
                     </div>
                     <textarea class="form-control" name="tachkCorregir2" id="tachkCorregir2" cols="30" rows="4"  hidden></textarea>
                 </div>
@@ -176,8 +174,8 @@
                                 <textarea class="form-control" name="taAgradecimiento" id="taAgradecimiento" style="height: 100px; resize:none" readonly>{{$Tesis[0]->agradecimiento}}</textarea>
                             </div>
                         </div>
-                        {{-- @if ($Tesis[0]->estado==1)
-                        <div class="col-2" align="center">
+                        @if ($Tesis[0]->estado==1)
+                        <div class="col-2">
                             <div class="row">
                                 <div class="col-10">
                                     <div class="form-check">
@@ -189,7 +187,7 @@
                                 </div>
                             </div>
                         </div>
-                        @endif --}}
+                        @endif
                     </div>
                     <textarea class="form-control" name="tachkCorregir3" id="tachkCorregir3" cols="30" rows="4"  hidden></textarea>
                 </div>
@@ -201,7 +199,7 @@
                                 <textarea class="form-control" name="taPresentacion" id="taPresentacion" style="height: 100px; resize:none" readonly>{{$Tesis[0]->presentacion}}</textarea>
                             </div>
                         </div>
-                        @if ($Tesis[0]->estado==1)
+                        @if ($Tesis[0]->estadoTesis==1)
                         <div class="col-2" align="center">
                             <div class="row">
                                 <div class="col-10">
@@ -226,7 +224,7 @@
                                 <textarea class="form-control" name="taResumen" id="taResumen" style="height: 100px; resize:none" readonly>{{$Tesis[0]->resumen}}</textarea>
                             </div>
                         </div>
-                        @if ($Tesis[0]->estado==1)
+                        @if ($Tesis[0]->estadoTesis==1)
                         <div class="col-2" align="center">
                             <div class="row">
                                 <div class="col-10">
@@ -263,7 +261,7 @@
                                 <textarea class="form-control" name="taIntroduccion" id="taIntroduccion" style="height: 100px; resize:none" readonly>{{$Tesis[0]->introduccion}}</textarea>
                             </div>
                         </div>
-                        @if ($Tesis[0]->estado==1)
+                        @if ($Tesis[0]->estadoTesis==1)
                         <div class="col-2" align="center">
                             <div class="row">
                                 <div class="col-10">
@@ -293,7 +291,7 @@
                                 <textarea class="form-control" name="taRProblematica" id="taRProblematica" style="height: 100px; resize:none" readonly>{{$Tesis[0]->real_problematica}}</textarea>
                             </div>
                         </div>
-                        @if ($Tesis[0]->estado==1)
+                        @if ($Tesis[0]->estadoTesis==1)
                         <div class="col-2" align="center">
                             <div class="row">
                                 <div class="col-10">
@@ -318,7 +316,7 @@
                                 <textarea class="form-control" name="taAntecedentes" id="taAntecedentes" style="height: 100px; resize:none" readonly>{{$Tesis[0]->antecedentes}}</textarea>
                             </div>
                         </div>
-                        @if ($Tesis[0]->estado==1)
+                        @if ($Tesis[0]->estadoTesis==1)
                         <div class="col-2" align="center">
                             <div class="row">
                                 <div class="col-10">
@@ -343,7 +341,7 @@
                                 <textarea class="form-control" name="taJInvestigacion" id="taJInvestigacion" style="height: 100px; resize:none" readonly>{{$Tesis[0]->justificacion}}</textarea>
                             </div>
                         </div>
-                        @if ($Tesis[0]->estado==1)
+                        @if ($Tesis[0]->estadoTesis==1)
                         <div class="col-2" align="center">
                             <div class="row">
                                 <div class="col-10">
@@ -368,7 +366,7 @@
                                 <textarea class="form-control" name="taFProblema" id="taFProblema" style="height: 100px; resize:none" readonly>{{$Tesis[0]->formulacion_prob}}</textarea>
                             </div>
                         </div>
-                        @if ($Tesis[0]->estado==1)
+                        @if ($Tesis[0]->estadoTesis==1)
                         <div class="col-2" align="center">
                             <div class="row">
                                 <div class="col-10">
@@ -405,7 +403,7 @@
                             </tbody>
                         </table>
                     </div>
-                    @if ($Tesis[0]->estado==1)
+                    @if ($Tesis[0]->estadoTesis==1)
                     <div class="col-1" align="center">
                         <div class="row">
                             <div class="col-12">
@@ -434,7 +432,7 @@
                                     <textarea class="form-control" name="taMTeorico" id="taMTeorico" style="height: 100px; resize:none" readonly>{{$Tesis[0]->marco_teorico}}</textarea>
                                 </div>
                             </div>
-                            @if ($Tesis[0]->estado==1)
+                            @if ($Tesis[0]->estadoTesis==1)
                             <div class="col-2" align="center">
                                 <div class="row">
                                     <div class="col-10">
@@ -460,7 +458,7 @@
                                     <textarea class="form-control" name="taMConceptual" id="taMConceptual" style="height: 100px; resize:none" readonly>{{$Tesis[0]->marco_conceptual}}</textarea>
                                 </div>
                             </div>
-                            @if ($Tesis[0]->estado==1)
+                            @if ($Tesis[0]->estadoTesis==1)
                             <div class="col-2" align="center">
                                 <div class="row">
                                     <div class="col-0">
@@ -486,7 +484,7 @@
                                     <textarea class="form-control" name="taMLegal" id="taMLegal" style="height: 100px; resize:none" readonly>{{$Tesis[0]->marco_legal}}</textarea>
                                 </div>
                             </div>
-                            @if ($Tesis[0]->estado==1)
+                            @if ($Tesis[0]->estadoTesis==1)
                             <div class="col-2" align="center">
                                 <div class="row">
                                     <div class="col-10">
@@ -514,7 +512,7 @@
                                     <textarea class="form-control" name="taFHipotesis" id="taFHipotesis" style="height: 100px; resize:none" readonly>{{$Tesis[0]->form_hipotesis}}</textarea>
                                 </div>
                             </div>
-                            @if ($Tesis[0]->estado==1)
+                            @if ($Tesis[0]->estadoTesis==1)
                             <div class="col-2" align="center">
                                 <div class="row">
                                     <div class="col-10">
@@ -547,7 +545,7 @@
                                 <textarea class="form-control" name="taOEstudio" id="taOEstudio" style="height: 100px; resize:none" readonly>{{$Tesis[0]->objeto_estudio}}</textarea>
                             </div>
                         </div>
-                        @if ($Tesis[0]->estado==1)
+                        @if ($Tesis[0]->estadoTesis==1)
                         <div class="col-2" align="center">
                             <div class="row">
                                 <div class="col-10">
@@ -570,7 +568,7 @@
                                 <textarea class="form-control" name="taPoblacion" id="taPoblacion" style="height: 100px; resize:none" readonly>{{$Tesis[0]->poblacion}}</textarea>
                             </div>
                         </div>
-                        @if ($Tesis[0]->estado==1)
+                        @if ($Tesis[0]->estadoTesis==1)
                         <div class="col-2" align="center">
                             <div class="row">
                                 <div class="col-10">
@@ -593,7 +591,7 @@
                                 <textarea class="form-control" name="taMuestra" id="taMuestra" style="height: 100px; resize:none" readonly>{{$Tesis[0]->muestra}}</textarea>
                             </div>
                         </div>
-                        @if ($Tesis[0]->estado==1)
+                        @if ($Tesis[0]->estadoTesis==1)
                         <div class="col-2" align="center">
                             <div class="row">
                                 <div class="col-10">
@@ -616,7 +614,7 @@
                                 <textarea class="form-control" name="taMetodos" id="taMetodos" style="height: 100px; resize:none" readonly>{{$Tesis[0]->metodos}}</textarea>
                             </div>
                         </div>
-                        @if ($Tesis[0]->estado==1)
+                        @if ($Tesis[0]->estadoTesis==1)
                         <div class="col-2" align="center">
                             <div class="row">
                                 <div class="col-10">
@@ -639,7 +637,7 @@
                                 <textarea class="form-control" name="taRecoleccionDatos" id="taRecoleccionDatos" type="text" style="height: 100px; resize:none" readonly>{{$Tesis[0]->tecnicas_instrum}}</textarea>
                             </div>
                         </div>
-                        @if ($Tesis[0]->estado==1)
+                        @if ($Tesis[0]->estadoTesis==1)
                          <div class="col-2" align="center">
                             <div class="row">
                                 <div class="col-10">
@@ -662,7 +660,7 @@
                                 <textarea class="form-control" name="taFuentesDatos" id="taFuentesDatos" type="text" style="height: 100px; resize:none" readonly>{{$Tesis[0]->instrumentacion}}</textarea>
                             </div>
                         </div>
-                        @if ($Tesis[0]->estado==1)
+                        @if ($Tesis[0]->estadoTesis==1)
                             <div class="col-2" align="center">
                             <div class="row">
                                 <div class="col-10">
@@ -685,7 +683,7 @@
                                 <textarea class="form-control" name="taEstrategiasM" id="taEstrategiasM" style="height: 100px; resize:none" readonly>{{$Tesis[0]->estg_metodologicas}}</textarea>
                             </div>
                         </div>
-                        @if ($Tesis[0]->estado==1)
+                        @if ($Tesis[0]->estadoTesis==1)
                             <div class="col-2" align="center">
                             <div class="row">
                                 <div class="col-10">
@@ -710,7 +708,7 @@
                                         <textarea class="form-control" name="taresultados" id="taresultados" style="height: 100px; resize:none" readonly>{{$Tesis[0]->resultados}}</textarea>
                                     </div>
                                 </div>
-                                @if ($Tesis[0]->estado==1)
+                                @if ($Tesis[0]->estadoTesis==1)
                                 <div class="col-2" align="center">
                                     <div class="row">
                                         <div class="col-10">
@@ -741,7 +739,7 @@
                                         <textarea class="form-control" name="taDiscusion" id="taDiscusion" style="height: 100px; resize:none" readonly>{{$Tesis[0]->discusion}}</textarea>
                                     </div>
                                 </div>
-                                @if ($Tesis[0]->estado==1)
+                                @if ($Tesis[0]->estadoTesis==1)
                                 <div class="col-2" align="center">
                                     <div class="row">
                                         <div class="col-10">
@@ -768,7 +766,7 @@
                                         <textarea class="form-control" name="taConclusiones" id="taConclusiones" style="height: 100px; resize:none" readonly>{{$Tesis[0]->conclusiones}}</textarea>
                                     </div>
                                 </div>
-                                @if ($Tesis[0]->estado==1)
+                                @if ($Tesis[0]->estadoTesis==1)
                                 <div class="col-2" align="center">
                                     <div class="row">
                                         <div class="col-10">
@@ -795,7 +793,7 @@
                                         <textarea class="form-control" name="taRecomendaciones" id="taRecomendaciones" style="height: 100px; resize:none" readonly>{{$Tesis[0]->recomendaciones}}</textarea>
                                     </div>
                                 </div>
-                                @if ($Tesis[0]->estado==1)
+                                @if ($Tesis[0]->estadoTesis==1)
                                 <div class="col-2" align="center">
                                     <div class="row">
                                         <div class="col-10">
@@ -843,7 +841,7 @@
                             </tbody>
                         </table>
                     </div>
-                    @if ($Tesis[0]->estado==1)
+                    @if ($Tesis[0]->estadoTesis==1)
                           <div class="col-1" align="center">
                         <div class="row">
                             <div class="col-12">
@@ -865,7 +863,7 @@
                         <div class="col-12 col-md-10">
                             <textarea class="form-control" name="txtanexos[]" id="taanexos" readonly>@if ($Tesis[0]->anexos != null){{$Tesis[0]->anexos}}@endif</textarea>
                         </div>
-                        @if ($Tesis[0]->estado==1)
+                        @if ($Tesis[0]->estadoTesis==1)
                         <div class="col-1" align="center">
                             <div class="row">
                                 <div class="col-12">
@@ -899,7 +897,7 @@
                                 </div>
                             </div>
                             <div class="row" id="grupoObservaciones">
-                                @if($Tesis[0]->estado == 1)
+                                @if($Tesis[0]->estadoTesis == 1)
                                     <div class="col-3 col-md-3">
                                         <input class="btn btn-success" type="button" value="Sin observaciones" onclick="saveWithoutErrors();" style="margin-right:20px;">
                                     </div>

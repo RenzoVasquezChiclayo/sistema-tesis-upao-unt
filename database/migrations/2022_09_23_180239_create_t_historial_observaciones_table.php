@@ -21,8 +21,9 @@ return new class extends Migration
                     ->on('tesis_2022')
                     ->onDelete('cascade');
             $table->date('fecha')->nullable();
+            $table->boolean('sustentacion')->default(false);
             $table->tinyInteger('estado')->default(0);
-
+            $table->timestamps();
         });
     }
 

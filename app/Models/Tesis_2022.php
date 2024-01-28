@@ -50,8 +50,6 @@ class Tesis_2022 extends Model
 
         'resultados',
         'anexos',
-        'fecha_create',
-        'fecha_update',
         'estado',
         'condicion'
     ];
@@ -62,7 +60,5 @@ class Tesis_2022 extends Model
     public function asesor(){
         return $this->hasOne(AsesorCurso::class);
     }
-
-    public $timestamps = false;
 
 }

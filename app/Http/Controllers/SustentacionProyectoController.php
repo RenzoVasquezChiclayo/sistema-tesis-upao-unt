@@ -126,7 +126,10 @@ class SustentacionProyectoController extends Controller
                 ->join('detalle_grupo_investigacion as d_g_i', 'gi.id_grupo', 'd_g_i.id_grupo_inves')
                 ->join('estudiante_ct2022 as es', 'd_g_i.cod_matricula', 'es.cod_matricula')
                 ->join('asesor_curso as ac', 'pt.cod_docente', 'ac.cod_docente')
-                ->join('historial_observaciones as ho','pt.cod_proyectotesis','ho.cod_proyectotesis')
+                ->join('historial_observaciones as ho', function($join) {
+                    $join->on('pt.cod_proyectotesis','=','ho.cod_proyectotesis')
+                    ->where('ho.sustentacion',true);
+                })
                 ->leftJoin('observacion_sustentacionproy as os', function ($join) use ($jurado) {
                     $join->on('ho.cod_historialObs', '=', 'os.cod_historialObs')
                          ->where('os.cod_jurado', $jurado->cod_jurado)
@@ -137,7 +140,6 @@ class SustentacionProyectoController extends Controller
                     ->where('rj.cod_jurado',$jurado->cod_jurado);
                 })
                 ->select('gi.id_grupo', 'gi.num_grupo', 'd_g_i.cod_matricula', 'pt.cod_proyectotesis', 'pt.titulo', 'ac.nombres as nombresAsesor', 'ac.apellidos as apellidosAsesor', 'es.nombres as nombresAutor', 'es.apellidos as apellidosAutor', 'dj.cod_jurado1', 'dj.cod_jurado2', 'dj.cod_jurado3', 'dj.cod_jurado4', 'pt.estado', 'dj.estado as estadoDesignacion',DB::raw('count(os.cod_observacion) as numObs'),'rj.estado as estadoResultado')
-                ->where('ho.sustentacion',true)
                 ->where('dj.cod_jurado1', $asesor->cod_docente)
                 ->orWhere('dj.cod_jurado2', $asesor->cod_docente)
                 ->orWhere('dj.cod_jurado3', $asesor->cod_docente)
@@ -457,17 +459,17 @@ class SustentacionProyectoController extends Controller
             $newResultado = new ResultadoJuradoProyecto();
             $newResultado->cod_designacion_proyecto = $designacion->cod_designacion_proyecto;
             $newResultado->cod_jurado = $jurado->cod_jurado;
-            $newResultado->estado = 1;
+            $newResultado->estado = $request->stateAprobation;
             $newResultado->save();
             if(sizeof($resultadoHistorial)>=2){
                 $resultadoHistorial = ResultadoJuradoProyecto::where('cod_designacion_proyecto',$designacion->cod_designacion_proyecto)->where('estado',1)->get();
-                //dd($resultadoHistorial);
                 $designacion->estado = (sizeof($resultadoHistorial)>=3) ? 3 : 4;
                 $designacion->save();
             }
 
             return redirect()->route('jurado.listaProyectosAsignados')->with('datos', 'okAprobadoProyecto');
         } catch (\Throwable $th) {
+            dd($th);
             return redirect()->route('jurado.listaProyectosAsignados')->with('datos', 'oknotAprobadoProyecto');
         }
     }
@@ -494,7 +496,7 @@ class SustentacionProyectoController extends Controller
         }
         $coautor = DB::table('detalle_grupo_investigacion as dg')->rightJoin('estudiante_ct2022 as e', 'e.cod_matricula', '=', 'dg.cod_matricula')->select('e.*')->where('dg.id_grupo_inves', $autor->id_grupo)->where('e.cod_matricula', '!=', $id)->first();
 
-        $tesis = TesisCT2022::where('id_grupo_inves', '=', $autor->id_grupo)->join('designacion_jurado_proyecto as dj', 'proyecto_tesis.cod_proyectotesis', 'dj.cod_proyectotesis')->select('proyecto_tesis.*', 'dj.estado as estadoDesignacion', 'dj.cod_jurado1', 'dj.cod_jurado2', 'dj.cod_jurado3', 'dj.cod_jurado4')->get(); //Encontramos la tesis
+        $tesis = TesisCT2022::where('id_grupo_inves', '=', $autor->id_grupo)->join('designacion_jurado_proyecto as dj', 'proyecto_tesis.cod_proyectotesis', 'dj.cod_proyectotesis')->select('proyecto_tesis.*', 'dj.estado as estadoDesignacion', 'dj.cod_jurado1', 'dj.cod_jurado2', 'dj.cod_jurado3')->get(); //Encontramos la tesis
         /*Encontramos los jurados */
         $jurados = AsesorCurso::where('cod_docente', $tesis[0]->cod_jurado1)->orWhere('cod_docente', $tesis[0]->cod_jurado2)->orWhere('cod_docente', $tesis[0]->cod_jurado3)->get();
         /**/
@@ -510,7 +512,7 @@ class SustentacionProyectoController extends Controller
         $referencias = referencias::where('cod_proyectotesis', '=', $tesis[0]->cod_proyectotesis)->get(); //Por si existen referencias
 
         //Verificaremos que se hayan dado las observaciones y las enviaremos
-        $observaciones = ObservacionSustentacionProyecto::join('historial_observaciones as ho', 'observacion_sustentacionproy.cod_historialObs', '=', 'ho.cod_historialObs')->join('jurado as j','observacion_sustentacionproy.cod_jurado','j.cod_jurado')->join('asesor_curso as ac','j.cod_docente','ac.cod_docente')->select('observacion_sustentacionproy.*','ac.nombres as nombresAsesor','ac.apellidos as apellidosAsesor')->where('ho.cod_proyectotesis', $tesis[0]->cod_proyectotesis)->where('observacion_sustentacionproy.estado', 1)->where('ho.estado', 2)->get();
+        $observaciones = ObservacionSustentacionProyecto::join('historial_observaciones as ho', 'observacion_sustentacionproy.cod_historialObs', '=', 'ho.cod_historialObs')->join('jurado as j','observacion_sustentacionproy.cod_jurado','j.cod_jurado')->join('asesor_curso as ac','j.cod_docente','ac.cod_docente')->select('observacion_sustentacionproy.*','ac.nombres as nombresAsesor','ac.apellidos as apellidosAsesor')->where('ho.cod_proyectotesis', $tesis[0]->cod_proyectotesis)->where('observacion_sustentacionproy.estado', 1)->where('ho.sustentacion',true)->where('ho.estado', 2)->get();
 
         //dd($observaciones);
 

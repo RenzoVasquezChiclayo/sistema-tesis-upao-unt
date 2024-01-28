@@ -134,6 +134,25 @@
             </div>
         </li>
         <li>
+            <a class="cstm-a menu-a" data-bs-toggle="collapse" href="#collapseTesisE" role="button"
+                aria-expanded="false" aria-controls="collapseTesisE">
+                <div class="menu-into-a">
+                    <i class='bx bx-group'></i>
+                    <span class = "links_name">Evaluación Tesis</span>
+                </div>
+                <i class='bx bx-xs bxs-chevron-down'></i>
+            </a>
+            <div class="cstm-collapse collapse" id="collapseTesisE">
+                <a href="{{ route('estudiante.evaluacion.view-tesis') }}">
+                    <span class="links_name">Documento</span>
+                </a>
+                <a href="{{ route('estudiante.evaluacion.estado-tesis') }}">
+                    <span class="links_name">Estado</span>
+                </a>
+            </div>
+        </li>
+
+        <li>
             <a class="cstm-a menu-a" data-bs-toggle="collapse" href="#collapseSolicitud" role="button"
                 aria-expanded="false" aria-controls="collapseSolicitud">
                 <div class="menu-into-a">
@@ -369,11 +388,11 @@
                     <i class='bx bx-xs bxs-chevron-down'></i>
                 </a>
                 <div class="cstm-collapse collapse" id="collapseJurado">
-                    <a href="{{ route('jurado.listaTesisAsignadas') }}">
-                        <span class="links_name">Lista de tesis(Evaluación)</span>
-                    </a>
                     <a href="{{ route('jurado.listaProyectosAsignados') }}">
                         <span class="links_name">Lista de proyectos(Evaluación)</span>
+                    </a>
+                    <a href="{{ route('jurado.listaTesisAsignadas') }}">
+                        <span class="links_name">Lista de tesis(Evaluación)</span>
                     </a>
                 </div>
             </li>

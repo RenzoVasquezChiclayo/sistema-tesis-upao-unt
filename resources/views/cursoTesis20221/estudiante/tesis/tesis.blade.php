@@ -4,102 +4,101 @@
 @endsection
 @section('css')
 <link rel="stylesheet" href="./css/tesis_body.css">
+<style type="text/css">
+    .border-box {
+        border: 0.5px solid rgba(0, 0, 0, 0.2);
+        border-radius: 20px;
+        padding: 10px 0px;
+        margin: 0;
+    }
+
+    .item-card2 {
+        flex: 1 1 500px;
+        margin-bottom: 10px;
+    }
+
+    .alert-correction {
+        border: 1px solid green;
+        border-radius: 10px;
+    }
+
+    /* Cambios */
+    .contenedor-img {
+        border-radius: 6px;
+        background-color: azure;
+        border: 1px solid gray;
+    }
+
+    .img-tarjeta {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .img-buttons {
+        justify-content: center;
+        margin: 10px;
+    }
+
+    .galerias {
+        display: grid;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        grid-template-rows: repeat(1, 250px);
+        grid-auto-flow: column;
+        overflow-x: auto;
+        grid-auto-columns: auto;
+    }
+
+    .card-img-top {
+        height: 140px;
+    }
+
+    .btn-delete-group {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .btn-delete-group a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 5px;
+        color: red;
+        text-decoration: none;
+    }
+
+    .btn-delete-group a:hover {
+
+        border-radius: 5px;
+        background: rgba(0, 0, 0, 0.1);
+    }
+
+    .title-p{
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.35);
+    }
+
+    .agrega_text {
+        width: 100%;
+    }
+    .agrega_text tr td{
+        max-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .td_descripcion{
+        width: 60%;
+    }
+    .input-counter{
+        border:none;
+        width:90px;
+    }
+</style>
 @endsection
 @section('contenido')
 <title>Tesis</title>
-    <style type="text/css">
-        .border-box {
-            border: 0.5px solid rgba(0, 0, 0, 0.2);
-            border-radius: 20px;
-            padding: 10px 0px;
-            margin: 0;
-        }
-
-        .item-card2 {
-            flex: 1 1 500px;
-            margin-bottom: 10px;
-        }
-
-        .alert-correction {
-            border: 1px solid green;
-            border-radius: 10px;
-        }
-
-        /* Cambios */
-        .contenedor-img {
-            border-radius: 6px;
-            background-color: azure;
-            border: 1px solid gray;
-        }
-
-        .img-tarjeta {
-            justify-content: center;
-            text-align: center;
-        }
-
-        .img-buttons {
-            justify-content: center;
-            margin: 10px;
-        }
-
-        .galerias {
-            display: grid;
-            padding-top: 10px;
-            padding-bottom: 10px;
-            grid-template-rows: repeat(1, 250px);
-            grid-auto-flow: column;
-            overflow-x: auto;
-            grid-auto-columns: auto;
-        }
-
-        .card-img-top {
-            height: 140px;
-        }
-
-        .btn-delete-group {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-
-        .btn-delete-group a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 5px;
-            color: red;
-            text-decoration: none;
-        }
-
-        .btn-delete-group a:hover {
-
-            border-radius: 5px;
-            background: rgba(0, 0, 0, 0.1);
-        }
-
-        .title-p{
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.35);
-        }
-
-        .agrega_text {
-            width: 100%;
-        }
-        .agrega_text tr td{
-            max-width: 0;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        .td_descripcion{
-            width: 60%;
-        }
-        .input-counter{
-            border:none;
-            width:90px;
-        }
-    </style>
-
     @if ($tesis == null)
         <div class="row d-flex" style="align-items:center; justify-content: center;">
             <div class="col-8 border-box mt-3">
@@ -175,62 +174,56 @@
                         <div class="col-12 mb-3">
                             <input type="hidden" name="textcod" value="{{$tesis->cod_tesis}}">
                             <div class="row">
-                                <h5>Titulo</h5>
-                                <div class="col">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="row gy-1 gy-sm-0">
-                                                <div class="col-12 col-sm-11">
-                                                    <input class="form-control" name="txttitulo" id="txttitulo" type="text"
-                                                        value="@if ($tesis->titulo != null){{$tesis->titulo}}@endif"
-                                                        placeholder="Ingrese el titulo de la tesis">
-                                                    <span class="ps-2" id="validateTitle" name="validateTitle"
-                                                        style="color: red"></span>
-                                                </div>
-                                                <div class="col-12 col-sm-1">
-                                                    <input type="button" value="Verificar" onclick="validaText();"
-                                                        class="btn btn-success">
-                                                </div>
-                                            </div>
+                                <h5>Título</h5>
+                                <div class="col-10">
+                                    <div class="row gy-1 gy-sm-0">
+                                        <div class="col-12 col-sm-10">
+                                            <input class="form-control" name="txttitulo" id="txttitulo" type="text"
+                                                value="@if ($tesis->titulo != null){{$tesis->titulo}}@endif"
+                                                placeholder="Ingrese el titulo de la tesis">
+                                            <span class="ps-2" id="validateTitle" name="validateTitle"
+                                                style="color: red"></span>
                                         </div>
-                                        {{-- @if (sizeof($correciones) != 0 && $tesis->condicion == null)
-                                            @if ($correciones[0]->titulo != null)
-                                                <div class="col-2">
-                                                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                        data-bs-target="#mCorreccionTitulo">Correccion</button>
-                                                </div>
-                                            @endif --}}
+                                        <div class="col-2">
+                                            <input type="button" value="Verificar" onclick="validaText();"
+                                                class="btn btn-success">
+                                        </div>
+                                    </div>
+                                </div>
+                                @if (sizeof($correciones) != 0 && $tesis->condicion == null)
+                                    @if ($correciones[0]->titulo != null)
+                                        <div class="col-2">
+                                            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+                                                        data-bs-target="#mCorreccionTitulo">Corrección</button>
+                                        </div>
+                                    @endif
                                             {{-- Aqui va el modal --}}
-                                            {{-- <div class="modal" id="mCorreccionTitulo">
-                                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                                    <div class="modal-content">
-                                                        <!-- Modal Header -->
-                                                        <div class="modal-header">
-                                                            <h4 class="modal-title">Correccion del titulo</h4>
-                                                            <button type="button" class="btn-close"
+                                    <div class="modal" id="mCorreccionTitulo">
+                                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                            <div class="modal-content">
+                                                <!-- Modal Header -->
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Corrección del titulo</h4>
+                                                    <button type="button" class="btn-close"
                                                                 data-bs-dismiss="modal"></button>
-                                                        </div>
-                                                        <!-- Modal body -->
-                                                        <div class="modal-body">
-                                                            <div class="row" style="padding: 20px">
-                                                                <p>{{ $correciones[0]->titulo }}</p>
-                                                            </div>
-                                                        </div>
+                                                </div>
+                                                <!-- Modal body -->
+                                                <div class="modal-body">
+                                                    <div class="row" style="padding: 20px">
+                                                        <p>{{ $correciones[0]->titulo }}</p>
+                                                    </div>
+                                                </div>
                                                         <!-- Modal footer -->
-                                                        <div class="modal-footer">
-                                                            <div class="row">
-                                                                <div class="col-6">
-                                                                    <button type="button" class="btn btn-danger"
-                                                                        data-bs-dismiss="modal">Close</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                <div class="modal-footer">
+                                                    <div class="col-6">
+                                                        <button type="button" class="btn btn-danger"
+                                                                    data-bs-dismiss="modal">Close</button>
                                                     </div>
                                                 </div>
                                             </div>
-                                        @endif --}}
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
                             </div>
                         </div>
 
@@ -336,6 +329,44 @@
                                     </div>
                                 </div>
                             </div>
+                            @if (sizeof($correciones) != 0 && $tesis->condicion == null)
+                                @if ($correciones[0]->dedicatoria != null)
+                                    <div class="col-2">
+                                        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+                                            data-bs-target="#mCorreccionDedicatoria">Corrección</button>
+                                    </div>
+                                @endif
+                                {{-- Aqui va el modal --}}
+                                <div class="modal" id="mCorreccionDedicatoria">
+                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                        <div class="modal-content">
+                                            <!-- Modal Header -->
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Corrección de Dedicatoria</h4>
+                                                <button type="button" class="btn-close"
+                                                    data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <!-- Modal body -->
+                                            <div class="modal-body">
+                                                <div class="row" style="padding: 20px">
+                                                    <div class="row my-2">
+                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->dedicatoria }}</textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Modal footer -->
+                                            <div class="modal-footer">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <button type="button" class="btn btn-danger"
+                                                            data-bs-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
 
                         <div class="row" style=" margin-bottom:20px;">
@@ -353,6 +384,44 @@
                                     </div>
                                 </div>
                             </div>
+                            @if (sizeof($correciones) != 0 && $tesis->condicion == null)
+                                @if ($correciones[0]->agradecimiento != null)
+                                    <div class="col-2">
+                                        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+                                            data-bs-target="#mCorreccionAgradecimiento">Corrección</button>
+                                    </div>
+                                @endif
+                                {{-- Aqui va el modal --}}
+                                <div class="modal" id="mCorreccionAgradecimiento">
+                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                        <div class="modal-content">
+                                            <!-- Modal Header -->
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Corrección de Agradecimiento</h4>
+                                                <button type="button" class="btn-close"
+                                                    data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <!-- Modal body -->
+                                            <div class="modal-body">
+                                                <div class="row" style="padding: 20px">
+                                                    <div class="row my-2">
+                                                        <textarea class="form-control" name="taNone" id="taNone" style="height: 200px; resize:none" readonly>{{ $correciones[0]->agradecimiento }}</textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Modal footer -->
+                                            <div class="modal-footer">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <button type="button" class="btn btn-danger"
+                                                            data-bs-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                         <div class="row" style=" margin-bottom:20px;">
                             <h5>Presentacion</h5>
@@ -364,7 +433,7 @@
                                     @if ($correciones[0]->presentacion != null)
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionPresenta">Correccion</button>
+                                                data-bs-target="#mCorreccionPresenta">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -373,7 +442,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Presentacion</h4>
+                                                    <h4 class="modal-title">Corrección de Presentacion</h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
                                                 </div>
@@ -411,7 +480,7 @@
                                     @if ($correciones[0]->resumen != null)
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionResumen">Correccion</button>
+                                                data-bs-target="#mCorreccionResumen">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -420,7 +489,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Resumen</h4>
+                                                    <h4 class="modal-title">Corrección de Resumen</h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
                                                 </div>
@@ -483,7 +552,7 @@
                                     @if ($correciones[0]->introduccion != null)
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionIntro">Correccion</button>
+                                                data-bs-target="#mCorreccionIntro">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -492,7 +561,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Introduccion</h4>
+                                                    <h4 class="modal-title">Corrección de Introduccion</h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
                                                 </div>
@@ -546,7 +615,7 @@
                                     @if ($correciones[0]->real_problematica != null)
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionRProbl">Correccion</button>
+                                                data-bs-target="#mCorreccionRProbl">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -555,7 +624,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Realidad problematica</h4>
+                                                    <h4 class="modal-title">Corrección de Realidad problematica</h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
                                                 </div>
@@ -594,7 +663,7 @@
                                     @if ($correciones[0]->antecedentes != null)
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionAntecedente">Correccion</button>
+                                                data-bs-target="#mCorreccionAntecedente">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -603,7 +672,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de antecedentes</h4>
+                                                    <h4 class="modal-title">Corrección de antecedentes</h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
                                                 </div>
@@ -642,7 +711,7 @@
                                     @if ($correciones[0]->justificacion != null)
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionJInv">Correccion</button>
+                                                data-bs-target="#mCorreccionJInv">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -651,7 +720,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de justificacion de la investigacion
+                                                    <h4 class="modal-title">Corrección de justificacion de la investigacion
                                                     </h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
@@ -691,7 +760,7 @@
                                     @if ($correciones[0]->formulacion_prob != null)
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionFProbl">Correccion</button>
+                                                data-bs-target="#mCorreccionFProbl">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -700,7 +769,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Formulacion del problema</h4>
+                                                    <h4 class="modal-title">Corrección de Formulacion del problema</h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
                                                 </div>
@@ -748,7 +817,7 @@
                                 @if ($correciones[0]->objetivos != null)
                                     <div class="col-2">
                                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                            data-bs-target="#mCorreccionObjetivo">Correccion</button>
+                                            data-bs-target="#mCorreccionObjetivo">Corrección</button>
                                     </div>
                                 @endif
                                 {{-- Aqui va el modal --}}
@@ -757,7 +826,7 @@
                                         <div class="modal-content">
                                             <!-- Modal Header -->
                                             <div class="modal-header">
-                                                <h4 class="modal-title">Correccion de Objetivos</h4>
+                                                <h4 class="modal-title">Corrección de Objetivos</h4>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                             </div>
                                             <!-- Modal body -->
@@ -840,7 +909,7 @@
                                     @if ($correciones[0]->marco_teorico != null)
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionMTeorico">Correccion</button>
+                                                data-bs-target="#mCorreccionMTeorico">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -849,7 +918,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Marco teorico</h4>
+                                                    <h4 class="modal-title">Corrección de Marco teorico</h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
                                                 </div>
@@ -886,7 +955,7 @@
                                     @if ($correciones[0]->marco_conceptual != null)
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionMConceptual">Correccion</button>
+                                                data-bs-target="#mCorreccionMConceptual">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -894,7 +963,7 @@
                                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Marco conceptual</h4>
+                                                    <h4 class="modal-title">Corrección de Marco conceptual</h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
                                                 </div>
@@ -929,7 +998,7 @@
                                     @if ($correciones[0]->marco_legal != null)
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionMLegal">Correccion</button>
+                                                data-bs-target="#mCorreccionMLegal">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -938,7 +1007,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Marco Legal</h4>
+                                                    <h4 class="modal-title">Corrección de Marco Legal</h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
                                                 </div>
@@ -977,7 +1046,7 @@
                                     @if ($correciones[0]->form_hipotesis != null)
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionFHipotesis">Correccion</button>
+                                                data-bs-target="#mCorreccionFHipotesis">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -986,7 +1055,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Formulacion de la hipotesis</h4>
+                                                    <h4 class="modal-title">Corrección de Formulacion de la hipotesis</h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
                                                 </div>
@@ -1031,7 +1100,7 @@
                                     @if ($correciones[0]->objeto_estudio != null)
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionOEstudio">Correccion</button>
+                                                data-bs-target="#mCorreccionOEstudio">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -1040,7 +1109,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion del Objeto de Estudio</h4>
+                                                    <h4 class="modal-title">Corrección del Objeto de Estudio</h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
                                                 </div>
@@ -1076,7 +1145,7 @@
                                     @if ($correciones[0]->poblacion != null)
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionPoblacion">Correccion</button>
+                                                data-bs-target="#mCorreccionPoblacion">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -1085,7 +1154,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Poblacion</h4>
+                                                    <h4 class="modal-title">Corrección de Poblacion</h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
                                                 </div>
@@ -1121,7 +1190,7 @@
                                     @if ($correciones[0]->muestra != null)
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionMuestra">Correccion</button>
+                                                data-bs-target="#mCorreccionMuestra">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -1130,7 +1199,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Muestra</h4>
+                                                    <h4 class="modal-title">Corrección de Muestra</h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
                                                 </div>
@@ -1166,7 +1235,7 @@
                                     @if ($correciones[0]->metodos != null)
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionMetodos">Correccion</button>
+                                                data-bs-target="#mCorreccionMetodos">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -1175,7 +1244,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Metodos</h4>
+                                                    <h4 class="modal-title">Corrección de Metodos</h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
                                                 </div>
@@ -1211,7 +1280,7 @@
                                     @if ($correciones[0]->tecnicas_instrum != null)
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionTecInst">Correccion</button>
+                                                data-bs-target="#mCorreccionTecInst">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -1220,7 +1289,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Técnicas e instrumentos</h4>
+                                                    <h4 class="modal-title">Corrección de Técnicas e instrumentos</h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
                                                 </div>
@@ -1255,7 +1324,7 @@
                                     @if ($correciones[0]->instrumentacion != null)
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionInsFD">Correccion</button>
+                                                data-bs-target="#mCorreccionInsFD">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -1264,7 +1333,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Instrumentación y/o fuentes de datos
+                                                    <h4 class="modal-title">Corrección de Instrumentación y/o fuentes de datos
                                                     </h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
@@ -1301,7 +1370,7 @@
                                     @if ($correciones[0]->estg_metodologicas != null)
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionEstrategia">Correccion</button>
+                                                data-bs-target="#mCorreccionEstrategia">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -1310,7 +1379,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Estrategias Metodológicas</h4>
+                                                    <h4 class="modal-title">Corrección de Estrategias Metodológicas</h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
                                                 </div>
@@ -1348,7 +1417,7 @@
                                     @if ($correciones[0]->resultados != null)
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionResultados">Correccion</button>
+                                                data-bs-target="#mCorreccionResultados">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -1357,7 +1426,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Resultados
+                                                    <h4 class="modal-title">Corrección de Resultados
                                                     </h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
@@ -1404,7 +1473,7 @@
                                     @if ($correciones[0]->discusion != null)
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionDiscusion">Correccion</button>
+                                                data-bs-target="#mCorreccionDiscusion">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -1413,7 +1482,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Discusion
+                                                    <h4 class="modal-title">Corrección de Discusion
                                                     </h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
@@ -1451,7 +1520,7 @@
                                     @if ($correciones[0]->conclusiones != null)
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionConclusiones">Correccion</button>
+                                                data-bs-target="#mCorreccionConclusiones">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -1460,7 +1529,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Conclusiones
+                                                    <h4 class="modal-title">Corrección de Conclusiones
                                                     </h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
@@ -1498,7 +1567,7 @@
                                     @if ($correciones[0]->recomendaciones != null)
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionRecomendaciones">Correccion</button>
+                                                data-bs-target="#mCorreccionRecomendaciones">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -1507,7 +1576,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Recomendaciones
+                                                    <h4 class="modal-title">Corrección de Recomendaciones
                                                     </h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
@@ -1558,7 +1627,7 @@
                                             <div class="col-2">
                                                 <button type="button" class="btn btn-outline-danger"
                                                     data-bs-toggle="modal"
-                                                    data-bs-target="#mCorreccionReferencia">Correccion</button>
+                                                    data-bs-target="#mCorreccionReferencia">Corrección</button>
                                             </div>
                                         @endif
                                         {{-- Aqui va el modal --}}
@@ -1567,7 +1636,7 @@
                                                 <div class="modal-content">
                                                     <!-- Modal Header -->
                                                     <div class="modal-header">
-                                                        <h4 class="modal-title">Correccion de las Referencias</h4>
+                                                        <h4 class="modal-title">Corrección de las Referencias</h4>
                                                         <button type="button" class="btn-close"
                                                             data-bs-dismiss="modal"></button>
                                                     </div>
@@ -1760,7 +1829,7 @@
                                     @if ($correciones[0]->anexos != null)
                                         <div class="col-2">
                                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                                data-bs-target="#mCorreccionAnexos">Correccion</button>
+                                                data-bs-target="#mCorreccionAnexos">Corrección</button>
                                         </div>
                                     @endif
                                     {{-- Aqui va el modal --}}
@@ -1769,7 +1838,7 @@
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Correccion de Anexos
+                                                    <h4 class="modal-title">Corrección de Anexos
                                                     </h4>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>

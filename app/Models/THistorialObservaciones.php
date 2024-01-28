@@ -21,6 +21,4 @@ class THistorialObservaciones extends Model
     public function tesis(){
         return $this->hasOne(TesisCT2022::class);
     }
-
-    public $timestamps = false;
 }

@@ -44,13 +44,10 @@ class TObservacion extends Model
 
         'resultados',
 
-        'estado',
-        'fecha_create',
-        'fecha_update',
+        'estado'
     ];
     public function historialObservacion(){
         return $this->hasOne(THistorialObservaciones::class);
     }
-    public $timestamps = false;
 
 }
