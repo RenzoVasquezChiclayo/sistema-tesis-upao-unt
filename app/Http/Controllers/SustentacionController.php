@@ -75,7 +75,7 @@ class SustentacionController extends Controller
             ->join('estudiante_ct2022', 'estudiante_ct2022.cod_matricula', '=', 'd_g.cod_matricula')
             ->join('asesor_curso', 't.cod_docente', '=', 'asesor_curso.cod_docente')
             ->leftJoin('designacion_jurados as dj', 'dj.cod_tesis', 't.cod_tesis')
-            ->select('t.cod_tesis', 't.titulo', 'estudiante_ct2022.nombres as nombresAutor', 'estudiante_ct2022.apellidos as apellidosAutor', 'asesor_curso.cod_docente', 'asesor_curso.nombres as nombresAsesor', 'asesor_curso.apellidos as apellidosAsesor', 'dj.cod_jurado1', 'dj.cod_jurado2', 'dj.cod_jurado3', 'dj.cod_jurado4')
+            ->select('t.cod_tesis', 't.titulo', 'estudiante_ct2022.nombres as nombresAutor','estudiante_ct2022.cod_matricula', 'estudiante_ct2022.apellidos as apellidosAutor', 'asesor_curso.cod_docente', 'asesor_curso.nombres as nombresAsesor', 'asesor_curso.apellidos as apellidosAsesor', 'dj.cod_jurado1', 'dj.cod_jurado2', 'dj.cod_jurado3', 'dj.cod_jurado4')
             ->where('t.estado', 3)
             ->where('t.condicion', 'APROBADO')
             ->get();
@@ -95,6 +95,7 @@ class SustentacionController extends Controller
                             return [
                                 'nombresAutor' => $item->nombresAutor,
                                 'apellidosAutor' => $item->apellidosAutor,
+                                'cod_matricula'=>$item->cod_matricula
                             ];
                         })
                         ->toArray(),

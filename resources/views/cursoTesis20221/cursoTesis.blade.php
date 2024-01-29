@@ -549,6 +549,8 @@
                     <div class="row mb-2" @if ($campos[0]->duracion_proyecto == 0) hidden @endif>
                         <div class="col-8">
                             <h5>Cronograma de trabajo</h5>
+                            <input type="hidden" name="nActivities" id="nActivities"
+                                    value="{{ sizeof($cronograma) }}">
                         </div>
                         <div class="row m-0">
                             <table class="table table-bordered">
@@ -2471,6 +2473,20 @@
                 existMes = false;
                 setMeses();
             }
+        }
+
+        function verifyVariableField(){
+            const campos = @json($campos);
+            if(campos['formulacion_problema'] == 1){
+                let selectVariableI = document.getElementById('rowMatrizVI').selectedIndex;
+                let selectVariableD = document.getElementById('rowMatrizVD').selectedIndex;
+                if(selectVariableI == selectVariableD){
+                    alert('Se requiere que la variable INDEPENDIENTE sea distinta de la DEPENDIENTE.');
+                    return false;
+                }
+                return true;
+            }
+            return true;
         }
     </script>
 @endsection

@@ -37,8 +37,7 @@
                             <div class="col-10" style="text-align: left; margin-bottom:15px;">
                                 <h5>Correo institucional</h5>
                                 @if ($estudiante->correo == null)
-                                    <p style="color: red">AGREGE su correo si desea revicir emails cuando su
-                                        asesor haya hecho sus correcciones</p>
+                                    <p style="color: red">Si desea recibir notificaciones cuando su asesor y/o jurado realice observaciones, actualice su correo electrónico.</p>
                                     <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                                         data-bs-target="#mActualizarCorreo">Actualizar Correo</button>
                                 @else
@@ -71,8 +70,7 @@
                             <div class="col-10 col-md-6" style="text-align: left; margin-bottom:15px;">
                                 <h5>Correo</h5>
                                 @if ($asesor->correo == null)
-                                    <p style="color: red">AGREGE su correo si desea revicir emails cuando el
-                                        alumno haya registrado un envio</p>
+                                    <p style="color: red">Si desea recibir notificaciones cuando el estudiante actualice sus documentos, actualice su correo electrónico.</p>
                                     <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                                         data-bs-target="#mActualizarCorreo">Actualizar Correo</button>
                                 @else
@@ -223,8 +221,7 @@
                 <!-- Modal body -->
                 <div class="modal-body">
                     <div class="row" style="padding: 20px">
-                        <p>Se recomienda a los estudiantes, realizar la actualizacion de su contraseña para mayor seguridad
-                            y evitar robo de informacion.</p>
+                        <p>Se recomienda a los estudiantes, realizar la actualización de su contraseña para mayor seguridad.</p>
                     </div>
 
                 </div>

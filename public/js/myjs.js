@@ -152,83 +152,114 @@ function setColorTable(celda){
 /*Funcion para guardar los meses que duraron cada actividad del cronograma de trabajo
           tambien, estos meses estan separados por un '_' para conocer tambien el rango de estos*/
 function saveMonths(){
-    months = document.getElementById("txtmeses_ejecucion").value;
-    list=[]
-    cadena = ""
-    hayMeses = false;
-    for(i=1;i<=parseInt(months);i++){
-        notnull = document.getElementById("n1Tr"+i).value;
-        if((notnull%2) != 0 && notnull !=0){
-            hayMeses = true;
-            if(cadena!=""){
-                cadena += "_" + i
-            }else{
-                cadena += i
+    const months = parseInt(document.getElementById("txtmeses_ejecucion").value);
+    const activities = parseInt(document.getElementById("nActivities").value);
+    console.log(`nActivities: ${activities}`);
+    let list=[]
+    let cadena = ""
+    let hayMeses = false;
+    for(let a = 1; a <= activities; a++){
+        for(i=1;i<=months;i++){
+            notnull = document.getElementById("n"+a+"Tr"+i).value;
+            if((notnull%2) != 0 && notnull !=0){
+                hayMeses = true;
+                if(cadena!=""){
+                    cadena += "_" + i
+                }else{
+                    cadena += i
+                }
             }
         }
-    }
-    if(hayMeses==true){
-        hayMeses=false;
-        cadena += "_1a"
-    }else{
-        return false;
+        if(hayMeses){
+            hayMeses=false;
+            cadena += "_"+a+"a";
+        }else{
+            return false;
+        }
     }
 
-    for(i=1;i<=parseInt(months);i++){
-        notnull = document.getElementById("n2Tr"+i).value;
-        if((notnull%2) != 0 && notnull !=0){
-            hayMeses = true;
-            if(cadena!=""){
-                cadena += "_" + i
-            }else{
-                cadena += i
-            }
-        }
-    }
-    if(hayMeses==true){
-        hayMeses=false;
-        cadena += "_2a"
-    }else{
-        return false;
-    }
 
-    for(i=1;i<=parseInt(months);i++){
-        notnull = document.getElementById("n3Tr"+i).value;
-        if((notnull%2) != 0 && notnull !=0){
-            hayMeses = true;
-            if(cadena!=""){
-                cadena += "_" + i
-            }else{
-                cadena += i
-            }
-        }
-    }
-    if(hayMeses==true){
-        hayMeses=false;
-        cadena += "_3a"
-    }else{
-        return false;
-    }
-
-    for(i=1;i<=parseInt(months);i++){
-        notnull = document.getElementById("n4Tr"+i).value;
-        if((notnull%2) != 0 && notnull !=0){
-            hayMeses=true;
-            if(cadena!=""){
-                cadena += "_" + i
-            }else{
-                cadena += i
-            }
-        }
-    }
-    if(hayMeses==true){
-        hayMeses=false;
-        cadena += "_4a"
-    }else{
-        return false;
-    }
     document.getElementById("listMonths").value=cadena;
+    console.log(`listMonths: ${cadena}`);
+
     return true;
+    // months = document.getElementById("txtmeses_ejecucion").value;
+    // list=[]
+    // cadena = ""
+    // hayMeses = false;
+    // for(i=1;i<=parseInt(months);i++){
+    //     notnull = document.getElementById("n1Tr"+i).value;
+    //     if((notnull%2) != 0 && notnull !=0){
+    //         hayMeses = true;
+    //         if(cadena!=""){
+    //             cadena += "_" + i
+    //         }else{
+    //             cadena += i
+    //         }
+    //     }
+    // }
+    // if(hayMeses==true){
+    //     hayMeses=false;
+    //     cadena += "_1a"
+    // }else{
+    //     return false;
+    // }
+
+    // for(i=1;i<=parseInt(months);i++){
+    //     notnull = document.getElementById("n2Tr"+i).value;
+    //     if((notnull%2) != 0 && notnull !=0){
+    //         hayMeses = true;
+    //         if(cadena!=""){
+    //             cadena += "_" + i
+    //         }else{
+    //             cadena += i
+    //         }
+    //     }
+    // }
+    // if(hayMeses==true){
+    //     hayMeses=false;
+    //     cadena += "_2a"
+    // }else{
+    //     return false;
+    // }
+
+    // for(i=1;i<=parseInt(months);i++){
+    //     notnull = document.getElementById("n3Tr"+i).value;
+    //     if((notnull%2) != 0 && notnull !=0){
+    //         hayMeses = true;
+    //         if(cadena!=""){
+    //             cadena += "_" + i
+    //         }else{
+    //             cadena += i
+    //         }
+    //     }
+    // }
+    // if(hayMeses==true){
+    //     hayMeses=false;
+    //     cadena += "_3a"
+    // }else{
+    //     return false;
+    // }
+
+    // for(i=1;i<=parseInt(months);i++){
+    //     notnull = document.getElementById("n4Tr"+i).value;
+    //     if((notnull%2) != 0 && notnull !=0){
+    //         hayMeses=true;
+    //         if(cadena!=""){
+    //             cadena += "_" + i
+    //         }else{
+    //             cadena += i
+    //         }
+    //     }
+    // }
+    // if(hayMeses==true){
+    //     hayMeses=false;
+    //     cadena += "_4a"
+    // }else{
+    //     return false;
+    // }
+    // document.getElementById("listMonths").value=cadena;
+    // return true;
 }
 /*Funcion para agregar cada referencia bibliografica en la tabla*/
 var indice=0;
@@ -545,8 +576,6 @@ function guardarCopia(){
 /*Funcion para dirigir a la ruta guardar y registrar los datos del proy. investigacion*/
 function registerProject(){
 
-    let selectVariableI = document.getElementById('rowMatrizVI').selectedIndex;
-    let selectVariableD = document.getElementById('rowMatrizVD').selectedIndex;
 
     tipoInvestigacion = document.getElementById("cboTipoInvestigacion").selectedIndex;
     finInvestigacion = document.getElementById("cboFinInvestigacion").selectedIndex;
@@ -557,8 +586,7 @@ function registerProject(){
     //Esto nos ayuda a saber si se esta haciendo una correccion
     const isCorrect = document.getElementById('verificaCorrect').value;
     verTotal();
-    if(selectVariableI == selectVariableD){
-        alert('Se requiere que la variable INDEPENDIENTE sea distinta de la DEPENDIENTE.');
+    if(!verifyVariableField()){
         return;
     }
     if(isCorrect!='true'){

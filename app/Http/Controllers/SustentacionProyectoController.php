@@ -479,72 +479,77 @@ class SustentacionProyectoController extends Controller
 
     public function viewEvaluacionProyecto()
     {
-        $id = auth()->user()->name;
-        $aux = explode('-', $id);
-        $id = $aux[0];
+        try {
 
-        $autor = DB::table('estudiante_ct2022')
-            ->leftJoin('detalle_grupo_investigacion as dg', 'dg.cod_matricula', '=', 'estudiante_ct2022.cod_matricula')
-            ->leftJoin('grupo_investigacion as gp', 'gp.id_grupo', '=', 'dg.id_grupo_inves')
-            ->select('estudiante_ct2022.*', 'gp.cod_docente', 'gp.id_grupo', 'gp.num_grupo')
-            ->where('estudiante_ct2022.cod_matricula', $id)
-            ->first();
-        //Encontramos al autor
+            $id = auth()->user()->name;
+            $aux = explode('-', $id);
+            $id = $aux[0];
 
-        if ($autor->id_grupo == null) {
-            return view('cursoTesis20221.cursoTesis', ['autor' => $autor, 'tesis' => []]);
+            $autor = DB::table('estudiante_ct2022')
+                ->leftJoin('detalle_grupo_investigacion as dg', 'dg.cod_matricula', '=', 'estudiante_ct2022.cod_matricula')
+                ->leftJoin('grupo_investigacion as gp', 'gp.id_grupo', '=', 'dg.id_grupo_inves')
+                ->select('estudiante_ct2022.*', 'gp.cod_docente', 'gp.id_grupo', 'gp.num_grupo')
+                ->where('estudiante_ct2022.cod_matricula', $id)
+                ->first();
+            //Encontramos al autor
+
+            if ($autor->id_grupo == null) {
+                return view('cursoTesis20221.cursoTesis', ['autor' => $autor, 'tesis' => []]);
+            }
+            $coautor = DB::table('detalle_grupo_investigacion as dg')->rightJoin('estudiante_ct2022 as e', 'e.cod_matricula', '=', 'dg.cod_matricula')->select('e.*')->where('dg.id_grupo_inves', $autor->id_grupo)->where('e.cod_matricula', '!=', $id)->first();
+
+            $tesis = TesisCT2022::where('id_grupo_inves', '=', $autor->id_grupo)->join('designacion_jurado_proyecto as dj', 'proyecto_tesis.cod_proyectotesis', 'dj.cod_proyectotesis')->select('proyecto_tesis.*', 'dj.estado as estadoDesignacion', 'dj.cod_jurado1', 'dj.cod_jurado2', 'dj.cod_jurado3')->get(); //Encontramos la tesis
+            /*Encontramos los jurados */
+            $jurados = AsesorCurso::where('cod_docente', $tesis[0]->cod_jurado1)->orWhere('cod_docente', $tesis[0]->cod_jurado2)->orWhere('cod_docente', $tesis[0]->cod_jurado3)->get();
+            /**/
+            $asesor = DB::table('asesor_curso')->leftjoin('grado_academico as ga', 'asesor_curso.cod_grado_academico', 'ga.cod_grado_academico')->leftjoin('categoria_docente as cd', 'asesor_curso.cod_categoria', 'cd.cod_categoria')->select('asesor_curso.*', 'ga.descripcion as DescGrado', 'cd.descripcion as DescCat')->where('cod_docente', $tesis[0]->cod_docente)->first();  //Encontramos al asesor
+            /* Traemos informacion de las tablas*/
+            $tinvestigacion = TipoInvestigacion::all();
+            $fin_persigue = Fin_Persigue::all();
+            $diseno_investigacion = Diseno_Investigacion::all();
+            $cronograma = Cronograma::all();
+            $cronogramas_py = Cronograma_Proyecto::where("cod_proyectotesis", $tesis[0]->cod_proyectotesis)->get();
+            $presupuestos = Presupuesto::all();
+            $tiporeferencia = TipoReferencia::all();
+            $referencias = referencias::where('cod_proyectotesis', '=', $tesis[0]->cod_proyectotesis)->get(); //Por si existen referencias
+
+            //Verificaremos que se hayan dado las observaciones y las enviaremos
+            $observaciones = ObservacionSustentacionProyecto::join('historial_observaciones as ho', 'observacion_sustentacionproy.cod_historialObs', '=', 'ho.cod_historialObs')->join('jurado as j','observacion_sustentacionproy.cod_jurado','j.cod_jurado')->join('asesor_curso as ac','j.cod_docente','ac.cod_docente')->select('observacion_sustentacionproy.*','ac.nombres as nombresAsesor','ac.apellidos as apellidosAsesor')->where('ho.cod_proyectotesis', $tesis[0]->cod_proyectotesis)->where('observacion_sustentacionproy.estado', 1)->where('ho.sustentacion',true)->where('ho.estado', 2)->get();
+
+            //dd($observaciones);
+
+            $detalles = [];
+            if (sizeof($observaciones) > 0) {
+                $detalles = DetalleObsSustentacionProy::where('cod_observacion', $observaciones[0]->cod_observacion)->get();
+            }
+
+            $presupuestoProy = Presupuesto_Proyecto::where('cod_proyectotesis', '=', $tesis[0]->cod_proyectotesis)->get();
+
+            $recursos = recursos::where('cod_proyectotesis', '=', $tesis[0]->cod_proyectotesis)->get();
+
+            $objetivos = Objetivo::where('cod_proyectotesis', '=', $tesis[0]->cod_proyectotesis)->get();
+
+            $variableop = variableOP::where('cod_proyectotesis', '=', $tesis[0]->cod_proyectotesis)->get();
+
+            $campos = CamposEstudiante::where('cod_proyectotesis', $tesis[0]->cod_proyectotesis)->get();
+
+            $matriz = MatrizOperacional::where('cod_proyectotesis', '=', $tesis[0]->cod_proyectotesis)->get();
+
+            //Obtener los archivos e imagenes que tuviese guardado.
+            $detalleHistorial = [];
+
+            $enabledView = DesignacionJuradoProyecto::where('cod_proyectotesis', $tesis[0]->cod_proyectotesis)->get();
+
+            return view('cursoTesis20221.estudiante.evaluacionProyecto.proyectoTesis', [
+                'autor' => $autor,
+                'presupuestos' => $presupuestos, 'fin_persigue' => $fin_persigue, 'diseno_investigacion' => $diseno_investigacion, 'tiporeferencia' => $tiporeferencia, 'tesis' => $tesis, 'asesor' => $asesor,
+                'observaciones' => $observaciones, 'recursos' => $recursos, 'objetivos' => $objetivos, 'variableop' => $variableop,
+                'presupuestoProy' => $presupuestoProy, 'detalles' => $detalles, 'tinvestigacion' => $tinvestigacion, 'campos' => $campos,
+                'referencias' => $referencias, 'detalleHistorial' => $detalleHistorial, 'matriz' => $matriz, 'cronograma' => $cronograma, 'cronogramas_py' => $cronogramas_py, 'coautor' => $coautor, 'enabledView' => $enabledView, 'jurados' => $jurados
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
         }
-        $coautor = DB::table('detalle_grupo_investigacion as dg')->rightJoin('estudiante_ct2022 as e', 'e.cod_matricula', '=', 'dg.cod_matricula')->select('e.*')->where('dg.id_grupo_inves', $autor->id_grupo)->where('e.cod_matricula', '!=', $id)->first();
-
-        $tesis = TesisCT2022::where('id_grupo_inves', '=', $autor->id_grupo)->join('designacion_jurado_proyecto as dj', 'proyecto_tesis.cod_proyectotesis', 'dj.cod_proyectotesis')->select('proyecto_tesis.*', 'dj.estado as estadoDesignacion', 'dj.cod_jurado1', 'dj.cod_jurado2', 'dj.cod_jurado3')->get(); //Encontramos la tesis
-        /*Encontramos los jurados */
-        $jurados = AsesorCurso::where('cod_docente', $tesis[0]->cod_jurado1)->orWhere('cod_docente', $tesis[0]->cod_jurado2)->orWhere('cod_docente', $tesis[0]->cod_jurado3)->get();
-        /**/
-        $asesor = DB::table('asesor_curso')->leftjoin('grado_academico as ga', 'asesor_curso.cod_grado_academico', 'ga.cod_grado_academico')->leftjoin('categoria_docente as cd', 'asesor_curso.cod_categoria', 'cd.cod_categoria')->select('asesor_curso.*', 'ga.descripcion as DescGrado', 'cd.descripcion as DescCat')->where('cod_docente', $tesis[0]->cod_docente)->first();  //Encontramos al asesor
-        /* Traemos informacion de las tablas*/
-        $tinvestigacion = TipoInvestigacion::all();
-        $fin_persigue = Fin_Persigue::all();
-        $diseno_investigacion = Diseno_Investigacion::all();
-        $cronograma = Cronograma::all();
-        $cronogramas_py = Cronograma_Proyecto::where("cod_proyectotesis", $tesis[0]->cod_proyectotesis)->get();
-        $presupuestos = Presupuesto::all();
-        $tiporeferencia = TipoReferencia::all();
-        $referencias = referencias::where('cod_proyectotesis', '=', $tesis[0]->cod_proyectotesis)->get(); //Por si existen referencias
-
-        //Verificaremos que se hayan dado las observaciones y las enviaremos
-        $observaciones = ObservacionSustentacionProyecto::join('historial_observaciones as ho', 'observacion_sustentacionproy.cod_historialObs', '=', 'ho.cod_historialObs')->join('jurado as j','observacion_sustentacionproy.cod_jurado','j.cod_jurado')->join('asesor_curso as ac','j.cod_docente','ac.cod_docente')->select('observacion_sustentacionproy.*','ac.nombres as nombresAsesor','ac.apellidos as apellidosAsesor')->where('ho.cod_proyectotesis', $tesis[0]->cod_proyectotesis)->where('observacion_sustentacionproy.estado', 1)->where('ho.sustentacion',true)->where('ho.estado', 2)->get();
-
-        //dd($observaciones);
-
-        $detalles = [];
-        if (sizeof($observaciones) > 0) {
-            $detalles = DetalleObsSustentacionProy::where('cod_observacion', $observaciones[0]->cod_observacion)->get();
-        }
-
-        $presupuestoProy = Presupuesto_Proyecto::where('cod_proyectotesis', '=', $tesis[0]->cod_proyectotesis)->get();
-
-        $recursos = recursos::where('cod_proyectotesis', '=', $tesis[0]->cod_proyectotesis)->get();
-
-        $objetivos = Objetivo::where('cod_proyectotesis', '=', $tesis[0]->cod_proyectotesis)->get();
-
-        $variableop = variableOP::where('cod_proyectotesis', '=', $tesis[0]->cod_proyectotesis)->get();
-
-        $campos = CamposEstudiante::where('cod_proyectotesis', $tesis[0]->cod_proyectotesis)->get();
-
-        $matriz = MatrizOperacional::where('cod_proyectotesis', '=', $tesis[0]->cod_proyectotesis)->get();
-
-        //Obtener los archivos e imagenes que tuviese guardado.
-        $detalleHistorial = [];
-
-        $enabledView = DesignacionJuradoProyecto::where('cod_proyectotesis', $tesis[0]->cod_proyectotesis)->get();
-
-        return view('cursoTesis20221.estudiante.evaluacionProyecto.proyectoTesis', [
-            'autor' => $autor,
-            'presupuestos' => $presupuestos, 'fin_persigue' => $fin_persigue, 'diseno_investigacion' => $diseno_investigacion, 'tiporeferencia' => $tiporeferencia, 'tesis' => $tesis, 'asesor' => $asesor,
-            'observaciones' => $observaciones, 'recursos' => $recursos, 'objetivos' => $objetivos, 'variableop' => $variableop,
-            'presupuestoProy' => $presupuestoProy, 'detalles' => $detalles, 'tinvestigacion' => $tinvestigacion, 'campos' => $campos,
-            'referencias' => $referencias, 'detalleHistorial' => $detalleHistorial, 'matriz' => $matriz, 'cronograma' => $cronograma, 'cronogramas_py' => $cronogramas_py, 'coautor' => $coautor, 'enabledView' => $enabledView, 'jurados' => $jurados
-        ]);
     }
 
     public function viewEstadoEvaluacionProyecto()

@@ -82,82 +82,95 @@
                                             <td>{{ $ta[0]['cod_tesis'] }}</td>
                                             <td>
                                                 @foreach ($ta[0]['autores'] as $index => $autor)
-                                                    {{ $autor['nombresAutor'] . ' ' . $autor['apellidosAutor'] }}
-                                                    @if ($index < count($ta[0]['autores']) - 1)
-                                                        &amp;
-                                                    @endif
+                                                    <p>{{$autor['cod_matricula'].' - '.$autor['apellidosAutor'].', '.$autor['nombresAutor'] }}</p><br>
                                                 @endforeach
                                             </td>
                                             <td>{{ $ta[0]['titulo'] }}</td>
                                             <td>{{ $ta[0]['apellidosAsesor']. ' ' .$ta[0]['nombresAsesor'] }}</td>
                                             <td style="text-align: center;">
-                                                <div class="row">
-                                                    <p>1er Jurado</p>
-                                                    <select name="cbo1Jurado_{{ $cont }}"
-                                                        id="cbo1Jurado_{{ $cont }}" class="form-control"
-                                                        onchange="validarSeleccion({{ $cont }});"
-                                                        @if ($ta[0]['cod_jurado1'] != null) disabled @endif>
-                                                        <option value="0">-</option>
-                                                        @foreach ($ta[1] as $asesores)
-                                                            @if ($asesores->cod_docente != $ta[0]['cod_docente'])
-                                                                <option value="{{ $asesores->cod_docente }}"
-                                                                    @if ($ta[0]['cod_jurado1'] == $asesores->cod_docente) selected @endif>
-                                                                    {{ $asesores->apellidos . ' ' .$asesores->nombres }}
-                                                                </option>
-                                                            @endif
-                                                        @endforeach
-                                                    </select>
+                                                <div class="row mb-2">
+                                                    <div class="col-4">
+                                                        1er Jurado
+                                                    </div>
+                                                    <div class="col-8">
+                                                        <select name="cbo1Jurado_{{ $cont }}"
+                                                            id="cbo1Jurado_{{ $cont }}" class="form-control"
+                                                            onchange="validarSeleccion({{ $cont }});"
+                                                            @if ($ta[0]['cod_jurado1'] != null) disabled @endif>
+                                                            <option value="0">-</option>
+                                                            @foreach ($ta[1] as $asesores)
+                                                                @if ($asesores->cod_docente != $ta[0]['cod_docente'])
+                                                                    <option value="{{ $asesores->cod_docente }}"
+                                                                        @if ($ta[0]['cod_jurado1'] == $asesores->cod_docente) selected @endif>
+                                                                        {{ $asesores->apellidos . ' ' .$asesores->nombres }}
+                                                                    </option>
+                                                                @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                                <div class="row">
-                                                    <p>2do Jurado</p>
-                                                    <select name="cbo2Jurado_{{ $cont }}"
-                                                        id="cbo2Jurado_{{ $cont }}" class="form-control"
-                                                        onchange="validarSeleccion({{ $cont }});"
-                                                        @if ($ta[0]['cod_jurado2'] != null) disabled @endif>
-                                                        <option value="0">-</option>
-                                                        @foreach ($ta[1] as $asesores)
-                                                            @if ($asesores->cod_docente != $ta[0]['cod_docente'])
-                                                                <option value="{{ $asesores->cod_docente }}"
-                                                                    @if ($ta[0]['cod_jurado2'] == $asesores->cod_docente) selected @endif>
-                                                                    {{ $asesores->apellidos . ' ' .$asesores->nombres }}
-                                                                </option>
-                                                            @endif
-                                                        @endforeach
-                                                    </select>
+                                                <div class="row mb-2">
+                                                    <div class="col-4">
+                                                        <p>2do Jurado</p>
+                                                    </div>
+                                                    <div class="col-8">
+                                                        <select name="cbo2Jurado_{{ $cont }}"
+                                                            id="cbo2Jurado_{{ $cont }}" class="form-control"
+                                                            onchange="validarSeleccion({{ $cont }});"
+                                                            @if ($ta[0]['cod_jurado2'] != null) disabled @endif>
+                                                            <option value="0">-</option>
+                                                            @foreach ($ta[1] as $asesores)
+                                                                @if ($asesores->cod_docente != $ta[0]['cod_docente'])
+                                                                    <option value="{{ $asesores->cod_docente }}"
+                                                                        @if ($ta[0]['cod_jurado2'] == $asesores->cod_docente) selected @endif>
+                                                                        {{ $asesores->apellidos . ' ' .$asesores->nombres }}
+                                                                    </option>
+                                                                @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                                <div class="row">
-                                                    <p>VOCAL</p>
-                                                    <select name="cboVocal_{{ $cont }}"
-                                                        id="cboVocal_{{ $cont }}" class="form-control"
-                                                        onchange="validarSeleccion({{ $cont }});"
-                                                        @if ($ta[0]['cod_jurado3'] != null) disabled @endif>
-                                                        <option value="0">-</option>
-                                                        @foreach ($ta[1] as $asesores)
-                                                            @if ($asesores->cod_docente != $ta[0]['cod_docente'])
-                                                                <option value="{{ $asesores->cod_docente }}"
-                                                                    @if ($ta[0]['cod_jurado3'] == $asesores->cod_docente) selected @endif>
-                                                                    {{ $asesores->apellidos . ' ' .$asesores->nombres }}
-                                                                </option>
-                                                            @endif
-                                                        @endforeach
-                                                    </select>
+                                                <div class="row mb-2">
+                                                    <div class="col-4">
+                                                        <p>Vocal</p>
+                                                    </div>
+                                                    <div class="col-8">
+                                                        <select name="cboVocal_{{ $cont }}"
+                                                            id="cboVocal_{{ $cont }}" class="form-control"
+                                                            onchange="validarSeleccion({{ $cont }});"
+                                                            @if ($ta[0]['cod_jurado3'] != null) disabled @endif>
+                                                            <option value="0">-</option>
+                                                            @foreach ($ta[1] as $asesores)
+                                                                @if ($asesores->cod_docente != $ta[0]['cod_docente'])
+                                                                    <option value="{{ $asesores->cod_docente }}"
+                                                                        @if ($ta[0]['cod_jurado3'] == $asesores->cod_docente) selected @endif>
+                                                                        {{ $asesores->apellidos . ' ' .$asesores->nombres }}
+                                                                    </option>
+                                                                @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                                <div class="row">
-                                                    <p>SUPLENTE</p>
-                                                    <select name="cbo4Jurado_{{ $cont }}"
-                                                        id="cbo4Jurado_{{ $cont }}" class="form-control"
-                                                        onchange="validarSeleccion({{ $cont }});"
-                                                        @if ($ta[0]['cod_jurado4'] != null) disabled @endif>
-                                                        <option value="0">-</option>
-                                                        @foreach ($ta[1] as $asesores)
-                                                            @if ($asesores->cod_docente != $ta[0]['cod_docente'])
-                                                                <option value="{{ $asesores->cod_docente }}"
-                                                                    @if ($ta[0]['cod_jurado4'] == $asesores->cod_docente) selected @endif>
-                                                                    {{ $asesores->apellidos . ' ' .$asesores->nombres }}
-                                                                </option>
-                                                            @endif
-                                                        @endforeach
-                                                    </select>
+                                                <div class="row mb-2">
+                                                    <div class="col-4">
+                                                        <p>Suplente</p>
+                                                    </div>
+                                                    <div class="col-8">
+                                                        <select name="cbo4Jurado_{{ $cont }}"
+                                                            id="cbo4Jurado_{{ $cont }}" class="form-control"
+                                                            onchange="validarSeleccion({{ $cont }});"
+                                                            @if ($ta[0]['cod_jurado4'] != null) disabled @endif>
+                                                            <option value="0">-</option>
+                                                            @foreach ($ta[1] as $asesores)
+                                                                @if ($asesores->cod_docente != $ta[0]['cod_docente'])
+                                                                    <option value="{{ $asesores->cod_docente }}"
+                                                                        @if ($ta[0]['cod_jurado4'] == $asesores->cod_docente) selected @endif>
+                                                                        {{ $asesores->apellidos . ' ' .$asesores->nombres }}
+                                                                    </option>
+                                                                @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </td>
                                             <td>
