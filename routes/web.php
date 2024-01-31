@@ -249,6 +249,8 @@ Route::post('/aprobar-tesis-jurado',[SustentacionController::class,'aprobarTesis
 /* Evaluacion Tesis (Estudiante)*/
 Route::get('/view-evaluacion-tesis',[SustentacionController::class,'viewEvaluacionTesis'])->name('estudiante.evaluacion.view-tesis')->middleware('auth');
 Route::get('/view-estado-tesis',[SustentacionController::class,'viewEstadoEvaluacionTesis'])->name('estudiante.evaluacion.estado-tesis')->middleware('auth');
+Route::post('/guardar-tesis-evaluacion',[SustentacionController::class,'actualizarTesis'])->name('estudiante.evaluacion.actualizarTesis')->middleware('auth');
+
 
 /* Evaluacion Proyecto de tesis (Estudiante)*/
 Route::get('/view-evaluacion-proyecto',[SustentacionProyectoController::class,'viewEvaluacionProyecto'])->name('estudiante.evaluacion.proyecto-tesis')->middleware('auth');

@@ -300,11 +300,6 @@
                     <span class="links_name">Registrar jurado</span>
                 </a>
             </div>
-            <div class="cstm-collapse collapse" id="collapseJurado">
-                <a href="{{ route('director.listaTesisAprobadas') }}">
-                    <span class="links_name">Asignar Jurados</span>
-                </a>
-            </div>
         </li>
         <li>
             <a class="cstm-a menu-a" class="cstm-a" data-bs-toggle="collapse" href="#collapseProyectoTesis"

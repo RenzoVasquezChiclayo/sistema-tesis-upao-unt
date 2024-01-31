@@ -1,6 +1,6 @@
 @extends('plantilla.dashboard')
 @section('titulo')
-    Tesis
+    Evaluacion Tesis
 @endsection
 @section('css')
 <link rel="stylesheet" href="./css/tesis_body.css">
@@ -99,7 +99,7 @@
 @endsection
 @section('contenido')
 <title>Evaluación de Tesis</title>
-    @if ($tesis == null)
+    @if (sizeof($enabledView) <= 0)
         <div class="row d-flex" style="align-items:center; justify-content: center;">
             <div class="col-8 border-box mt-3">
                 <div class="row">
@@ -107,47 +107,31 @@
                         <h4 style="color:red;">Aviso!</h4>
                         <hr style="border: 1px solid black;" />
                     </div>
+
                     <div class="col">
-                        <p>Esta vista estara habilitada cuando se te designe algun grupo de investigación.
+                        <p>Esta vista estará habilitada cuando se apruebe tu tesis.
                             Si existe algun inconveniente y/o queja envia un correo a <a href="#">
                                 <>example@unitru.edu.pe</u>
-                            </a> para mas informacion.</p>
+                            </a> para mas información.</p>
                     </div>
                 </div>
             </div>
         </div>
-    @elseif ($tesis->cod_docente == null)
-            <div class="row d-flex" style="align-items:center; justify-content: center;">
-                <div class="col-8 border-box mt-3">
-                    <div class="row">
-                        <div class="col">
-                            <h4 style="color:red;">Aviso!</h4>
-                            <hr style="border: 1px solid black;" />
-                        </div>
-                        <div class="col">
-                            <p>Esta vista estara habilitada cuando se te designen los jurados para la tesis.
-                                Si existe algun inconveniente y/o queja envia un correo a <a href="#">
-                                    <>example@unitru.edu.pe</u>
-                                </a> para mas informacion.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
     @else
         <div class="col-12">
-            @if ($tesis->condicion == 'APROBADO')
+            @if ($tesis->estadoDesignacion == 3)
                 <div class="row p-2" style="background-color: rgb(77, 153, 77);">
                     <div class="col alert-correction" style="text-align: center;">
                         <p>TESIS APROBADO!</p>
                     </div>
                 </div>
-            @elseif($tesis->condicion == 'DESAPROBADO')
+            @elseif($tesis->estadoDesignacion == 4)
                 <div class="row p-2" style="background-color: rgb(148, 91, 91);">
                     <div class="col col-md-6 alert-correction" style="text-align: center;">
                         <p>TESIS DESAPROBADO!</p>
                     </div>
                 </div>
-            @elseif (sizeof($correciones) != 0)
+            @elseif (sizeof($observaciones) != 0)
                 <div class="row p-2" style="text-align:center;">
                     <div class="col col-md-6 alert-correction">
                         <p>Se realizaron las correciones correspondientes.</p>
@@ -159,7 +143,7 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <form id="formTesis2022" name="formTesis2022" action="{{route('estudiante.guardarTesis')}}" method="POST"
+                    <form id="formTesis2022" name="formTesis2022" action="{{route('estudiante.evaluacion.actualizarTesis')}}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
                         <div class="col">
@@ -168,7 +152,7 @@
 
                             <input id="verificaCorrect" type="hidden"
                                 value="">
-                            <input type="hidden" name="txtcod_tesis" value="{{$tesis->cod_tesis}}">
+                            <input type="hidden" name="cod_tesis" value="{{$tesis->cod_tesis}}">
                             <input type="hidden" id="txtValuesObs" value="">
                         </div>
                         <div class="col-12 mb-3">
@@ -454,7 +438,7 @@
                                                         <td>{{ $obj->tipo }}</td>
                                                         <td>{{ $obj->descripcion }}</td>
                                                         <td>
-                                                            @if ((sizeof($correciones) > 0 && $correciones[0]->objetivos != null) || $tesis->estado != 1)
+                                                            @if ((sizeof($observaciones) > 0 && $observaciones[0]->objetivos != null) || $tesis->estado != 1)
                                                                 <a href="#" id="lobj-{{ $indObj }}"
                                                                     class="btn btn-warning"
                                                                     onclick="deleteOldData(this);">X</a>
@@ -804,33 +788,18 @@
                                 <input type="hidden" name="isSaved" id="isSaved" value="">
                             </div>
                         </div>
-                        <div class="row" style=" margin-bottom:20px;">
-
-                            <div class="col-8 col-md-9" style="align-items:flex-start;">
-
-                            </div>
-                        </div>
 
                         <div class="row" style=" margin-bottom:20px;">
-                            @if ($tesis->estado == 0 || $tesis->estado == 2 || $tesis->estado == 9)
-                                <div class="col-4 col-md-2 ">
-                                    <input type="button" class="btn btn-outline-success" value="Guardar"
-                                        onclick="guardarCopia();">
-                                </div>
-                            @endif
-                            <div class="col-8 col-md-9" style="align-items:flex-start;">
+                            <div class="d-grid gap-2 d-md-block">
 
-                                @if ($tesis->estado == 0 || $tesis->estado == 2 || $tesis->estado == 9)
+                                @if ($tesis->estadoDesignacion == 2 || $tesis->estadoDesignacion == 9)
+                                    <input type="button" class="btn btn-outline-success" value="Guardar" onclick="guardarCopia();">
                                     <input class="btn btn-success" type="button" value="Enviar"
                                         onclick="registerProject();">
                                 @endif
                                 <a href="{{ route('user_information') }}" type="button" class="btn btn-danger"
                                     style="margin-left:20px;">
-                                    @if ($tesis->estado == 0 || $tesis->estado == 2)
-                                        Cancelar
-                                    @else
-                                        Volver
-                                    @endif
+                                    Volver
                                 </a>
                             </div>
                         </div>
@@ -904,15 +873,15 @@
     @endif
     <script type="text/javascript">
         let observations = @json($observaciones);
+        console.log(observations);
         let filterObservations = [];
         let finalObs = {};
         const arrayAttributeName = [
-            'cod_historialObs',
-            'cod_observacion',
+            'cod_historial_observacion',
+            'id_observacion',
             'created_at',
             'updated_at',
-            'estado',
-            'fecha'
+            'estado'
         ];
         const secondFilter = [
             'apellidosAsesor',

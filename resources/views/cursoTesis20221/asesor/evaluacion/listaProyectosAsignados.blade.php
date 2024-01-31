@@ -161,7 +161,7 @@
                         <td># Observación</td>
                         <td>Jurado</td>
                         <td>Fecha</td>
-                        <td>Acción</td>
+                        <td class="text-center">Acción</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -175,6 +175,7 @@
                             <td>{{'#'.($loop->index +1)}}</td>
                             <td>{{$obs->apellidosJurado.', '.$obs->nombresJurado}}</td>
                             <td>{{$obs->fechaHistorial}}</td>
+                            <td class="text-center"><a href="#"><i class='bx bx-sm bx-show'></i></a></td>
                         </tr>
                     @endforeach
                 </tbody>

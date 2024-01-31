@@ -103,56 +103,29 @@ class Tesis2022Controller extends Controller
     }
 
     public function saveTesis2022(Request $request){
-        $id = auth()->user()->name;
-        $aux = explode('-',$id);
-        $id = $aux[0];
-        $isSaved = $request->isSaved;
-        $estudiante = EstudianteCT2022::find($id);
-
-        $tesis = Tesis_2022::join('grupo_investigacion as g_i','tesis_2022.id_grupo_inves','=','g_i.id_grupo')
-                        ->join('detalle_grupo_investigacion as d_g','d_g.id_grupo_inves','=','g_i.id_grupo')
-                        ->select('tesis_2022.*')
-                        ->where('d_g.cod_matricula','=',$estudiante->cod_matricula)->first();
-        $asesor = DB::table('asesor_curso')->where('cod_docente',$tesis->cod_docente)->first();  //Encontramos al asesor
-        $observacionX = TObservacion::join('t_historial_observaciones','t_observacion.cod_historial_observacion','=','t_historial_observaciones.cod_historial_observacion')
-                ->select('t_observacion.*')->where('t_historial_observaciones.cod_Tesis',$tesis->cod_tesis)
-                ->where('t_observacion.estado',1)->get();
-
-        if(sizeof($observacionX)>0){
-            $detalles = TDetalleObservacion::where('id_observacion',$observacionX[0]->cod_historial_observacion)->get();
-        }
-
         try{
 
-            /*Si el egresado tiene una observacion pendiente, solo se guardaran los cambios solicitados*/
+            $id = auth()->user()->name;
+            $aux = explode('-',$id);
+            $id = $aux[0];
+            $isSaved = $request->isSaved;
+            $estudiante = EstudianteCT2022::find($id);
+
+            $tesis = Tesis_2022::join('grupo_investigacion as g_i','tesis_2022.id_grupo_inves','=','g_i.id_grupo')
+                            ->join('detalle_grupo_investigacion as d_g','d_g.id_grupo_inves','=','g_i.id_grupo')
+                            ->select('tesis_2022.*')
+                            ->where('d_g.cod_matricula','=',$estudiante->cod_matricula)->first();
+            $asesor = DB::table('asesor_curso')->where('cod_docente',$tesis->cod_docente)->first();  //Encontramos al asesor
+            $observacionX = TObservacion::join('t_historial_observaciones','t_observacion.cod_historial_observacion','=','t_historial_observaciones.cod_historial_observacion')
+                    ->select('t_observacion.*')->where('t_historial_observaciones.cod_Tesis',$tesis->cod_tesis)
+                    ->where('t_observacion.estado',1)->get();
+
             if(sizeof($observacionX)>0){
-
-                for($i=0; $i<sizeof($detalles);$i++){
-                    $tema = $detalles[$i]->tema_referido;
-                    $name_request='txt'.$tema;
-                    $detalleEEG=TDetalleObservacion::find($detalles[$i]->id_detalle_observacion);
-
-                    $detalleEEG->correccion=$request->$name_request;
-                    $detalleEEG->save();
-                }
-
-                $historialX = THistorialObservaciones::where('cod_Tesis','=',$tesis->cod_tesis)->get();
-                $historialX[0]->fecha = now();
-                $historialX[0]->save();
-
-                $observacionX[0]->estado = 2;
-                $observacionX[0]->save();
+                $detalles = TDetalleObservacion::where('id_observacion',$observacionX[0]->cod_historial_observacion)->get();
             }
-            if($request->listOldlobj!=""){
-                $deleteObjetivos = explode(",",$request->listOldlobj);
-                for($i = 0; $i<sizeof($deleteObjetivos);$i++){
-                    $objDelete = TObjetivo::find($deleteObjetivos[$i]);
-                    if($objDelete != null){
-                        $objDelete->delete();
-                    }
 
-                }
-            }
+
+
 
             $tesis->titulo = $request->txttitulo;
             $tesis->dedicatoria = $request->txtdedicatoria ?: null;
@@ -186,7 +159,35 @@ class Tesis2022Controller extends Controller
             if($request->txtantecedentes!=""){$tesis->antecedentes = $request->txtantecedentes;}
             if($request->txtjustificacion!=""){$tesis->justificacion = $request->txtjustificacion;}
             if($request->txtformulacion_prob!=""){$tesis->formulacion_prob = $request->txtformulacion_prob;}
+            /*Si el egresado tiene una observacion pendiente, solo se guardaran los cambios solicitados*/
+            if(sizeof($observacionX)>0){
 
+                for($i=0; $i<sizeof($detalles);$i++){
+                    $tema = $detalles[$i]->tema_referido;
+                    $name_request='txt'.$tema;
+                    $detalleEEG=TDetalleObservacion::find($detalles[$i]->id_detalle_observacion);
+
+                    $detalleEEG->correccion=$request->$name_request;
+                    $detalleEEG->save();
+                }
+
+                $historialX = THistorialObservaciones::where('cod_Tesis','=',$tesis->cod_tesis)->get();
+                $historialX[0]->fecha = now();
+                $historialX[0]->save();
+
+                $observacionX[0]->estado = 2;
+                $observacionX[0]->save();
+            }
+            if($request->listOldlobj!=""){
+                $deleteObjetivos = explode(",",$request->listOldlobj);
+                for($i = 0; $i<sizeof($deleteObjetivos);$i++){
+                    $objDelete = TObjetivo::find($deleteObjetivos[$i]);
+                    if($objDelete != null){
+                        $objDelete->delete();
+                    }
+
+                }
+            }
             /* Objetivos */
             $arregloTipoObj = [];
             $arreglodescripcionObj = [];
@@ -625,15 +626,14 @@ class Tesis2022Controller extends Controller
                     //Mail::to($asesor->correo)->send(new EstadoEnviadoTesisMail($request->txttitulo,$estudiante,$tesis->id_grupo_inves));
                 }
             }
-            $tesis->fecha_update = now();
             $tesis->save();
-
+            return redirect()->route('curso.estado-tesis')->with('datos','ok');
         }catch(Exception $th){
+            throw $th;
             return redirect()->route('curso.registro-tesis')->with('datos','oknot');
 
         }
 
-        return redirect()->route('curso.estado-tesis')->with('datos','ok');
     }
 
     //HOSTING

@@ -45,7 +45,7 @@ class SustentacionProyectoController extends Controller
             ->join('estudiante_ct2022 as e', 'd_g.cod_matricula', '=', 'e.cod_matricula')
             ->join('asesor_curso as a', 'pt.cod_docente', '=', 'a.cod_docente')
             ->leftJoin('designacion_jurado_proyecto as dj', 'pt.cod_proyectotesis', 'dj.cod_proyectotesis')
-            ->select('pt.cod_proyectotesis', 'pt.titulo', 'e.cod_matricula','e.nombres as nombresAutor', 'e.apellidos as apellidosAutor', 'a.cod_docente', 'a.nombres as nombresAsesor', 'a.apellidos as apellidosAsesor', 'dj.cod_jurado1', 'dj.cod_jurado2', 'dj.cod_jurado3', 'dj.cod_jurado4')
+            ->select('pt.cod_proyectotesis', 'pt.titulo', 'e.cod_matricula', 'e.nombres as nombresAutor', 'e.apellidos as apellidosAutor', 'a.cod_docente', 'a.nombres as nombresAsesor', 'a.apellidos as apellidosAsesor', 'dj.cod_jurado1', 'dj.cod_jurado2', 'dj.cod_jurado3', 'dj.cod_jurado4')
             ->where('pt.estado', 3)->where('pt.condicion', "APROBADO")->get();
 
         // Agrupar por cod_tesis
@@ -60,7 +60,7 @@ class SustentacionProyectoController extends Controller
                     return [
                         'nombresAutor' => $item->nombresAutor,
                         'apellidosAutor' => $item->apellidosAutor,
-                        'cod_matricula'=>$item->cod_matricula
+                        'cod_matricula' => $item->cod_matricula
                     ];
                 })->toArray(),
                 'cod_docente' => $primerItem->cod_docente,
@@ -94,7 +94,7 @@ class SustentacionProyectoController extends Controller
                     $new_asignacion->cod_jurado3 = $jurados[3];
                     $new_asignacion->cod_jurado4 = $jurados[4];
                     $new_asignacion->save();
-                    $existHisto = Historial_Observaciones::where('cod_proyectotesis', $jurados[0])->where('sustentacion',true)->where('estado',1)->get();
+                    $existHisto = Historial_Observaciones::where('cod_proyectotesis', $jurados[0])->where('sustentacion', true)->where('estado', 1)->get();
                     if ($existHisto->count() == 0) {
                         $existHisto = new Historial_Observaciones();
                         $existHisto->cod_proyectotesis = $jurados[0];
@@ -120,35 +120,35 @@ class SustentacionProyectoController extends Controller
             $studentforGroups = [];
             $contador = 0;
             $asesor = DB::table('asesor_curso')->select('asesor_curso.cod_docente')->where('asesor_curso.username', auth()->user()->name)->first();
-            $jurado = Jurado::where('cod_docente',$asesor->cod_docente)->first();
+            $jurado = Jurado::where('cod_docente', $asesor->cod_docente)->first();
             $lista_tesis = DB::table('designacion_jurado_proyecto as dj')->join('proyecto_tesis as pt', 'dj.cod_proyectotesis', 'pt.cod_proyectotesis')
                 ->join('grupo_investigacion as gi', 'pt.id_grupo_inves', 'gi.id_grupo')
                 ->join('detalle_grupo_investigacion as d_g_i', 'gi.id_grupo', 'd_g_i.id_grupo_inves')
                 ->join('estudiante_ct2022 as es', 'd_g_i.cod_matricula', 'es.cod_matricula')
                 ->join('asesor_curso as ac', 'pt.cod_docente', 'ac.cod_docente')
-                ->join('historial_observaciones as ho', function($join) {
-                    $join->on('pt.cod_proyectotesis','=','ho.cod_proyectotesis')
-                    ->where('ho.sustentacion',true);
+                ->join('historial_observaciones as ho', function ($join) {
+                    $join->on('pt.cod_proyectotesis', '=', 'ho.cod_proyectotesis')
+                        ->where('ho.sustentacion', true);
                 })
                 ->leftJoin('observacion_sustentacionproy as os', function ($join) use ($jurado) {
                     $join->on('ho.cod_historialObs', '=', 'os.cod_historialObs')
-                         ->where('os.cod_jurado', $jurado->cod_jurado)
-                         ->where('os.estado', 1);
+                        ->where('os.cod_jurado', $jurado->cod_jurado)
+                        ->where('os.estado', 1);
                 })
-                ->leftJoin('resultado_jurado_proyecto as rj', function($join) use ($jurado){
-                    $join->on('dj.cod_designacion_proyecto','=','rj.cod_designacion_proyecto')
-                    ->where('rj.cod_jurado',$jurado->cod_jurado);
+                ->leftJoin('resultado_jurado_proyecto as rj', function ($join) use ($jurado) {
+                    $join->on('dj.cod_designacion_proyecto', '=', 'rj.cod_designacion_proyecto')
+                        ->where('rj.cod_jurado', $jurado->cod_jurado);
                 })
-                ->select('gi.id_grupo', 'gi.num_grupo', 'd_g_i.cod_matricula', 'pt.cod_proyectotesis', 'pt.titulo', 'ac.nombres as nombresAsesor', 'ac.apellidos as apellidosAsesor', 'es.nombres as nombresAutor', 'es.apellidos as apellidosAutor', 'dj.cod_jurado1', 'dj.cod_jurado2', 'dj.cod_jurado3', 'dj.cod_jurado4', 'pt.estado', 'dj.estado as estadoDesignacion',DB::raw('count(os.cod_observacion) as numObs'),'rj.estado as estadoResultado')
+                ->select('gi.id_grupo', 'gi.num_grupo', 'd_g_i.cod_matricula', 'pt.cod_proyectotesis', 'pt.titulo', 'ac.nombres as nombresAsesor', 'ac.apellidos as apellidosAsesor', 'es.nombres as nombresAutor', 'es.apellidos as apellidosAutor', 'dj.cod_jurado1', 'dj.cod_jurado2', 'dj.cod_jurado3', 'dj.cod_jurado4', 'pt.estado', 'dj.estado as estadoDesignacion', DB::raw('count(os.cod_observacion) as numObs'), 'rj.estado as estadoResultado')
                 ->where('dj.cod_jurado1', $asesor->cod_docente)
                 ->orWhere('dj.cod_jurado2', $asesor->cod_docente)
                 ->orWhere('dj.cod_jurado3', $asesor->cod_docente)
-                ->groupBy('gi.id_grupo', 'gi.num_grupo', 'd_g_i.cod_matricula', 'pt.cod_proyectotesis', 'pt.titulo', 'ac.nombres', 'ac.apellidos', 'es.nombres', 'es.apellidos', 'dj.cod_jurado1', 'dj.cod_jurado2', 'dj.cod_jurado3', 'dj.cod_jurado4', 'pt.estado', 'dj.estado','rj.estado')
+                ->groupBy('gi.id_grupo', 'gi.num_grupo', 'd_g_i.cod_matricula', 'pt.cod_proyectotesis', 'pt.titulo', 'ac.nombres', 'ac.apellidos', 'es.nombres', 'es.apellidos', 'dj.cod_jurado1', 'dj.cod_jurado2', 'dj.cod_jurado3', 'dj.cod_jurado4', 'pt.estado', 'dj.estado', 'rj.estado')
                 ->get();
 
             $observaciones = null;
-            if($showObservacion != null){
-                $observaciones = ObservacionSustentacionProyecto::join('historial_observaciones as ho','observacion_sustentacionproy.cod_historialObs','ho.cod_historialObs')->join('jurado as j','observacion_sustentacionproy.cod_jurado','j.cod_jurado')->join('asesor_curso as ac','j.cod_docente','ac.cod_docente')->where('ho.cod_proyectotesis',$showObservacion)->where('ho.sustentacion',true)->select('observacion_sustentacionproy.*', 'ho.fecha as fechaHistorial','ac.nombres as nombresJurado','ac.apellidos as apellidosJurado')->orderBy('observacion_sustentacionproy.created_at','ASC')->get();
+            if ($showObservacion != null) {
+                $observaciones = ObservacionSustentacionProyecto::join('historial_observaciones as ho', 'observacion_sustentacionproy.cod_historialObs', 'ho.cod_historialObs')->join('jurado as j', 'observacion_sustentacionproy.cod_jurado', 'j.cod_jurado')->join('asesor_curso as ac', 'j.cod_docente', 'ac.cod_docente')->where('ho.cod_proyectotesis', $showObservacion)->where('ho.sustentacion', true)->select('observacion_sustentacionproy.*', 'ho.fecha as fechaHistorial', 'ac.nombres as nombresJurado', 'ac.apellidos as apellidosJurado')->orderBy('observacion_sustentacionproy.created_at', 'ASC')->get();
             }
 
             foreach ($lista_tesis as $tesis) {
@@ -170,7 +170,7 @@ class SustentacionProyectoController extends Controller
                     array_push($studentforGroups, $extraArray);
                 }
             }
-            return view('cursoTesis20221.asesor.evaluacion.listaProyectosAsignados', ['studentforGroups' => $studentforGroups, 'asesor' => $asesor,'observaciones'=>$observaciones]);
+            return view('cursoTesis20221.asesor.evaluacion.listaProyectosAsignados', ['studentforGroups' => $studentforGroups, 'asesor' => $asesor, 'observaciones' => $observaciones]);
         } catch (\Throwable $th) {
             dd($th);
             return;
@@ -189,21 +189,21 @@ class SustentacionProyectoController extends Controller
 
         $id_grupo = $request->id_grupo;
         $cod_proyectotesis = $request->cod_proyectotesis;
-        $jurado = Jurado::join('asesor_curso as ac','jurado.cod_docente','ac.cod_docente')->select('jurado.*')->where('ac.username',auth()->user()->name)->first();
+        $jurado = Jurado::join('asesor_curso as ac', 'jurado.cod_docente', 'ac.cod_docente')->select('jurado.*')->where('ac.username', auth()->user()->name)->first();
         $cursoTesis = DB::table('proyecto_tesis as p')
             ->join('grupo_investigacion as g_i', 'g_i.id_grupo', '=', 'p.id_grupo_inves')
             ->join('asesor_curso as ac', 'ac.cod_docente', '=', 'p.cod_docente')
             ->join('designacion_jurado_proyecto as dj', 'p.cod_proyectotesis', 'dj.cod_proyectotesis')
             ->leftJoin('grado_academico as ga', 'ac.cod_grado_academico', 'ga.cod_grado_academico')
             ->leftJoin('categoria_docente as cd', 'ac.cod_categoria', 'cd.cod_categoria')
-            ->select('p.*', 'ac.nombres as nombre_asesor', 'ac.apellidos as apellidos_asesor', 'ac.estado as estadoAsesor', 'ac.direccion', 'ga.descripcion as DescGrado', 'cd.descripcion as DescCat', 'dj.estado as estadoDesignacion','dj.cod_designacion_proyecto')
+            ->select('p.*', 'ac.nombres as nombre_asesor', 'ac.apellidos as apellidos_asesor', 'ac.estado as estadoAsesor', 'ac.direccion', 'ga.descripcion as DescGrado', 'cd.descripcion as DescCat', 'dj.estado as estadoDesignacion', 'dj.cod_designacion_proyecto')
             ->where('p.cod_proyectotesis', $cod_proyectotesis)
             ->get();
         $verifyObs = DB::table('historial_observaciones as ho')
             ->leftJoin('observacion_sustentacionproy as os', function ($join) use ($jurado) {
                 $join->on('ho.cod_historialObs', '=', 'os.cod_historialObs')
-                     ->where('os.cod_jurado', $jurado->cod_jurado)
-                     ->where('os.estado', 1);
+                    ->where('os.cod_jurado', $jurado->cod_jurado)
+                    ->where('os.estado', 1);
             })
             ->select('ho.cod_proyectotesis', 'ho.estado as estadoHistorial', DB::raw('count(os.cod_observacion) as numObs'))
             ->where('ho.cod_proyectotesis', $cod_proyectotesis)
@@ -274,7 +274,7 @@ class SustentacionProyectoController extends Controller
 
 
         $matriz = MatrizOperacional::where('cod_proyectotesis', '=', $cursoTesis[0]->cod_proyectotesis)->get();
-        $resultado = ResultadoJuradoProyecto::where('cod_designacion_proyecto',$cursoTesis[0]->cod_designacion_proyecto)->where('cod_jurado',$jurado->cod_jurado)->get();
+        $resultado = ResultadoJuradoProyecto::where('cod_designacion_proyecto', $cursoTesis[0]->cod_designacion_proyecto)->where('cod_jurado', $jurado->cod_jurado)->get();
 
         return view('cursoTesis20221.asesor.evaluacion.evaluarProyectoTesis', [
             'presupuesto' => $presupuesto, 'fin_persigue' => $fin_persigue, 'diseno_investigacion' => $diseno_investigacion, 'tipoinvestigacion' => $tipoinvestigacion,
@@ -283,19 +283,19 @@ class SustentacionProyectoController extends Controller
             'camposFull' => $camposFull, 'matriz' => $matriz, 'estudiantes_grupo' => $estudiantes_grupo, 'cronogramas' => $cronogramas,
             'cronogramas_py' => $cronogramas_py,
             'camposActivos' => $camposActivos,
-            'verifyObs'=>$verifyObs,
-            'resultado'=>$resultado
+            'verifyObs' => $verifyObs,
+            'resultado' => $resultado
         ]);
     }
 
     public function guardarObservacionProyecto(Request $request)
     {
         try {
-            $jurado = Jurado::join('asesor_curso as ac','jurado.cod_docente','ac.cod_docente')->where('ac.username',auth()->user()->name)->first();
+            $jurado = Jurado::join('asesor_curso as ac', 'jurado.cod_docente', 'ac.cod_docente')->where('ac.username', auth()->user()->name)->first();
 
-            $designacion = DesignacionJuradoProyecto::where('cod_proyectotesis',$request->cod_proyectotesis)->first();
+            $designacion = DesignacionJuradoProyecto::where('cod_proyectotesis', $request->cod_proyectotesis)->first();
 
-            $existHisto = Historial_Observaciones::where('cod_proyectotesis', $request->cod_proyectotesis)->where('sustentacion',true)->where('estado',1)->get();
+            $existHisto = Historial_Observaciones::where('cod_proyectotesis', $request->cod_proyectotesis)->where('sustentacion', true)->where('estado', 1)->get();
             if ($existHisto->count() == 0) {
                 $existHisto = new Historial_Observaciones();
                 $existHisto->cod_proyectotesis = $request->cod_proyectotesis;
@@ -304,7 +304,7 @@ class SustentacionProyectoController extends Controller
                 $existHisto->estado = 1;
                 $existHisto->save();
             }
-            $existHisto = Historial_Observaciones::where('cod_proyectotesis', $request->cod_proyectotesis)->where('sustentacion',true)->where('estado',1)->get();
+            $existHisto = Historial_Observaciones::where('cod_proyectotesis', $request->cod_proyectotesis)->where('sustentacion', true)->where('estado', 1)->get();
 
             $observaciones = new ObservacionSustentacionProyecto();
             $observaciones->cod_historialObs = $existHisto[0]->cod_historialObs;
@@ -417,25 +417,25 @@ class SustentacionProyectoController extends Controller
             $observaciones->estado = 1;
             $observaciones->save();
 
-            $findObs = ObservacionSustentacionProyecto::where('cod_historialObs',$existHisto[0]->cod_historialObs)->where('estado',1)->get();
-            if(sizeof($findObs) >=3){
+            $findObs = ObservacionSustentacionProyecto::where('cod_historialObs', $existHisto[0]->cod_historialObs)->where('estado', 1)->get();
+            if (sizeof($findObs) >= 3) {
                 $existHisto[0]->estado = 2;
                 $existHisto[0]->save();
                 $designacion->estado = 2;
                 $designacion->save();
             }
 
-            $latestCorrecion = ObservacionSustentacionProyecto::where('cod_historialObs', $existHisto[0]->cod_historialObs)->where('cod_jurado',$jurado->cod_jurado)->where('estado', 1)->get();
-            $exisDetalle = DetalleObsSustentacionProy::join('observacion_sustentacionproy as os','detalle_obs_sustentacionproy.cod_observacion','os.cod_observacion')->join('historial_observaciones as ho','os.cod_historialObs','ho.cod_historialObs')->select('detalle_obs_sustentacionproy.cod_detalleObs','detalle_obs_sustentacionproy.tema_referido')->where('ho.cod_historialObs',$existHisto[0]->cod_historialObs)->get();
+            $latestCorrecion = ObservacionSustentacionProyecto::where('cod_historialObs', $existHisto[0]->cod_historialObs)->where('cod_jurado', $jurado->cod_jurado)->where('estado', 1)->get();
+            $exisDetalle = DetalleObsSustentacionProy::join('observacion_sustentacionproy as os', 'detalle_obs_sustentacionproy.cod_observacion', 'os.cod_observacion')->join('historial_observaciones as ho', 'os.cod_historialObs', 'ho.cod_historialObs')->select('detalle_obs_sustentacionproy.cod_detalleObs', 'detalle_obs_sustentacionproy.tema_referido')->where('ho.cod_historialObs', $existHisto[0]->cod_historialObs)->get();
             //dd($exisDetalle);
             for ($i = 0; $i < sizeof($arrayThemes); $i++) {
                 $exist = false;
-                foreach($exisDetalle as $edetalle){
-                    if($edetalle->tema_referido == $arrayThemes[$i]){
+                foreach ($exisDetalle as $edetalle) {
+                    if ($edetalle->tema_referido == $arrayThemes[$i]) {
                         $exist = true;
                     }
                 }
-                if(!$exist){
+                if (!$exist) {
                     $detalleObs = new DetalleObsSustentacionProy();
                     $detalleObs->cod_observacion = $latestCorrecion[0]->cod_observacion;
                     $detalleObs->tema_referido = $arrayThemes[$i];
@@ -451,19 +451,20 @@ class SustentacionProyectoController extends Controller
         }
     }
 
-    public function aprobarProyectoTesis(Request $request){
+    public function aprobarProyectoTesis(Request $request)
+    {
         try {
-            $jurado = Jurado::join('asesor_curso as ac','jurado.cod_docente','ac.cod_docente')->where('ac.username',auth()->user()->name)->first();
-            $designacion = DesignacionJuradoProyecto::where('cod_proyectotesis',$request->cod_proyectotesis)->first();
-            $resultadoHistorial = ResultadoJuradoProyecto::where('cod_designacion_proyecto',$designacion->cod_designacion_proyecto)->get();
+            $jurado = Jurado::join('asesor_curso as ac', 'jurado.cod_docente', 'ac.cod_docente')->where('ac.username', auth()->user()->name)->first();
+            $designacion = DesignacionJuradoProyecto::where('cod_proyectotesis', $request->cod_proyectotesis)->first();
+            $resultadoHistorial = ResultadoJuradoProyecto::where('cod_designacion_proyecto', $designacion->cod_designacion_proyecto)->get();
             $newResultado = new ResultadoJuradoProyecto();
             $newResultado->cod_designacion_proyecto = $designacion->cod_designacion_proyecto;
             $newResultado->cod_jurado = $jurado->cod_jurado;
             $newResultado->estado = $request->stateAprobation;
             $newResultado->save();
-            if(sizeof($resultadoHistorial)>=2){
-                $resultadoHistorial = ResultadoJuradoProyecto::where('cod_designacion_proyecto',$designacion->cod_designacion_proyecto)->where('estado',1)->get();
-                $designacion->estado = (sizeof($resultadoHistorial)>=3) ? 3 : 4;
+            if (sizeof($resultadoHistorial) >= 2) {
+                $resultadoHistorial = ResultadoJuradoProyecto::where('cod_designacion_proyecto', $designacion->cod_designacion_proyecto)->where('estado', 1)->get();
+                $designacion->estado = (sizeof($resultadoHistorial) >= 3) ? 3 : 4;
                 $designacion->save();
             }
 
@@ -514,7 +515,7 @@ class SustentacionProyectoController extends Controller
             $referencias = referencias::where('cod_proyectotesis', '=', $tesis[0]->cod_proyectotesis)->get(); //Por si existen referencias
 
             //Verificaremos que se hayan dado las observaciones y las enviaremos
-            $observaciones = ObservacionSustentacionProyecto::join('historial_observaciones as ho', 'observacion_sustentacionproy.cod_historialObs', '=', 'ho.cod_historialObs')->join('jurado as j','observacion_sustentacionproy.cod_jurado','j.cod_jurado')->join('asesor_curso as ac','j.cod_docente','ac.cod_docente')->select('observacion_sustentacionproy.*','ac.nombres as nombresAsesor','ac.apellidos as apellidosAsesor')->where('ho.cod_proyectotesis', $tesis[0]->cod_proyectotesis)->where('observacion_sustentacionproy.estado', 1)->where('ho.sustentacion',true)->where('ho.estado', 2)->get();
+            $observaciones = ObservacionSustentacionProyecto::join('historial_observaciones as ho', 'observacion_sustentacionproy.cod_historialObs', '=', 'ho.cod_historialObs')->join('jurado as j', 'observacion_sustentacionproy.cod_jurado', 'j.cod_jurado')->join('asesor_curso as ac', 'j.cod_docente', 'ac.cod_docente')->select('observacion_sustentacionproy.*', 'ac.nombres as nombresAsesor', 'ac.apellidos as apellidosAsesor')->where('ho.cod_proyectotesis', $tesis[0]->cod_proyectotesis)->where('observacion_sustentacionproy.estado', 1)->where('ho.sustentacion', true)->where('ho.estado', 2)->get();
 
             //dd($observaciones);
 
@@ -554,37 +555,45 @@ class SustentacionProyectoController extends Controller
 
     public function viewEstadoEvaluacionProyecto()
     {
-        return;
+        try {
+            $id = auth()->user()->name;
+            $aux = explode('-', $id);
+            $id = $aux[0];
+            $estudiante = EstudianteCT2022::find($id);
+            $proyecto = TesisCT2022::join('asesor_curso as ac', 'ac.cod_docente', '=', 'proyecto_tesis.cod_docente')->join('grupo_investigacion as g_i', 'proyecto_tesis.id_grupo_inves', '=', 'g_i.id_grupo')->join('detalle_grupo_investigacion as d_g', 'd_g.id_grupo_inves', '=', 'g_i.id_grupo')->join('designacion_jurado_proyecto as dj','proyecto_tesis.cod_proyectotesis','dj.cod_proyectotesis')->select('ac.nombres as nombre_asesor', 'ac.apellidos as apellidos_asesor','proyecto_tesis.cod_proyectotesis', 'proyecto_tesis.updated_at','proyecto_tesis.titulo','dj.estado')->where('d_g.cod_matricula', '=', $estudiante->cod_matricula)->first();
+            return view('cursoTesis20221.estudiante.evaluacionProyecto.estadoProyecto', ['proyecto' => $proyecto]);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
-    public function actualizarProyectoTesis(Request $request){
-
-        $id = auth()->user()->name;
-        $aux = explode('-', $id);
-        $id = $aux[0];
-        $isSaved = $request->isSaved;
-
-        $tesis = TesisCT2022::find($request->cod_proyectotesis);
-
-        $estudiantes_grupo = DB::table('estudiante_ct2022 as e')
-            ->join('detalle_grupo_investigacion as d_g', 'd_g.cod_matricula', '=', 'e.cod_matricula')
-            ->join('grupo_investigacion as g_i', 'g_i.id_grupo', '=', 'd_g.id_grupo_inves')
-            ->select('g_i.num_grupo', 'e.cod_matricula', 'e.nombres', 'e.apellidos')
-            ->where('d_g.id_grupo_inves', $tesis->id_grupo_inves)->get();
-        $asesor = AsesorCurso::where('cod_docente', $tesis->cod_docente)->first();
-        $observacionX = ObservacionSustentacionProyecto::join('historial_observaciones as ho', 'observacion_sustentacionproy.cod_historialObs', 'ho.cod_historialObs')
-            ->select('observacion_sustentacionproy.*')->where('ho.cod_proyectotesis', $tesis->cod_proyectotesis)
-            ->where('observacion_sustentacionproy.estado', 1)->get();
-        $designacion = DesignacionJuradoProyecto::where('cod_proyectotesis',$request->cod_proyectotesis)->where('estado',2)->first();
-        if (sizeof($observacionX) > 0) {
-            $detalles = DetalleObsSustentacionProy::join('observacion_sustentacionproy as os','detalle_obs_sustentacionproy.cod_observacion','os.cod_observacion')->join('historial_observaciones as ho',function ($join) use ($tesis) {
-                $join->on('os.cod_historialObs','=','ho.cod_historialObs' )
-                     ->where('ho.cod_proyectotesis', $tesis->cod_proyectotesis)
-                     ->where('ho.estado', 2);
-            })->select('detalle_obs_sustentacionproy.*')->where('detalle_obs_sustentacionproy.estado',1)->get();
-        }
-        //dd($detalles);
+    public function actualizarProyectoTesis(Request $request)
+    {
         try {
+            $id = auth()->user()->name;
+            $aux = explode('-', $id);
+            $id = $aux[0];
+            $isSaved = $request->isSaved;
+
+            $tesis = TesisCT2022::find($request->cod_proyectotesis);
+
+            $estudiantes_grupo = DB::table('estudiante_ct2022 as e')
+                ->join('detalle_grupo_investigacion as d_g', 'd_g.cod_matricula', '=', 'e.cod_matricula')
+                ->join('grupo_investigacion as g_i', 'g_i.id_grupo', '=', 'd_g.id_grupo_inves')
+                ->select('g_i.num_grupo', 'e.cod_matricula', 'e.nombres', 'e.apellidos')
+                ->where('d_g.id_grupo_inves', $tesis->id_grupo_inves)->get();
+            $asesor = AsesorCurso::where('cod_docente', $tesis->cod_docente)->first();
+            $observacionX = ObservacionSustentacionProyecto::join('historial_observaciones as ho', 'observacion_sustentacionproy.cod_historialObs', 'ho.cod_historialObs')
+                ->select('observacion_sustentacionproy.*')->where('ho.cod_proyectotesis', $tesis->cod_proyectotesis)
+                ->where('observacion_sustentacionproy.estado', 1)->get();
+            $designacion = DesignacionJuradoProyecto::where('cod_proyectotesis', $request->cod_proyectotesis)->where('estado', 2)->first();
+            if (sizeof($observacionX) > 0) {
+                $detalles = DetalleObsSustentacionProy::join('observacion_sustentacionproy as os', 'detalle_obs_sustentacionproy.cod_observacion', 'os.cod_observacion')->join('historial_observaciones as ho', function ($join) use ($tesis) {
+                    $join->on('os.cod_historialObs', '=', 'ho.cod_historialObs')
+                        ->where('ho.cod_proyectotesis', $tesis->cod_proyectotesis)
+                        ->where('ho.estado', 2);
+                })->select('detalle_obs_sustentacionproy.*')->where('detalle_obs_sustentacionproy.estado', 1)->get();
+            }
 
             /*Si el egresado tiene una observacion pendiente, solo se guardaran los cambios solicitados*/
             if (sizeof($observacionX) > 0) {
@@ -594,7 +603,7 @@ class SustentacionProyectoController extends Controller
                     if ($tema == "localidad_institucion") {
                         $name_request = 'txtlocalidad';
                     } else {
-                        $name_request = 'txt'.$tema;
+                        $name_request = 'txt' . $tema;
                     }
                     $detalleEEG = DetalleObsSustentacionProy::find($detalles[$i]->cod_detalleObs);
 
@@ -603,7 +612,7 @@ class SustentacionProyectoController extends Controller
                     $detalleEEG->save();
                 }
 
-                $historialX = Historial_Observaciones::where('cod_proyectotesis', '=', $tesis->cod_proyectotesis)->where('sustentacion',true)->where('estado',2)->get();
+                $historialX = Historial_Observaciones::where('cod_proyectotesis', '=', $tesis->cod_proyectotesis)->where('sustentacion', true)->where('estado', 2)->get();
                 $historialX[0]->fecha = now();
                 $historialX[0]->estado = 1;
                 $historialX[0]->save();
@@ -1232,7 +1241,7 @@ class SustentacionProyectoController extends Controller
             $tesis->save();
 
             $designacion->save();
-            return redirect()->route('user_information')->with('datos','okActualizacionProyecto');
+            return redirect()->route('user_information')->with('datos', 'okActualizacionProyecto');
         } catch (\Throwable $th) {
             dd($th);
             return redirect()->route('user_information')->with('datos', 'oknotActualizacionProyecto');

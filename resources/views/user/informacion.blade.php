@@ -241,7 +241,28 @@
 @endsection
 @section('js')
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    @if(session('datos') == 'okActualizacionProyecto')
+
+    @if(session('datos') == 'okActualizacionTesis')
+        <script>
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Tesis actualizado correctamente.',
+                showConfirmButton: false,
+                timer: 1200
+            })
+        </script>
+    @elseif (session('datos') == 'oknotActualizacionTesis')
+        <script>
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error al actualizar la información de la tesis.',
+                showConfirmButton: false,
+                timer: 1200
+            })
+        </script>
+    @elseif(session('datos') == 'okActualizacionProyecto')
         <script>
             Swal.fire({
                 position: 'center',

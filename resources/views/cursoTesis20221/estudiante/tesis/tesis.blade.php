@@ -1968,14 +1968,15 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="./js/script-tesis-2022.js"></script>
     @if (session('datos') == 'oknot')
-            <script>
-                Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: 'Error al guardar la Tesis',
-                showConfirmButton: false,
-                timer: 1500
-                })
-            </script>
+        <script>
+            Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title:'Algo salio mal',
+            title: 'Ocurrio un error al intentar guardar la información. Intentelo nuevamente.',
+            showConfirmButton: false,
+            timer: 1500
+            })
+        </script>
     @endif
 @endsection

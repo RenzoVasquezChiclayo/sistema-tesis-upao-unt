@@ -85,7 +85,7 @@
                                         <td>{{ $estu[0]->num_grupo }}</td>
                                         <td>
                                         @foreach ($estu as $e)
-                                            <p>{{$e->apellidosAutor.', '.$e->nombresAutor}}</p><br>
+                                            <p>{{$e->cod_matricula.' - '.$e->apellidosAutor.', '.$e->nombresAutor}}</p>
                                         @endforeach
                                         </td>
                                         <td>{{ $estu[0]->titulo }}</td>
@@ -127,7 +127,7 @@
                                                 <input type="hidden" name="cod_tesis" value="{{$estu[0]->cod_tesis}}">
                                                 <input type="hidden" name="stateAprobation" id="stateAprobation-{{$estu[0]->id_grupo}}" value="">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="" id="chkAprobado-{{$estu[0]->id_grupo}}" onclick="aprobarTesis(this);" @if($estu[0]->estadoResultado >= 0 || $estu[0]->numObs>0) disabled @endif @if($estu[0]->estadoResultado != null && $estu[0]->estadoResultado ==1) checked @endif>
+                                                    <input class="form-check-input" type="checkbox" value="" id="chkAprobado-{{$estu[0]->id_grupo}}" onclick="aprobarTesis(this);" @if($estu[0]->estadoResultado != null || $estu[0]->numObs>0) disabled @endif @if($estu[0]->estadoResultado != null && $estu[0]->estadoResultado ==1) checked @endif>
                                                     <label class="form-check-label" for="chkAprobado">
                                                       Aprobar/Desaprobar
                                                     </label>

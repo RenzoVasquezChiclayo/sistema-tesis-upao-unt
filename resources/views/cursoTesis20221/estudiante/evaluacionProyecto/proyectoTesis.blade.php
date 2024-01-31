@@ -1,6 +1,6 @@
 @extends('plantilla.dashboard')
 @section('titulo')
-    Curso Tesis 2022-1
+    Evaluacion Proyecto de Tesis
 @endsection
 @section('css')
     <style type="text/css">
@@ -101,7 +101,7 @@
     </style>
 @endsection
 @section('contenido')
-    <title>Tesis</title>
+    <title>Evaluacion de Proyecto de Tesis</title>
 
     @if ($autor->id_grupo == null)
         <div class="row d-flex" style="align-items:center; justify-content: center;">
@@ -1199,16 +1199,12 @@
                             @if ($tesis[0]->estadoDesignacion == 2 || $tesis[0]->estadoDesignacion == 9)
                                 <input type="button" class="btn btn-secondary" value="Guardar"
                                     onclick="guardarCopia();">
-                            @endif
-                            @if ($tesis[0]->estadoDesignacion == 2 || $tesis[0]->estadoDesignacion == 9)
                                 <input class="btn btn-primary" type="button" value="Enviar"
                                     onclick="registerProject();">
                             @endif
                             <a href="{{ route('user_information') }}" type="button"
                                 class="btn btn-outline-danger ms-3">
-                                @if ($tesis[0]->estadoDesignacion == 0 || $tesis[0]->estadoDesignacion == 1)
-                                    Volver
-                                @endif
+                                Volver
                             </a>
                         </div>
                     </div>
