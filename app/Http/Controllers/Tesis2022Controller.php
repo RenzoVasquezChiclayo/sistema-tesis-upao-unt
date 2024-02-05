@@ -1108,7 +1108,7 @@ class Tesis2022Controller extends Controller
             // Resumen
             $resumen = $tesis[0]->resumen;
             // Abstract
-            $abstract = $tesis[0]->abstact;
+            $abstract = $tesis[0]->abstract;
             // Keywords
             $keywords = TDetalleKeyword::join('t_keyword','t_detalle_keyword.id_keyword','=','t_keyword.id_keyword')
                                         ->join('tesis_2022','t_keyword.cod_tesis','=','tesis_2022.cod_tesis')
@@ -1134,8 +1134,8 @@ class Tesis2022Controller extends Controller
             /*Datos del Asesor*/
             $orcid_asesor = $tesis[0]->orcid;
             $nombre_asesor = $tesis[0]->nombres;
-            $grado_asesor = $tesis[0]->grado_academico;
-            $titulo_asesor = $tesis[0]->titulo_profesional;
+            $grado_asesor = $tesis[0]->cod_grado_academico;
+            $titulo_asesor = $tesis[0]->cod_categoria;
             $direccion_asesor =$tesis[0]->direccion;
 
             /*Proyecto de Investigacion y/o Tesis*/

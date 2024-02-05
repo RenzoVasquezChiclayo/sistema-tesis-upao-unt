@@ -1,7 +1,5 @@
 /public/hot
 /public/storage
-/storage/*.key
-/storage/*.docx
 
 .phpunit.result.cache
 Homestead.json
@@ -17,7 +15,6 @@ yarn-error.log
 #actualizados
 .env
 /bootstrap/cache/
-storage/
 .env.*
 /logs/
 *.log
