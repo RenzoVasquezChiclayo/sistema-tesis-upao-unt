@@ -67,27 +67,27 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if(sizeof($studentforGroups)<=0)
+                                @if(sizeof($tesisAgrupadas)<=0)
                                 <tr>
                                     <td colspan="9"><i>No cuenta con tesis para sustentacion.</i></td>
                                 </tr>
                                 @endif
-                                @foreach ($studentforGroups as $estu)
+                                @foreach ($tesisAgrupadas as $tesisAgru)
                                     <tr
-                                    @if ($estu[0]->estadoDesignacion == 3)
+                                    <!-- @if ($tesisAgru[0]->estadoDesignacion == 3)
                                         style="background-color: rgba(76, 175, 80, 0.2);"
-                                    @elseif ($estu[0]->estadoDesignacion == 4)
+                                    @elseif ($tesisAgru[0]->estadoDesignacion == 4)
                                     style="background-color: rgba(255, 87, 51, 0.2);"
-                                    @endif>
-                                        <td>{{ $estu[0]->num_grupo }}</td>
+                                    @endif> -->
+                                        <!-- <td>{{ $tesisAgru[0]->num_grupo }}</td> -->
                                         <td>
-                                        @foreach ($estu as $e)
-                                            <p>{{$e->cod_matricula.' - '.$e->apellidosAutor.', '.$e->nombresAutor}}</p>
+                                        @foreach ($tesisAgru as $ta)
+                                            <p>{{$ta->cod_matricula.' - '.$ta->apellidosAutor.', '.$ta->nombresAutor}}</p>
                                         @endforeach
                                         </td>
-                                        <td>{{ $estu[0]->titulo }}</td>
+                                        <td>{{ $tesisAgru[0]->titulo }}</td>
                                         <td>
-                                            @if ($estu[0]->estado != 0)
+                                            @if ($tesisAgru[0]->estado != 0)
                                                 <form id="form-revisaTema"
                                                     action="{{ route('jurado.detalleTesisAsignada') }}"
                                                     method="POST">

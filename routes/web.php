@@ -26,6 +26,24 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LoginController::class, 'index'])
     ->name('indexlogin')->middleware('guest');
+Route::controller(LoginController::class)->group(function () {
+
+    //Modified
+    Route::post('/verificate-login', 'validateLogin')
+        ->name('login.verificate');
+    Route::post('/logout', 'logout')
+        ->name('login.logout');
+
+
+    Route::post('send-password-reset/', 'enviarCorreoParaCambio')
+        ->name('correo_reset');
+
+    Route::get('recuperar-contraseña/', 'verRecuperarContraseña')
+        ->name('recuperar_contra');
+
+    Route::post('guardar-password-reset/', 'guardarResetContraseña')
+        ->name('guardar_reset_contra');
+});
 
 /* Agrupamos las rutas que tienen acceso 'auth' */
 Route::middleware('auth')->group(function () {
@@ -33,8 +51,7 @@ Route::middleware('auth')->group(function () {
     /* Agrupamos las rutas del AdminController */
     Route::controller(AdminCursoController::class)->group(function () {
 
-        Route::get('/information', 'information')
-            ->name('user_information');
+
 
         Route::get('/reports', 'reports')
             ->name('user_reports');
@@ -44,7 +61,8 @@ Route::middleware('auth')->group(function () {
 
         Route::post('updateInformacion/', 'updateInformation')
             ->name('update_user');
-
+        Route::get('/information', [AdminCursoController::class, 'information'])
+            ->name('user_information')->middleware('auth');
         Route::post('update-informacion-estudiante_asesor/', 'update_information_estudiante_asesor')
             ->name('save_user_estudiante_asesor');
         Route::get('/listar-usuarios', 'listarUsuario')->name('admin.listar');
@@ -120,25 +138,6 @@ Route::middleware('auth')->group(function () {
         /** */
         Route::get('ver-historial-estudiante', 'verListaObservacion')->name('asesor.verHistoObs');
         Route::get('/observaciones-estudiante/{cod_tesis}', 'verObsEstudiante')->name('asesor.verObsEstudiante');
-    });
-
-    Route::controller(LoginController::class)->group(function () {
-
-        //Modified
-        Route::post('/verificate-login', 'validateLogin')
-            ->name('login.verificate');
-        Route::post('/logout', 'logout')
-            ->name('login.logout');
-
-
-        Route::post('send-password-reset/', 'enviarCorreoParaCambio')
-            ->name('correo_reset');
-
-        Route::get('recuperar-contraseña/', 'verRecuperarContraseña')
-            ->name('recuperar_contra');
-
-        Route::post('guardar-password-reset/', 'guardarResetContraseña')
-            ->name('guardar_reset_contra');
     });
 
     Route::controller(CursoTesisController::class)->group(function () {
@@ -289,15 +288,14 @@ Route::middleware('auth')->group(function () {
     // Route::post('/agregarEstudiante',[AdminCursoController::class,'agregarEstudiante'])->name('secretaria.addEstudiante');
     //Route::post('tesis', [TesisController::class,'searchAutor'])->name('searchAutor');
 
-    Route::controller(EvaluacionController::class)->group(function(){
+    Route::controller(EvaluacionController::class)->group(function () {
         /*Director */
-        Route::get('/ver-registro-sustentacion','verRegistrarSustentacion')->name('director.sustentacion.verRegistrarSustentacion');
-        Route::get('/registrar-sustentacion/{cod_designacion}','registrarSustentacion')->name('director.sustentacion.registrarSustentacion');
+        Route::get('/ver-registro-sustentacion', 'verRegistrarSustentacion')->name('director.sustentacion.verRegistrarSustentacion');
+        Route::get('/registrar-sustentacion/{cod_designacion}', 'registrarSustentacion')->name('director.sustentacion.registrarSustentacion');
 
         /*Asesor */
-        Route::get('/ver-lista-sustentacion','listaSustentaciones')->name('asesor.sustentacion.listaSustentacion');
+        Route::get('/ver-lista-sustentacion', 'listaSustentaciones')->name('asesor.sustentacion.listaSustentacion');
     });
-
 });
 
 Auth::routes();

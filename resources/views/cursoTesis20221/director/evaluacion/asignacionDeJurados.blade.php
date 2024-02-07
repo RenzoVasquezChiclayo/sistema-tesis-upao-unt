@@ -89,10 +89,10 @@
                                             <td>{{ $ta[0]['apellidosAsesor']. ' ' .$ta[0]['nombresAsesor'] }}</td>
                                             <td style="text-align: center;">
                                                 <div class="row mb-2">
-                                                    <div class="col-4">
+                                                    <div class="col-12 col-4-md">
                                                         1er Jurado
                                                     </div>
-                                                    <div class="col-8">
+                                                    <div class="col-12 col-8-md">
                                                         <select name="cbo1Jurado_{{ $cont }}"
                                                             id="cbo1Jurado_{{ $cont }}" class="form-control"
                                                             onchange="validarSeleccion({{ $cont }});"
@@ -110,10 +110,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="row mb-2">
-                                                    <div class="col-4">
+                                                    <div class="col-12 col-4-md">
                                                         <p>2do Jurado</p>
                                                     </div>
-                                                    <div class="col-8">
+                                                    <div class="col-12 col-8-md">
                                                         <select name="cbo2Jurado_{{ $cont }}"
                                                             id="cbo2Jurado_{{ $cont }}" class="form-control"
                                                             onchange="validarSeleccion({{ $cont }});"
@@ -131,10 +131,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="row mb-2">
-                                                    <div class="col-4">
+                                                    <div class="col-12 col-4-md">
                                                         <p>Vocal</p>
                                                     </div>
-                                                    <div class="col-8">
+                                                    <div class="col-12 col-8-md">
                                                         <select name="cboVocal_{{ $cont }}"
                                                             id="cboVocal_{{ $cont }}" class="form-control"
                                                             onchange="validarSeleccion({{ $cont }});"
@@ -152,10 +152,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="row mb-2">
-                                                    <div class="col-4">
+                                                    <div class="col-12 col-4-md">
                                                         <p>Suplente</p>
                                                     </div>
-                                                    <div class="col-8">
+                                                    <div class="col-12 col-8-md">
                                                         <select name="cbo4Jurado_{{ $cont }}"
                                                             id="cbo4Jurado_{{ $cont }}" class="form-control"
                                                             onchange="validarSeleccion({{ $cont }});"

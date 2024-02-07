@@ -67,10 +67,9 @@ class EvaluacionController extends Controller
         $tesis_aprobadas = DB::table('tesis_2022 as t')
                 ->join('detalle_grupo_investigacion as d_g', 'd_g.id_grupo_inves', '=', 't.id_grupo_inves')
                 ->join('estudiante_ct2022', 'estudiante_ct2022.cod_matricula', '=', 'd_g.cod_matricula')
-                ->join('asesor_curso', 't.cod_docente', '=', 'asesor_curso.cod_docente')
                 ->join('designacion_jurados as dj', 'dj.cod_tesis', 't.cod_tesis')
                 ->leftJoin('sustentacion as s','t.cod_tesis','s.cod_tesis')
-                ->select('t.cod_tesis', 't.titulo', 'estudiante_ct2022.nombres as nombresAutor', 'estudiante_ct2022.cod_matricula', 'estudiante_ct2022.apellidos as apellidosAutor','s.estado')
+                ->select('t.cod_tesis', 't.titulo', 'estudiante_ct2022.nombres as nombresAutor', 'estudiante_ct2022.cod_matricula', 'estudiante_ct2022.apellidos as apellidosAutor','s.estado','s.fecha_stt')
                 ->where('dj.estado', 3)
                 ->get();
 
@@ -82,6 +81,8 @@ class EvaluacionController extends Controller
                     $autor = [
                         'cod_tesis' => $primerItem->cod_tesis,
                         'titulo' => $primerItem->titulo,
+                        'fecha_susten' => $primerItem->fecha_stt==null? "":$primerItem->fecha_stt,
+                        'estado' => $primerItem->estado,
                         'autores' => $grupo
                             ->map(function ($item) {
                                 return [
@@ -95,6 +96,6 @@ class EvaluacionController extends Controller
                     return [$autor];
                 })->values();
         dd($tesisAgrupadas);
-        return view('cursoTesis20221.asesor.sustentacion.listaSustentaciones');
+        return view('cursoTesis20221.asesor.sustentacion.listaSustentaciones',['tesisAgrupadas'=>$tesisAgrupadas]);
     }
 }
