@@ -12,6 +12,14 @@
         Registrar Sustentación
     </div>
     <div class="card-body">
+        @if(session()->has('datos'))
+            @if(session('datos') == 'okSustentacion')
+            <div class="alert alert-success" role="alert">
+                Se ha registrado correctamente!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            @endif
+        @endif
         <div class="row justify-content-around align-items-center">
             {{-- <div class="row justify-content-end">
                 <div class="row mb-3 justify-content-end align-items-center">
@@ -81,19 +89,19 @@
                                             <td>{{ $ta[0]['cod_tesis'] }}</td>
                                             <td>
                                                 @foreach ($ta[0]['autores'] as $index => $autor)
-                                                    <p>{{$autor['cod_matricula'].' - '.$autor['apellidosAutor'].', '.$autor['nombresAutor'] }}</p><br>
+                                                    <p>{{$autor['cod_matricula'].' - '.$autor['apellidosAutor'].', '.$autor['nombresAutor'] }}</p>
                                                 @endforeach
                                             </td>
                                             <td>{{ $ta[0]['titulo'] }}</td>
                                             <td>{{ $ta[0]['apellidosAsesor']. ' ' .$ta[0]['nombresAsesor'] }}</td>
                                             <td>
-                                                @if ($ta->estadoSustentacion == null)
-                                                <a href="{{ route('director.sustentacion.registrarSustentacion',['cod_designacion'=>$ta->cod_designacion]) }}"><i class='bx bx-calendar-plus' ></i></a>
+                                                @if ($ta[0]['estadoSustentacion'] === null)
+                                                    <a href="{{ route('director.sustentacion.verDetalleSustentacion',['cod_designacion'=>$ta[0]['cod_designacion']]) }}"><i class='bx bx-sm bx-calendar-plus' ></i></a>
                                                 @else
-                                                    @if ($ta->estadoSustentacion == 0)
-                                                        <a href="{{ route('director.sustentacion.registrarSustentacion',['cod_designacion'=>$ta->cod_designacion]) }}"><i class='bx bx-sm bxs-edit'></i></a>
+                                                    @if ($ta[0]['estadoSustentacion'] >= 0)
+                                                        <a href="{{ route('director.sustentacion.verDetalleSustentacion',['cod_designacion'=>$ta[0]['cod_designacion']]) }}"><i class='bx bx-sm bxs-edit'></i></a>
                                                     @else
-                                                        <a href="{{ route('director.sustentacion.registrarSustentacion',['cod_designacion'=>$ta->cod_designacion]) }}"><i class='bx bx-sm bx-show'></i></a>
+                                                        <a href="{{ route('director.sustentacion.verDetalleSustentacion',['cod_designacion'=>$ta[0]['cod_designacion']]) }}"><i class='bx bx-sm bx-show'></i></a>
                                                     @endif
                                                 @endif
                                             </td>

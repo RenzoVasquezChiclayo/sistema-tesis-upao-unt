@@ -341,6 +341,21 @@
                 </a>
             </div>
         </li>
+        <li>
+            <a class="cstm-a menu-a" class="cstm-a" data-bs-toggle="collapse" href="#collapseVerSust" role="button"
+                aria-expanded="false" aria-controls="collapseVerSust">
+                <div class="menu-into-a">
+                    <i class='bx bx-group'></i>
+                    <span class = "links_name">Evaluación</span>
+                </div>
+                <i class='bx bx-xs bxs-chevron-down'></i>
+            </a>
+            <div class="cstm-collapse collapse" id="collapseVerSust">
+                <a href="{{ route('director.sustentacion.verRegistrarSustentacion') }}">
+                    <span class="links_name">Registro</span>
+                </a>
+            </div>
+        </li>
 
         {{-- Nav para el Asesor del curso TESIS I --}}
     @elseif (auth()->user()->rol == 'a-CTesis2022-1')

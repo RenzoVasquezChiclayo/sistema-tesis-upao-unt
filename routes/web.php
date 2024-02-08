@@ -291,7 +291,8 @@ Route::middleware('auth')->group(function () {
     Route::controller(EvaluacionController::class)->group(function () {
         /*Director */
         Route::get('/ver-registro-sustentacion', 'verRegistrarSustentacion')->name('director.sustentacion.verRegistrarSustentacion');
-        Route::get('/registrar-sustentacion/{cod_designacion}', 'registrarSustentacion')->name('director.sustentacion.registrarSustentacion');
+        Route::get('/ver-detalle-sustentacion/{cod_designacion}', 'verDetalleSustentacion')->name('director.sustentacion.verDetalleSustentacion');
+        Route::post('/actualizar-sustentacion', 'actualizarSustentacion')->name('director.sustentacion.actualizarSustentacion');
 
         /*Asesor */
         Route::get('/ver-lista-sustentacion', 'listaSustentaciones')->name('asesor.sustentacion.listaSustentacion');
