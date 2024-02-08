@@ -257,6 +257,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/guardar-observacion-jurado-tesis', 'guardarObservacionSustentacion')->name('jurado.guardarObservacionTesis');
         Route::post('/aprobar-tesis-jurado', 'aprobarTesisEvaluacion')->name('jurado.aprobarTesis');
 
+
         /* Evaluacion Tesis (Estudiante)*/
         Route::get('/view-evaluacion-tesis', 'viewEvaluacionTesis')->name('estudiante.evaluacion.view-tesis');
         Route::get('/view-estado-tesis', 'viewEstadoEvaluacionTesis')->name('estudiante.evaluacion.estado-tesis');
@@ -296,6 +297,7 @@ Route::middleware('auth')->group(function () {
 
         /*Asesor */
         Route::get('/ver-lista-sustentacion', 'listaSustentaciones')->name('asesor.sustentacion.listaSustentacion');
+        Route::post('/nota-tesis-jurado', 'guardarNotaTesis')->name('asesor.sustentacion.notaTesis');
     });
 });
 

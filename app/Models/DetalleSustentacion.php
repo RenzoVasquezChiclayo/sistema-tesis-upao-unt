@@ -15,6 +15,7 @@ class DetalleSustentacion extends Model
         'cod_jurado',
         'pos_jurado',
         'nota',
+        'comentario',
         'estado'
     ];
 }

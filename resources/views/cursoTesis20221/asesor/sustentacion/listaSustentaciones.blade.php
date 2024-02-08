@@ -58,50 +58,93 @@
                         <table id="table-tesis" class="table table-striped table-responsive-md">
                             <thead>
                                 <tr>
-                                    <td>Grupo</td>
+                                    <td>Codigo Tesis</td>
                                     <td>Estudiante(s)</td>
                                     <td>Título</td>
                                     <td>Nota</td>
-                                    <td>Comentario</td>
                                     <td class="text-center">Ver</td>
                                 </tr>
                             </thead>
                             <tbody>
-                                @if(sizeof($tesisAgrupadas)<=0)
-                                <tr>
-                                    <td colspan="9"><i>No cuenta con tesis para sustentacion.</i></td>
-                                </tr>
+                                @if (sizeof($tesisAgrupadas) <= 0)
+                                    <tr>
+                                        <td colspan="9"><i>No cuenta con tesis para sustentacion.</i></td>
+                                    </tr>
                                 @endif
-                                @foreach ($tesisAgrupadas as $tesisAgru)
-                                    <tr
-                                    <!-- @if ($tesisAgru[0]->estadoDesignacion == 3)
-                                        style="background-color: rgba(76, 175, 80, 0.2);"
-                                    @elseif ($tesisAgru[0]->estadoDesignacion == 4)
-                                    style="background-color: rgba(255, 87, 51, 0.2);"
-                                    @endif> -->
-                                        <!-- <td>{{ $tesisAgru[0]->num_grupo }}</td> -->
+                                @foreach ($tesisAgrupadas as $index => $tesisAgru)
+                                    <tr>
+                                        <td>{{ $tesisAgru[0]['cod_tesis'] }}</td>
                                         <td>
-                                        @foreach ($tesisAgru as $ta)
-                                            <p>{{$ta->cod_matricula.' - '.$ta->apellidosAutor.', '.$ta->nombresAutor}}</p>
-                                        @endforeach
+                                            @foreach ($tesisAgru[0]['autores'] as $ta)
+                                                <p>{{ $ta['cod_matricula'] . ' - ' . $ta['apellidosAutor'] . ', ' . $ta['nombresAutor'] }}
+                                                </p>
+                                            @endforeach
                                         </td>
-                                        <td>{{ $tesisAgru[0]->titulo }}</td>
+                                        <td>{{ $tesisAgru[0]['titulo'] }}</td>
                                         <td>
-                                            @if ($tesisAgru[0]->estado != 0)
-                                                <form id="form-revisaTema"
-                                                    action="{{ route('jurado.detalleTesisAsignada') }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    <input type="hidden" name="id_grupo" value="{{$estu[0]->id_grupo}}">
-                                                    <input type="hidden" name="cod_tesis" value="{{$estu[0]->cod_tesis}}">
-                                                    <a href="#" onclick="this.closest('#form-revisaTema').submit()" class=" btn @if($textButton == "Observar") btn-secondary @else btn-success @endif">{{$textButton}}</a>
-                                                </form>
+
+                                            @if ($tesisAgru[0]['fecha_susten'] == true)
+                                                <div>
+                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                        data-bs-target="#mNota{{$index}}">
+                                                        <i class='bx bx-search-alt-2'></i>
+                                                    </button>
+                                                </div>
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{route('jurado.listaTesisAsignadas',['showObservacion'=>$estu[0]->cod_tesis])}}">Ver detalle</a>
+                                            <a href="">Ver detalle</a>
                                         </td>
                                     </tr>
+                                    {{-- Modal para Nota --}}
+                                    <div class="modal" id="mNota{{$index}}">
+                                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                            <form id="formguardarNota{{$index}}" name="formguardarNota{{$index}}">
+                                                @csrf
+                                                <div class="modal-content">
+
+                                                    <!-- Modal Header -->
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title">Nota</h4>
+                                                        <button type="button" class="btn-close"
+                                                            data-bs-dismiss="modal"></button>
+                                                    </div>
+
+                                                    <!-- Modal body -->
+                                                    <div class="modal-body">
+                                                        <div class="row" style="padding: 20px">
+                                                            <div class="col-4">
+                                                                <p>Nota</p>
+                                                                <input type="hidden" name="cod_tesis"
+                                                                    value="{{ $tesisAgru[0]['cod_tesis'] }}">
+                                                                <input type="number" class="form-control" name="nota"
+                                                                    min="0" max="20"
+                                                                    value="{{ sizeof($tesisAgru) > 1 ? $tesisAgru[1]->nota : 0 }}">
+                                                            </div>
+                                                            <div class="col">
+                                                                <p>Comentario</p>
+                                                                <textarea class="form-control" name="comentario" id="taComentario" style="height: 100px; resize:none">{{ sizeof($tesisAgru) > 1 ? $tesisAgru[1]->comentario : '' }}</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Modal footer -->
+                                                    <div class="modal-footer">
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <button type="button" class="btn btn-danger">Close</button>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <button type="button" class="btn btn-success"
+                                                                    onclick="guardarNota({{$index}});">Guardar</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
                                 @endforeach
                             </tbody>
                         </table>
@@ -110,42 +153,9 @@
             </div>
         </div>
     </div>
-    @if ($observaciones != null)
-    <div class="card shadow bg-white rounded">
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <td># Observación</td>
-                            <td>Jurado</td>
-                            <td>Fecha</td>
-                            <td class="text-center">Acción</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if(sizeof($observaciones)<=0)
-                            <tr>
-                                <td colspan="4"><p><i>No existen observaciones.</i></p></td>
-                            </tr>
-                        @endif
-                        @foreach ($observaciones as $obs)
-                            <tr>
-                                <td>{{'#'.($loop->index +1)}}</td>
-                                <td>{{$obs->apellidosJurado.', '.$obs->nombresJurado}}</td>
-                                <td>{{$obs->fechaHistorial}}</td>
-                                <td class="text-center"><a href="#"><i class='bx bx-sm bx-show'></i></a></td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    @endif
 @endsection
 @section('js')
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @if (session('datos') == 'oknotevaluacion')
         <script>
             Swal.fire({
@@ -208,31 +218,10 @@
         </script>
     @endif
     <script type="text/javascript">
-        function aprobarTesis(chk) {
-            const idchk = chk.id.split('-');
-            Swal.fire({
-                title: 'Estas seguro(a)?',
-                text: "La tesis será aprobado/desaprobado.",
-                icon: 'warning',
-                showDenyButton: true,
-                showCancelButton: true,
-                confirmButtonText: 'APROBAR',
-                denyButtonText: 'DESAPROBAR',
-                cancelButtonText: 'Cancelar',
-            }).then((result) => {
-
-                if (result.isConfirmed) {
-                    document.getElementById(`stateAprobation-${idchk[1]}`).value = 1;
-                } else if (result.isDenied) {
-                    document.getElementById(`stateAprobation-${idchk[1]}`).value = 0;
-                } else {
-                    document.getElementById(`chkAprobado-${idchk[1]}`).checked = false;
-                    return;
-                }
-                chk.closest('#formAprobarTesis').action = "{{ route('jurado.aprobarTesis') }}";
-                chk.closest('#formAprobarTesis').method = "POST";
-                chk.closest('#formAprobarTesis').submit();
-            });
+        function guardarNota(doc) {
+            document.getElementById(`formguardarNota${doc}`).action = "{{ route('asesor.sustentacion.notaTesis') }}";
+            document.getElementById(`formguardarNota${doc}`).method = "POST";
+            document.getElementById(`formguardarNota${doc}`).submit();
         }
     </script>
 @endsection
