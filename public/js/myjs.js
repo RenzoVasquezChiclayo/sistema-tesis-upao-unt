@@ -807,7 +807,7 @@ function deleteGroup(){
 var dato = [];
 var filaDato = [];
 
-/*window.onload = function() {
+window.onload = function() {
     rol = document.getElementById('rol').value;
     if (rol == "d-CTesis2022-1") {
         dato = document.getElementById('Codigo_Avance').value;
@@ -824,8 +824,8 @@ var filaDato = [];
     }
 
 }
-*/
+
 //Funcion para descargar reporte de avance de proyecto de tesis
-// function descargarReporteAvance(){
-//     document.form-reporteProyT.submit();
-// }
+ function descargarReporteAvance(){
+     document.form-reporteProyT.submit();
+ }

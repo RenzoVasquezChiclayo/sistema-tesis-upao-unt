@@ -139,7 +139,7 @@
                                             <a href="{{route('jurado.listaTesisAsignadas',['showObservacion'=>$estu[0]->cod_tesis])}}">Ver detalle</a>
                                         </td>
                                         <td class="text-center" >
-                                            <form id="tesis-download" action="{{ route('curso.descargaTesis') }}"
+                                            <form id="tesis-download" action="{{ route('curso.descargar-tesis') }}"
                                                 method="POST">
                                                 @csrf
                                                 <input type="hidden" name="cod_cursoTesis"

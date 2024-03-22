@@ -135,7 +135,7 @@
                                         </td>
                                         <td><a href="{{route('jurado.listaProyectosAsignados',['showObservacion'=>$estu[0]->cod_proyectotesis])}}">Ver detalle</a></td>
                                         <td style="text-align: center;">
-                                            <form id="proyecto-download" action="{{route('curso.descargaTesis')}}" method="POST">
+                                            <form id="proyecto-download" action="{{route('curso.descargaProyTesis')}}" method="POST">
                                                 @csrf
                                                 <input type="hidden" name="cod_cursoTesis" value="{{$estu[0]->cod_proyectotesis}}">
                                                 <a href="#" onclick="this.closest('#proyecto-download').submit()"><i class='bx bx-sm bx-download'></i></a>

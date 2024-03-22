@@ -79,6 +79,7 @@ class EvaluacionController extends Controller
 
     public function actualizarSustentacion(Request $request)
     {
+        dd("aqui");
         try {
             $datetime_stt = $this->getDateTime(
                 $date = $request->fecha_stt,
@@ -117,6 +118,7 @@ class EvaluacionController extends Controller
                         throw new Exception("Not defined a Jurado");
                 }
                 $existDetalle = DetalleSustentacion::where('pos_jurado',$posJurado)->where('cod_sustentacion',$recentlySustentacion->cod)->first();
+                dd($existDetalle);
                 if($existDetalle==null){
                     $detalle = new DetalleSustentacion();
                     $detalle->cod_sustentacion = $recentlySustentacion->cod;
@@ -141,6 +143,7 @@ class EvaluacionController extends Controller
     public function listaSustentaciones()
     {
         $asesor = DB::table('asesor_curso as ac')->join('jurado as j','ac.cod_docente','j.cod_docente')->select('j.*')->where('ac.username', auth()->user()->name)->first();
+        //dd($asesor);
         $tesis_aprobadas = DB::table('tesis_2022 as t')
             ->join('detalle_grupo_investigacion as d_g', 'd_g.id_grupo_inves', '=', 't.id_grupo_inves')
             ->join('estudiante_ct2022', 'estudiante_ct2022.cod_matricula', '=', 'd_g.cod_matricula')
@@ -158,6 +161,7 @@ class EvaluacionController extends Controller
                 // Combina múltiples autores en una sola tesis
                 $primerItem = $grupo->first();
                 $autor = [
+                    'cod_jurado'=>$asesor->cod_jurado,
                     'cod_tesis' => $primerItem->cod_tesis,
                     'titulo' => $primerItem->titulo,
                     'fecha_susten' => $primerItem->fecha_stt == null ? "" : $primerItem->fecha_stt,
@@ -189,10 +193,11 @@ class EvaluacionController extends Controller
     public function guardarNotaTesis(Request $request)
     {
         try {
+            $asesor = DB::table('asesor_curso as ac')->join('jurado as j','ac.cod_docente','j.cod_docente')->select('j.*')->where('ac.username', auth()->user()->name)->first();
             $cod_tesis = $request->cod_tesis;
             $sustentacion = DB::table('sustentacion as s')->select('s.cod')->where('s.cod_tesis', $cod_tesis)->first();
-
-            $detalle_sustentacion = DetalleSustentacion::where('cod_sustentacion', $sustentacion->cod)->first();
+            //dd($sustentacion->cod);
+            $detalle_sustentacion = DetalleSustentacion::where('cod_sustentacion', $sustentacion->cod)->where('cod_jurado',$asesor->cod_jurado)->first();
             //dd($detalle_sustentacion);
             $detalle_sustentacion->nota = $request->nota;
             $detalle_sustentacion->comentario = $request->comentario;

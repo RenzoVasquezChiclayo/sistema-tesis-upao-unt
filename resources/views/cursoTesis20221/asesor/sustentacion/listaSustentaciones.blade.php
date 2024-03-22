@@ -135,7 +135,9 @@
                                                                 <button type="button" class="btn btn-danger">Close</button>
                                                             </div>
                                                             <div class="col-6">
-                                                                <button type="button" class="btn btn-success"
+                                                                <button type="button" class="btn btn-success" @if (sizeof($tesisAgru) > 1 && $tesisAgru[1]->nota != null)
+                                                                    hidden
+                                                                @endif
                                                                     onclick="guardarNota({{$index}});">Guardar</button>
                                                             </div>
                                                         </div>

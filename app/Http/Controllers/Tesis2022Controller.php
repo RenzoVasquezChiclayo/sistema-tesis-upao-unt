@@ -1089,7 +1089,7 @@ class Tesis2022Controller extends Controller
     /*FUNCION PARA DESCARGAR EL WORD DE LA TESIS*/
     public function descargaTesis(Request $request){
 
-        $cod_Tesis = $request->cod_Tesis;
+        $cod_Tesis = $request->cod_cursoTesis;
         $lineKeywords = "";
         //HOSTING
         $tesis = DB::table('tesis_2022 as t')

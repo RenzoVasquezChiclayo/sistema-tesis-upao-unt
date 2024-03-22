@@ -151,7 +151,7 @@ Route::middleware('auth')->group(function () {
             ->name('curso.download-observacion');
         //Rutas para el mantenimiento de la Tesis del Estudiante
         Route::post('/saveCTesis', 'saveTesis')->name('curso.saveTesis');
-        Route::post('/descargaTesis', 'descargaTesis')->name('curso.descargaTesis');
+        Route::post('/descargaTesis', 'descargaTesis')->name('curso.descargaProyTesis');
         //HOSTING
 
         Route::get('/ver-agregar-grupos', 'verAgregarGruposInv')->name('director.verGrupos');
