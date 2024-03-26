@@ -5,6 +5,7 @@ use App\Http\Controllers\CursoTesisController;
 use App\Http\Controllers\EstudianteTesisController;
 use App\Http\Controllers\EvaluacionController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RolController;
 use App\Http\Controllers\SustentacionController;
 use App\Http\Controllers\SustentacionProyectoController;
 use App\Http\Controllers\Tesis2022Controller;
@@ -47,6 +48,11 @@ Route::controller(LoginController::class)->group(function () {
 
 /* Agrupamos las rutas que tienen acceso 'auth' */
 Route::middleware('auth')->group(function () {
+    Route::controller(RolController::class)->group(function () {
+        Route::get('/listar-roles', 'listarRoles')->name('rol.listar');
+        Route::post('/guardar-rol',  'guardarRol')->name('rol.guardarRol');
+        Route::delete('/delete-rol',  'deleteRol')->name('rol.deleteRol');
+    });
 
     /* Agrupamos las rutas del AdminController */
     Route::controller(AdminCursoController::class)->group(function () {
@@ -65,6 +71,7 @@ Route::middleware('auth')->group(function () {
             ->name('user_information')->middleware('auth');
         Route::post('update-informacion-estudiante_asesor/', 'update_information_estudiante_asesor')
             ->name('save_user_estudiante_asesor');
+
         Route::get('/listar-usuarios', 'listarUsuario')->name('admin.listar');
         Route::get('/ver-agregar-usuario', 'verAgregarUsuario')->name('admin.verAgregarUsuario');
         Route::post('/save-usuario',  'saveUsuario')->name('admin.saveUsuario');
@@ -77,6 +84,11 @@ Route::middleware('auth')->group(function () {
         Route::post('/change-status-configuraciones', 'changeStatusConfiguraciones')->name('admin.changeStatusConfiguraciones');
         Route::post('/ver-editar-configuraciones',  'ver_editar_configuraciones')->name('admin.verConfiguracionEditar');
         Route::post('/save-editar-configuraciones', 'save_editar_configuraciones')->name('admin.saveEditarconfiguraciones');
+
+
+        Route::get('/listar-directores', 'listarDirectores')->name('admin.director.listar');
+        Route::post('/guardar-director',  'guardarDirector')->name('admin.director.guardarDirector');
+        Route::delete('/delete-director',  'deleteDirector')->name('admin.director.deleteDirector');
 
         //----
         Route::get('/ver-facultad',  'verAgregarFacultad')->name('admin.verFacultad');

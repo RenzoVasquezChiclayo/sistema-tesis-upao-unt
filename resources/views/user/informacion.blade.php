@@ -21,7 +21,7 @@
                                 <p>{{ auth()->user()->name }}</p>
                             </div>
                         </div>
-                        @if (auth()->user()->rol == 'CTesis2022-1')
+                        @if (auth()->user()->rol == 4)
                             <div class="col-10 col-md-6" style="text-align: left; margin-bottom:15px;">
                                 <h5>DNI</h5>
                                 <p>{{ $estudiante->dni }}</p>
@@ -45,7 +45,7 @@
                                 @endif
 
                             </div>
-                        @elseif (auth()->user()->rol == 'a-CTesis2022-1')
+                        @elseif (auth()->user()->rol == 3)
                             <div class="col-10 col-md-6" style="text-align: left; margin-bottom:15px;">
                                 <h5>ORCID</h5>
                                 <p>{{ $asesor->orcid }}</p>
@@ -161,11 +161,11 @@
                                                 <div class="row my-2">
                                                     <div class="col-12 col-md-10"
                                                         style="text-align: left; margin-bottom:15px;">
-                                                        @if (auth()->user()->rol == 'CTesis2022-1')
+                                                        @if (auth()->user()->rol == 4)
                                                             <input type="hidden" id="txtCodEstudiante"
                                                                 name="txtCodEstudiante"
                                                                 value="{{ $estudiante->cod_matricula }}">
-                                                        @elseif (auth()->user()->rol == 'a-CTesis2022-1')
+                                                        @elseif (auth()->user()->rol == 3)
                                                             <input type="hidden" id="txtCodAsesor"
                                                                 name="txtCodAsesor"
                                                                 value="{{ $asesor->cod_docente }}">

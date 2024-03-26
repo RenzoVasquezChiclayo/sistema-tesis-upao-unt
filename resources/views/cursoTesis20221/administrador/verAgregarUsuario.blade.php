@@ -28,13 +28,10 @@
                         <div class="col-lg-5">
                             <label for="">ROL</label>
                             <select class="form-control" name="rol_user" id="rol_user" required>
-                                <option value="d-CTesis2022-1">Director
-                                </option>
-                                <option value="a-CTesis2022-1">Asesor</option>
-                                <option value="CTesis2022-1">Estudiante
-                                </option>
-                                <option value="j-CTesis2022-1">Jurado
-                                </option>
+                                @foreach ($roles as $rol)
+                                    <option value="{{$rol->id}}">{{$rol->descripcion}}</option>
+                                @endforeach
+
                             </select>
                         </div>
 
