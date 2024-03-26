@@ -210,13 +210,6 @@
                 <span class="tooltip">Director</span>
             </li>
             <li>
-                <a class="cstm-a" href="{{ route('admin.configurar') }}">
-                    <i class='bx bxs-cog'></i>
-                    <span class="links_name">Semestre Académico</span>
-                </a>
-                <span class="tooltip">Semestre Académico</span>
-            </li>
-            <li>
                 <a class="cstm-a" href="{{ route('admin.listarcategoriasDocente') }}">
                     <i class='bx bx-sm bx-list-ol'></i>
                     <span class="links_name">Listar Categorias Docente</span>
@@ -231,6 +224,13 @@
                 <span class="tooltip">Grado Academico</span>
             </li>
         @endif
+        <li>
+            <a class="cstm-a" href="{{ route('admin.configurar') }}">
+                <i class='bx bxs-cog'></i>
+                <span class="links_name">Semestre Académico</span>
+            </a>
+            <span class="tooltip">Semestre Académico</span>
+        </li>
         <li>
             <a class="cstm-a menu-a" data-bs-toggle="collapse" href="#collapseGeneral" role="button"
                 aria-expanded="false" aria-controls="collapseGeneral">
