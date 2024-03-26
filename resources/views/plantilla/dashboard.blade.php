@@ -39,7 +39,7 @@
         <div class="sidebar_content">
             <div class="logo_content">
                 <div class="logo">
-                    <div class="logo_name">CONTABILIDAD UNT</div>
+                    <div class="logo_name">PROYTESISWS</div>
                 </div>
                 <i class='bx bx-menu' id="btn-menu"></i>
             </div>
@@ -78,7 +78,7 @@
             </div>
         </div>
         <div class="bottom-fixed">
-            <strong>Copyright &copy; 2022.</strong> By: Rios Reyes & Vasquez Chiclayo & Dr. Juan Carlos Miranda Robles.
+            <strong>Copyright &copy; <span id="current-year"></span>.</strong> By: Rios Reyes & Vasquez Chiclayo & Dr. Juan Carlos Miranda Robles.
         </div>
     </div>
 
@@ -93,6 +93,14 @@
         btn.onclick = function() {
             sidebar.classList.toggle('active');
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var currentYearElement = document.getElementById('current-year');
+            if (currentYearElement) {
+                var currentYear = new Date().getFullYear();
+                currentYearElement.textContent = currentYear;
+            }
+        });
     </script>
 
 </body>

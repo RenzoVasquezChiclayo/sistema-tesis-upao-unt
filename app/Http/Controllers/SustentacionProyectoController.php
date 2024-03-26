@@ -495,7 +495,7 @@ class SustentacionProyectoController extends Controller
             //Encontramos al autor
 
             if ($autor->id_grupo == null) {
-                return view('cursoTesis20221.cursoTesis', ['autor' => $autor, 'tesis' => []]);
+                return view('cursoTesis20221.cursoTesis', ['autor' => $autor, 'tesis' => [],'variableop' => [], 'cronogramas_py' => [],'cronograma' => [],'campos' => []]);
             }
             $coautor = DB::table('detalle_grupo_investigacion as dg')->rightJoin('estudiante_ct2022 as e', 'e.cod_matricula', '=', 'dg.cod_matricula')->select('e.*')->where('dg.id_grupo_inves', $autor->id_grupo)->where('e.cod_matricula', '!=', $id)->first();
 
