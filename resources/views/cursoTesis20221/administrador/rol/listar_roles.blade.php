@@ -96,7 +96,7 @@
 
                         <div class="mb-3">
                             <label for="descripcion" class="col-form-label">Descripcion:</label>
-                            <input type="text" class="form-control" id="descripcion" name="descripcion">
+                            <input type="text" class="form-control" id="descripcion" name="descripcion" required>
                         </div>
 
                     </div>

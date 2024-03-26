@@ -29,6 +29,7 @@
                                 </option>
                             @endforeach
                         </select>
+                        <span id="span_asesor" style="color: red"></span>
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -40,6 +41,7 @@
                                 <option value="{{ $tInvest->cod_tinvestigacion }}">{{ $tInvest->descripcion }}</option>
                             @endforeach
                         </select>
+                        <span id="span_dinvestigacion" style="color: red"></span>
                     </div>
                     <div class="col-6 col-lg-3">
                         <label for="">Fecha de la solicitud</label>
@@ -136,7 +138,12 @@
         function tryToSend() {
             const asesor = document.getElementById('selectAsesor').value;
             const dinvestigacion = document.getElementById('selectTInvestigacion').value;
-            if (asesor == 0 || dinvestigacion == 0) {
+            if (asesor == 0) {
+                document.getElementById("span_asesor").innerHTML = "* Debe buscar o seleccionar el asesor";
+                return false;
+            }
+            if (dinvestigacion == 0) {
+                document.getElementById("span_dinvestigacion").innerHTML = "* Debe seleccionar la linea de investigacion";
                 return false;
             }
             document.formJurado.submit();

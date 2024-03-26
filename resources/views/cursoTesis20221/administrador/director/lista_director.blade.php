@@ -100,7 +100,7 @@
                 </div>
                 <form action="{{ route('admin.director.guardarDirector') }}" method="post">
                     @csrf
-                    <input type="text" id="aux_cod_director" name="aux_cod_director">
+                    <input type="hidden" id="aux_cod_director" name="aux_cod_director">
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-lg-6">

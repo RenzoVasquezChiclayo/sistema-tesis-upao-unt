@@ -17,7 +17,7 @@
 @endsection
 @section('contenido')
     <div class="card-header">
-        Registrar Cronograma
+        Cronograma
     </div>
     <div class="card-body">
         <div class="row" style="display: flex; align-items:center;">
@@ -40,8 +40,9 @@
                                     <option value="{{ $e->cod_escuela }}">{{ $e->nombre }}</option>
                                 @endforeach
                             </select>
+                            <span id="span_escuela" style="color: red"></span>
                         </div>
-                        <div class="col-2">
+                        <div class="col-3">
                             <h5>Semestre academico</h5>
                             <select class="form-select" onchange="select_semestre();" name="semestre_academico"
                                 id="semestre_academico" required>
@@ -50,6 +51,7 @@
                                     </option>
                                 @endforeach
                             </select>
+                            <span id="span_semestre" style="color: red"></span>
                         </div>
                     </div>
 
@@ -67,7 +69,7 @@
                         <div class="row">
                             <div class="input-group">
                                 <input type="text" class="form-control" name="buscarActividad" placeholder="Actividad"
-                                    value="" aria-describedby="btn-search">
+                                    value="" aria-describedby="btn-search" request>
                                 <button class="btn btn-outline-primary" type="submit" id="btn-search">Buscar</button>
                             </div>
                         </div>
@@ -156,7 +158,7 @@
             Swal.fire({
                 position: 'center',
                 icon: 'warning',
-                title: 'La cctividad ya existe!',
+                title: 'La Actividad ya existe!',
                 showConfirmButton: false,
                 timer: 1500
             })

@@ -15,7 +15,7 @@
     <div class="card-body">
         <div class="row justify-content-around align-items-center">
             <div class="col-11">
-                <form action="{{ route('director.saveDatosGenerales') }}" method="POST">
+                <form action="{{ route('director.saveDatosGenerales') }}" method="POST" id="form-generalidad">
                     @csrf
                     <div class="row">
                         <div class="col-md-6">
@@ -29,8 +29,9 @@
                         <div class="col-md-6">
                             <h5>Semestre academico</h5>
                             <select class="form-select" name="semestre_academico" id="semestre_academico" required>
-                                <option value="2023-I">2023-I</option>
-                                <option value="2023-II">2023-II</option>
+                                @foreach ($semestre_academico as $s_a)
+                                    <option value="{{ $s_a->cod_config_ini }}">{{$s_a->year}}_{{$s_a->curso}}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -91,6 +92,7 @@
                                             <input class="btn btn-success" id="btnAsesor_" type="button" value="+"
                                                 onclick="agregar_linea_inv();">
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -239,6 +241,7 @@
         if (valOldl_i != 0) {
             indicel_i = parseInt(valOldl_i);
         }
+
 
         function agregar_linea_inv() {
             linea_investigacion = document.getElementById('linea_investigacion').value;

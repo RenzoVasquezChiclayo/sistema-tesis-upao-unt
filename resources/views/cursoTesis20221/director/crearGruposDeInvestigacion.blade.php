@@ -11,8 +11,11 @@
             <div>
                 <div class="row justify-content-around align-items-center" style="margin-top: 10px;">
                     <div class="col-lg-7" id="fieldsBody">
+                        <span id="span_estudiante" style="color: red"></span>
                         <div class="row justify-content-around align-items-center" id="rowStudent_0">
+
                             <div class="col-lg-6">
+
                                 <label for="">Estudiante</label>
                                 <select class="form-control" name="selectStudent_0" id="selectStudent_0"
                                     onchange="onSelectStudent(0);">
@@ -22,6 +25,7 @@
                                             {{ $est->apellidos }} {{ $est->nombres }}</option>
                                     @endforeach
                                 </select>
+
                             </div>
                             <div class="col-lg-2">
                                 <button class="btn btn-danger" id="deleteStudent_0" type="button"
@@ -144,6 +148,7 @@
         function onSelectStudent(id) {
             let select = document.getElementById(`selectStudent_${id}`);
             if (select.selectedIndex == 0) {
+
                 alert("Seleccione una opcion!");
                 return;
             }
@@ -173,7 +178,7 @@
 
         function guardarGrupo(count) {
             if (datos.length == 0) {
-                alert("Debe seleccionar almenos un estudiante.");
+                document.getElementById("span_estudiante").innerHTML = "* Debe seleccionar almenos un estudiante.";
                 return;
             }
             let select = document.getElementById(`selectStudent_${datos[0].select}`);
@@ -183,7 +188,7 @@
             }
             if (datos.length > 1) {
                 if (datos[0].code == datos[1].code) {
-                    alert("Debe seleccionar dos estudiantes distintos.")
+                    document.getElementById("span_estudiante").innerHTML = "* Debe seleccionar dos estudiantes distintos.";
                     return;
                 }
             }

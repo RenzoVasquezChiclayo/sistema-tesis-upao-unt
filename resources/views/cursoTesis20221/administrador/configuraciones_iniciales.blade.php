@@ -16,16 +16,19 @@
                     <select class="form-control" name="year" id="year">
                         <option value="0">-- Selecciona el año académico --</option>
                     </select>
+                    <span id="span_año" style="color: red"></span>
                 </div>
                 <div class="col-md-6 col-xl-4 my-2 text-start">
                     <label class="ms-2" for="curso">Curso</label>
                     <input class="form-control" type="text" placeholder="Nombre del curso" id="curso" name="curso">
+                    <span id="span_curso" style="color: red"></span>
                 </div>
                 <div class="col-md-6 col-xl-4 my-2 text-start">
                     <label class="ms-2" for="ciclo">Ciclo</label>
                     <select class="form-control" name="ciclo" id="ciclo">
                         <option value="0">-- Selecciona el ciclo académico --</option>
                     </select>
+                    <span id="span_ciclo" style="color: red"></span>
                 </div>
             </div>
             <div class="col my-3 text-start">
@@ -101,7 +104,6 @@
         putListCiclos();
         function saveConfig(form) {
             if (!verifiyFields()) {
-                alert("Existen campos pendientes.");
                 return;
             }
             Swal.fire({
@@ -127,12 +129,15 @@
             const ciclo = document.getElementById('ciclo').selectedIndex;
             const curso = document.getElementById('curso').value.trim();
             if (year === 0) {
-                return false;
-            }
-            if(ciclo===0){
+                document.getElementById("span_año").innerHTML = "* Debe seleccionar año academico";
                 return false;
             }
             if(curso == ""){
+                document.getElementById("span_curso").innerHTML = "* Debe seleccionar curso academico";
+                return false;
+            }
+            if(ciclo===0){
+                document.getElementById("span_ciclo").innerHTML = "* Debe seleccionar ciclo academico";
                 return false;
             }
             return true;
