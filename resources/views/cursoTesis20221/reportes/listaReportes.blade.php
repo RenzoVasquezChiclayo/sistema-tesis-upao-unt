@@ -7,7 +7,7 @@
     Lista de reportes
 </div>
 <div class="card-body">
-    @if (auth()->user()->rol == 'CTesis2022-1')
+    @if (auth()->user()->rol == 4)
     <div class="row">
         <div class="col-3">
             <h4>% Avance Proyecto de Tesis</h4>
@@ -19,7 +19,7 @@
         </div>
 
     </div>
-@elseif (auth()->user()->rol == 'a-CTesis2022-1')
+@elseif (auth()->user()->rol == 3)
     <input type="hidden" name="Codigo_Avance_Asesor" id="Codigo_Avance_Asesor" value="{{$dato2}}">
     <input type="hidden" id="rol" value="a-CTesis2022-1">
     <div class="row">
@@ -38,7 +38,7 @@
               </table>
         </div>
     </div>
-@elseif (auth()->user()->rol == 'd-CTesis2022-1')
+@elseif (auth()->user()->rol == 2)
     <div class="row">
         <div class="card text-bg-light mb-3" style="max-width: 18rem; margin-left: 5px;">
             <div class="card-header">Total Estudiantes</div>

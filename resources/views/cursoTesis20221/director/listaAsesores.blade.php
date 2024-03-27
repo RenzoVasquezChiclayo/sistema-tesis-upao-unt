@@ -90,7 +90,7 @@
                                                             class='bx bx-sm bx-edit-alt'></i></a>
                                                 </form>
                                             </td>
-                                            {{-- @if (auth()->user()->rol == 'administrador')
+                                            {{-- @if (auth()->user()->rol == 1)
                                             <td>
                                                 <form id="formAsesorDelete" name="formAsesorDelete" method="" action="">
                                                     @method('DELETE')

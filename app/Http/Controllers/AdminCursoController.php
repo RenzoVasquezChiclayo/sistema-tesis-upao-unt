@@ -10,6 +10,7 @@ use App\Models\AsesorCurso;
 use App\Models\Categoria_Docente;
 use App\Models\Configuraciones_Iniciales;
 use App\Models\Cronograma;
+use App\Models\Director;
 use App\Models\Diseno_Investigacion;
 use App\Models\Escuela;
 use App\Models\Estudiante_Semestre;
@@ -21,6 +22,7 @@ use App\Models\MatrizOperacional;
 use App\Models\ObservacionesProy;
 use App\Models\ObservacionesProyCurso;
 use App\Models\Presupuesto;
+use App\Models\Rol;
 use App\Models\Tesis_2022;
 use App\Models\TesisCT2022;
 use App\Models\TipoInvestigacion;
@@ -39,13 +41,14 @@ class AdminCursoController extends Controller
     const PAGINATION = 10;
     public function listarUsuario()
     {
-        $usuarios = User::where('rol', '!=', 'administrador')->paginate($this::PAGINATION);
+        $usuarios = User::join('rol','users.rol','rol.id')->where('rol', '!=', 1)->paginate($this::PAGINATION);
         return view('cursoTesis20221.administrador.listarUsuarios', ['usuarios' => $usuarios]);
     }
 
     public function verAgregarUsuario()
     {
-        return view('cursoTesis20221.administrador.verAgregarUsuario');
+        $roles = Rol::where('id','!=',1)->get();
+        return view('cursoTesis20221.administrador.verAgregarUsuario',['roles'=>$roles]);
     }
 
     public function saveUsuario(Request $request)
@@ -55,6 +58,7 @@ class AdminCursoController extends Controller
             $new_usuario->name = $request->usuario;
             $new_usuario->rol = $request->rol_user;
             $new_usuario->password = bcrypt($request->contraseña);
+            $new_usuario->remember_token = SUBSTR(MD5(RAND()), 1, 10);
             $new_usuario->save();
             return redirect()
                 ->route('admin.listar')
@@ -111,13 +115,97 @@ class AdminCursoController extends Controller
     }
 
     // -------------------------------------------------------------------
+    public function listarDirectores(Request $request)
+    {
+        $buscarDirector = $request->buscarDirector;
+        if ($buscarDirector) {
+            if (is_numeric($buscarDirector)) {
+                $directores = DB::table('director')
+                            ->join('escuela','director.cod_escuela','escuela.cod_escuela')
+                            ->join('grado_academico','director.cod_escuela','grado_academico.cod_grado_academico')
+                            ->where('cod_docente', 'like', '%' . $buscarDirector . '%')->paginate($this::PAGINATION);
+            }else{
+                $directores = DB::table('director')
+                ->join('escuela','director.cod_escuela','escuela.cod_escuela')
+                ->join('grado_academico','director.cod_escuela','grado_academico.cod_grado_academico')
+                ->where('apellidos', 'like', '%' . $buscarDirector . '%')->paginate($this::PAGINATION);
+            }
+        }else{
+            $directores = DB::table('director')
+            ->join('escuela','director.cod_escuela','escuela.cod_escuela')
+            ->join('grado_academico','director.cod_grado_academico','grado_academico.cod_grado_academico')
+            ->paginate($this::PAGINATION);
+        }
+        $escuela = DB::table('escuela')->orderBy('nombre', 'asc')->get();
+        $grado_academico = Grado_Academico::all();
+        return view('cursoTesis20221.administrador.director.lista_director', ['directores' => $directores,'buscarDirector'=>$buscarDirector,'escuela'=>$escuela,'grado_academico'=>$grado_academico]);
+    }
 
+    public function guardarDirector(Request $request)
+    {
+        try {
+            $aux_cod_director = $request->aux_cod_director;
+            if ($aux_cod_director != '') {
+                try {
+                    $edit_director = Director::find($aux_cod_director);
+                    $edit_director->direccion = $request->direccion;
+                    $edit_director->correo = $request->correo;
+                    $edit_director->save();
+                    return redirect()
+                        ->route('admin.director.listar')
+                        ->with('datos', 'ok');
+                } catch (\Throwable $th) {
+                    return redirect()
+                        ->route('admin.director.listar')
+                        ->with('datos', 'oknot');
+                }
+
+            }else{
+                $new_director = new Director();
+                $new_director->nombres = strtoupper($request->nombres);
+                $new_director->apellidos = strtoupper($request->apellidos);
+                $new_director->cod_grado_academico = $request->grado_academico;
+                $new_director->cod_escuela = $request->escuela;
+                $new_director->direccion = $request->direccion;
+                $new_director->correo = $request->correo;
+                $new_director->save();
+                return redirect()
+                ->route('admin.director.listar')
+                ->with('datos', 'oksave');
+            }
+        } catch (\Throwable $th) {
+            dd($th);
+            return redirect()
+                ->route('admin.director.listar')
+                ->with('datos', 'oknotsave');
+        }
+    }
+
+    public function deleteDirector(Request $request)
+    {
+        $iddirector = $request->auxiddirector;
+
+        try {
+            $rol = Director::where('cod_director', $iddirector);
+            $rol->delete();
+
+            return redirect()
+                ->route('admin.director.listar')
+                ->with('datos', 'okdelete');
+        } catch (\Throwable $th) {
+            return redirect()
+                ->route('admin.director.listar')
+                ->with('datos', 'oknotdelete');
+        }
+    }
+
+    // -------------------------------------------------------------------
     public function information()
     {
         $id = auth()->user()->name;
         $aux = explode('-', $id);
         $id = $aux[0];
-        if (auth()->user()->rol == 'CTesis2022-1') {
+        if (auth()->user()->rol == 4) {
             $estudiante = DB::table('estudiante_ct2022')
                 ->where('cod_matricula', $id)
                 ->first();
@@ -416,6 +504,7 @@ class AdminCursoController extends Controller
         $totalAsesores = count(AsesorCurso::all());
 
         $AllProyTesis = DB::table('proyecto_tesis as py')->get();
+
         $AllProyTesis->toArray();
         for ($i = 0; $i < count($AllProyTesis); $i++) {
             foreach ($AllProyTesis[$i] as $atributo) {
@@ -469,7 +558,7 @@ class AdminCursoController extends Controller
     public function update_information_estudiante_asesor(Request $request)
     {
         $id = auth()->user()->rol;
-        if ($id == 'a-CTesis2022-1') {
+        if ($id == 3) {
             $asesor = AsesorCurso::where('cod_docente', '=', $request->txtCodAsesor)->first();
             try {
                 $asesor->correo = $request->correo;
@@ -484,7 +573,7 @@ class AdminCursoController extends Controller
                     ->route('user_information')
                     ->with('datos', 'oknotCorreo');
             }
-        } elseif ($id == 'CTesis2022-1') {
+        } elseif ($id == 4) {
             $estudiante = EstudianteCT2022::where('cod_matricula', '=', $request->txtCodEstudiante)->first();
             try {
                 $estudiante->correo = $request->correo;
@@ -512,6 +601,7 @@ class AdminCursoController extends Controller
         $semestre_academico = DB::table('configuraciones_iniciales')
             ->select('*')
             ->where('estado', 1)
+            ->orderBy('configuraciones_iniciales.cod_config_ini', 'desc')
             ->get();
         return view('cursoTesis20221.director.agregarAlumno', ['semestre_academico' => $semestre_academico, 'escuela' => $escuela]);
     }
@@ -546,12 +636,10 @@ class AdminCursoController extends Controller
                 $escuela = $request->escuela;
                 $semestre = $request->semestre_academico;
                 $path = $request->file('importAlumno');
-
                 Excel::import(new AlumnosImport($semestre, $escuela), $path);
 
                 return back()->with('datos', 'ok');
             } catch (\Throwable $th) {
-                dd($th);
                 return back()->with('datos', 'oknot');
             }
         } else {
@@ -1124,6 +1212,7 @@ class AdminCursoController extends Controller
             ->paginate($this::PAGINATION);
         $escuela = DB::table('escuela')
             ->where('estado', 1)
+            ->orderBy('nombre', 'asc')
             ->get();
         $semestre = DB::table('configuraciones_iniciales as c_i')
             ->select('c_i.*')

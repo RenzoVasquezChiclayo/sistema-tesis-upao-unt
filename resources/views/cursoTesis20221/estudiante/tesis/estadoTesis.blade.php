@@ -2,7 +2,21 @@
 @section('titulo')
     Estado de la Tesis
 @endsection
+@section("css")
+<style type="text/css">
+    .border-box {
+        border: 0.5px solid rgba(0, 0, 0, 0.2);
+        border-radius: 20px;
+        padding: 10px 0px;
+        margin: 0;
+    }
+</style>
+@endsection
 @section('contenido')
+<div class="card-header">
+    Proyecto de tesis
+</div>
+<div class="card-body">
     <div class="row" style="display:flex; align-items:center; justify-content: center;">
         <div class="col-12">
             <div class="row">
@@ -93,6 +107,7 @@
             </div>
         @endif
     </div>
+</div>
 @endsection
 @section('js')
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

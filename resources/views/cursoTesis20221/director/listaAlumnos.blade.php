@@ -90,7 +90,7 @@
                                                             class='bx bx-sm bx-edit-alt'></i></a>
                                                 </form>
                                             </td>
-                                            @if (auth()->user()->rol == 'administrador' || auth()->user()->rol == 'd-CTesis2022-1')
+                                            @if (auth()->user()->rol == 1 || auth()->user()->rol == 2)
                                                 <td>
                                                     <form id="formAlumnoDelete" name="formAlumnoDelete" method="POST"
                                                         action="{{ route('director.deleteAlumno') }}">

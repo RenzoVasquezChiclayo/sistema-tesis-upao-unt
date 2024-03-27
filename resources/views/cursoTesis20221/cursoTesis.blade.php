@@ -101,8 +101,10 @@
     </style>
 @endsection
 @section('contenido')
-    <title>Tesis</title>
-
+    <title>Proyecto de tesis</title>
+    <div class="card-header">
+        Proyecto de tesis
+    </div>
     @if ($autor->id_grupo == null)
         <div class="row d-flex" style="align-items:center; justify-content: center;">
             <div class="col-8 border-box mt-3">

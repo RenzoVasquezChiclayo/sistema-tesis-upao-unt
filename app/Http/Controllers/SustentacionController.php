@@ -1244,7 +1244,9 @@ class SustentacionController extends Controller
             $id = $aux[0];
             $estudiante = EstudianteCT2022::find($id);
             $tesis = Tesis_2022::join('asesor_curso as ac', 'ac.cod_docente', '=', 'tesis_2022.cod_docente')->join('grupo_investigacion as g_i', 'tesis_2022.id_grupo_inves', '=', 'g_i.id_grupo')->join('detalle_grupo_investigacion as d_g', 'd_g.id_grupo_inves', '=', 'g_i.id_grupo')->join('designacion_jurados as dj','tesis_2022.cod_tesis','dj.cod_tesis')->select('ac.nombres as nombre_asesor', 'tesis_2022.titulo','dj.estado','tesis_2022.updated_at','tesis_2022.cod_tesis','tesis_2022.cod_docente')->where('d_g.cod_matricula', '=', $estudiante->cod_matricula)->first();
-
+            if ($tesis == null) {
+                return view('cursoTesis20221.estudiante.evaluacion.estadoTesis',['asesor'=>[],'tesis'=>[]]);
+            }
             $asesor = AsesorCurso::find($tesis->cod_docente);
             return view('cursoTesis20221.estudiante.evaluacion.estadoTesis',['asesor'=>$asesor,'tesis'=>$tesis]);
         } catch (\Throwable $th) {

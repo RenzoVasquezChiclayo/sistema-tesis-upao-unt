@@ -78,7 +78,7 @@
         </li>
 
         {{-- Nav para el Alumnos del curso TESIS I --}}
-    @elseif (auth()->user()->rol == 'CTesis2022-1')
+    @elseif (auth()->user()->rol == 4)
         <li>
             <a class="cstm-a menu-a" data-bs-toggle="collapse" href="#collapseProyectoTesis" role="button"
                 aria-expanded="false" aria-controls="collapseProyectoTesis">
@@ -182,14 +182,32 @@
     </a> --}}
 
         {{-- Nav para el Director del curso TESIS I --}}
-    @elseif (auth()->user()->rol == 'd-CTesis2022-1' || auth()->user()->rol == 'administrador')
-        @if (auth()->user()->rol == 'administrador')
+    @elseif (auth()->user()->rol == 2 || auth()->user()->rol == 1)
+        @if (auth()->user()->rol == 1)
             <li>
-                <a class="cstm-a" href="{{ route('admin.listar') }}">
-                    <i class='bx bxs-user'></i>
-                    <span class="links_name">Listar Usuarios</span>
+                <a class="cstm-a menu-a" data-bs-toggle="collapse" href="#collapseConfiguraciones" role="button"
+                    aria-expanded="false" aria-controls="collapseConfiguraciones">
+                    <div class="menu-into-a">
+                        <i class='bx bx-sm bx-check-square'></i>
+                        <span class="links_name">Configuraciones</span>
+                    </div>
+                    <i class='bx bx-xs bxs-chevron-down'></i>
                 </a>
-                <span class="tooltip">Listar Usuarios</span>
+                <div class="cstm-collapse collapse" id="collapseConfiguraciones">
+                    <a class="cstm-a" href="{{ route('rol.listar') }}">
+                        <span class="links_name">Rol</span>
+                    </a>
+                    <a class="cstm-a" href="{{ route('admin.listar') }}">
+                        <span class="links_name">Usuarios</span>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <a class="cstm-a" href="{{ route('admin.director.listar') }}">
+                    <i class='bx bxs-cog'></i>
+                    <span class="links_name">Director</span>
+                </a>
+                <span class="tooltip">Director</span>
             </li>
             <li>
                 <a class="cstm-a" href="{{ route('admin.configurar') }}">
@@ -358,7 +376,7 @@
         </li>
 
         {{-- Nav para el Asesor del curso TESIS I --}}
-    @elseif (auth()->user()->rol == 'a-CTesis2022-1')
+    @elseif (auth()->user()->rol == 3)
         <li>
             <a class="cstm-a" href="{{ route('asesor.showEstudiantes') }}">
                 <i class='bx bx-sm bx-group'></i>

@@ -2,6 +2,16 @@
 @section('titulo')
     Estado Evaluacion Tesis
 @endsection
+@section("css")
+<style type="text/css">
+    .border-box {
+        border: 0.5px solid rgba(0, 0, 0, 0.2);
+        border-radius: 20px;
+        padding: 10px 0px;
+        margin: 0;
+    }
+</style>
+@endsection
 @section('contenido')
     <div class="card-header">
         Estado de Evaluación de Tesis

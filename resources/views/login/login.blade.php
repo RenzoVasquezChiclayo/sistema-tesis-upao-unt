@@ -71,7 +71,7 @@
                 <form action="{{route('login.verificate')}}" method="post">
                     @csrf
                     <div class="login-userinput" align="center" style="padding-top:20px">
-                        <img src="../login/img/escuela_contabilidad.png" alt="">
+                        <img src="" alt="LOGO">
                     </div>
                     <div class="login-userinput">
                         <input type="text" class="form-control" id="name" name="name" placeholder="Usuario" value="{{old('name')}}" autofocus required>

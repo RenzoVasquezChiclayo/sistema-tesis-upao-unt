@@ -99,6 +99,9 @@
 @endsection
 @section('contenido')
 <title>Tesis</title>
+<div class="card-header">
+    Tesis
+</div>
     @if ($tesis == null)
         <div class="row d-flex" style="align-items:center; justify-content: center;">
             <div class="col-8 border-box mt-3">
@@ -154,9 +157,6 @@
                     </div>
                 </div>
             @endif
-            <div class="card-header">
-                Registro de Tesis
-            </div>
             <div class="card-body">
                 <div class="row">
                     <form id="formTesis2022" name="formTesis2022" action="{{route('estudiante.guardarTesis')}}" method="POST"

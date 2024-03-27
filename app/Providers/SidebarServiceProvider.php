@@ -30,7 +30,7 @@ class SidebarServiceProvider extends ServiceProvider
         View::composer('plantilla.nav', function ($view) {
             $exists_jurado = false;
             $exist_obs = false;
-            if (auth()->user()->rol == 'a-CTesis2022-1') {
+            if (auth()->user()->rol == 3) {
                 $asesor_user = DB::table('asesor_curso')->select('cod_docente')->where('username', auth()->user()->name)->first();
                 $jurados = DB::table('jurado')->select('cod_docente')->get();
                 if (!empty($jurados)) {
@@ -41,7 +41,7 @@ class SidebarServiceProvider extends ServiceProvider
                     }
                 }
                 $view->with(['exists_jurado' => $exists_jurado]);
-            } else if (auth()->user()->rol == 'CTesis2022-1') {
+            } else if (auth()->user()->rol == 4) {
                 $datos = explode('-', auth()->user()->name);
                 $Tesis = DB::table('tesis_2022 as t')
                     ->join('detalle_grupo_investigacion as d_g', 'd_g.id_grupo_inves', '=', 't.id_grupo_inves')

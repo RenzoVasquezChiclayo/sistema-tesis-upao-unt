@@ -1,10 +1,10 @@
 @extends('plantilla.dashboard')
 @section('titulo')
-    Lista Usuario
+    Lista Roles
 @endsection
 @section('contenido')
     <div class="card-header">
-        Lista Usuario
+        Lista Roles
     </div>
     <div class="card-body">
         <div class="row">
@@ -13,17 +13,18 @@
                     <div class="col-12">
                         <div class="row justify-content-around align-items-center" style="margin: 10px;">
                             <div class="col-8 col-md-5 col-lg-3">
-                                <a href="{{ route('admin.verAgregarUsuario') }}" class="btn btn-success"><i
-                                        class='bx bx-sm bx-message-square-add'></i>Agregar Usuario</a>
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                    data-bs-target="#modalRol"><i class='bx bx-sm bx-message-square-add'></i>Agregar
+                                    Rol</button>
                             </div>
                         </div>
                         <div class="row mb-3" style="display:flex; align-items:right; justify-content:right;">
                             <div class="col col-sm-8 col-md-6 col-lg-4 col-xl-3">
-                                <form id="" name="" method="get">
+                                <form id="listRol" name="listRol" method="get">
                                     <div class="row">
                                         <div class="input-group">
-                                            <input type="text" class="form-control" name="buscarAlumno"
-                                                placeholder="Usuario" value="" aria-describedby="btn-search">
+                                            <input type="text" class="form-control" name="buscarRol" placeholder="Rol"
+                                                value="{{ $buscarRol }}" aria-describedby="btn-search">
                                             <button class="btn btn-outline-primary" type="submit"
                                                 id="btn-search">Buscar</button>
                                         </div>
@@ -36,34 +37,28 @@
                                 <thead>
                                     <tr>
                                         <td>Id</td>
-                                        <td>Usuario</td>
                                         <td>Rol</td>
                                         <td>Opciones</td>
                                     </tr>
                                 </thead>
-                                @foreach ($usuarios as $user)
+                                @foreach ($roles as $rol)
                                     <tr>
-                                        <td>{{ $user->id }}</td>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->descripcion }}</td>
+                                        <td>{{ $rol->id }}</td>
+                                        <td>{{ $rol->descripcion }}</td>
                                         <td>
                                             <div class="row">
                                                 <div class="col-3">
-                                                    <form id="form-usuario" method="post"
-                                                        action="{{ route('admin.editar') }}">
-                                                        @csrf
-                                                        <input type="hidden" name="auxiduser" value="{{ $user->id }}">
-                                                        <a href="#" class="btn btn-warning"
-                                                            onclick="this.closest('#form-usuario').submit();"><i
-                                                                class='bx bx-sm bx-edit-alt'></i></a>
-                                                    </form>
+                                                    <a href="#" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalRol"
+                                                        onclick="editarRol('{{ $rol->id }}','{{ $rol->descripcion }}');">
+                                                    <i class='bx bx-sm bx-edit-alt'></i>
+                                                </a>
                                                 </div>
                                                 <div class="col-3">
-                                                    <form id="formUsuarioDelete" name="formUsuarioDelete" method="POST"
-                                                        action="{{ route('admin.deleteUser') }}">
+                                                    <form id="formRolDelete" name="formRolDelete" method="POST"
+                                                        action="{{ route('rol.deleteRol') }}">
                                                         @method('DELETE')
                                                         @csrf
-                                                        <input type="hidden" name="auxiduser" value="{{ $user->id }}">
+                                                        <input type="hidden" name="auxidrol" value="{{ $rol->id }}">
                                                         <a href="#" class="btn btn-danger btn-eliminar"
                                                             onclick="alertaConfirmacion(this);"><i
                                                                 class='bx bx-message-square-x'></i></a>
@@ -75,7 +70,7 @@
                                 @endforeach
                                 </tbody>
                             </table>
-                            {{ $usuarios->links() }}
+                            {{ $roles->links() }}
                         </div>
 
                     </div>
@@ -84,6 +79,34 @@
             </div>
         </div>
 
+    </div>
+
+    {{-- //Modal para agregar Rol --}}
+    <div class="modal fade" id="modalRol" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Rol</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('rol.guardarRol') }}" method="post">
+                    @csrf
+                    <input type="hidden" id="aux_cod_rol" name="aux_cod_rol">
+                    <div class="modal-body">
+
+                        <div class="mb-3">
+                            <label for="descripcion" class="col-form-label">Descripcion:</label>
+                            <input type="text" class="form-control" id="descripcion" name="descripcion">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="btn-guarda-editar">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 @endsection
 @section('js')
@@ -94,7 +117,7 @@
             Swal.fire({
                 position: 'center',
                 icon: 'success',
-                title: 'Usuario editado correctamente',
+                title: 'Rol editado correctamente',
                 showConfirmButton: false,
                 timer: 1200
             })
@@ -104,7 +127,7 @@
             Swal.fire({
                 position: 'center',
                 icon: 'success',
-                title: 'Usuario guardado correctamente',
+                title: 'Rol guardado correctamente',
                 showConfirmButton: false,
                 timer: 1200
             })
@@ -114,7 +137,7 @@
             Swal.fire({
                 position: 'center',
                 icon: 'error',
-                title: 'Error al agregar usuario',
+                title: 'Error al agregar rol',
                 showConfirmButton: false,
                 timer: 1200
             })
@@ -124,7 +147,7 @@
             Swal.fire({
                 position: 'center',
                 icon: 'error',
-                title: 'Error al editar usuario',
+                title: 'Error al editar rol',
                 showConfirmButton: false,
                 timer: 1200
             })
@@ -134,7 +157,7 @@
             Swal.fire({
                 position: 'center',
                 icon: 'success',
-                title: 'Usuario eliminado correctamente',
+                title: 'Rol eliminado correctamente',
                 showConfirmButton: false,
                 timer: 1200
             })
@@ -144,16 +167,22 @@
             Swal.fire({
                 position: 'center',
                 icon: 'error',
-                title: 'Error al eliminar el Usuario',
+                title: 'Error al eliminar el rol',
                 showConfirmButton: false,
                 timer: 1200
             })
         </script>
     @endif
     <script type="text/javascript">
-        // function editarAlumno(formulario, contador){
-        //     formulario.closest('#form-alumno'+contador).submit();
-        // }
+        function editarRol(id, descripcion){
+            const inputAuxCodeRol = document.getElementById("aux_cod_rol");
+            inputAuxCodeRol.value = id;
+            document.getElementById("descripcion").value = descripcion;
+            document.getElementById("btn-guarda-editar").textContent = "Editar";
+            document.getElementById("exampleModalLabel").textContent = "Editar Rol";
+
+
+        }
         function alertaConfirmacion(e) {
             Swal.fire({
                 title: 'Estas Seguro que deseas eliminar?',
@@ -165,9 +194,8 @@
                 confirmButtonText: 'Confirmar!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    document.formUsuarioDelete.action = "{{ route('admin.deleteUser') }}";
-                    document.formUsuarioDelete.method = "POST";
-                    e.closest('#formUsuarioDelete').submit();
+                    document.formRolDelete.method = "POST";
+                    e.closest('#formRolDelete').submit();
                 }
             });
         }

@@ -17,7 +17,7 @@ return new class extends Migration
 
         DB::connection('mysql')->unprepared('CREATE TRIGGER add_user_asesor_curso AFTER INSERT ON `asesor_curso` FOR EACH ROW
                 BEGIN
-                    INSERT INTO `users` (`name`,`password`,`remember_token`,`created_at`,`updated_at`,`rol`) VALUES (CONCAT(SUBSTR(NEW.nombres, 1, 3),SUBSTR(NEW.cod_docente,1,2)),MD5(NEW.cod_docente),SUBSTR(RAND(),1,10),NOW(),NOW(),"a-CTesis2022-1");
+                    INSERT INTO `users` (`name`,`password`,`remember_token`,`created_at`,`updated_at`,`rol`) VALUES (CONCAT(SUBSTR(NEW.nombres, 1, 3),SUBSTR(NEW.cod_docente,1,2)),MD5(NEW.cod_docente),SUBSTR(RAND(),1,10),NOW(),NOW(),3);
                 END');
     }
     public function down()

@@ -24,5 +24,11 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public function rol(){
+        return $this->belongsToMany(Rol::class);
+    }
+
+
+
 
 }
