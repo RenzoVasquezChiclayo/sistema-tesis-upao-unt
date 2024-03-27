@@ -29,8 +29,9 @@
                         <input type="number" id="cod_grado_academico" name="cod_grado_academico" hidden>
                         <label class="ms-2" for="grado_academico">Descripción</label>
                         <input class="form-control" type="text" id="descripcion" name="descripcion"
-                            placeholder="Ingrese el grado académico" autofocus required>
+                            placeholder="Ingrese el grado académico" autofocus>
                     </div>
+                    <span id="span_descripcion" style="color: red"></span>
                 </div>
                 <div class="col-12 mt-2 mb-3 justify-content-start text-start">
                     <button id="btn_save" class="btn btn-success" type="button"
@@ -204,7 +205,12 @@
         }
 
         function confirmAddGrado(form) {
-            Swal.fire({
+            let descripcion = document.getElementById('descripcion').value;
+            if(descripcion.length == 0) {
+                document.getElementById("span_descripcion").innerHTML = "* Debe ingresar descripcion";
+                return;
+            }else{
+                Swal.fire({
                 title: 'Desea registrar el siguiente grado académico?',
                 text: "Agregar grado académico",
                 icon: 'warning',
@@ -217,6 +223,8 @@
                     form.closest('#form-add-grado').submit();
                 }
             });
+            }
+
         }
     </script>
 @endsection

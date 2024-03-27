@@ -152,7 +152,7 @@
     <div class="card-body">
         <div class="row justify-content-around align-items-center">
             <div class="row border-box" style="margin-bottom: 30px;">
-                <form action="{{ route('director.importarAsesores') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('director.importarAsesores') }}" method="post" enctype="multipart/form-data" id="form-asesor">
                     @csrf
                     <div class="row justify-content-center" style="margin-bottom: 20px;">
                         <div class="col-3">
@@ -163,8 +163,9 @@
                                     <option value="{{ $e->cod_escuela }}">{{ $e->nombre }}</option>
                                 @endforeach
                             </select>
+                            <span id="span_escuela" style="color: red"></span>
                         </div>
-                        <div class="col-2">
+                        <div class="col-3">
                             <h5>Semestre academico</h5>
                             <select class="form-select" onchange="select_semestre(this);" name="semestre_academico"
                                 id="semestre_academico" required>
@@ -173,6 +174,7 @@
                                     </option>
                                 @endforeach
                             </select>
+                            <span id="span_semestre" style="color: red"></span>
                         </div>
                     </div>
                     <div class="card text-center shadow bg-white rounded">
@@ -312,6 +314,24 @@
     </script>
     @endif
     <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+                document.getElementById("form-asesor").addEventListener('submit', validarFormulario);
+            });
+
+        function validarFormulario(evento) {
+            evento.preventDefault();
+            let semestre = document.getElementById('semestre_academico').value;
+            let escuela = document.getElementById('escuela').value;
+            if(semestre.length == 0) {
+                document.getElementById("span_semestre").innerHTML = "* Debe seleccionar semestre academico";
+                return;
+            }
+            if(escuela.length == 0) {
+                document.getElementById("span_escuela").innerHTML = "* Debe seleccionar escuela";
+                return;
+            }
+            this.submit();
+        }
         window.onload = function() {
             semestre = document.getElementById('semestre_academico').value;
             document.getElementById('semestre_hidden').value = semestre;

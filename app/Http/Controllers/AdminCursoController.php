@@ -309,7 +309,13 @@ class AdminCursoController extends Controller
                 ->select('diseno_investigacion.*')
                 ->get();
         }
-        return view('cursoTesis20221.director.mantenedorGeneralidades', ['lineasInves' => $lineasInves, 'fin_persigue' => $fin_persigue, 'diseno_investigacion' => $diseno_investigacion, 'buscarpor_semestre' => $buscarpor_semestre]);
+
+        $semestre_academico = DB::table('configuraciones_iniciales')
+            ->select('*')
+            ->where('estado', 1)
+            ->orderBy('configuraciones_iniciales.cod_config_ini', 'desc')
+            ->get();
+        return view('cursoTesis20221.director.mantenedorGeneralidades', ['lineasInves' => $lineasInves, 'fin_persigue' => $fin_persigue, 'diseno_investigacion' => $diseno_investigacion, 'buscarpor_semestre' => $buscarpor_semestre,'semestre_academico'=>$semestre_academico]);
     }
 
     public function agregarGeneralidades()
@@ -330,7 +336,12 @@ class AdminCursoController extends Controller
             ->select('diseno_investigacion.*')
             ->orderBy('descripcion', 'asc')
             ->get();
-        return view('cursoTesis20221.director.actualizarGeneralidades', ['escuela' => $escuela, 'linea_investigacion' => $linea_investigacion, 'fin_persigue' => $fin_persigue, 'diseno_investigacion' => $diseno_investigacion]);
+        $semestre_academico = DB::table('configuraciones_iniciales')
+            ->select('*')
+            ->where('estado', 1)
+            ->orderBy('configuraciones_iniciales.cod_config_ini', 'desc')
+            ->get();
+        return view('cursoTesis20221.director.actualizarGeneralidades', ['escuela' => $escuela, 'linea_investigacion' => $linea_investigacion, 'fin_persigue' => $fin_persigue, 'diseno_investigacion' => $diseno_investigacion, 'semestre_academico' => $semestre_academico]);
     }
 
     public function editarLineaInves(Request $request)
@@ -620,6 +631,7 @@ class AdminCursoController extends Controller
         $semestre_academico = DB::table('configuraciones_iniciales')
             ->select('*')
             ->where('estado', 1)
+            ->orderBy('configuraciones_iniciales.cod_config_ini', 'desc')
             ->get();
         $escuela = DB::table('escuela')
             ->select('*')
@@ -902,7 +914,7 @@ class AdminCursoController extends Controller
                 $facultad->nombre = $description;
                 $facultad->save();
             } else {
-                $existFacultad = Facultad::where('nombre', $description)->first();
+                $existFacultad = Facultad::where('cod_facultad', $codFacultad)->first();
                 if ($existFacultad != null) {
                     return redirect()
                         ->route('admin.verFacultad')
@@ -917,7 +929,6 @@ class AdminCursoController extends Controller
                 ->route('admin.verFacultad')
                 ->with('datos', 'ok');
         } catch (\Throwable $th) {
-            dd($th);
             return redirect()
                 ->route('admin.verFacultad')
                 ->with('datos', 'oknot');
@@ -976,7 +987,7 @@ class AdminCursoController extends Controller
                 $escuela->cod_facultad = $cod_Facultad;
                 $escuela->save();
             } else {
-                $existEscuela = Escuela::where('nombre', $description)->first();
+                $existEscuela = Escuela::where('cod_escuela', $codEscuela)->first();
                 if ($existEscuela != null) {
                     return redirect()
                         ->route('admin.verEscuela')

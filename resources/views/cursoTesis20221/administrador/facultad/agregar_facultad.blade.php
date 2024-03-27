@@ -122,7 +122,7 @@
             Swal.fire({
                 position: 'center',
                 icon: 'success',
-                title: 'Grado académico agregado correctamente',
+                title: 'Facultad agregado correctamente',
                 showConfirmButton: false,
                 timer: 1500
             })
@@ -132,7 +132,7 @@
             Swal.fire({
                 position: 'center',
                 icon: 'error',
-                title: 'Error al agregar el grado académico',
+                title: 'Error al agregar la facultad',
                 showConfirmButton: false,
                 timer: 1500
             })
@@ -142,7 +142,7 @@
             Swal.fire({
                 position: 'center',
                 icon: 'warning',
-                title: 'El grado académico ya existe!',
+                title: 'La facultad ya existe!',
                 showConfirmButton: false,
                 timer: 1500
             })
