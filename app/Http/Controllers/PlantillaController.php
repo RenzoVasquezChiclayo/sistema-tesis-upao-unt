@@ -1637,7 +1637,86 @@ class PlantillaController extends Controller
     public function descargaWordPlantillaUNT(Request $request){
         try{
             $template = new \PhpOffice\PhpWord\TemplateProcessor(documentTemplate:'plantilla/docs/PLANTILLA_UNT.docx');
-            $template->setValue('facultad','');
+            $facultad ='';
+            $escuela_profesional= '';
+            $titulo_proyecto='';
+            $autores='';
+            $linea_investigacion='';
+            $year_proyecto = date('Y');
+            /*Asesor*/
+            $asesor_nombre='';
+            $asesor_grado='';
+            $asesor_titulo='';
+            $asesor_direccion='';
+            /* */
+            $inv_fin_persigue='';
+            $inv_diseno='';
+            $localidad='';
+            $institucion='';
+            $proyecto_meses='';
+            $section_cronograma='';
+            $recursos='';
+            $section_presupuesto='';
+            $financiamiento='';
+            $realidad_problematica='';
+            $antecedentes='';
+            $justificacion_inv='';
+            $formulacion_problema='';
+            $objetivos='';
+            $marco_teorico='';
+            $marco_conceptual='';
+            $marco_legal='';
+            $formulacion_hipotesis='';
+            $diseno_inv='';
+            $objeto_estudio='';
+            $poblacion='';
+            $muestra='';
+            $metodos='';
+            $tecnicas_instrumentos='';
+            $instrumentacion='';
+            $estrategias_metod='';
+            $operacionalizacion='';
+            $matriz_consistencia='';
+            $referencias='';
+            $template->setValues([
+                'facultad'=>$facultad,
+                'escuela_profesional'=>$escuela_profesional,
+                'titulo_proyecto'=>$titulo_proyecto,
+                'autores'=>$autores,
+                'linea_investigacion'=>$linea_investigacion,
+                'year_proyecto'=>$year_proyecto,
+                'asesor_nombre'=>$asesor_nombre,
+                'asesor_grado'=>$asesor_grado,
+                'asesor_titulo'=>$asesor_titulo,
+                'asesor_direccion'=>$asesor_direccion,
+                'inv_fin_persigue'=>$inv_fin_persigue,
+                'inv_diseno'=>$inv_diseno,
+                'localidad'=>$localidad,
+                'institucion'=>$institucion,
+                'proyecto_meses'=>$proyecto_meses,
+                'section_cronograma'=>$section_cronograma,
+                'financiamiento'=>$financiamiento,
+                'realidad_problematica'=>$realidad_problematica,
+                'antecedentes'=>$antecedentes,
+                'justificacion_inv'=>$justificacion_inv,
+                'formulacion_problema'=>$formulacion_problema,
+                'objetivos'=>$objetivos,
+                'marco_teorico'=>$marco_teorico,
+                'marco_conceptual'=>$marco_conceptual,
+                'marco_legal'=>$marco_legal,
+                'formulacion_hipotesis'=>$formulacion_hipotesis,
+                'diseno_inv'=>$diseno_inv,
+                'objeto_estudio'=>$objeto_estudio,
+                'poblacion'=>$poblacion,
+                'muestra'=>$muestra,
+                'metodos'=>$metodos,
+                'tecnicas_instrumentos'=>$tecnicas_instrumentos,
+                'instrumentacion'=>$instrumentacion,
+                'estrategias_metod'=>$estrategias_metod,
+                'operacionalizacion'=>$operacionalizacion,
+                'matriz_consistencia'=>$matriz_consistencia,
+                'referencias'=>$referencias
+            ]);
         }catch(\PhpOffice\PhpWord\Exception\Exception $e){
             return back($e->getCode());
         }

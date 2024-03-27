@@ -39,6 +39,8 @@ use App\Models\Cronograma_Proyecto;
 use App\Models\Designacion_Jurado;
 use Illuminate\Support\Facades\Mail;
 
+use App\Http\Controllers\PlantillaController;
+
 use Illuminate\Http\Request;
 
 class CursoTesisController extends Controller
@@ -169,7 +171,7 @@ class CursoTesisController extends Controller
                     if ($tema == "localidad_institucion") {
                         $name_request = 'txtlocalidad';
                     } else {
-                        $name_request = 'txt'.$tema;
+                        $name_request = 'txt' . $tema;
                     }
                     $detalleEEG = Detalle_Observaciones::find($detalles[$i]->cod_detalleObs);
 
@@ -897,6 +899,10 @@ class CursoTesisController extends Controller
     /*FUNCION PARA DESCARGAR EL WORD DE LA TESIS*/
     public function descargaTesis(Request $request)
     {
+        $newRequest = new \Illuminate\Http\Request();
+        $newRequest->setMethod('POST');
+
+        /*template: $newRequest->request->add(['name' => 'value']); */
 
         $cod_cursoTesis = $request->cod_cursoTesis;
 
@@ -907,12 +913,17 @@ class CursoTesisController extends Controller
             ->where('d_g.id_grupo_inves', $tesis[0]->id_grupo_inves)->get();
         $asesor = AsesorCurso::find($tesis[0]->cod_docente);
         /*Datos del Autor*/
+        $text_autor='';
         if (count($estudiantes_grupo) > 1) {
             $estudiante1 = $estudiantes_grupo[0]->nombres . ' ' . $estudiantes_grupo[0]->apellidos;
             $estudiante2 = $estudiantes_grupo[1]->nombres . ' ' . $estudiantes_grupo[1]->apellidos;
+            $text_autor = $estudiante1.'\n'.$estudiante2;
         } else {
             $estudiante1 = $estudiantes_grupo[0]->nombres . ' ' . $estudiantes_grupo[0]->apellidos;
+            $text_autor = $estudiante1;
         }
+
+        $newRequest->request->add(['autores'=>$text_autor]);
 
         /*Datos del Asesor*/
         $nombre_asesor = $asesor->nombres . " " . $asesor->apellidos;
@@ -922,8 +933,17 @@ class CursoTesisController extends Controller
         $titulo_asesor = $asesor->titulo_profesional;
         $direccion_asesor = $asesor->direccion;
 
+        $newRequest->request->add([
+            'asesor_nombre' => $nombre_asesor,
+            'asesor_grado' => $asesor->grado_academico,
+            'asesor_titulo' => $asesor->titulo_profesional,
+            'asesor_direccion' => $asesor->direccion
+        ]);
+
         /*Proyecto de Investigacion y/o Tesis*/
         $titulo = $tesis[0]->titulo;
+
+        $newRequest->request->add(['titulo_proyecto' => $tesis[0]->titulo]);
 
         //Investigacion
         $cod_tinvestigacion = TipoInvestigacion::find($tesis[0]->cod_tinvestigacion);
@@ -983,6 +1003,12 @@ class CursoTesisController extends Controller
         $marco_teorico = $tesis[0]->marco_teorico;
         $marco_conceptual = $tesis[0]->marco_conceptual;
         $marco_legal = $tesis[0]->marco_legal;
+
+        /* change to new method inside other controller */
+
+        $value = (new PlantillaController)->descargaWordPlantillaUNT($newRequest);
+
+        /** */
 
         Settings::setOutputEscapingEnabled(true);
 
