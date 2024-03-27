@@ -11,7 +11,7 @@
             <div class="col-12">
                 <div class="row"
                     style="display:flex; align-items:right; justify-content:right; margin-bottom:10px; margin-top:10px;">
-                    <h5>Filtrar</h5>
+                    {{-- <h5>Filtrar</h5>
                     <form id="filtrarAlumno" name="filtrarAlumno" method="get">
                         <div class="row">
                             <div class="input-group">
@@ -26,7 +26,7 @@
                                 <button class="btn btn-outline-primary" type="submit" id="btn-search">Filtrar</button>
                             </div>
                         </div>
-                    </form>
+                    </form> --}}
                     <div class="col col-sm-8 col-md-6 col-lg-4 col-xl-3">
                         <form id="listAlumno" name="listAlumno" method="get">
                             <div class="row">
