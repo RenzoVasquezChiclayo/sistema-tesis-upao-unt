@@ -17,8 +17,10 @@ use App\Models\TReferencias;
 use App\Models\variableOP;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PhpOffice\PhpWord\Element\Table;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Settings;
+use PhpOffice\PhpWord\SimpleType\TblWidth;
 
 class PlantillaController extends Controller
 {
@@ -1084,7 +1086,7 @@ class PlantillaController extends Controller
     public function descargaUNTCienciasEconomicasProyectoTesis(Request $request)
     {
         $TITULO_BACHILLER = "";
-        $ESCUELA_PROFESIONAL="";
+        $ESCUELA_PROFESIONAL = "";
         $cod_cursoTesis = $request->cod_cursoTesis;
 
         $tesis = TesisCT2022::where('cod_proyectotesis', $cod_cursoTesis)->get();
@@ -1219,7 +1221,7 @@ class PlantillaController extends Controller
         // CARATULA UNT
         $caratulaSesion->addText("UNIVERSIDAD NACIONAL DE TRUJILLO", $tituloCaratula, $styleCaratula1);
         $caratulaSesion->addText("FACULTAD DE CIENCIAS ECONÓMICAS", $subtitCaratula1, $styleCaratula1);
-        $caratulaSesion->addText("ESCUELA PROFESIONAL DE ".$ESCUELA_PROFESIONAL, $subtitCaratula2, $styleCaratula1);
+        $caratulaSesion->addText("ESCUELA PROFESIONAL DE " . $ESCUELA_PROFESIONAL, $subtitCaratula2, $styleCaratula1);
 
         $caratulaSesion->addImage("img/logoUNTcaratula.png", $styleImage);
 
@@ -1238,7 +1240,7 @@ class PlantillaController extends Controller
         } else {
             $nuevaSesion->addText($estudiante1, null, $styleContenido);
         }
-        $caratulaSesion->addText("Bachiller en ".$TITULO_BACHILLER, array('name' => 'Arial', 'bold' => true, 'size' => 16), $styleCaratula1);
+        $caratulaSesion->addText("Bachiller en " . $TITULO_BACHILLER, array('name' => 'Arial', 'bold' => true, 'size' => 16), $styleCaratula1);
 
         $caratulaSesion->addText("Asesor: " . $nombre_asesor, array('name' => 'Arial', 'bold' => true, 'size' => 16), $styleCaratula2);
 
@@ -1271,15 +1273,15 @@ class PlantillaController extends Controller
 
         $nuevaSesion->addListItem("4. TIPO DE INVESTIGACIÓN", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
         $nuevaSesion->addText($cod_tinvestigacion, null, $styleContenido);
-        $nuevaSesion->addText("De acuerdo al fin que se persigue: ".$ti_finpersigue, null, $styleContenido);
-        $nuevaSesion->addText("De acuerdo al diseño de investigacion: ".$ti_disinvestigacion, null, $styleContenido);
+        $nuevaSesion->addText("De acuerdo al fin que se persigue: " . $ti_finpersigue, null, $styleContenido);
+        $nuevaSesion->addText("De acuerdo al diseño de investigacion: " . $ti_disinvestigacion, null, $styleContenido);
 
         $nuevaSesion->addListItem("5. LOCALIDAD E INSTITUCIÓN DONDE SE DESARROLLARÁ EL PROYECTO", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
-        $nuevaSesion->addText("Localidad: ".$localidad, null, $styleContenido);
-        $nuevaSesion->addText("Institución: ".$institucion, null, $styleContenido);
+        $nuevaSesion->addText("Localidad: " . $localidad, null, $styleContenido);
+        $nuevaSesion->addText("Institución: " . $institucion, null, $styleContenido);
 
         $nuevaSesion->addListItem("6. DURACIÓN DE LA EJECUCIÓN DEL PROYECTO", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
-        $nuevaSesion->addText($meses_ejecucion." MESES", null, $styleContenido);
+        $nuevaSesion->addText($meses_ejecucion . " MESES", null, $styleContenido);
 
         /* Tabla del Cronograma de Trabajo */
         /* Estilo de la table */
@@ -1350,21 +1352,21 @@ class PlantillaController extends Controller
                     if ($cont1 == 0) {
                         $nuevaSesion->addListItem("8.1. Personal: ", 1, null, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
                     }
-                    $nuevaSesion->addListItem("8.1.".($cont1 + 1) . ". " . $arregloRecursos[$i], 2, null, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
+                    $nuevaSesion->addListItem("8.1." . ($cont1 + 1) . ". " . $arregloRecursos[$i], 2, null, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
                     $cont1++;
                 }
                 if ($arregloRecTipo[$i] == 'Bienes') {
                     if ($cont2 == 0) {
                         $nuevaSesion->addListItem("8.2. Bienes: ", 1, null, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
                     }
-                    $nuevaSesion->addListItem("8.2.".($cont2 + 1) . ". " . $arregloRecursos[$i], 2, null, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
+                    $nuevaSesion->addListItem("8.2." . ($cont2 + 1) . ". " . $arregloRecursos[$i], 2, null, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
                     $cont2++;
                 }
                 if ($arregloRecTipo[$i] == 'Servicios') {
                     if ($cont3 == 0) {
                         $nuevaSesion->addListItem("8.3. Servicios: ", 1, null, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
                     }
-                    $nuevaSesion->addListItem("8.3.".($cont3 + 1) . ". " . $arregloRecursos[$i], 2, null, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
+                    $nuevaSesion->addListItem("8.3." . ($cont3 + 1) . ". " . $arregloRecursos[$i], 2, null, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
                     $cont3++;
                 }
             }
@@ -1467,7 +1469,7 @@ class PlantillaController extends Controller
         $nuevaSesion->addListItem("2.4.2. MARCO CONCEPTUAL", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
         $nuevaSesion->addText($marco_conceptual, null, $styleContenido);
 
-        if($marco_legal != null && $marco_legal != ""){
+        if ($marco_legal != null && $marco_legal != "") {
             $nuevaSesion->addListItem("2.4.3. MARCO LEGAL", 0.5, $titulos, [\PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER], $styleContenido);
             $nuevaSesion->addText($marco_legal, null, $styleContenido);
         }
@@ -1634,90 +1636,122 @@ class PlantillaController extends Controller
         return response()->download(storage_path('ProyectoTesis.docx'));
     }
 
-    public function descargaWordPlantillaUNT(Request $request){
-        try{
-            $template = new \PhpOffice\PhpWord\TemplateProcessor(documentTemplate:'plantilla/docs/PLANTILLA_UNT.docx');
-            $facultad ='';
-            $escuela_profesional= '';
-            $titulo_proyecto='';
-            $autores='';
-            $linea_investigacion='';
+    public function descargaWordPlantillaUNT(Request $request)
+    {
+        try {
+            $template = new \PhpOffice\PhpWord\TemplateProcessor(documentTemplate: 'plantilla/docs/PLANTILLA_UNT.docx');
+            $facultad = $request->facultad;
+            $escuela_profesional = $request->escuela_profesional;
+            $titulo_proyecto = $request->titulo_proyecto;
+            $autores = $request->autores;
+            $linea_investigacion = $request->linea_investigacion;
             $year_proyecto = date('Y');
             /*Asesor*/
-            $asesor_nombre='';
-            $asesor_grado='';
-            $asesor_titulo='';
-            $asesor_direccion='';
+            $asesor_nombre = $request->asesor_nombre;
+            $asesor_grado = $request->asesor_grado;
+            $asesor_titulo = $request->asesor_titulo;
+            $asesor_direccion = $request->asesor_direccion;
             /* */
-            $inv_fin_persigue='';
-            $inv_diseno='';
-            $localidad='';
-            $institucion='';
-            $proyecto_meses='';
-            $section_cronograma='';
-            $recursos='';
-            $section_presupuesto='';
-            $financiamiento='';
-            $realidad_problematica='';
-            $antecedentes='';
-            $justificacion_inv='';
-            $formulacion_problema='';
-            $objetivos='';
-            $marco_teorico='';
-            $marco_conceptual='';
-            $marco_legal='';
-            $formulacion_hipotesis='';
-            $diseno_inv='';
-            $objeto_estudio='';
-            $poblacion='';
-            $muestra='';
-            $metodos='';
-            $tecnicas_instrumentos='';
-            $instrumentacion='';
-            $estrategias_metod='';
-            $operacionalizacion='';
-            $matriz_consistencia='';
-            $referencias='';
+            $inv_fin_persigue = $request->inv_fin_persigue;
+            $inv_diseno = $request->inv_diseno;
+            $localidad = $request->localidad;
+            $institucion = $request->institucion;
+            $proyecto_meses = $request->proyecto_meses;
+            $section_cronograma = $request->section_cronograma;
+            $recursos = $request->recursos;
+            $section_presupuesto = $request->section_presupuesto;
+            $financiamiento = $request->financiamiento;
+            $realidad_problematica = '';
+            $antecedentes = '';
+            $justificacion_inv = '';
+            $formulacion_problema = '';
+            $objetivos = '';
+            $marco_teorico = '';
+            $marco_conceptual = '';
+            $marco_legal = '';
+            $formulacion_hipotesis = '';
+            $diseno_inv = '';
+            $objeto_estudio = '';
+            $poblacion = '';
+            $muestra = '';
+            $metodos = '';
+            $tecnicas_instrumentos = '';
+            $instrumentacion = '';
+            $estrategias_metod = '';
+            $operacionalizacion = '';
+            $matriz_consistencia = '';
+            $referencias = '';
             $template->setValues([
-                'facultad'=>$facultad,
-                'escuela_profesional'=>$escuela_profesional,
-                'titulo_proyecto'=>$titulo_proyecto,
-                'autores'=>$autores,
-                'linea_investigacion'=>$linea_investigacion,
-                'year_proyecto'=>$year_proyecto,
-                'asesor_nombre'=>$asesor_nombre,
-                'asesor_grado'=>$asesor_grado,
-                'asesor_titulo'=>$asesor_titulo,
-                'asesor_direccion'=>$asesor_direccion,
-                'inv_fin_persigue'=>$inv_fin_persigue,
-                'inv_diseno'=>$inv_diseno,
-                'localidad'=>$localidad,
-                'institucion'=>$institucion,
-                'proyecto_meses'=>$proyecto_meses,
-                'section_cronograma'=>$section_cronograma,
-                'financiamiento'=>$financiamiento,
-                'realidad_problematica'=>$realidad_problematica,
-                'antecedentes'=>$antecedentes,
-                'justificacion_inv'=>$justificacion_inv,
-                'formulacion_problema'=>$formulacion_problema,
-                'objetivos'=>$objetivos,
-                'marco_teorico'=>$marco_teorico,
-                'marco_conceptual'=>$marco_conceptual,
-                'marco_legal'=>$marco_legal,
-                'formulacion_hipotesis'=>$formulacion_hipotesis,
-                'diseno_inv'=>$diseno_inv,
-                'objeto_estudio'=>$objeto_estudio,
-                'poblacion'=>$poblacion,
-                'muestra'=>$muestra,
-                'metodos'=>$metodos,
-                'tecnicas_instrumentos'=>$tecnicas_instrumentos,
-                'instrumentacion'=>$instrumentacion,
-                'estrategias_metod'=>$estrategias_metod,
-                'operacionalizacion'=>$operacionalizacion,
-                'matriz_consistencia'=>$matriz_consistencia,
-                'referencias'=>$referencias
+                'facultad' => $facultad,
+                'escuela_profesional' => $escuela_profesional,
+                'titulo_proyecto' => $titulo_proyecto,
+                'linea_investigacion' => $linea_investigacion,
+                'year_proyecto' => $year_proyecto,
+                'asesor_nombre' => $asesor_nombre,
+                'asesor_grado' => $asesor_grado,
+                'asesor_titulo' => $asesor_titulo,
+                'asesor_direccion' => $asesor_direccion,
+                'inv_fin_persigue' => $inv_fin_persigue,
+                'inv_diseno' => $inv_diseno,
+                'localidad' => $localidad,
+                'institucion' => $institucion,
+                'proyecto_meses' => $proyecto_meses,
+                'section_cronograma' => $section_cronograma,
+                'financiamiento' => $financiamiento,
+                'realidad_problematica' => $realidad_problematica,
+                'antecedentes' => $antecedentes,
+                'justificacion_inv' => $justificacion_inv,
+                'formulacion_problema' => $formulacion_problema,
+                'objetivos' => $objetivos,
+                'marco_teorico' => $marco_teorico,
+                'marco_conceptual' => $marco_conceptual,
+                'marco_legal' => $marco_legal,
+                'formulacion_hipotesis' => $formulacion_hipotesis,
+                'diseno_inv' => $diseno_inv,
+                'objeto_estudio' => $objeto_estudio,
+                'poblacion' => $poblacion,
+                'muestra' => $muestra,
+                'metodos' => $metodos,
+                'tecnicas_instrumentos' => $tecnicas_instrumentos,
+                'instrumentacion' => $instrumentacion,
+                'estrategias_metod' => $estrategias_metod,
+                'operacionalizacion' => $operacionalizacion,
+                'matriz_consistencia' => $matriz_consistencia,
+                'referencias' => $referencias
             ]);
-        }catch(\PhpOffice\PhpWord\Exception\Exception $e){
+            /* Autores (Lista) */
+            $array_autor = array();
+            foreach ($autores as $key => $autor) {
+                $newArray = array('autor_name'=>$autor);
+                array_push($array_autor,$newArray);
+            }
+            $template->cloneBlock('block_autor', 0, true, false, $array_autor);
+            /*Cronograma (Tabla) */
+            $cronograma = new Table(array('borderSize' => 6, 'borderColor' => 'black', 'width' => 6000, 'unit' => TblWidth::TWIP));
+            $cronograma->addRow();
+            $cronograma->addCell(150)->addText('Actividad');
+            for ($i=1; $i <= $proyecto_meses; $i++) {
+                $cronograma->addCell()->addText('Mes '.$i);
+            }
+
+            $cronograma->addRow();
+            $cronograma->addCell()->addText('Cell B1');
+            $cronograma->addCell()->addText('Cell B2');
+            $cronograma->addCell()->addText('Cell B3');
+            $template->setComplexBlock('block_cronograma', $cronograma);
+
+            /*Recursos (Listas) */
+            // 'recursos'=>$recursos;
+
+            /*Presupuesto (Tabla) */
+            // $section_presupuesto
+
+            /* Guardado temporal del documento */
+            $tempFile = tempnam(sys_get_temp_dir(), 'PHPWordPrueba');
+            $template->saveAs($tempFile);
+            $headers = ["Content-Type: application/octet-stream"];
+            return response()->download($tempFile, 'documentoPrueba.docx',$headers)->deleteFileAfterSend(true);
+        } catch (\PhpOffice\PhpWord\Exception\Exception $e) {
             return back($e->getCode());
         }
     }

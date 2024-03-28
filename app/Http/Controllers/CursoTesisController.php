@@ -913,14 +913,15 @@ class CursoTesisController extends Controller
             ->where('d_g.id_grupo_inves', $tesis[0]->id_grupo_inves)->get();
         $asesor = AsesorCurso::find($tesis[0]->cod_docente);
         /*Datos del Autor*/
-        $text_autor='';
+        $text_autor=[];
         if (count($estudiantes_grupo) > 1) {
             $estudiante1 = $estudiantes_grupo[0]->nombres . ' ' . $estudiantes_grupo[0]->apellidos;
             $estudiante2 = $estudiantes_grupo[1]->nombres . ' ' . $estudiantes_grupo[1]->apellidos;
-            $text_autor = $estudiante1.'\n'.$estudiante2;
+            array_push($text_autor,$estudiante1);
+            array_push($text_autor,$estudiante2);
         } else {
             $estudiante1 = $estudiantes_grupo[0]->nombres . ' ' . $estudiantes_grupo[0]->apellidos;
-            $text_autor = $estudiante1;
+            array_push($text_autor,$estudiante1);
         }
 
         $newRequest->request->add(['autores'=>$text_autor]);
@@ -970,7 +971,7 @@ class CursoTesisController extends Controller
         $localidad = $tesis[0]->localidad;
         $institucion = $tesis[0]->institucion;
         $meses_ejecucion = $tesis[0]->meses_ejecucion;
-
+        $newRequest->request->add(['proyecto_meses' => $tesis[0]->meses_ejecucion]);
 
         //Economico
         $financiamiento = $tesis[0]->financiamiento;
@@ -1006,7 +1007,7 @@ class CursoTesisController extends Controller
 
         /* change to new method inside other controller */
 
-        $value = (new PlantillaController)->descargaWordPlantillaUNT($newRequest);
+        return (new PlantillaController)->descargaWordPlantillaUNT($newRequest);
 
         /** */
 
@@ -1451,7 +1452,6 @@ class CursoTesisController extends Controller
         }
 
 
-        /* ------------------------------------------------------- */
 
         $objetoEscrito = \PhpOffice\PhpWord\IOFactory::createWriter($word, 'Word2007');
         try {
@@ -1460,7 +1460,8 @@ class CursoTesisController extends Controller
             $th;
         }
 
-        return response()->download(storage_path('ProyectoTesis.docx'));
+        // return response()->download(storage_path('ProyectoTesis.docx'));
+
     }
     //NEWWW-------
     // ASIGNACION PARA LOS GRUPOS DE INV-----------------------------------
