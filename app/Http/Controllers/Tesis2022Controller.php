@@ -641,28 +641,55 @@ class Tesis2022Controller extends Controller
 
     const PAGINATION5=10;
     public function showTablaAsignacionGruposTesis(Request $request){
-        $buscarAlumno = $request->buscarAlumno;
-        if($buscarAlumno!=""){
-            if (is_numeric($buscarAlumno)) {
 
-                $grupo_estudiantes = DB::table('estudiante_ct2022 as e')
-                                    ->leftJoin('detalle_grupo_investigacion as d_g_i','d_g_i.cod_matricula','=','e.cod_matricula')
-                                    ->leftJoin('grupo_investigacion as g_i','g_i.id_grupo','=','d_g_i.id_grupo_inves')
-                                    ->select('e.*','g_i.cod_docente_tesis','g_i.num_grupo','g_i.id_grupo')
-                                    ->where('e.cod_matricula','like','%'.$buscarAlumno.'%')->orderBy('e.apellidos')->get();
+        $buscarAlumno = $request->buscarAlumno;
+        $filtrarSemestre = $request->filtrar_semestre;
+        $semestre = DB::table('configuraciones_iniciales as c_i')->select('c_i.*')->where('c_i.estado', 1)->orderBy('c_i.cod_config_ini', 'desc')->get();
+        if (count($semestre) == 0) {
+            return view('cursoTesis20221.director.tesis.asignarAsesorGruposTesis', ['studentforGroups' => [], 'asesores' => [],'semestre' =>  $semestre, 'buscarAlumno' => $buscarAlumno, 'filtrarSemestre' => $filtrarSemestre]);
+        } else {
+            $last_semestre = DB::table('configuraciones_iniciales as c_i')->select('c_i.*')->where('c_i.estado', 1)->orderBy('c_i.cod_config_ini', 'desc')->first();
+            if ($buscarAlumno != "") {
+                $semestreBuscar = $request->semestre;
+                $filtrarSemestre = $semestreBuscar;
+                if (is_numeric($buscarAlumno)) {
+                    $grupo_estudiantes = DB::table('estudiante_semestre as e_s')
+                        ->join('estudiante_ct2022 as e', 'e_s.cod_matricula', 'e.cod_matricula')
+                        ->leftJoin('detalle_grupo_investigacion as d_g_i', 'd_g_i.cod_matricula', '=', 'e.cod_matricula')
+                        ->leftJoin('grupo_investigacion as g_i', 'g_i.id_grupo', '=', 'd_g_i.id_grupo_inves')
+                        ->select('e.*','g_i.cod_docente_tesis','g_i.num_grupo','g_i.id_grupo')
+                        ->where('e_s.cod_config_ini', $semestreBuscar)
+                        ->where('e.cod_matricula', 'like', '%' . $buscarAlumno . '%')->orderBy('e.apellidos')->get();
+
+                } else {
+                    $grupo_estudiantes = DB::table('estudiante_semestre as e_s')
+                        ->join('estudiante_ct2022 as e', 'e_s.cod_matricula', 'e.cod_matricula')
+                        ->leftJoin('detalle_grupo_investigacion as d_g_i', 'd_g_i.cod_matricula', '=', 'e.cod_matricula')
+                        ->leftJoin('grupo_investigacion as g_i', 'g_i.id_grupo', '=', 'd_g_i.id_grupo_inves')
+                        ->select('e.*','g_i.cod_docente_tesis','g_i.num_grupo','g_i.id_grupo')
+                        ->where('e_s.cod_config_ini', $semestreBuscar)
+                        ->where('e.apellidos', 'like', '%' . $buscarAlumno . '%')->orderBy('e.apellidos')->get();
+                }
             } else {
-                $grupo_estudiantes = DB::table('estudiante_ct2022 as e')
-                                    ->leftJoin('detalle_grupo_investigacion as d_g_i','d_g_i.cod_matricula','=','e.cod_matricula')
-                                    ->leftJoin('grupo_investigacion as g_i','g_i.id_grupo','=','d_g_i.id_grupo_inves')
-                                    ->select('e.*','g_i.cod_docente_tesis','g_i.num_grupo','g_i.id_grupo')
-                                    ->where('e.apellidos','like','%'.$buscarAlumno.'%')->orderBy('e.apellidos')->get();
+                if ($filtrarSemestre != null) {
+                    $grupo_estudiantes = DB::table('estudiante_semestre as e_s')
+                    ->join('estudiante_ct2022 as e', 'e_s.cod_matricula', 'e.cod_matricula')
+                    ->join('detalle_grupo_investigacion as d_g_i', 'd_g_i.cod_matricula', '=', 'e.cod_matricula')
+                    ->join('grupo_investigacion as g_i', 'g_i.id_grupo', '=', 'd_g_i.id_grupo_inves')
+                    ->select('e.*','g_i.cod_docente_tesis','g_i.num_grupo','g_i.id_grupo')
+                    ->where('e_s.cod_config_ini', 'like', '%' . $filtrarSemestre . '%')->orderBy('g_i.num_grupo')->get();
+                } else {
+                    $grupo_estudiantes = DB::table('estudiante_semestre as e_s')
+                    ->join('estudiante_ct2022 as e', 'e_s.cod_matricula', 'e.cod_matricula')
+                    ->join('detalle_grupo_investigacion as d_g_i', 'd_g_i.cod_matricula', '=', 'e.cod_matricula')
+                    ->join('grupo_investigacion as g_i', 'g_i.id_grupo', '=', 'd_g_i.id_grupo_inves')
+                    ->select('e.*','g_i.cod_docente_tesis','g_i.num_grupo','g_i.id_grupo')
+                    ->where('e_s.cod_config_ini', 'like', '%' . $last_semestre->cod_config_ini . '%')->orderBy('g_i.num_grupo')->get();
+                }
             }
-        }else{
-            $grupo_estudiantes = DB::table('estudiante_ct2022 as e')
-                                    ->join('detalle_grupo_investigacion as d_g_i','d_g_i.cod_matricula','=','e.cod_matricula')
-                                    ->join('grupo_investigacion as g_i','g_i.id_grupo','=','d_g_i.id_grupo_inves')
-                                    ->select('e.*','g_i.cod_docente_tesis','g_i.num_grupo','g_i.id_grupo')->orderBy('g_i.num_grupo')->get();
         }
+
+
         //Code
         $lastGroup = 0;
         $extraArray=[];
@@ -689,7 +716,7 @@ class Tesis2022Controller extends Controller
         }
         $studentforGroups = new Paginator($studentforGroups, $this::PAGINATION5);
         $asesores = DB::table('asesor_curso')->select('cod_docente','nombres','apellidos')->get();
-        return view('cursoTesis20221.director.tesis.asignarAsesorGruposTesis',['studentforGroups'=>$studentforGroups,'asesores'=>$asesores,'buscarAlumno'=>$buscarAlumno]);
+        return view('cursoTesis20221.director.tesis.asignarAsesorGruposTesis',['studentforGroups' => $studentforGroups, 'asesores' => $asesores, 'buscarAlumno' => $buscarAlumno, 'semestre' => $semestre, 'filtrarSemestre' => $filtrarSemestre]);
     }
 
     public function saveGrupoAsesorAsignadoTesis(Request $request){

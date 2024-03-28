@@ -129,7 +129,6 @@
                         @if (!empty($studentforGroups))
                                 {{ $studentforGroups->appends(request()->input())->links() }}
                         @endif
-                        {{-- {{ $studentforGroups->links() }} --}}
                     </div>
                     <div class="row" style="margin: 10px;">
                         <div class="col-12" style="text-align: right;">

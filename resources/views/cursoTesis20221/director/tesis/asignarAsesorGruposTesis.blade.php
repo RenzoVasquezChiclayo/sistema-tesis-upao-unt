@@ -8,9 +8,29 @@
 </div>
 <div class="card-body">
     <div class="row" style="display:flex; align-items:right; justify-content:right; margin-bottom:10px; margin-top:10px;">
+        <div class="col-md-3">
+            <h5>Filtrar</h5>
+            <form id="filtrarAlumno" name="filtrarAlumno" method="get">
+                <div class="row">
+                    <div class="input-group">
+                        <select class="form-select" name="filtrar_semestre" id="filtrar_semestre" required>
+                            @foreach ($semestre as $sem)
+                                <option value="{{ $sem->cod_config_ini }}"
+                                    @if ($sem->cod_config_ini == $filtrarSemestre) selected @endif>
+                                    {{ $sem->year }}_{{ $sem->curso }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <button class="btn btn-outline-primary" type="submit" id="btn-search">Filtrar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
         <div class="col col-sm-8 col-md-6 col-lg-4 col-xl-3">
             <form id="listAlumno" name="listAlumno" method="get">
+                <h5>Buscar</h5>
                 <div class="input-group">
+
                     <input type="text" class="form-control" name="buscarAlumno" placeholder="Código de matricula o Apellidos" value="{{$buscarAlumno}}" aria-describedby="btn-search">
                     <button class="btn btn-outline-primary" type="submit" id="btn-search">Buscar</button>
                 </div>
@@ -86,7 +106,9 @@
 
                 </tbody>
             </table>
-            {{$studentforGroups->links()}}
+            @if (!empty($studentforGroups))
+                                {{ $studentforGroups->appends(request()->input())->links() }}
+                        @endif
         </div>
         <div class="row" style="margin: 10px;">
             <div class="col-12" style="text-align: right;">
