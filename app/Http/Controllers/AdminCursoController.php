@@ -647,11 +647,12 @@ class AdminCursoController extends Controller
             try {
                 $escuela = $request->escuela;
                 $semestre = $request->semestre_academico;
-                $path = $request->file('importAlumno');
+                $path = $request->file('importAlumno')->getRealPath();
                 Excel::import(new AlumnosImport($semestre, $escuela), $path);
 
                 return back()->with('datos', 'ok');
             } catch (\Throwable $th) {
+                dd($th);
                 return back()->with('datos', 'oknot');
             }
         } else {
@@ -666,6 +667,7 @@ class AdminCursoController extends Controller
                 $semestre = $request->semestre_academico;
                 $escuela = $request->escuela;
                 $path = $request->file('importAsesor');
+
                 Excel::import(new AsesorImport($semestre, $escuela), $path);
                 return back()->with('datos', 'ok');
             } catch (\Throwable $th) {
