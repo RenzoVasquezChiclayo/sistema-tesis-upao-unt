@@ -194,10 +194,10 @@
                     <i class='bx bx-xs bxs-chevron-down'></i>
                 </a>
                 <div class="cstm-collapse collapse" id="collapseConfiguraciones">
-                    <a class="cstm-a" href="{{ route('rol.listar') }}">
+                    <a href="{{ route('rol.listar') }}">
                         <span class="links_name">Rol</span>
                     </a>
-                    <a class="cstm-a" href="{{ route('admin.listar') }}">
+                    <a href="{{ route('admin.listar') }}">
                         <span class="links_name">Usuarios</span>
                     </a>
                 </div>
