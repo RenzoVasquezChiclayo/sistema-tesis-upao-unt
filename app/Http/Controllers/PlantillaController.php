@@ -1665,7 +1665,7 @@ class PlantillaController extends Controller
             $antecedentes = '';
             $justificacion_inv = '';
             $formulacion_problema = '';
-            $objetivos = '';
+            $objetivos = $request->objetivos;
             $marco_teorico = '';
             $marco_conceptual = '';
             $marco_legal = '';
@@ -1684,37 +1684,36 @@ class PlantillaController extends Controller
             $template->setValues([
                 'facultad' => $facultad,
                 'escuela_profesional' => $escuela_profesional,
-                'titulo_proyecto' => $titulo_proyecto,
-                'linea_investigacion' => $linea_investigacion,
-                'year_proyecto' => $year_proyecto,
-                'asesor_nombre' => $asesor_nombre,
-                'asesor_grado' => $asesor_grado,
-                'asesor_titulo' => $asesor_titulo,
-                'asesor_direccion' => $asesor_direccion,
-                'inv_fin_persigue' => $inv_fin_persigue,
-                'inv_diseno' => $inv_diseno,
-                'localidad' => $localidad,
-                'institucion' => $institucion,
-                'proyecto_meses' => $proyecto_meses,
+                'titulo_proyecto' => $titulo_proyecto, //
+                'linea_investigacion' => $linea_investigacion, //
+                'year_proyecto' => $year_proyecto, //
+                'asesor_nombre' => $asesor_nombre, //
+                'asesor_grado' => $asesor_grado, //
+                'asesor_titulo' => $asesor_titulo, //
+                'asesor_direccion' => $asesor_direccion, //
+                'inv_fin_persigue' => $inv_fin_persigue, //
+                'inv_diseno' => $inv_diseno, //
+                'localidad' => $localidad, //
+                'institucion' => $institucion, //
+                'proyecto_meses' => $proyecto_meses, //
                 'section_cronograma' => $section_cronograma,
-                'financiamiento' => $financiamiento,
-                'realidad_problematica' => $realidad_problematica,
-                'antecedentes' => $antecedentes,
-                'justificacion_inv' => $justificacion_inv,
-                'formulacion_problema' => $formulacion_problema,
-                'objetivos' => $objetivos,
-                'marco_teorico' => $marco_teorico,
-                'marco_conceptual' => $marco_conceptual,
-                'marco_legal' => $marco_legal,
-                'formulacion_hipotesis' => $formulacion_hipotesis,
-                'diseno_inv' => $diseno_inv,
+                'financiamiento' => $financiamiento, //
+                'realidad_problematica' => $realidad_problematica, //
+                'antecedentes' => $antecedentes, //
+                'justificacion_inv' => $justificacion_inv, //
+                'formulacion_problema' => $formulacion_problema, //
+                'marco_teorico' => $marco_teorico, //
+                'marco_conceptual' => $marco_conceptual, //
+                'marco_legal' => $marco_legal, //
+                'formulacion_hipotesis' => $formulacion_hipotesis, //
+                'diseno_inv' => $diseno_inv, //
                 'objeto_estudio' => $objeto_estudio,
-                'poblacion' => $poblacion,
-                'muestra' => $muestra,
-                'metodos' => $metodos,
-                'tecnicas_instrumentos' => $tecnicas_instrumentos,
-                'instrumentacion' => $instrumentacion,
-                'estrategias_metod' => $estrategias_metod,
+                'poblacion' => $poblacion, //
+                'muestra' => $muestra, //
+                'metodos' => $metodos, //
+                'tecnicas_instrumentos' => $tecnicas_instrumentos, //
+                'instrumentacion' => $instrumentacion, //
+                'estrategias_metod' => $estrategias_metod, //
                 'operacionalizacion' => $operacionalizacion,
                 'matriz_consistencia' => $matriz_consistencia,
                 'referencias' => $referencias
@@ -1726,7 +1725,181 @@ class PlantillaController extends Controller
                 array_push($array_autor,$newArray);
             }
             $template->cloneBlock('block_autor', 0, true, false, $array_autor);
-            /*Cronograma (Tabla) */
+
+            $array_objGeneral = array();
+            $array_objEspecifico = array();
+            /* Objetivos */
+            foreach ($objetivos as $key => $objetivo) {
+                if($objetivo->tipo == 'General'){
+                    array_push($array_objGeneral,array('obj_descripcion'=>$objetivo->descripcion));
+                }
+                if($objetivo->tipo == 'Especifico'){
+                    array_push($array_objEspecifico,array('obj_descripcion'=>$objetivo->descripcion));
+                }
+            }
+            if(sizeof($array_objGeneral) <=0){
+                $template->deleteBlock('block_txt_obj_general');
+                $template->deleteBlock('block_obj_general');
+            }else{
+                $template->cloneBlock('block_obj_general', 0, true, false, $array_objGeneral);
+            }
+            if(sizeof($array_objGeneral) <=0){
+                $template->deleteBlock('block_txt_obj_especifico');
+                $template->deleteBlock('block_obj_especifico');
+            }else{
+                $template->cloneBlock('block_obj_general', 0, true, false, $array_objEspecifico);
+            }
+
+            /* Cronograma (Tabla) */
+            $cronograma = new Table(array('borderSize' => 6, 'borderColor' => 'black', 'width' => 6000, 'unit' => TblWidth::TWIP));
+            $cronograma->addRow();
+            $cronograma->addCell(150)->addText('Actividad');
+            for ($i=1; $i <= $proyecto_meses; $i++) {
+                $cronograma->addCell()->addText('Mes '.$i);
+            }
+
+            $cronograma->addRow();
+            $cronograma->addCell()->addText('Cell B1');
+            $cronograma->addCell()->addText('Cell B2');
+            $cronograma->addCell()->addText('Cell B3');
+            $template->setComplexBlock('block_cronograma', $cronograma);
+
+            /*Recursos (Listas) */
+            // 'recursos'=>$recursos;
+
+            /*Presupuesto (Tabla) */
+            // $section_presupuesto
+
+            /* Guardado temporal del documento */
+            $tempFile = tempnam(sys_get_temp_dir(), 'PHPWordPrueba');
+            $template->saveAs($tempFile);
+            $headers = ["Content-Type: application/octet-stream"];
+            return response()->download($tempFile, 'documentoPrueba.docx',$headers)->deleteFileAfterSend(true);
+        } catch (\PhpOffice\PhpWord\Exception\Exception $e) {
+            return back($e->getCode());
+        }
+    }
+
+    public function descargaWordProyectoTesisUPAO(Request $request)
+    {
+        try {
+            $template = new \PhpOffice\PhpWord\TemplateProcessor(documentTemplate: 'plantilla/docs/PLANTILLA_UPAO.docx');
+            $facultad = $request->facultad;
+            $escuela_profesional = $request->escuela_profesional;
+            $titulo_profesional = '';
+            $titulo_proyecto = $request->titulo_proyecto;
+            $autores = $request->autores;
+            $linea_investigacion = $request->linea_investigacion;
+            $year_proyecto = date('Y');
+            /*Asesor*/
+            $asesor_nombre = $request->asesor_nombre;
+            $asesor_grado = $request->asesor_grado;
+            $asesor_titulo = $request->asesor_titulo;
+            $asesor_direccion = $request->asesor_direccion;
+            $asesor_orcid = '';
+            /* */
+            $inv_orientacion = $request->inv_fin_persigue;
+            $inv_contrastacion = $request->inv_diseno;
+            $localidad = $request->localidad;
+            $institucion = $request->institucion;
+            $proyecto_meses = $request->proyecto_meses;
+            $fecha_inicio = '';
+            $fecha_termino = '';
+            $horas_semanal = '';
+            $recursos_humanos = '';
+            $recursos_materiales = '';
+            $section_cronograma = $request->section_cronograma;
+            $section_presupuesto = $request->section_presupuesto;
+            $financiamiento = $request->financiamiento;
+            $realidad_problematica = '';
+            $antecedentes = '';
+            $justificacion_inv = '';
+            $formulacion_problema = '';
+            $objetivos = $request->objetivos;
+            $marco_teorico = '';
+            $marco_conceptual = '';
+            $formulacion_hipotesis = '';
+            $diseno_inv = '';
+            $poblacion = '';
+            $muestra = '';
+            $metodos = '';
+            $tecnicas_instrumentos = '';
+            $estrategias_metod = '';
+            $referencias = '';
+            $anexos = '';
+            $template->setValues([
+                'facultad' => $facultad,
+                'escuela_profesional' => $escuela_profesional,
+                'titulo_profesional'=>$titulo_profesional,
+                'titulo_proyecto' => $titulo_proyecto, //
+                'linea_investigacion' => $linea_investigacion, //
+                'year_proyecto' => $year_proyecto, //
+                'asesor_nombre' => $asesor_nombre, //
+                'asesor_grado' => $asesor_grado, //
+                'asesor_titulo' => $asesor_titulo, //
+                'asesor_direccion' => $asesor_direccion, //
+                'asesor_orcid'=>$asesor_orcid,
+                'inv_orientacion' => $inv_orientacion, //
+                'inv_contrastacion' => $inv_contrastacion, //
+                'localidad' => $localidad, //
+                'institucion' => $institucion, //
+                'proyecto_meses' => $proyecto_meses, //
+                'fecha_inicio'=>$fecha_inicio,
+                'fecha_termino'=>$fecha_termino,
+                'horas_semanal'=>$horas_semanal,
+                'recursos_humanos'=>$recursos_humanos,
+                'recursos_materiales'=>$recursos_materiales,
+                'section_cronograma' => $section_cronograma,
+                'financiamiento' => $financiamiento, //
+                'realidad_problematica' => $realidad_problematica, //
+                'antecedentes' => $antecedentes, //
+                'justificacion_inv' => $justificacion_inv, //
+                'formulacion_problema' => $formulacion_problema, //
+                'marco_teorico' => $marco_teorico, //
+                'marco_conceptual' => $marco_conceptual, //
+                'formulacion_hipotesis' => $formulacion_hipotesis, //
+                'diseno_inv' => $diseno_inv, //
+                'poblacion' => $poblacion, //
+                'muestra' => $muestra, //
+                'metodos' => $metodos, //
+                'tecnicas_instrumentos' => $tecnicas_instrumentos, //
+                'estrategias_metod' => $estrategias_metod, //
+                'referencias' => $referencias,
+                'anexos'=>$anexos
+            ]);
+            /* Autores (Lista) */
+            $array_autor = array();
+            foreach ($autores as $key => $autor) {
+                $newArray = array('autor_name'=>$autor);
+                array_push($array_autor,$newArray);
+            }
+            $template->cloneBlock('block_autor', 0, true, false, $array_autor);
+
+            $array_objGeneral = array();
+            $array_objEspecifico = array();
+            /* Objetivos */
+            foreach ($objetivos as $key => $objetivo) {
+                if($objetivo->tipo == 'General'){
+                    array_push($array_objGeneral,array('obj_descripcion'=>$objetivo->descripcion));
+                }
+                if($objetivo->tipo == 'Especifico'){
+                    array_push($array_objEspecifico,array('obj_descripcion'=>$objetivo->descripcion));
+                }
+            }
+            if(sizeof($array_objGeneral) <=0){
+                $template->deleteBlock('block_txt_obj_general');
+                $template->deleteBlock('block_obj_general');
+            }else{
+                $template->cloneBlock('block_obj_general', 0, true, false, $array_objGeneral);
+            }
+            if(sizeof($array_objGeneral) <=0){
+                $template->deleteBlock('block_txt_obj_especifico');
+                $template->deleteBlock('block_obj_especifico');
+            }else{
+                $template->cloneBlock('block_obj_general', 0, true, false, $array_objEspecifico);
+            }
+
+            /* Cronograma (Tabla) */
             $cronograma = new Table(array('borderSize' => 6, 'borderColor' => 'black', 'width' => 6000, 'unit' => TblWidth::TWIP));
             $cronograma->addRow();
             $cronograma->addCell(150)->addText('Actividad');
