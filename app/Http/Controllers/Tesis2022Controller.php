@@ -646,7 +646,7 @@ class Tesis2022Controller extends Controller
         $filtrarSemestre = $request->filtrar_semestre;
         $semestre = DB::table('configuraciones_iniciales as c_i')->select('c_i.*')->where('c_i.estado', 1)->orderBy('c_i.cod_config_ini', 'desc')->get();
         if (count($semestre) == 0) {
-            return view('cursoTesis20221.director.tesis.asignarAsesorGruposTesis', ['studentforGroups' => [], 'asesores' => [],'semestre' =>  $semestre, 'buscarAlumno' => $buscarAlumno, 'filtrarSemestre' => $filtrarSemestre]);
+            return view('cursoTesis20221.director.tesis.asignarAsesorGruposTesis', ['studentforGroups' => [], 'asesores' => [],'semestre' =>  $semestre, 'buscarAlumno' => $buscarAlumno]);
         } else {
             $last_semestre = DB::table('configuraciones_iniciales as c_i')->select('c_i.*')->where('c_i.estado', 1)->orderBy('c_i.cod_config_ini', 'desc')->first();
             if ($buscarAlumno != "") {

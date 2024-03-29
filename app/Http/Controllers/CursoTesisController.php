@@ -1446,7 +1446,7 @@ class CursoTesisController extends Controller
         $filtrarSemestre = $request->filtrar_semestre;
         $semestre = DB::table('configuraciones_iniciales as c_i')->select('c_i.*')->where('c_i.estado', 1)->orderBy('c_i.cod_config_ini', 'desc')->get();
         if (count($semestre) == 0) {
-            return view('cursoTesis20221.director.asignarAsesorGrupos', ['studentforGroups' => [], 'asesores' => [],'semestre' =>  $semestre, 'buscarAlumno' => $buscarAlumno, 'filtrarSemestre' => $filtrarSemestre]);
+            return view('cursoTesis20221.director.asignarAsesorGrupos', ['studentforGroups' => [], 'asesores' => [],'semestre' =>  $semestre, 'buscarAlumno' => $buscarAlumno]);
         } else {
             $last_semestre = DB::table('configuraciones_iniciales as c_i')->select('c_i.*')->where('c_i.estado', 1)->orderBy('c_i.cod_config_ini', 'desc')->first();
             if ($buscarAlumno != "") {
@@ -1848,14 +1848,41 @@ class CursoTesisController extends Controller
 
     //GRUPOS DE INVESTIGACION
     //HOSTING
-    public function verAgregarGruposInv()
+    public function verAgregarGruposInv(Request $request)
     {
-        $estudiantes = DB::table('estudiante_ct2022 as e')->leftJoin('detalle_grupo_investigacion as dg', 'e.cod_matricula', '=', 'dg.cod_matricula')->select('e.*')->where('dg.id_detalle_grupo', null)->orderBy('apellidos', 'ASC')->get();
-        //Recently added
-        $grupo_estudiantes = DB::table('estudiante_ct2022 as e')
-            ->join('detalle_grupo_investigacion as d_g_i', 'd_g_i.cod_matricula', '=', 'e.cod_matricula')
-            ->join('grupo_investigacion as g_i', 'g_i.id_grupo', '=', 'd_g_i.id_grupo_inves')
-            ->select('e.*', 'g_i.num_grupo', 'g_i.id_grupo')->orderBy('g_i.id_grupo')->get();
+        $filtrarSemestre = $request->filtrar_semestre;
+        $semestre = DB::table('configuraciones_iniciales as c_i')->select('c_i.*')->where('c_i.estado', 1)->orderBy('c_i.cod_config_ini', 'desc')->get();
+        if (count($semestre) == 0) {
+            return view("cursoTesis20221.director.crearGruposDeInvestigacion", ['estudiantes' => [], 'studentforGroups' => [], 'semestre'=> []]);
+        } else {
+            $last_semestre = DB::table('configuraciones_iniciales as c_i')->select('c_i.*')->where('c_i.estado', 1)->orderBy('c_i.cod_config_ini', 'desc')->first();
+            if ($filtrarSemestre != null) {
+                $grupo_estudiantes = DB::table('estudiante_semestre as e_s')
+                    ->join('estudiante_ct2022 as e','e.cod_matricula','e_s.cod_matricula')
+                    ->join('detalle_grupo_investigacion as d_g_i', 'd_g_i.cod_matricula', '=', 'e.cod_matricula')
+                    ->join('grupo_investigacion as g_i', 'g_i.id_grupo', '=', 'd_g_i.id_grupo_inves')
+                    ->select('e.*', 'g_i.num_grupo', 'g_i.id_grupo')
+                    ->where('e_s.cod_config_ini', 'like', '%' . $filtrarSemestre . '%')->orderBy('g_i.id_grupo')->get();
+
+                $estudiantes = DB::table('estudiante_semestre as e_s')
+                    ->join('estudiante_ct2022 as e','e.cod_matricula','e_s.cod_matricula')
+                    ->leftJoin('detalle_grupo_investigacion as d_g_i', 'd_g_i.cod_matricula', '=', 'e.cod_matricula')
+                    ->select('e.*')
+                    ->where('d_g_i.id_detalle_grupo', null)
+                    ->where('e_s.cod_config_ini', 'like', '%' . $filtrarSemestre . '%')
+                    ->orderBy('apellidos', 'ASC')->get();
+            } else {
+                $grupo_estudiantes = DB::table('estudiante_semestre as e_s')
+                    ->join('estudiante_ct2022 as e','e.cod_matricula','e_s.cod_matricula')
+                    ->join('detalle_grupo_investigacion as d_g_i', 'd_g_i.cod_matricula', '=', 'e.cod_matricula')
+                    ->join('grupo_investigacion as g_i', 'g_i.id_grupo', '=', 'd_g_i.id_grupo_inves')
+                    ->select('e.*', 'g_i.num_grupo', 'g_i.id_grupo')
+                    ->where('e_s.cod_config_ini', 'like', '%' . $last_semestre->cod_config_ini . '%')->orderBy('g_i.id_grupo')->get();
+
+                $estudiantes = [];
+            }
+        }
+        //dd($grupo_estudiantes);
         $lastGroup = 0;
         $extraArray = [];
         $studentforGroups = [];
@@ -1882,7 +1909,7 @@ class CursoTesisController extends Controller
         $studentforGroups = new Paginator($studentforGroups, $this::PAGINATION5);
 
 
-        return view("cursoTesis20221.director.crearGruposDeInvestigacion", ['estudiantes' => $estudiantes, 'studentforGroups' => $studentforGroups]);
+        return view("cursoTesis20221.director.crearGruposDeInvestigacion", ['estudiantes' => $estudiantes, 'studentforGroups' => $studentforGroups, 'semestre' => $semestre,'filtrarSemestre' => $filtrarSemestre]);
     }
 
     public function saveGruposInves(Request $request)
