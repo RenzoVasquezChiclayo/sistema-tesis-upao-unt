@@ -114,7 +114,9 @@
                         @endforeach
                     </tbody>
                 </table>
-                {{ $studentforGroups->links() }}
+                @if (!empty($studentforGroups))
+                                {{ $studentforGroups->appends(request()->input())->links() }}
+                @endif
             </div>
 
 
