@@ -64,7 +64,7 @@ class CursoTesisController extends Controller
         //Encontramos al autor
 
         if ($autor->id_grupo == null) {
-            return view('cursoTesis20221.cursoTesis', ['autor' => $autor, 'tesis' => [],'variableop' => [], 'cronogramas_py' => [],'cronograma' => [],'campos' => []]);
+            return view('cursoTesis20221.cursoTesis', ['autor' => $autor, 'tesis' => [], 'variableop' => [], 'cronogramas_py' => [], 'cronograma' => [], 'campos' => []]);
         }
         $coautor = DB::table('detalle_grupo_investigacion as dg')->rightJoin('estudiante_ct2022 as e', 'e.cod_matricula', '=', 'dg.cod_matricula')->select('e.*')->where('dg.id_grupo_inves', $autor->id_grupo)->where('e.cod_matricula', '!=', $id)->first();
 
@@ -913,19 +913,22 @@ class CursoTesisController extends Controller
             ->where('d_g.id_grupo_inves', $tesis[0]->id_grupo_inves)->get();
         $asesor = AsesorCurso::find($tesis[0]->cod_docente);
         /*Datos del Autor*/
-        $text_autor=[];
+        $text_autor = [];
         if (count($estudiantes_grupo) > 1) {
             $estudiante1 = $estudiantes_grupo[0]->nombres . ' ' . $estudiantes_grupo[0]->apellidos;
             $estudiante2 = $estudiantes_grupo[1]->nombres . ' ' . $estudiantes_grupo[1]->apellidos;
-            array_push($text_autor,$estudiante1);
-            array_push($text_autor,$estudiante2);
+            array_push($text_autor, $estudiante1);
+            array_push($text_autor, $estudiante2);
         } else {
             $estudiante1 = $estudiantes_grupo[0]->nombres . ' ' . $estudiantes_grupo[0]->apellidos;
-            array_push($text_autor,$estudiante1);
+            array_push($text_autor, $estudiante1);
         }
 
-        $newRequest->request->add(['autores'=>$text_autor]);
-
+        $newRequest->request->add(['autores' => $text_autor]);
+        $newRequest->request->add([
+            'facultad' => '',
+            'escuela_profesional' => ''
+        ]);
         /*Datos del Asesor*/
         $nombre_asesor = $asesor->nombres . " " . $asesor->apellidos;
 
@@ -947,35 +950,42 @@ class CursoTesisController extends Controller
         $newRequest->request->add(['titulo_proyecto' => $tesis[0]->titulo]);
 
         //Investigacion
-        $cod_tinvestigacion = TipoInvestigacion::find($tesis[0]->cod_tinvestigacion);
+        $tipo_investigacion = TipoInvestigacion::find($tesis[0]->cod_tinvestigacion);
+        $cod_tinvestigacion = '';
         if ($cod_tinvestigacion != null) {
-            $cod_tinvestigacion = $cod_tinvestigacion->descripcion;
+            $cod_tinvestigacion = $tipo_investigacion->descripcion;
         }
+        $newRequest->request->add(['linea_investigacion' => $cod_tinvestigacion]);
 
         $fin_persigue = Fin_Persigue::find($tesis[0]->ti_finpersigue);
+        $ti_finpersigue = "";
         if ($fin_persigue != null) {
             $ti_finpersigue = $fin_persigue->descripcion;
-        } else {
-            $ti_finpersigue = "";
         }
+        $newRequest->request->add(['inv_fin_persigue' => $ti_finpersigue]);
 
         $diseno_investigacion = Diseno_Investigacion::find($tesis[0]->ti_disinvestigacion);
+        $ti_disinvestigacion = "";
         if ($diseno_investigacion != null) {
             $ti_disinvestigacion = $diseno_investigacion->descripcion;
-        } else {
-            $ti_disinvestigacion = "";
         }
-
+        $newRequest->request->add([
+            'inv_diseno' => $ti_disinvestigacion,
+            'diseno_inv' => $ti_disinvestigacion
+        ]);
 
         //Desarrollo del proyecto
         $localidad = $tesis[0]->localidad;
         $institucion = $tesis[0]->institucion;
         $meses_ejecucion = $tesis[0]->meses_ejecucion;
-        $newRequest->request->add(['proyecto_meses' => $tesis[0]->meses_ejecucion]);
+        $newRequest->request->add([
+            'proyecto_meses' => $tesis[0]->meses_ejecucion,
+            'localidad' => $localidad,
+            'institucion' => $institucion
+        ]);
 
         //Economico
         $financiamiento = $tesis[0]->financiamiento;
-
 
         /*Realidad problematica y others*/
         $real_problematica = $tesis[0]->real_problematica;
@@ -987,12 +997,36 @@ class CursoTesisController extends Controller
         /*Hipotesis y disenio*/
         $form_hipotesis = $tesis[0]->form_hipotesis;
 
+        $newRequest->request->add([
+            'financiamiento' => $financiamiento,
+            'realidad_problematica' => $real_problematica,
+            'antecedentes' => $antecedentes,
+            'justificacion_inv' => $justificacion,
+            'formulacion_problema' => $form_hipotesis
+        ]);
+
+        /* Objetivos */
+        $objetivos = Objetivo::where('cod_proyectotesis',$tesis[0]->cod_proyectotesis)->get();
+        $arrayObjetivo = [];
+        for ($i=0; $i < sizeof($objetivos); $i++) {
+            array_push($arrayObjetivo,array('tipo'=>$objetivos[$i]->tipo,'descripcion'=>$objetivos[$i]->descripcion));
+        }
+        $newRequest->request->add(['objetivos'=>$arrayObjetivo]);
+
         /*Material, metodos y tecnicas*/
         $objeto_estudio = $tesis[0]->objeto_estudio;
         $poblacion = $tesis[0]->poblacion;
         $muestra = $tesis[0]->muestra;
         $metodos = $tesis[0]->metodos;
         $tecnicas_instrum = $tesis[0]->tecnicas_instrum;
+
+        $newRequest->request->add([
+            'objeto_estudio' => $objeto_estudio,
+            'poblacion' => $poblacion,
+            'muestra' => $muestra,
+            'metodos' => $metodos,
+            'tecnicas_instrumentos' => $tecnicas_instrum
+        ]);
 
         /*Instrumentacion*/
         $instrumentacion = $tesis[0]->instrumentacion;
@@ -1004,6 +1038,14 @@ class CursoTesisController extends Controller
         $marco_teorico = $tesis[0]->marco_teorico;
         $marco_conceptual = $tesis[0]->marco_conceptual;
         $marco_legal = $tesis[0]->marco_legal;
+
+        $newRequest->request->add([
+            'instrumentacion' => $instrumentacion,
+            'estrategias_metod' => $estg_metodologicas,
+            'marco_teorico' => $marco_teorico,
+            'marco_conceptual' => $marco_conceptual,
+            'marco_legal' => $marco_legal
+        ]);
 
         /* change to new method inside other controller */
 
