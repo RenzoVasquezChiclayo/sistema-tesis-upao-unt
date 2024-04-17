@@ -710,7 +710,7 @@ class AdminCursoController extends Controller
 
                 $new_asesor_semestre = new Asesor_Semestre();
                 $new_asesor_semestre->cod_docente = $request->cod_docente;
-                $new_asesor_semestre->cod_configuraciones = $semestre_academico;
+                $new_asesor_semestre->cod_config_ini = $semestre_academico;
                 $new_asesor_semestre->save();
 
                 return redirect()
@@ -721,14 +721,14 @@ class AdminCursoController extends Controller
                     ->where('as.cod_docente', $existAsesor->cod_docente)
                     ->get();
                 foreach ($find_ases_semes as $key => $f_a_s) {
-                    if ($f_a_s->cod_configuraciones == $semestre_academico) {
+                    if ($f_a_s->cod_config_ini == $semestre_academico) {
                         $cont += 1;
                     }
                 }
                 if ($cont == 0) {
                     $new_asesor_semestre = new Asesor_Semestre();
                     $new_asesor_semestre->cod_docente = $request->cod_docente;
-                    $new_asesor_semestre->cod_configuraciones = $semestre_academico;
+                    $new_asesor_semestre->cod_config_ini = $semestre_academico;
                     $new_asesor_semestre->save();
                 } else {
                     return redirect()
@@ -740,6 +740,7 @@ class AdminCursoController extends Controller
                     ->with('datos', 'ok');
             }
         } catch (\Throwable $th) {
+            dd($th);
             return redirect()
                 ->route('director.veragregarAsesor')
                 ->with('datos', 'oknot');
