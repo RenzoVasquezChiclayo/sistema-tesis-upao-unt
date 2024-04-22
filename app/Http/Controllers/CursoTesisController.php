@@ -104,7 +104,7 @@ class CursoTesisController extends Controller
 
         //Obtener los archivos e imagenes que tuviese guardado.
         $detalleHistorial = [];
-
+        //dd($tesis[0]->fecha_inicio->toDateString());
         return view('cursoTesis20221.cursoTesis', [
             'autor' => $autor,
             'presupuestos' => $presupuestos, 'fin_persigue' => $fin_persigue, 'diseno_investigacion' => $diseno_investigacion, 'tiporeferencia' => $tiporeferencia, 'tesis' => $tesis, 'asesor' => $asesor,
@@ -260,6 +260,16 @@ class CursoTesisController extends Controller
             if ($request->txtmeses_ejecucion != "") {
                 $tesis->meses_ejecucion = $request->txtmeses_ejecucion;
             }
+            if ($request->txtunidad_academica != "") {
+                $tesis->unidad_academica = $request->txtunidad_academica;
+            }
+            if ($request->txtfecha_inicio != "") {
+                $tesis->fecha_inicio = $request->txtfecha_inicio;
+            }
+
+            if ($request->txtfecha_termino != "") {
+                $tesis->fecha_termino = $request->txtfecha_termino;
+            }
 
             //Cronograma de trabajo
             if ($request->listMonths != "") {
@@ -410,6 +420,9 @@ class CursoTesisController extends Controller
             }
             if ($request->txttecnicas_instrum != "") {
                 $tesis->tecnicas_instrum = $request->txttecnicas_instrum;
+            }
+            if ($request->txtdis_contrastacion != "") {
+                $tesis->diseño_contrastacion = $request->txtdis_contrastacion;
             }
 
             /*Instrumentacion*/
@@ -837,7 +850,6 @@ class CursoTesisController extends Controller
             $tesis->fecha = now();
             $tesis->save();
         } catch (\Throwable $th) {
-            dd($th);
             return redirect()->route('curso.tesis20221')->with('datos', 'oknot');
         }
 
@@ -2028,6 +2040,10 @@ class CursoTesisController extends Controller
             ->leftJoin('categoria_docente as cd', 'ac.cod_categoria', 'cd.cod_categoria')
             ->select('p.*', 'ac.nombres as nombre_asesor', 'ac.apellidos as apellidos_asesor', 'ac.estado as estadoAsesor', 'ac.direccion', 'ga.descripcion as DescGrado', 'cd.descripcion as DescCat')
             ->where('g_i.id_grupo', $id_grupo)->get();
+        foreach ($cursoTesis as $item) {
+                unset($item->marco_legal);
+                unset($item->estg_metodologicas);
+            }
 
         $estudiantes_grupo = DB::table('estudiante_ct2022 as e')
             ->join('detalle_grupo_investigacion as d_g', 'd_g.cod_matricula', '=', 'e.cod_matricula')
@@ -2260,6 +2276,10 @@ class CursoTesisController extends Controller
                 $observaciones->presupuesto_proy = $request->tachkCorregir25;
                 $arrayThemes[] = 'presupuesto_proy';
             }
+            if ($request->tachkCorregir26 != "") {
+                $observaciones->diseno_contrastacion = $request->tachkCorregir26;
+                $arrayThemes[] = 'diseno_contrastacion';
+            }
 
             $observaciones->estado = 1;
             $observaciones->save();
@@ -2349,7 +2369,7 @@ class CursoTesisController extends Controller
         $metodos = $correccion[$cantObserva]->metodos;
         $tecnicas_instrum = $correccion[$cantObserva]->tecnicas_instrum;
         $instrumentacion = $correccion[$cantObserva]->instrumentacion;
-
+        $diseno_contrastacion = $correccion[$cantObserva]->diseno_contrastacion;
         $estg_metodologicas = $correccion[$cantObserva]->estg_metodologicas;
 
 
@@ -2460,21 +2480,18 @@ class CursoTesisController extends Controller
             $nuevaSesion->addText($tesis->real_problematica);
             $nuevaSesion->addText("Observacion: " . $real_problematica);
         }
-        if ($antecedentes != "") {
-            $nuevaSesion->addText("ANTECEDENTES", $titulos);
-            $nuevaSesion->addText($tesis->antecedentes);
-            $nuevaSesion->addText("Observacion: " . $antecedentes);
+
+        if ($formulacion_prob != "") {
+            $nuevaSesion->addText("ENUNCIADO DEL PROBLEMA", $titulos);
+            $nuevaSesion->addText($tesis->formulacion_prob);
+            $nuevaSesion->addText("Observacion: " . $formulacion_prob);
         }
         if ($justificacion != "") {
             $nuevaSesion->addText("JUSTIFICACION", $titulos);
             $nuevaSesion->addText($tesis->justificacion);
             $nuevaSesion->addText("Observacion: " . $justificacion);
         }
-        if ($formulacion_prob != "") {
-            $nuevaSesion->addText("FORMULACION DEL PROBLEMA", $titulos);
-            $nuevaSesion->addText($tesis->formulacion_prob);
-            $nuevaSesion->addText("Observacion: " . $formulacion_prob);
-        }
+
         if ($objetivos != "") {
             $nuevaSesion->addText("OBJETIVOS", $titulos);
             for ($i = 0; $i < count($objetivosProy); $i++) {
@@ -2482,6 +2499,11 @@ class CursoTesisController extends Controller
             }
 
             $nuevaSesion->addText("Observacion: " . $objetivos);
+        }
+        if ($antecedentes != "") {
+            $nuevaSesion->addText("ANTECEDENTES", $titulos);
+            $nuevaSesion->addText($tesis->antecedentes);
+            $nuevaSesion->addText("Observacion: " . $antecedentes);
         }
         if ($marco_teorico != "") {
             $nuevaSesion->addText("MARCO TEORICO", $titulos);
@@ -2493,18 +2515,29 @@ class CursoTesisController extends Controller
             $nuevaSesion->addText($tesis->marco_conceptual);
             $nuevaSesion->addText("Observacion: " . $marco_conceptual);
         }
-        if ($marco_legal != "") {
-            $nuevaSesion->addText("MARCO LEGAL", $titulos);
-            $nuevaSesion->addText($tesis->marco_legal);
-            $nuevaSesion->addText("Observacion: " . $marco_legal);
-        }
+        // if ($marco_legal != "") {
+        //     $nuevaSesion->addText("MARCO LEGAL", $titulos);
+        //     $nuevaSesion->addText($tesis->marco_legal);
+        //     $nuevaSesion->addText("Observacion: " . $marco_legal);
+        // }
         if ($form_hipotesis != "") {
-            $nuevaSesion->addText("FORMULACION DE LA HIPOTESIS", $titulos);
+            $nuevaSesion->addText("HIPOTESIS", $titulos);
             $nuevaSesion->addText($tesis->form_hipotesis);
             $nuevaSesion->addText("Observacion: " . $form_hipotesis);
         }
+        if ($variables != "") {
+            $nuevaSesion->addText("VARIABLES", $titulos);
+            for ($i = 0; $i < count($variableopProy); $i++) {
+                $nuevaSesion->addText("Descripcion: " . $variableopProy[$i]->descripcion);
+            }
+            $nuevaSesion->addText("Observacion: " . $variables);
+        }
+        if ($matriz_op != "") {
+            $nuevaSesion->addText("MATRIZ OPERACIONAL", $titulos);
+            $nuevaSesion->addText("Observacion: " . $matriz_op);
+        }
         if ($objeto_estudio != "") {
-            $nuevaSesion->addText("OBJETO DE ESTUDIO", $titulos);
+            $nuevaSesion->addText("MATERIAL", $titulos);
             $nuevaSesion->addText($tesis->objeto_estudio);
             $nuevaSesion->addText("Observacion: " . $objeto_estudio);
         }
@@ -2523,36 +2556,33 @@ class CursoTesisController extends Controller
             $nuevaSesion->addText($tesis->metodos);
             $nuevaSesion->addText("Observacion: " . $metodos);
         }
+
+        if ($diseno_contrastacion != "") {
+            $nuevaSesion->addText("DISEÑO DE CONTRASTACION", $titulos);
+            $nuevaSesion->addText($tesis->diseno_contrastacion);
+            $nuevaSesion->addText("Observacion: " . $diseno_contrastacion);
+        }
         if ($tecnicas_instrum != "") {
             $nuevaSesion->addText("TECNICAS E INTRUMENTOS DE RECOLECCION DE DATOS", $titulos);
             $nuevaSesion->addText($tesis->tecnicas_instrum);
             $nuevaSesion->addText("Observacion: " . $tecnicas_instrum);
         }
         if ($instrumentacion != "") {
-            $nuevaSesion->addText("INSTRUMENTACION", $titulos);
+            $nuevaSesion->addText("PROCESAMIENTO Y ANALISIS DE DATOS", $titulos);
             $nuevaSesion->addText($tesis->instrumentacion);
             $nuevaSesion->addText("Observacion: " . $instrumentacion);
         }
-        if ($estg_metodologicas != "") {
-            $nuevaSesion->addText("ESTRATEGIAS METODOLOGICAS", $titulos);
-            $nuevaSesion->addText($tesis->estg_metodologicas);
-            $nuevaSesion->addText("Observacion: " . $estg_metodologicas);
-        }
-        if ($variables != "") {
-            $nuevaSesion->addText("VARIABLES", $titulos);
-            for ($i = 0; $i < count($variableopProy); $i++) {
-                $nuevaSesion->addText("Descripcion: " . $variableopProy[$i]->descripcion);
-            }
-            $nuevaSesion->addText("Observacion: " . $variables);
-        }
+        // if ($estg_metodologicas != "") {
+        //     $nuevaSesion->addText("ESTRATEGIAS METODOLOGICAS", $titulos);
+        //     $nuevaSesion->addText($tesis->estg_metodologicas);
+        //     $nuevaSesion->addText("Observacion: " . $estg_metodologicas);
+        // }
+
         if ($referencias != "") {
             $nuevaSesion->addText("REFERENCIAS", $titulos);
             $nuevaSesion->addText("Observacion: " . $referencias);
         }
-        if ($matriz_op != "") {
-            $nuevaSesion->addText("MATRIZ OPERACIONAL", $titulos);
-            $nuevaSesion->addText("Observacion: " . $matriz_op);
-        }
+
 
 
         $objetoEscrito = \PhpOffice\PhpWord\IOFactory::createWriter($word, 'Word2007');

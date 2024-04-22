@@ -867,9 +867,12 @@ class AdminCursoController extends Controller
     {
         $observaciones = ObservacionesProy::where('cod_historialObs', $cod_historialObs)->get();
         $estudiante = TesisCT2022::join('historial_observaciones', 'proyecto_tesis.cod_proyectotesis', '=', 'historial_observaciones.cod_proyectotesis')
-            ->select('proyecto_tesis.*')
+            ->join('detalle_grupo_investigacion as d_g', 'd_g.id_grupo_inves', '=', 'proyecto_tesis.id_grupo_inves')
+            ->join('estudiante_ct2022', 'estudiante_ct2022.cod_matricula', '=', 'd_g.cod_matricula')
+            ->select('proyecto_tesis.*','estudiante_ct2022.*')
             ->where('historial_observaciones.cod_historialObs', $cod_historialObs)
             ->get();
+
         return view('cursoTesis20221.asesor.verObservacionEstudiante', ['observaciones' => $observaciones, 'estudiante' => $estudiante]);
     }
 
