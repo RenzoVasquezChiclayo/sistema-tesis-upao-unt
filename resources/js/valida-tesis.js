@@ -53,6 +53,7 @@ function registerProject(){
 
 }
 
+
 /*Funcion para agregar las celdas referentes de los meses de ejecucion*/
 function setMeses(){
     meses = document.getElementById("txtMesesEjecucion").value;

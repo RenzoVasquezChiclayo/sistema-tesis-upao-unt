@@ -41,79 +41,79 @@
                             <input type="hidden" value="{{$estudiante[0]->id_grupo}}" name="id_grupoAux" >
                             <div class="col-12" style="text-align: left;">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="flexCheckDefault" value="chkTInvestigacion" name="chkTInvestigacion" @if ($estudiante[0]->tipo_investigacion==1)disabled checked @endif>
+                                    <input class="form-check-input" type="checkbox" id="flexCheckDefault" value="chkTInvestigacion" checked name="chkTInvestigacion" @if ($estudiante[0]->tipo_investigacion==1)disabled checked @endif>
                                     <label class="form-check-label" for="flexCheckDefault">
                                     Tipo Investigacion
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="flexCheckDefault" value="chkLocalidad"  name="chkLocalidad" @if ($estudiante[0]->localidad_institucion==1)disabled checked @endif>
+                                    <input class="form-check-input" type="checkbox" id="flexCheckDefault" value="chkLocalidad" checked  name="chkLocalidad" @if ($estudiante[0]->localidad_institucion==1)disabled checked @endif>
                                     <label class="form-check-label" for="flexCheckDefault">
                                     Localidad e Institucion
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="flexCheckDefault" value="chkDuracion" name="chkDuracion" @if ($estudiante[0]->duracion_proyecto==1)disabled checked @endif>
+                                    <input class="form-check-input" type="checkbox" id="flexCheckDefault" value="chkDuracion" checked name="chkDuracion" @if ($estudiante[0]->duracion_proyecto==1)disabled checked @endif>
                                     <label class="form-check-label" for="flexCheckDefault">
                                     Duracion del Proyecto
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="flexCheckDefault" value="chkRecursos" name="chkRecursos" @if ($estudiante[0]->recursos==1)disabled checked @endif>
+                                    <input class="form-check-input" type="checkbox" id="flexCheckDefault" value="chkRecursos" checked name="chkRecursos" @if ($estudiante[0]->recursos==1)disabled checked @endif>
                                     <label class="form-check-label" for="flexCheckDefault">
                                     Recursos
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="flexCheckDefault" value="chkPresupuesto" name="chkPresupuesto" @if ($estudiante[0]->presupuesto==1)disabled checked @endif>
+                                    <input class="form-check-input" type="checkbox" id="flexCheckDefault" value="chkPresupuesto" checked name="chkPresupuesto" @if ($estudiante[0]->presupuesto==1)disabled checked @endif>
                                     <label class="form-check-label" for="flexCheckDefault">
                                     Presupuesto
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="flexCheckDefault" value="chkFinanciamiento" name="chkFinanciamiento" @if ($estudiante[0]->financiamiento==1)disabled checked @endif>
+                                    <input class="form-check-input" type="checkbox" id="flexCheckDefault" value="chkFinanciamiento" checked name="chkFinanciamiento" @if ($estudiante[0]->financiamiento==1)disabled checked @endif>
                                     <label class="form-check-label" for="flexCheckDefault">
                                     Financiamiento
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="flexCheckDefault" value="chkRealProb" name="chkRealProb" @if ($estudiante[0]->rp_antecedente_justificacion==1)disabled checked @endif>
+                                    <input class="form-check-input" type="checkbox" id="flexCheckDefault" value="chkRealProb" checked name="chkRealProb" @if ($estudiante[0]->rp_antecedente_justificacion==1)disabled checked @endif>
                                     <label class="form-check-label" for="flexCheckDefault">
                                     Realidad Problematica, Antecedentes, Justificacion
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="flexCheckDefault" value="chkProblema" name="chkProblema" @if ($estudiante[0]->formulacion_problema==1)disabled checked @endif>
+                                    <input class="form-check-input" type="checkbox" id="flexCheckDefault" value="chkProblema" checked name="chkProblema" @if ($estudiante[0]->formulacion_problema==1)disabled checked @endif>
                                     <label class="form-check-label" for="flexCheckDefault">
                                     Formulacion del Problema
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="flexCheckDefault" value="chkObjetivos" name="chkObjetivos" @if ($estudiante[0]->objetivos==1)disabled checked @endif>
+                                    <input class="form-check-input" type="checkbox" id="flexCheckDefault" value="chkObjetivos" checked name="chkObjetivos" @if ($estudiante[0]->objetivos==1)disabled checked @endif>
                                     <label class="form-check-label" for="flexCheckDefault">
                                     Objetivos
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="flexCheckDefault" value="chkMarcos" name="chkMarcos" @if ($estudiante[0]->marcos==1)disabled checked @endif>
+                                    <input class="form-check-input" type="checkbox" id="flexCheckDefault" value="chkMarcos" checked name="chkMarcos" @if ($estudiante[0]->marcos==1)disabled checked @endif>
                                     <label class="form-check-label" for="flexCheckDefault">
                                     Marcos
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="flexCheckDefault" value="chkHipotesis" name="chkHipotesis" @if ($estudiante[0]->formulacion_hipotesis==1)disabled checked @endif>
+                                    <input class="form-check-input" type="checkbox" id="flexCheckDefault" value="chkHipotesis" checked name="chkHipotesis" @if ($estudiante[0]->formulacion_hipotesis==1)disabled checked @endif>
                                     <label class="form-check-label" for="flexCheckDefault">
                                     Formulacion de la Hipostesis
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="flexCheckDefault" value="chkDiseno" name="chkDiseno" @if ($estudiante[0]->diseño_investigacion==1)disabled checked @endif>
+                                    <input class="form-check-input" type="checkbox" id="flexCheckDefault" value="chkDiseno" checked name="chkDiseno" @if ($estudiante[0]->diseño_investigacion==1)disabled checked @endif>
                                     <label class="form-check-label" for="flexCheckDefault">
                                     Diseno de Investigacion
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="flexCheckDefault" value="chkReferencias" name="chkReferencias" @if ($estudiante[0]->referencias_b==1)disabled checked @endif>
+                                    <input class="form-check-input" type="checkbox" id="flexCheckDefault" value="chkReferencias" checked name="chkReferencias" @if ($estudiante[0]->referencias_b==1)disabled checked @endif>
                                     <label class="form-check-label" for="flexCheckDefault">
                                     Referencias
                                     </label>
