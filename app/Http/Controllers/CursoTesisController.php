@@ -1047,9 +1047,64 @@ class CursoTesisController extends Controller
             'marco_legal' => $marco_legal
         ]);
 
+        /* Referencias */
+        $text_referencias = [];
+
+        $referencias = referencias::where('cod_proyectotesis', '=', $tesis[0]->cod_proyectotesis)->latest('cod_referencias')->get();
+        if ($referencias->count() != 0) {
+
+            foreach ($referencias as $ref) {
+                $arregloRefTipo[] = $ref->cod_tiporeferencia;
+                $arregloRefA[] = $ref->autor;
+                $arregloRefP[] = $ref->fPublicacion;
+                $arregloRefT[] = $ref->titulo;
+                $arregloRefF[] = $ref->fuente;
+                $arregloEd[] =  $ref->editorial;
+                $arregloTCap[] = $ref->title_cap;
+                $arregloNC[] = $ref->num_capitulo;
+                $arregloTRev[] = $ref->title_revista;
+                $arregloV[] = $ref->volumen;
+                $arregloNWeb[] = $ref->name_web;
+                $arregloNPe[] = $ref->name_periodista;
+                $arregloNIn[] = $ref->name_institucion;
+                $arregloS[] = $ref->subtitle;
+                $arregloNEd[] = $ref->name_editor;
+            }
+
+            for ($i = 0; $i <= count($referencias) - 1; $i++) {
+                if ($arregloRefTipo[$i] == 1) {
+                    $newText = $arregloRefA[$i]."."."(".$arregloRefP[$i].").".$arregloTCap[$i].".".$arregloRefF[$i].",".$arregloRefT[$i]." (capitulo ".$arregloNC[$i].")".$arregloEd[$i].".";
+                    array_push($text_referencias,$newText);
+                }
+                if ($arregloRefTipo[$i] == 2) {
+                    $newText = $arregloRefA[$i] . "." . "(" . $arregloRefP[$i] . ")." . $arregloRefT[$i] . "." . $arregloRefF[$i] . "." . $arregloTRev[$i] . ",pp " . $arregloV[$i] . ".";
+                    array_push($text_referencias,$newText);
+                }
+                if ($arregloRefTipo[$i] == 3) {
+                    $newText =$arregloRefA[$i] . "." . "(" . $arregloRefP[$i] . ")." . $arregloRefT[$i] . "." . $arregloRefF[$i] . "." . $arregloNWeb[$i] . ".";
+                    array_push($text_referencias,$newText);
+                }
+                if ($arregloRefTipo[$i] == 4) {
+                    $newText =$arregloRefA[$i] . "." . "(" . $arregloRefP[$i] . ")." . $arregloRefT[$i] . "." . $arregloRefF[$i] . "." . $arregloNPe[$i] . ".";
+                    array_push($text_referencias,$newText);
+                }
+                if ($arregloRefTipo[$i] == 5) {
+                    $newText =$arregloRefA[$i] . "." . "(" . $arregloRefP[$i] . ")." . $arregloRefT[$i] . "." . $arregloRefF[$i] . "." . $arregloNIn[$i] . ".";
+                    array_push($text_referencias,$newText);
+                }
+                if ($arregloRefTipo[$i] == 6) {
+                    $newText =$arregloRefA[$i] . "." . "(" . $arregloRefP[$i] . ")." . $arregloRefT[$i] . ": " . $arregloRefF[$i] . "," . $arregloS[$i] . ", " . $arregloNEd[$i] . ".";
+                    array_push($text_referencias,$newText);
+                }
+            }
+        }
+
+        $newRequest->request->add([
+            'referencias' => $text_referencias
+        ]);
         /* change to new method inside other controller */
 
-        return (new PlantillaController)->descargaWordPlantillaUNT($newRequest);
+        return (new PlantillaController)->descargaWordProyectoTesisUPAO($newRequest);
 
         /** */
 

@@ -1796,7 +1796,7 @@ class PlantillaController extends Controller
             $asesor_grado = $request->asesor_grado;
             $asesor_titulo = $request->asesor_titulo;
             $asesor_direccion = $request->asesor_direccion;
-            $asesor_orcid = '';
+            $asesor_orcid = $request->asesor_orcid;
             /* */
             $inv_orientacion = $request->inv_fin_persigue;
             $inv_contrastacion = $request->inv_diseno;
@@ -1814,18 +1814,18 @@ class PlantillaController extends Controller
             $realidad_problematica = '';
             $antecedentes = '';
             $justificacion_inv = '';
-            $formulacion_problema = '';
+            $formulacion_problema = $request->formulacion_prob;
             $objetivos = $request->objetivos;
-            $marco_teorico = '';
-            $marco_conceptual = '';
-            $formulacion_hipotesis = '';
+            $marco_teorico = $request->marco_teorico;
+            $marco_conceptual = $request->marco_conceptual;
+            $formulacion_hipotesis = $request->form_hipotesis;
             $diseno_inv = '';
             $poblacion = '';
             $muestra = '';
             $metodos = '';
             $tecnicas_instrumentos = '';
-            $estrategias_metod = '';
-            $referencias = '';
+            $estrategias_metod = $request->es;
+            $referencias = $request->referencias;
             $anexos = '';
             $template->setValues([
                 'facultad' => $facultad,
@@ -1864,7 +1864,6 @@ class PlantillaController extends Controller
                 'metodos' => $metodos, //
                 'tecnicas_instrumentos' => $tecnicas_instrumentos, //
                 'estrategias_metod' => $estrategias_metod, //
-                'referencias' => $referencias,
                 'anexos'=>$anexos
             ]);
             /* Autores (Lista) */
@@ -1873,6 +1872,7 @@ class PlantillaController extends Controller
                 $newArray = array('autor_name'=>$autor);
                 array_push($array_autor,$newArray);
             }
+            $template->cloneBlock('block_autor1', 0, true, false, $array_autor);
             $template->cloneBlock('block_autor', 0, true, false, $array_autor);
 
             $array_objGeneral = array();
@@ -1919,6 +1919,13 @@ class PlantillaController extends Controller
             /*Presupuesto (Tabla) */
             // $section_presupuesto
 
+            /* Referencias */
+            $array_referencias = array();
+            foreach ($referencias as $key => $referencia) {
+                $newArray = array('referencia_txt'=>$referencia);
+                array_push($array_referencias,$newArray);
+            }
+            $template->cloneBlock('block_referencias', 0, true, false, $array_referencias);
             /* Guardado temporal del documento */
             $tempFile = tempnam(sys_get_temp_dir(), 'PHPWordPrueba');
             $template->saveAs($tempFile);
