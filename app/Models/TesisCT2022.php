@@ -24,8 +24,11 @@ class TesisCT2022 extends Model
         'tipo_investigacion',
         'ti_finpersigue',
         'ti_disinvestigacion',
+        'unidad_academica',
         'localidad',
         'institucion',
+        'fecha_inicio',
+        'fecha_termino',
         'meses_ejecucion',
 
         't_ReparacionInstrum',
@@ -46,6 +49,7 @@ class TesisCT2022 extends Model
         'poblacion',
         'muestra',
         'metodos',
+        'diseño_contrastacion',
         'tecnicas_instrum',
         'instrumentacion',
         'estg_metodologicas',
@@ -53,6 +57,15 @@ class TesisCT2022 extends Model
         'estado',
         'condicion'
 
+    ];
+
+    protected $dates = [
+        'fecha_inicio', 'fecha_termino'
+    ];
+
+    protected $casts = [
+        'fecha_inicio' => 'datetime:d-m-Y',
+        'fecha_termino' => 'datetime:d-m-Y'
     ];
 
     public function presupuestoProyecto(){

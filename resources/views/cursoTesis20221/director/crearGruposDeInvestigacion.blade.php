@@ -8,14 +8,32 @@
     </div>
     <div class="card-body">
         <div class="row justify-content-around align-items-center">
+            <div class="row justify-content-end">
+                    <div class="col-md-3">
+                        <h5>Filtrar</h5>
+                        <form id="filtrarAlumno" name="filtrarAlumno" method="get">
+                            <div class="row">
+                                <div class="input-group">
+                                    <select class="form-select" name="filtrar_semestre" id="filtrar_semestre" required>
+                                        @foreach ($semestre as $sem)
+                                            <option value="{{ $sem->cod_config_ini }}"
+                                                @if ($sem->cod_config_ini == $filtrarSemestre) selected @endif>
+                                                {{ $sem->year }}_{{ $sem->curso }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <button class="btn btn-outline-primary" type="submit" id="btn-search">Filtrar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+            </div>
             <div>
                 <div class="row justify-content-around align-items-center" style="margin-top: 10px;">
                     <div class="col-lg-7" id="fieldsBody">
                         <span id="span_estudiante" style="color: red"></span>
                         <div class="row justify-content-around align-items-center" id="rowStudent_0">
-
                             <div class="col-lg-6">
-
                                 <label for="">Estudiante</label>
                                 <select class="form-control" name="selectStudent_0" id="selectStudent_0"
                                     onchange="onSelectStudent(0);">
@@ -96,7 +114,9 @@
                         @endforeach
                     </tbody>
                 </table>
-                {{ $studentforGroups->links() }}
+                @if (!empty($studentforGroups))
+                                {{ $studentforGroups->appends(request()->input())->links() }}
+                @endif
             </div>
 
 
