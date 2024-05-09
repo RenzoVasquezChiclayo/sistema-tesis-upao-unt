@@ -1783,6 +1783,7 @@ class PlantillaController extends Controller
     public function descargaWordProyectoTesisUPAO(Request $request)
     {
         try {
+            Settings::setOutputEscapingEnabled(true);
             $template = new \PhpOffice\PhpWord\TemplateProcessor(documentTemplate: 'plantilla/docs/PLANTILLA_UPAO.docx');
             $facultad = $request->facultad;
             $escuela_profesional = $request->escuela_profesional;
@@ -1864,7 +1865,10 @@ class PlantillaController extends Controller
                 'metodos' => $metodos, //
                 'tecnicas_instrumentos' => $tecnicas_instrumentos, //
                 'estrategias_metod' => $estrategias_metod, //
-                'anexos'=>$anexos
+                'anexos'=>$anexos,
+                //Falta
+                'block_presupuesto'=>'',
+                'block_operacionalizacion'=>''
             ]);
             /* Autores (Lista) */
             $array_autor = array();
@@ -1877,26 +1881,26 @@ class PlantillaController extends Controller
 
             $array_objGeneral = array();
             $array_objEspecifico = array();
+
             /* Objetivos */
-            foreach ($objetivos as $key => $objetivo) {
-                if($objetivo->tipo == 'General'){
-                    array_push($array_objGeneral,array('obj_descripcion'=>$objetivo->descripcion));
+            foreach ($objetivos as $objetivo) {
+                $objectDcd = json_decode($objetivo);
+                if($objectDcd->tipo == 'General'){
+                    array_push($array_objGeneral,array('obj_descripcion'=>$objectDcd->descripcion));
                 }
-                if($objetivo->tipo == 'Especifico'){
-                    array_push($array_objEspecifico,array('obj_descripcion'=>$objetivo->descripcion));
+                if($objectDcd->tipo == 'Especifico'){
+                    array_push($array_objEspecifico,array('obj_descripcion'=>$objectDcd->descripcion));
                 }
             }
             if(sizeof($array_objGeneral) <=0){
-                $template->deleteBlock('block_txt_obj_general');
                 $template->deleteBlock('block_obj_general');
             }else{
                 $template->cloneBlock('block_obj_general', 0, true, false, $array_objGeneral);
             }
-            if(sizeof($array_objGeneral) <=0){
-                $template->deleteBlock('block_txt_obj_especifico');
+            if(sizeof($array_objEspecifico) <=0){
                 $template->deleteBlock('block_obj_especifico');
             }else{
-                $template->cloneBlock('block_obj_general', 0, true, false, $array_objEspecifico);
+                $template->cloneBlock('block_obj_especifico', 0, true, false, $array_objEspecifico);
             }
 
             /* Cronograma (Tabla) */
@@ -1917,7 +1921,10 @@ class PlantillaController extends Controller
             // 'recursos'=>$recursos;
 
             /*Presupuesto (Tabla) */
-            // $section_presupuesto
+            //$template->deleteBlock('block_presupuesto');
+
+            /* Operacionalizacion (Tabla) */
+            //$template->deleteBlock('block_operacionalizacion');
 
             /* Referencias */
             $array_referencias = array();
