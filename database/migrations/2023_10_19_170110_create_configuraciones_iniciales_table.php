@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('curso',60);
             $table->integer('ciclo');
             $table->tinyInteger('estado')->default('1');
+            $table->string('codigo',20)->nullable();
         });
     }
 

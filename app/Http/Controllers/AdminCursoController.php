@@ -1370,7 +1370,7 @@ class AdminCursoController extends Controller
         try {
             $cod_configuraciones = $request->aux_configuraciones;
             $find_configuraciones = Configuraciones_Iniciales::where('cod_config_ini', $cod_configuraciones)->first();
-            $find_configuraciones->estado = $find_configuraciones->estado == 1 ? 0 : 1;
+            $find_configuraciones->estado = $request->select_state;
             $find_configuraciones->save();
             return redirect()->route('admin.configurar');
         } catch (\Throwable $th) {
@@ -1438,6 +1438,48 @@ class AdminCursoController extends Controller
             return redirect()
                 ->route('admin.configurar')
                 ->with('datos', 'okNot');
+        }
+    }
+
+    public function continuarSemestre(Request $request){
+
+        /*
+            0: Desactivado
+            1: Activado
+            2: Terminado
+            3: Terminado y continuado
+        */
+
+        try{
+            $find_semestre = Configuraciones_Iniciales::find($request->aux_configuraciones);
+            $find_semestre->estado = 3;
+            $find_semestre->save();
+
+            $new_semestre = new Configuraciones_Iniciales();
+            $new_semestre->year = $find_semestre->year;
+            $new_semestre->curso = $find_semestre->curso."(Continuación-".$find_semestre->codigo.")";
+            $new_semestre->ciclo = intval($find_semestre->ciclo) + 1;
+            $new_semestre->estado = 0;
+            $new_semestre->save();
+
+            $new_semestre_id = $new_semestre->cod_config_ini;
+
+            $listStudents = Estudiante_Semestre::where('cod_config_ini',$find_semestre->cod_config_ini)->get();
+
+            foreach ($listStudents as $student) {
+                $newEstudianteSemestre = new Estudiante_Semestre();
+                $newEstudianteSemestre->cod_matricula = $student->cod_matricula;
+                $newEstudianteSemestre->cod_config_ini = $new_semestre_id;
+                $newEstudianteSemestre->save();
+            }
+
+            return redirect()
+                ->route('admin.configurar')
+                ->with('datos', 'ok');
+        }catch(\Throwable $th){
+            return redirect()
+            ->route('admin.configurar')
+            ->with('datos','okNot');
         }
     }
 }

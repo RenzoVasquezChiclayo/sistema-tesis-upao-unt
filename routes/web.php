@@ -85,6 +85,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/ver-editar-configuraciones',  'ver_editar_configuraciones')->name('admin.verConfiguracionEditar');
         Route::post('/save-editar-configuraciones', 'save_editar_configuraciones')->name('admin.saveEditarconfiguraciones');
 
+        //---
+        Route::post('/continue-semestre','continuarSemestre')->name('admin.continuarSemestre');
+
 
         Route::get('/listar-directores', 'listarDirectores')->name('admin.director.listar');
         Route::post('/guardar-director',  'guardarDirector')->name('admin.director.guardarDirector');
